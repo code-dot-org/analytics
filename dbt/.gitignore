@@ -9,4 +9,4 @@ venv/
 /requirements.txt
 /dev/
 data/
-/rosetta/
+legacy/
