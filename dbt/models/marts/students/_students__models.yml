@@ -1,0 +1,14 @@
+version: 2
+
+models: 
+  - name: dim_student_sections
+    description: all unique student-section associations by school year
+  
+  - name: dim_students
+    description: all student accounts ever created + georgraphic + activity info on the student
+  
+  - name: dim_user_levels
+    description: 1 row for every time a user touches a level
+
+  - name: dim_user_stages
+    description: 1 row for every time a user has activity within a stage, aggregates number of levels touched within stage

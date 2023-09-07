@@ -12,6 +12,8 @@ form_geos as (
 combined as (
     select 
         forms.form_id,
+        forms.form_category,
+        forms.hoc_year,
         forms.email,
         forms.name,
         forms.form_kind,
@@ -37,7 +39,7 @@ combined as (
     from forms 
     left join form_geos 
         on forms.form_id = form_geos.form_id
-    {{ dbt_utils.group_by(21) }}
+    {{ dbt_utils.group_by(23) }}
 )
 
 select * 

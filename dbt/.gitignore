@@ -8,5 +8,3 @@ venv/
 /.DS_Store
 /requirements.txt
 /dev/
-data/
-legacy/
