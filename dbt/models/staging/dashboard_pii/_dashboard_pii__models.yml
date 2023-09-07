@@ -4,4 +4,3 @@ models:
 
   - name: stg_dashboard_pii__pd_international_opt_ins
     description: staging pd_intl_opt_in data 
-    
