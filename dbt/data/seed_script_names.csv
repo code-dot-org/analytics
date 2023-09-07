@@ -1,0 +1,217 @@
+versioned_script_id,versioned_script_name,script_name_short,script_name_long
+509,coursef-2021,coursef,Course F
+510,csd1-2021,csd1,CSD Unit 1
+511,csd2-2021,csd2,CSD Unit 2
+512,csd3-2021,csd3,CSD Unit 3
+513,csd4-2021,csd4,CSD Unit 4
+514,csd5-2021,csd5,CSD Unit 5
+515,csd6-2021,csd6,CSD Unit 6
+3192,csd7-2021,csd7,CSD Unit 7
+518,csp10-2021,csp10,CSP Unit 10
+517,csp1-2021,csp1,CSP Unit 1
+519,csp2-2021,csp2,CSP Unit 2
+520,csp3-2021,csp3,CSP Unit 3
+521,csp4-2021,csp4,CSP Unit 4
+522,csp5-2021,csp5,CSP Unit 5
+523,csp6-2021,csp6,CSP Unit 6
+524,csp7-2021,csp7,CSP Unit 7
+525,csp8-2021,csp8,CSP Unit 8
+526,csp9-2021,csp9,CSP Unit 9
+527,express-2021,express,Express
+528,pre-express-2021,pre-express,Pre-Express
+471,csp10-2020,csp10,CSP Unit 10
+57,cspunit3,csp3,CSP Unit 3
+413,csd3-pilot,csd3-pilot,CSD Unit 3 - Pil
+478,csd3-virtual,csd3-virtual,CSD Unit 3 - Vir
+481,csp5-virtual,csp5-virtual,CSP Unit 5 - Vir
+379,csp4-pilot,csp4-pilot,CSP Unit 4 - Pil
+63,cspunit2,csp2,CSP Unit 2
+406,csp5-pilot,csp5-pilot,CSP Unit 5 - Pil
+442,csp4-preview,csp4-preview,CSP Unit 4 - Pre
+392,csp1-pilot-staging,csp1-pilot,CSP Unit 1 - Pil
+412,csd2-pilot,csd2-pilot,CSD Unit 2 - Pil
+234,csd2-old,csd2,CSD Unit 2
+116,cspunit6,csp6,CSP Unit 6
+41,cspunit1,csp1,CSP Unit 1
+388,csp1-pilot,csp1-pilot,CSP Unit 1 - Pil
+416,csp3-pilot,csp3-pilot,CSP Unit 3 - Pil
+263,csd4-draft,csd4,CSD Unit 4
+208,csp5-support,csp5-support,CSP Unit 5 - Sup
+448,csp7-pilot,csp7-pilot,CSP Unit 7 - Pil
+212,csd6-draft,csd6,CSD Unit 6
+565,csd5-preview-2021,csd5-preview,CSD Unit 5 - Pre
+137,cspoptional,CSP-optional,CSP - Optional
+111,cspunit4,csp4,CSP Unit 4
+454,csp9-pilot,csp9-pilot,CSP Unit 9 - Pil
+411,csd1-pilot,csd1-pilot,CSD Unit 1 - Pil
+431,csp2-pilot,csp2-pilot,CSP Unit 2 - Pil
+434,csp6-pilot,csp6-pilot,CSP Unit 6 - Pil
+395,csp3-pilot-staging,csp3-pilot,CSP Unit 3 - Pil
+439,csp10-pilot,csp10-pilot,CSP Unit 10 - Pi
+183,csp3-support,csp3-support,CSP Unit 3 - Sup
+200,csp1-support,csp1-support,CSP Unit 1 - Sup
+225,csd3-old,csd3,CSD Unit 3
+127,csp6,csp6,CSP Unit 6
+243,csp-ap,,
+179,csd3-draft,csd3,CSD Unit 3
+222,csp-pre-survey,,
+449,csp8-pilot,csp8-pilot,CSP Unit 8 - Pil
+224,csp4-support,csp4-support,CSP Unit 4 - Sup
+202,csd1-old,csd1,CSD Unit 1
+112,cspunit5,csp5,CSP Unit 5
+142,cspassessment,,
+178,cspunit2ch1assessment,csp2,CSP Unit 2
+172,cspunit1ch2assessment,csp1,CSP Unit 1
+177,cspunit2ch2assessment,csp2,CSP Unit 2
+173,cspunit1ch1assessment,csp1,CSP Unit 1
+329,csp-post-survey,,
+2828,csp-mid-survey,,
+405,csd-post-survey-2018,,
+293,csd-sample-online,,
+367,cspexam1-mWU7ilDYM9,,
+143,csd6-old,csd6,CSD Unit 6
+232,csd-pilot,csd-pilot,CSD - Pilot
+404,csp-post-survey-2020,,
+410,csp-post-survey-2018,,
+429,csd-post-survey,,
+563,csd4-preview-2021,csd4-preview,CSD Unit 4 - Pre
+479,csp3-virtual,csp3-virtual,CSP Unit 3 - Vir
+32703,coursea-2022,coursea,Course A
+30319,courseb-2022,courseb,Course B
+30326,coursec-2022,coursec,Course C
+32724,coursed-2022,coursed,Course D
+30340,coursee-2022,coursee,Course E
+30348,coursef-2022,coursef,Course F
+66091,csd1-2022,csd1,CSD Unit 1
+66100,csd2-2022,csd2,CSD Unit 2
+66112,csd3-2022,csd3,CSD Unit 3
+66122,csd4-2022,csd4,CSD Unit 4
+66133,csd5-2022,csd5,CSD Unit 5
+70631,csd6-2022,csd6,CSD Unit 6
+66151,csd7-2022,csd7,CSD Unit 7
+30499,csp10-2022,csp10,CSP Unit 10
+30493,csp1-2022,csp1,CSP Unit 1
+30505,csp2-2022,csp2,CSP Unit 2
+30514,csp3-2022,csp3,CSP Unit 3
+30528,csp4-2022,csp4,CSP Unit 4
+30537,csp5-2022,csp5,CSP Unit 5
+30545,csp6-2022,csp6,CSP Unit 6
+32342,csp7-2022,csp7,CSP Unit 7
+30552,csp8-2022,csp8,CSP Unit 8
+30555,csp9-2022,csp9,CSP Unit 9
+1,null,20-hour,20 Hour
+17,null,course1,Course 1
+18,null,course2,Course 2
+19,null,course3,Course 3
+23,null,course4,Course 4
+236,coursea-2017,coursea,Course A
+237,courseb-2017,courseb,Course B
+238,coursec-2017,coursec,Course C
+239,coursed-2017,coursed,Course D
+240,coursee-2017,coursee,Course E
+241,coursef-2017,coursef,Course F
+258,express-2017,express,Express
+259,pre-express-2017,pre-express,Pre-Express
+297,coursea-2018,coursea,Course A
+301,courseb-2018,courseb,Course B
+307,coursec-2018,coursec,Course C
+302,coursed-2018,coursed,Course D
+309,coursee-2018,coursee,Course E
+310,coursef-2018,coursef,Course F
+303,express-2018,express,Express
+341,pre-express-2018,pre-express,Pre-Express
+369,coursea-2019,coursea,Course A
+370,courseb-2019,courseb,Course B
+366,coursec-2019,coursec,Course C
+360,coursed-2019,coursed,Course D
+361,coursee-2019,coursee,Course E
+357,coursef-2019,coursef,Course F
+363,express-2019,express,Express
+371,pre-express-2019,pre-express,Pre-Express
+181,csd1-2017,csd1,CSD Unit 1
+312,csd1-2018,csd1,CSD Unit 1
+362,csd1-2019,csd1,CSD Unit 1
+187,csd2-2017,csd2,CSD Unit 2
+298,csd2-2018,csd2,CSD Unit 2
+374,csd2-2019,csd2,CSD Unit 2
+169,csd3-2017,csd3,CSD Unit 3
+299,csd3-2018,csd3,CSD Unit 3
+375,csd3-2019,csd3,CSD Unit 3
+189,csd4-2017,csd4,CSD Unit 4
+313,csd4-2018,csd4,CSD Unit 4
+376,csd4-2019,csd4,CSD Unit 4
+223,csd5-2017,csd5,CSD Unit 5
+314,csd5-2018,csd5,CSD Unit 5
+377,csd5-2019,csd5,CSD Unit 5
+221,csd6-2017,csd6,CSD Unit 6
+308,csd6-2018,csd6,CSD Unit 6
+378,csd6-2019,csd6,CSD Unit 6
+284,csp-create-2017,csp-create,CSP Create
+315,csp-create-2018,csp-create,CSP Create
+380,csp-create-2019,csp-create,CSP Create
+285,csp-explore-2017,csp-explore,CSP Explore
+316,csp-explore-2018,csp-explore,CSP Explore
+381,csp-explore-2019,csp-explore,CSP Explore
+122,csp1-2017,csp1,CSP Unit 1
+311,csp1-2018,csp1,CSP Unit 1
+382,csp1-2019,csp1,CSP Unit 1
+123,csp2-2017,csp2,CSP Unit 2
+317,csp2-2018,csp2,CSP Unit 2
+383,csp2-2019,csp2,CSP Unit 2
+124,csp3-2017,csp3,CSP Unit 3
+318,csp3-2018,csp3,CSP Unit 3
+384,csp3-2019,csp3,CSP Unit 3
+262,csp3-research-mxghyt,csp3,CSP Unit 3
+125,csp4-2017,csp4,CSP Unit 4
+319,csp4-2018,csp4,CSP Unit 4
+385,csp4-2019,csp4,CSP Unit 4
+126,csp5-2017,csp5,CSP Unit 5
+320,csp5-2018,csp5,CSP Unit 5
+386,csp5-2019,csp5,CSP Unit 5
+210,csppostap-2017,csppostap,CSP Post-AP
+321,csppostap-2018,csppostap,CSP Post-AP
+387,csppostap-2019,csppostap,CSP Post-AP
+462,coursea-2020,coursea,Course A
+463,courseb-2020,courseb,Course B
+464,coursec-2020,coursec,Course C
+465,coursed-2020,coursed,Course D
+466,coursee-2020,coursee,Course E
+467,coursef-2020,coursef,Course F
+455,csd1-2020,csd1,CSD Unit 1
+456,csd2-2020,csd2,CSD Unit 2
+457,csd3-2020,csd3,CSD Unit 3
+458,csd4-2020,csd4,CSD Unit 4
+459,csd5-2020,csd5,CSD Unit 5
+460,csd6-2020,csd6,CSD Unit 6
+470,csp1-2020,csp1,CSP Unit 1
+472,csp2-2020,csp2,CSP Unit 2
+473,csp3-2020,csp3,CSP Unit 3
+450,csp4-2020,csp4,CSP Unit 4
+451,csp5-2020,csp5,CSP Unit 5
+474,csp6-2020,csp6,CSP Unit 6
+452,csp7-2020,csp7,CSP Unit 7
+475,csp8-2020,csp8,CSP Unit 8
+476,csp9-2020,csp9,CSP Unit 9
+468,express-2020,express,Express
+469,pre-express-2020,pre-express,Pre-Express
+504,coursea-2021,coursea,Course A
+505,courseb-2021,courseb,Course B
+506,coursec-2021,coursec,Course C
+507,coursed-2021,coursed,Course D
+508,coursee-2021,coursee,Course E
+30631,express-2022,express,Express
+33721,pre-express-2022,pre-express,Pre-Express
+32756,csa1-2022,csa1,CSA Unit 1
+33362,csa2-2022,csa2,CSA Unit 2
+33366,csa3-2022,csa3,CSA Unit 3
+40642,csa4-2022,csa4,CSA Unit 4
+40646,csa5-2022,csa5,CSA Unit 5
+50933,csa6-2022,csa6,CSA Unit 6
+50937,csa7-2022,csa7,CSA Unit 7
+50942,csa8-2022,csa8,CSA Unit 8
+74695,csa9-2022,csa9,CSA Unit 9
+74545,aiml-2022,aiml,AIML standalone
+94901,csc-ecosystems-2022,csc-ecosystems,CSC Ecosystems
+94903,csc-fables-2022,csc-fables,CSC Fables
+94908,csc-starquilts-2022,csc-starquilts,CSC Star Quilts
+94910,csc-timecapsule-2022,csc-timecapsule,CSC Time Capusle

@@ -1,0 +1,17 @@
+version: 2
+
+seeds:
+  - name: seed_course_names
+  - name: seed_school_years
+  - name: seed_script_names
+  - name: seed_2022_agg_ap_exam_results
+  - name: seed_2022_school_level_ap_exam_results
+    config:
+      column_types:
+        high_school: varchar(255)
+        examyr4: varchar(32)
+        country_descr: varchar(32)
+        ai_code: varchar(6)
+        state_abbrev: varchar(2)
+        analysis_school_type: varchar(32)
+        subject_nm:  varchar(32)
