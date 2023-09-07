@@ -1,0 +1,91 @@
+
+# ======
+# Project Details
+# ======
+name: 'cdo_analytics'
+version: '1.0.0'
+config-version: 2
+profile: 'cdo_redshift'
+require-dbt-version: [">=1.0.0", "<2.0.0"]
+
+# ======
+# File Path Configs
+# ======
+model-paths: ["models"]
+test-paths: ["tests"]
+seed-paths: ["data"]
+macro-paths: ["macros"]
+analysis-paths: ["analysis"]
+target-path: "target"
+clean-targets:
+    - "target"
+    - "dbt_packages"
+
+# ==================
+# Variable Configs
+# ==================
+vars:
+
+  infinity_future: TO_DATE('9999-12-31', 'YYYY-MM-DD')
+  infinity_past: TO_DATE('1970-01-01', 'YYYY-MM-DD')
+  tomorrow: DATEADD('day',1,CURRENT_DATE())
+  sample_base: base_schema_name__object
+  sample_stg: stg_schema_name__object
+
+  # ==================
+  # Redshift vars
+  # ==================
+  valid_at: '{{ run_started_at.strftime("%Y-%m-%d %H:%M:%S%z") }}'
+
+# ==================
+# Model Configs 
+# https://docs.getdbt.com/docs/configuring-models
+# ==================
+models:
+  # +database: "{{ env_var('DBT_DATABASE')}}"
+  # +schema: "{{ env_var('DBT_DB_SCHEMA')}}"
+  cdo_analytics:
+    +grants:
+      select: ['dbt']
+    +query_tag: dbt
+    bind: false
+
+    intermediate:
+      +materialized: table
+
+    marts: 
+      +materialized: table
+
+      # classrooms:
+      #   +materialized: table
+      # courses:
+      #   +materialized: table
+      # hoc:
+      #   +materialized: table
+      # international:
+      #   +materialized: table
+      # schools:
+      #   +materialized: table
+      # students:
+      #   +materialized: table
+      # teachers:
+        # +materialized: table
+
+    staging:
+      +materialized: view
+      
+      dashboard:
+        base: 
+          +materialized: ephemeral
+
+      dashboard_pii:
+        tags:
+          - contains_pii
+        base: 
+          +materialized: ephemeral
+      
+      pegasus_pii:
+        tags:
+          - contains_pii
+        base: 
+          +materialized: ephemeral

@@ -1,0 +1,44 @@
+version: 2
+
+sources:
+  - name: dashboard_pii
+    database: dashboard
+    schema: dashboard_production_pii
+    tables:
+      - name: foorm_forms
+      - name: foorm_libraries
+      - name: foorm_library_questions
+      - name: foorm_simple_survey_forms
+      - name: foorm_simple_survey_submissions
+      - name: foorm_submissions
+      - name: pd_applications
+      - name: pd_attendances
+      - name: pd_enrollments
+      - name: pd_international_opt_ins
+      - name: pd_misc_surveys
+      - name: pd_post_course_surveys
+      - name: pd_pre_workshop_surveys
+      - name: pd_regional_partner_contacts
+      - name: pd_regional_partner_mappings
+      - name: pd_regional_partner_mini_contacts
+      - name: pd_regional_partner_program_registrations
+      - name: pd_scholarship_infos
+      - name: pd_sessions
+      - name: pd_survey_questions
+      - name: pd_teacher_applications
+      - name: pd_teachercon_surveys
+      - name: pd_teachercon1819_registrations
+      - name: pd_workshop_daily_surveys
+      - name: pd_workshop_facilitator_daily_surveys
+      - name: pd_workshop_survey_foorm_submissions
+      - name: pd_workshop_surveys
+      - name: pd_workshops_facilitators
+      - name: pd_workshops
+      - name: peer_reviews
+      - name: projects
+      - name: regional_partners
+      - name: teacher_feedbacks
+      - name: unit_groups
+      - name: user_school_infos
+
+      

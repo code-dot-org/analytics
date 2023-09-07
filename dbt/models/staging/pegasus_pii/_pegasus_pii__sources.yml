@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: pegasus_pii
+    database: dashboard
+    schema: pegasus_pii
+    tables:
+      - name: forms
+      - name: form_geos
+      - name: hoc_activity

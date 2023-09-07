@@ -1,0 +1,27 @@
+with 
+source as (
+      select * from {{ source('dashboard_pii', 'teacher_feedbacks') }}
+),
+
+renamed as (
+    select
+        id as teacher_feedback_id,
+        comment,
+        student_id,
+        level_id,
+        teacher_id,
+        created_at,
+        updated_at,
+        deleted_at,
+        performance,
+        student_visit_count,
+        student_first_visited_at,
+        student_last_visited_at,
+        seen_on_feedback_page_at,
+        script_id,
+        analytics_section_id,
+        review_state
+    from source
+)
+
+select * from renamed
