@@ -2,6 +2,16 @@ with
 forms as (
     select 
         form_id,
+        case
+            when lower(form_kind) like 'hocsignup%' then 'hoc'
+            when lower(form_kind) = 'professionaldevelopmentworkshop' then 'pd'
+            else lower(form_kind)
+        end                                                             as form_category,
+        case 
+            when lower(form_kind) like 'hocsignup%' 
+            then right(form_kind,4) 
+            else null 
+        end                                                             as hoc_year,
         email,
         name,
         form_kind,
