@@ -7,9 +7,9 @@ version: '1.0.0'
 config-version: 2
 profile: 'cdo_redshift'
 require-dbt-version: [">=1.0.0", "<2.0.0"]
-# quoting:
-#   identifier: true
-#   schema: true
+quoting:
+  identifier: true
+  schema: true
 
 # ======
 # File Path Configs

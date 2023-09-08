@@ -154,6 +154,9 @@ school_stats_by_years as (
                 + coalesce(count_student_wh,0)  
                 + coalesce(count_student_hp,0))::float 
         end                                                                                 as urg_percent_no_tr,
+
+        --  total_urm_no_tr_students / total_students as pct_urm_no_tr,
+        -- total_urm_students / total_students as pct_urm
         
         case 
             when total_frl_eligible is null 
