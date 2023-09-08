@@ -20,6 +20,7 @@ user_geos as (
     where user_id in (select user_id from teachers)
 ),
 
+    -- next work for this model...
  {# 
     school_info as (
         select *
@@ -29,15 +30,29 @@ user_geos as (
 
 combined as (
     select 
+        -- teacher info
         teachers.user_id as teacher_user_id,
         teachers.gender,
         teachers.is_urm,
         teachers.races,
         teachers.is_active,
         teachers.school_info_id,
+        
+        {# -- school info 
+        school_info.school_id,
+        school_info.school_name,
+        school_info.started,
+        school_info.started_at,
+        school_info.trained,
+        school_info.trained_this_year, #}
+
+
+        -- user_geo info
         ug.is_international,
         ug.country
     from teachers 
+    {# left join on school_info 
+        on teachers.school_info_id = school_info.school_info_id #}
     left join user_geos as ug 
         on teachers.user_id = ug.user_id
 )

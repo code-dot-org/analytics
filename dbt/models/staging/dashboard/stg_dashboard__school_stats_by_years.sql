@@ -94,7 +94,14 @@ school_stats as (
 
     from {{ ref('base_dashboard__school_stats_by_years') }}
     {{ dbt_utils.group_by(37) }}
-)
+),
+
+final as (
+    select *,
+        total_urm_no_tr_students / total_students as pct_total_urm_no_tr,
+        total_urm_students / total_students as pct_total_urm
+    from school_stats
+),
 
 select * 
-from school_stats
+from final
