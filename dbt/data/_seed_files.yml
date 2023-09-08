@@ -1,0 +1,17 @@
+version: 2
+
+seeds:
+  - name: seed_course_names
+  - name: seed_school_years
+  - name: seed_script_names
+  - name: seed_csf_plugged_stage_counts
+    description: pulled manually from the output of what is currently in redshift
+  - name: seed_csf_stages_for_completion
+    description: pulled manually from the output of what is currently in redshift
+  - name: seed_international_partners
+    description: pulled from a google sheet updated by the international team periodically
+  - name: seed_training_school_years
+  - name: seed_state_abbreviations
+    description: pulled manually from the output of what is currently in redshift
+  - name: seed_workshop_state_zip_manual
+    description: pulled manually from the output of what is currently in redshift
