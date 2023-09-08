@@ -1,0 +1,13 @@
+
+target/
+dbt_packages/
+logs/
+# procs/
+.dbtenv/
+venv/
+/.vscode/
+/.DS_Store
+/requirements.txt
+/dev/
+data/
+legacy/
