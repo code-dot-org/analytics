@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: legacy
+    database: dev
+    schema: analytics
+    tables:
+      - name: seed_international_partners

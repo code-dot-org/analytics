@@ -9,7 +9,7 @@ opt_ins as (
 
 international_partners as (
     select *
-    from {{ ref('stg_seed__international_partners') }}
+    from {{ ref('stg_legacy__international_partners') }}
 ),
 
 combined as (
