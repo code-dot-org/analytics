@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: legacy
-    database: dev
-    schema: analytics
+    database: dashboard
+    schema: analysis
     tables:
       - name: seed_international_partners

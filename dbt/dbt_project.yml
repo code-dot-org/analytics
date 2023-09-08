@@ -84,8 +84,15 @@ models:
         base: 
           +materialized: ephemeral
       
+      legacy:
+        tags:
+          - contains_pii
+        base: 
+          +materialized: ephemeral
+        
       pegasus_pii:
         tags:
           - contains_pii
         base: 
           +materialized: ephemeral
+      

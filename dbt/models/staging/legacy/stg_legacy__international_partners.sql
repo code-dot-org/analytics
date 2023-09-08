@@ -1,7 +1,7 @@
 with 
 international_partners as (
     select * 
-    from {{ ref('seed_international_partners')}}
+    from {{ ref('base_legacy__international_partners')}}
 ),
 
 renamed as (
