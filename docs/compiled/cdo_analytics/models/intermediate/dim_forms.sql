@@ -1,17 +1,19 @@
 with 
 forms as (
     select * 
-    from {{ ref('stg_pegasus_pii__forms') }}
+    from "dev"."dbt_allison"."stg_pegasus_pii__forms"
 ),
 
 form_geos as (
     select * 
-    from {{ ref('stg_pegasus_pii__form_geos') }}
+    from "dev"."dbt_allison"."stg_pegasus_pii__form_geos"
 ),
 
 combined as (
     select 
         forms.form_id,
+        forms.form_category,
+        forms.hoc_year,
         forms.email,
         forms.name,
         forms.form_kind,
@@ -37,7 +39,7 @@ combined as (
     from forms 
     left join form_geos 
         on forms.form_id = form_geos.form_id
-    {{ dbt_utils.group_by(21) }}
+    group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23
 )
 
 select * 

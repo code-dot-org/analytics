@@ -1,0 +1,7 @@
+version: 2
+
+models:
+
+  - name: stg_legacy_pii__international_partners
+    description: seed file for international partners hosted in s3 (contains pii)
+    

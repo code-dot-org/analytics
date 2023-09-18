@@ -1,12 +1,13 @@
 with 
-school_stats as (
+
+school_stats_by_years as (
     select *,
         
         case when title_i_status in (1,2,3,4,5) 
                 then 1
             when title_i_status = 6 
                 then 0
-        end as is_title_i,
+        end                                                                             as is_title_i,
 
         case when community_type in (
                     'rural_fringe',
@@ -17,7 +18,7 @@ school_stats as (
                 then 1 
             when community_type is not null 
                 then 0
-        end as is_rural,
+        end                                                                             as is_rural,
 
         case when grades_offered_lo is null then null 
              when grades_offered_lo in (
@@ -40,7 +41,7 @@ school_stats as (
                 is_grade_05
                 ) = 1 then 1
             else 0 
-        end as is_stage_el,
+        end                                                                            as is_stage_el,
         
         case when grades_offered_lo is null then null 
              when lower(grades_offered_lo) = 'pk'
@@ -55,7 +56,7 @@ school_stats as (
                 or grades_offered_hi in ('06','07','08'))
                     then 1
             else 0 
-        end as is_stage_mi,
+        end                                                                            as is_stage_mi,
         
         case when grades_offered_lo is null then null 
              when coalesce(
@@ -72,17 +73,14 @@ school_stats as (
                 '12'
              ) then 1 
             else 0 
-        end as is_stage_hi,
-
-        min(school_year) as first_survey_year,
-        max(school_year) as survey_year,
+        end                                                                             as is_stage_hi,
 
         sum(count_student_am 
             + count_student_as
             + count_student_hi
             + count_student_bl
             + count_student_wh
-            + count_student_hp) as total_urm_no_tr_students,
+            + count_student_hp)                                                         as total_urg_no_tr_students,
 
         sum(count_student_am
             + count_student_as
@@ -90,7 +88,94 @@ school_stats as (
             + count_student_bl
             + count_student_wh
             + count_student_hp
-            + count_student_tr) as total_urm_students
+            + count_student_tr)                                                         as total_urg_students,
+
+        coalesce(count_student_am,0)  
+            + coalesce(count_student_as,0)  
+            + coalesce(count_student_hi,0)  
+            + coalesce(count_student_bl,0)  
+            + coalesce(count_student_wh,0)  
+            + coalesce(count_student_hp,0)  
+            + coalesce(count_student_tr,0)                                              as students_summed,  ---------------  sh to allow for manipulation later
+        
+        case 
+            when total_students = coalesce(count_student_am,0)  
+                                    + coalesce(count_student_as,0)  
+                                    + coalesce(count_student_hi,0)  
+                                    + coalesce(count_student_bl,0)  
+                                    + coalesce(count_student_wh,0)  
+                                    + coalesce(count_student_hp,0)  
+                                    + coalesce(count_student_tr,0) 
+            then (coalesce(count_student_am,0)  
+                + coalesce(count_student_hi,0)  
+                + coalesce(count_student_bl,0)  
+                + coalesce(count_student_hp,0)) 
+                / total_students::float 
+        end                                                                             as urg_percent,
+        case 
+            when .7 <= 
+                (coalesce(count_student_am,0)  
+                + coalesce(count_student_as,0)  
+                + coalesce(count_student_hi,0)  
+                + coalesce(count_student_bl,0)  
+                + coalesce(count_student_wh,0)  
+                + coalesce(count_student_hp,0)  
+                + coalesce(count_student_tr ,0))::float
+                /total_students::float
+            then 
+                (coalesce(count_student_am,0)  
+                + coalesce(count_student_hi,0)  
+                + coalesce(count_student_bl,0)  
+                + coalesce(count_student_hp,0)) / 
+                (coalesce(count_student_am,0)  
+                + coalesce(count_student_as,0)  
+                + coalesce(count_student_hi,0)  
+                + coalesce(count_student_bl,0)  
+                + coalesce(count_student_wh,0)  
+                + coalesce(count_student_hp,0)  
+                + coalesce(count_student_tr ,0))::float 
+        end                                                                              as urg_percent_true,
+        case 
+            when 0 < coalesce(count_student_am,0)  
+                    + coalesce(count_student_as,0)  
+                    + coalesce(count_student_hi,0)  
+                    + coalesce(count_student_bl,0)  
+                    + coalesce(count_student_wh,0)  
+                    + coalesce(count_student_hp,0)
+            then 
+                (coalesce(count_student_am,0)  
+                + coalesce(count_student_hi,0)  
+                + coalesce(count_student_bl,0)  
+                + coalesce(count_student_hp,0)) / 
+                (coalesce(count_student_am,0)  
+                + coalesce(count_student_as,0)  
+                + coalesce(count_student_hi,0)  
+                + coalesce(count_student_bl,0)  
+                + coalesce(count_student_wh,0)  
+                + coalesce(count_student_hp,0))::float 
+        end                                                                                 as urg_percent_no_tr,
+
+        --  total_urm_no_tr_students / total_students as pct_urm_no_tr,
+        -- total_urm_students / total_students as pct_urm
+        
+        case 
+            when total_frl_eligible is null 
+                or total_students is null 
+                or total_frl_eligible > total_students 
+            then null
+            else total_frl_eligible / total_students::float 
+        end                                                                                 as frl_eligible_percent,    
+        case 
+            when total_frl_eligible is null 
+                or total_students is null 
+            then null 
+            when (total_frl_eligible / total_students::float) > 0.5
+            then 1 
+            else 0 
+        end                                                                                 as is_high_needs,
+
+        min(school_year) as first_survey_year,
+        max(school_year) as survey_year
 
     from {{ ref('base_dashboard__school_stats_by_years') }}
     {{ dbt_utils.group_by(37) }}
@@ -104,4 +189,4 @@ final as (
 ),
 
 select * 
-from final
+from final;

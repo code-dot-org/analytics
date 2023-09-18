@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: legacy_pii
+    database: dev
+    schema: analytics_pii
+    tables:
+      - name: seed_international_partners

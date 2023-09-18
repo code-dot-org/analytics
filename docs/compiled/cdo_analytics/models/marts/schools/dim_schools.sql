@@ -1,12 +1,12 @@
 with 
 school_stats as (
     select * 
-    from {{ ref('stg_dashboard__school_stats_by_years')}}
+    from "dev"."dbt_allison"."stg_dashboard__school_stats_by_years"
 ),
 
 school_years as (
     select * 
-    from {{ ref('int_school_years') }}
+    from "dev"."dbt_allison"."int_school_years"
 ),
 
 combined as (
@@ -17,7 +17,7 @@ combined as (
         school_years.ended_at,
         
         -- 2nd level aggregations
-        {# case when percent_urm >= 0.7 then is_urm_true, #} -- move to dim_schools
+         -- move to dim_schools
         total_urm_no_tr_students / total_students as pct_urm_no_tr,
         total_urm_students / total_students as pct_urm
     from school_stats

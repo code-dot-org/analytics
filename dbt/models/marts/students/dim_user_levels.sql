@@ -6,8 +6,8 @@ the primary dimensions here are those relating to a user's level #}
 {# maybe a related table to this could be a fct_user_levels to show
 overall progress completion rates and such... #}
 
-    { # would do well to change this is to an incremental model...
-    https://discourse.getdbt.com/t/incremental-load-first-run-check-table-exists-contains-rows/5584 # }
+{# would do well to change this is to an incremental model...
+https://discourse.getdbt.com/t/incremental-load-first-run-check-table-exists-contains-rows/5584 #}
 
 with 
 user_levels as (
