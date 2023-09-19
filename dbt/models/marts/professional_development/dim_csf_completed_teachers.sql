@@ -74,7 +74,7 @@ csf_completed as (
 
 csf_completed_temp as (
     select 
-    se.user_id, 
+    se.user_id,     -- why are you using the section's user_id here? (btw its all 1:1 joins so they're all the same :) )
     com.school_year,
     com.script_id,
     com.script_name,
@@ -93,4 +93,7 @@ select
     script_name,
     completed_at
 from csf_completed_temp
-where completed_at_order = 5
+where completed_at_order = 5 -- what does this mean? the 5th completed section for any given school year? 
+
+
+-- next steps: decomp with @allison-code-dot-org on how to reconcile these two models
