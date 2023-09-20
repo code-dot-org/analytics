@@ -164,7 +164,7 @@ school_stats_by_years as (
                 or total_frl_eligible > total_students 
             then null
             else total_frl_eligible / total_students::float 
-        end                                                                                 as frl_eligible_percent,    
+        end                                                                                 as pct_frl_eligible,    
         case 
             when total_frl_eligible is null 
                 or total_students is null 
