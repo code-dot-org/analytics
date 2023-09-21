@@ -1,4 +1,10 @@
 with 
+school_stats_by_years as (
+    select * 
+    from {{ ref('base_dashboard__school_stats_by_years') }}
+)
+
+select * 
 
 school_stats_by_years as (
     select *,
@@ -136,18 +142,19 @@ school_stats_by_years as (
                 + coalesce(count_student_tr ,0))::float 
         end                                                                              as urg_percent_true,
         case 
-            when 0 < coalesce(count_student_am,0)  
+            when 0 <  coalesce(count_student_am,0)  
                     + coalesce(count_student_as,0)  
                     + coalesce(count_student_hi,0)  
                     + coalesce(count_student_bl,0)  
                     + coalesce(count_student_wh,0)  
                     + coalesce(count_student_hp,0)
             then 
-                (coalesce(count_student_am,0)  
+                 (coalesce(count_student_am,0)  
                 + coalesce(count_student_hi,0)  
                 + coalesce(count_student_bl,0)  
-                + coalesce(count_student_hp,0)) / 
-                (coalesce(count_student_am,0)  
+                + coalesce(count_student_hp,0)) 
+                / 
+                 (coalesce(count_student_am,0)  
                 + coalesce(count_student_as,0)  
                 + coalesce(count_student_hi,0)  
                 + coalesce(count_student_bl,0)  
@@ -172,13 +179,13 @@ school_stats_by_years as (
             when (total_frl_eligible / total_students::float) > 0.5
             then 1 
             else 0 
-        end                                                                                 as is_high_needs,
+        end                                                                                 as is_high_needs
 
-        min(school_year) as first_survey_year,
-        max(school_year) as survey_year
+        {# min(school_year) as first_survey_year,
+        max(school_year) as survey_year #}
 
     from {{ ref('base_dashboard__school_stats_by_years') }}
-    {{ dbt_utils.group_by('37') }}
+    {# {{ dbt_utils.group_by('37') }} #}
 ),
 
 final as (

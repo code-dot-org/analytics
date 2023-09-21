@@ -1,7 +1,7 @@
 with
 script_names as (
     select * 
-    from {{ ref('dim_script_names') }}
+    from {{ ref('int_script_names') }}
 ),
 
 scripts as (

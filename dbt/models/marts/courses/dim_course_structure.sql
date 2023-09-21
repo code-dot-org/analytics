@@ -36,12 +36,12 @@ unit_groups as (
 
 course_names as (
     select *
-    from {{ ref('dim_course_names') }}
+    from {{ ref('int_course_names') }}
 ),
 
 script_names as (
     select * 
-    from {{ ref('dim_script_names') }} --modeled seed file (otherwise, we don't ref() other dim tables in marts)
+    from {{ ref('int_script_names') }} --modeled seed file (otherwise, we don't ref() other dim tables in marts)
 ),
 
 combined as (

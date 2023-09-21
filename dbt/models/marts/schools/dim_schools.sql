@@ -40,8 +40,8 @@ combined as (
         on schools.school_info_id = school_info.school_info_id
     left join school_districs
         on school.school_district_id = school_districts.school_district_id
-
-    {{ dbt_utils.group_by('7') }}
+    group by 1,2,3,4,5,6,7
+    {# {{ dbt_utils.group_by('7') }} #}
 )
 
 select *

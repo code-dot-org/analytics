@@ -1,10 +1,11 @@
 with 
 teachers as (
-    select {{ dbt_utils.star(from=ref           ('stg_dashboard__users'),
-        except=[
-            "admin",
-            "birthday",
-            "primary_contact_info_id"]) }}
+    select {{ dbt_utils.star(
+            from=ref('stg_dashboard__users'),
+            except=[
+                "admin",
+                "birthday",
+                "primary_contact_info_id"]) }}
     from {{ ref('stg_dashboard__users')}}
     where user_type = 'teacher'
         and purged_at is null 

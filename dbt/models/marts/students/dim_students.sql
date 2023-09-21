@@ -1,6 +1,8 @@
 with 
 students as (
-    select {{ dbt_utils.star(from=ref('stg_dashboard__users'),except=["admin","birthday","primary_contact_info_id"]) }}
+    select {{ dbt_utils.star(
+            from=ref('stg_dashboard__users'),
+            except=["admin","birthday","primary_contact_info_id"]) }}
     from {{ ref('stg_dashboard__users')}}
     where user_type = 'student'
         and purged_at is null 
@@ -31,10 +33,11 @@ user_levels as (
         sum(attempts)                                   as total_attempts,
         sum(is_submitted)                               as total_submissions,
         sum(time_spent)                                 as total_time_spent
-    from {{ ref('stg_dashboard__user_levels')}}
+    from {{ ref('stg_dashboard__user_levels') }}
     where user_id in (select user_id from students)
         and deleted_at is null 
-    {{ dbt_utils.group_by (1) }}
+    group by 1,2,3
+    {# {{ dbt_utils.group_by('3') }} #}
 ),
 
 combined as (
