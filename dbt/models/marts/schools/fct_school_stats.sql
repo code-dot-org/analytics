@@ -36,18 +36,6 @@ frl_eligibility_status as (
     where survey_year.school_year = '2020-2021'
 ),
 
-survey_years as (
-    select 
-        school_id,
-        max(school_year) as survey_year,
-        min(school_year) as first_survey_year
-    from school_stats_by_years
-    group by school_id
-),
-
-{# 
--- (js) still missing here: teacher_trainings data  
-#}
 
 aggregated as (
     select 
@@ -59,17 +47,32 @@ aggregated as (
 
 combined as (
     select 
-        school_id, 
-        
-    from schools -- (js) eventually dim_schools
+        -- schools
+        schools.school_id, 
+        schools.school_district_id,
+
+        --school_district
+        school_districts.school_district_name,
+
+
+        -- school_stats
+        {{ dbt_utils.star(
+            from=ref('school_stats_by_years'),
+            except=["school_id","created_at","updated_at"]) }},
+
+        -- scholarships
+        frles.pct_frl_eligible,
+        frles.is_high_needs
+    from schools
     left join school_info 
         on schools.school_info_id = school_info.school_info_id
     left join school_districts 
         on schools.school_district_id = school_districts.school_district_id
-    left join survey_years 
-        on schools.school_id = survey_years.school_id 
     left join school_stats_by_years as ssby 
         on schools.school_id = ssby.school_id 
     left join frl_eligibility_status as frles 
         on schools.school_id = frles.school_id 
 )
+
+select * 
+from combined

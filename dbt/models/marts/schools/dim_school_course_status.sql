@@ -14,7 +14,7 @@ teachers as (
         dense_rank() over(partition by school_id, course_name order by school_year desc) as sequence_num_inv
     from {{ ref('dim_teachers') }}
     where started_at is not null 
-    {{ dbt_utils.dbt_utils.group_by(3)}}
+    {{ dbt_utils.dbt_utils.group_by('4')}}
 ),
 
 students as (
@@ -24,7 +24,12 @@ students as (
         count(distinct case when started_at is not null then teacher_user_id end) as num_users_started,
     from {{ ref('dim_students') }}
     where started_at is not null 
-    {{ dbt_utils.dbt_utils.group_by(3)}}
+    {{ dbt_utils.dbt_utils.group_by('3')}}
+),
+
+schools as (
+    select * 
+    from {{ ref('dim_schools') }}
 ),
 
 combined as (

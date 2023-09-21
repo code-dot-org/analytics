@@ -1,6 +1,6 @@
 version: 2
 
-models: 
+models:
   - name: dim_forms
     description: all forms data with form geos fields
     columns: 
@@ -10,5 +10,10 @@ models:
            - unique
            - not_null
 
+  - name: int_course_names 
+    description: seed data for course name mappings
+  
   - name: int_school_years
     description: 1 row per school year in different formats
+  - name: int_script_names 
+    description: seed data for script name mappings

@@ -1,8 +1,11 @@
 version: 2
 
 models: 
-  # - name: dim_schools
-  #   description: school-level information by school year, formerly school_stats_by_years
+  - name: dim_schools
+    description: school-level information for each school_id
+
+  - name: dim_school_course_status
+    description: identify school status by year and course
   
   - name: fct_school_stats
     description: most recent school-level information + metrics about all NCES schools
