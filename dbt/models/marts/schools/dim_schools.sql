@@ -17,7 +17,6 @@ school_districs as (
 ),
 
 combined as (
-    -- based on analysis.schools...
     select
         -- schools
         schools.school_id,
