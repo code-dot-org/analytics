@@ -77,7 +77,7 @@ user_stages as (
 
 csf_started as (
     select 
-        user_stages.user_id as teacher_id, -- BOLD: I think have a student_id and teacher_id instead of user_id's is the best path forward here (will update upstream models in this commit as well)
+        user_stages.user_id as teacher_id, -- BOLD: I think having a student_id and teacher_id instead of user_id's is the best path forward here (will update upstream models in this commit as well)
         scripts.script_id,
         scripts.script_name,
         school_year.school_year,
