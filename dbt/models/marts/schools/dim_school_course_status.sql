@@ -10,11 +10,10 @@ teachers as (
         null as num_students_started,
         count(distinct case when started_at is not null then teacher_user_id end) as num_teachers_started,
         min(started_at) as first_started_at,
-        dense_rank() over(partition by school_id, course_name order by school_year asc) as sequence_num,
-        dense_rank() over(partition by school_id, course_name order by school_year desc) as sequence_num_inv
+        dense_rank() over(partition by school_id, course_name order by school_year asc) as sequence_num
     from {{ ref('dim_teachers') }}
     where started_at is not null 
-    {{ dbt_utils.dbt_utils.group_by('4')}}
+    {{ dbt_utils.group_by('4') }}
 ),
 
 students as (
@@ -24,7 +23,7 @@ students as (
         count(distinct case when started_at is not null then teacher_user_id end) as num_users_started,
     from {{ ref('dim_students') }}
     where started_at is not null 
-    {{ dbt_utils.dbt_utils.group_by('3')}}
+    {{ dbt_utils.group_by('3')}}
 ),
 
 schools as (
@@ -75,9 +74,6 @@ final as (
         -- (js) aggregating here to ensure our grain
         sum(num_students_started) as total_students_started,
         sum(num_teachers_started) as total_teachers_started,
-        {# total_teachers_trained,
-        total_teachers_trained_this_year, #}
-
         max(seq) as total_years_active
     from combined
     {{ dbt_utils.group_by('5') }}

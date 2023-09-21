@@ -178,7 +178,7 @@ school_stats_by_years as (
         max(school_year) as survey_year
 
     from {{ ref('base_dashboard__school_stats_by_years') }}
-    {{ dbt_utils.group_by(37) }}
+    {{ dbt_utils.group_by('37') }}
 ),
 
 final as (
@@ -186,7 +186,7 @@ final as (
         total_urm_no_tr_students / total_students as pct_total_urm_no_tr,
         total_urm_students / total_students as pct_total_urm
     from school_stats
-),
+)
 
 select * 
 from final;
