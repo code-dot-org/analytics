@@ -9,9 +9,10 @@ school_years as (
     from {{ ref('int_school_years') }}
 ),
 
-dim_hoc_event_registrations as (
+forms_hoc as (
     select * 
-    from {{ ref("dim_hoc_event_registrations") }}
+    from {{ ref('dim_forms') }}
+    where form_category = 'hoc'
 ),
 
 form_geos as (
@@ -43,13 +44,13 @@ hoc_hits as (
 ),
 
 hoc_event_reg as (
-    select date_trunc('month', dim_hoc_event_registrations.registered_at) as registration_month,
+    select date_trunc('month', forms_hoc.registered_at) as registration_month,
        sy.school_year,
        form_geos.country,
-       count(distinct dim_hoc_event_registrations.form_id) as total_registrations
-    from dim_hoc_event_registrations
-    left join form_geos on dim_hoc_event_registrations.form_id = form_geos.form_id
-    left join school_years as sy on dim_hoc_event_registrations.hoc_year = sy.school_year_int
+       count(distinct forms_hoc.form_id) as total_registrations
+    from forms_hoc
+    left join form_geos on forms_hoc.form_id = form_geos.form_id
+    left join school_years as sy on forms_hoc.hoc_year = sy.school_year_int
     group by registration_month,
         sy.school_year,
         form_geos.country

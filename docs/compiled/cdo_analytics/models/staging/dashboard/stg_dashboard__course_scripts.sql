@@ -1,0 +1,24 @@
+with 
+ __dbt__cte__base_dashboard__course_scripts as (
+with 
+source as (
+      select * from "dashboard"."dashboard_production"."course_scripts"
+),
+
+renamed as (
+    select
+        id as course_script_id,
+        course_id,
+        script_id,
+        position,
+        experiment_name,
+        default_script_id
+    from source
+)
+
+select * from renamed
+), course_scripts as (
+    select * from __dbt__cte__base_dashboard__course_scripts
+)
+
+select * from course_scripts

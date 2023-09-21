@@ -1,23 +1,4 @@
 version: 2
-
-models: 
-  - name: dim_forms
-    description: all forms data with form geos fields
-    columns: 
-      - name: form_id
-        description: unique id for table
-        tests:
-           - unique
-           - not_null
-
-  - name: dim_hoc_event_registrations
-    description: dim_forms filtered to only the hoc signup form
-    columns: 
-      - name: form_id
-        description: ""
-        tests: 
-          - unique
-          - not_null
-
+models:
   - name: fct_hoc_activity
     description: commonly tracked hoc metrics by hoc year and country

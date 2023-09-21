@@ -11,5 +11,9 @@ versioned_course_id,versioned_course_name,course_name_short,course_name_long
 47,csp-2021,csp,CS Principles
 64,csd-2022,csd,CS Discoveries
 57,csp-2022,csp,CS Principles
+<<<<<<< HEAD
 58,csa-2022,csa,Computer Science A
 48,csa-2021-pilot,csa,Computer Science A
+=======
+58,csa-2022,csa,Computer Science A
+>>>>>>> 4b8a79ea2e574f5113808694edb52d44efc7690b
