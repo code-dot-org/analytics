@@ -12,13 +12,8 @@ teachers as (
         dense_rank() over(partition by school_id, course_name order by school_year asc) as sequence_num
     from {{ ref('dim_teachers') }}
     where started_at is not null 
-<<<<<<< HEAD
-    group bt 1,2,3,4
-    {# {{ dbt_utils.group_by('4') }} #}
-=======
     group by 1,2,3
     -- {{ dbt_utils.group_by('4') }}
->>>>>>> dc5149dd3671e50dea4c11ee87ca352cecf22ca0
 ),
 
 students as (
@@ -31,11 +26,7 @@ students as (
     from {{ ref('dim_students') }}
     where started_at is not null 
     group by 1,2,3
-<<<<<<< HEAD
-    {# {{ dbt_utils.group_by('3')}} #}
-=======
-    -- {{ dbt_utils.group_by('3')}}
->>>>>>> dc5149dd3671e50dea4c11ee87ca352cecf22ca0
+    -- {{ dbt_utils.group_by('3') }}
 ),
 
 schools as (

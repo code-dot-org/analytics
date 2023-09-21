@@ -2,13 +2,10 @@ with
 school_stats_by_years as (
     select * 
     from {{ ref('base_dashboard__school_stats_by_years') }}
-)
+),
 
-select * 
-
-school_stats_by_years as (
+aggregated as (
     select *,
-        
         case when title_i_status in (1,2,3,4,5) 
                 then 1
             when title_i_status = 6 
@@ -162,9 +159,6 @@ school_stats_by_years as (
                 + coalesce(count_student_hp,0))::float 
         end                                                                                 as urg_percent_no_tr,
 
-        --  total_urm_no_tr_students / total_students as pct_urm_no_tr,
-        -- total_urm_students / total_students as pct_urm
-        
         case 
             when total_frl_eligible is null 
                 or total_students is null 
@@ -174,17 +168,17 @@ school_stats_by_years as (
         end                                                                                 as pct_frl_eligible,    
         case 
             when total_frl_eligible is null 
-                or total_students is null 
-            then null 
+            or total_students is null 
+                then null 
             when (total_frl_eligible / total_students::float) > 0.5
-            then 1 
+                then 1 
             else 0 
         end                                                                                 as is_high_needs
 
         {# min(school_year) as first_survey_year,
         max(school_year) as survey_year #}
 
-    from {{ ref('base_dashboard__school_stats_by_years') }}
+    from school_stats_by_years
     {# {{ dbt_utils.group_by('37') }} #}
 ),
 
@@ -192,8 +186,8 @@ final as (
     select *,
         total_urm_no_tr_students / total_students as pct_total_urm_no_tr,
         total_urm_students / total_students as pct_total_urm
-    from school_stats
+    from aggregated
 )
 
 select * 
-from final;
+from final
