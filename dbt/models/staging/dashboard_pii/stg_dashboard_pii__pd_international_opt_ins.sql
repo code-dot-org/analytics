@@ -11,12 +11,12 @@ final as (
         created_at                                          as form_submitted_at,
         updated_at                                          as updated_at,
 
-        json_extract_path_text(form_data, 'firstName')           as first_name,
+        {# json_extract_path_text(form_data, 'firstName')           as first_name,
         json_extract_path_text(form_data, 'firstNamePreferred')  as pref_name,
         json_extract_path_text(form_data, 'lastName')            as last_name,
         json_extract_path_text(form_data, 'email')               as email,
         json_extract_path_text(form_data, 'emailAlternate')      as email_alt,
-        json_extract_path_text(form_data, 'gender')              as gender,
+        json_extract_path_text(form_data, 'gender')              as gender, #}
         json_extract_path_text(form_data, 'schoolDepartment')    as school_department,
         json_extract_path_text(form_data, 'schoolMunicipality')  as school_municipality,
         json_extract_path_text(form_data, 'schoolName')          as school_name,

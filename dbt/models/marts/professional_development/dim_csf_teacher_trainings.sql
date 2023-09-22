@@ -51,7 +51,7 @@ sections as (
 users as (
     select * 
     from {{ ref('stg_dashboard__users') }}
-    where user_type = 'student'     -- still don't understand this logic 
+    where user_type = 'student'     -- (js) still don't understand this logic 
 ),
 
 school_years as (
@@ -59,7 +59,7 @@ school_years as (
     from {{ ref('int_school_years') }}
 ),
 
-csf_stages_for_completion as ( -- still don't understand these files (js)
+csf_stages_for_completion as ( -- (js) still don't understand these files
     select * 
     from {{ ref('seed_csf_stages_for_completion') }}
 ),
@@ -77,7 +77,7 @@ user_stages as (
 
 csf_started as (
     select 
-        user_stages.user_id as teacher_id, -- BOLD: I think having a student_id and teacher_id instead of user_id's is the best path forward here (will update upstream models in this commit as well)
+        user_stages.user_id as teacher_id, -- (js) BOLD: I think having a student_id and teacher_id instead of user_id's is the best path forward here (will update upstream models in this commit as well)
         scripts.script_id,
         scripts.script_name,
         school_year.school_year,

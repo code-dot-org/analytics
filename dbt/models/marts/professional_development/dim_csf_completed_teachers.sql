@@ -74,7 +74,7 @@ csf_completed as (
 
 csf_completed_temp as (
     select 
-    se.user_id,     -- why are you using the section's user_id here? (btw its all 1:1 joins so they're all the same :) )
+    se.user_id,     -- why are you using the section's user_id here? (btw its all 1:1 joins so they're all the same )
     com.school_year,
     com.script_id,
     com.script_name,
