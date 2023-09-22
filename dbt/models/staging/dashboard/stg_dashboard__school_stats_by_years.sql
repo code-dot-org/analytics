@@ -1,9 +1,7 @@
 with
-
 school_stats_by_years as (
     select
         *,
-
         case
             when title_i_status in (1, 2, 3, 4, 5)
                 then 1
@@ -18,8 +16,7 @@ school_stats_by_years as (
                     'rural_distant',
                     'rural_remote',
                     'town_remote',
-                    'town_distant'
-                )
+                    'town_distant')
                 then 1
             when community_type is not null
                 then 0
@@ -89,71 +86,64 @@ school_stats_by_years as (
             else 0
         end as is_stage_hi,
 
-        coalesce(ssby.students_total, 0) as students, -- create aliases for all race groups. Force 0 in case student count is null
-        coalesce(ssby.student_am_count, 0) as student_am,
-        coalesce(ssby.student_as_count, 0) as student_as,
-        coalesce(ssby.student_hi_count, 0) as student_hi,
-        coalesce(ssby.student_bl_count, 0) as student_bl,
-        coalesce(ssby.student_wh_count, 0) as student_wh,
-        coalesce(ssby.student_hp_count, 0) as student_hp,
-        coalesce(ssby.student_tr_count, 0) as student_tr,
+        total_students,
+        student_am_count,
+        student_as_count,
+        student_hi_count,
+        student_bl_count,
+        student_wh_count,
+        student_hp_count,
+        student_tr_count,
 
-        student_am
-        + student_as
-        + student_hi
-        + student_bl
-        + student_wh
-        + student_hp
-        + student_tr as sum_of_all_races, -- use as denominator for most calcs
+        sum(student_am_count+
+            student_as_count+
+            student_hi_count+
+            student_bl_count+
+            student_wh_count+
+            student_hp_count+
+            student_tr_count)::int as total_students_calculated, 
 
-        (sum_of_all_races - student_tr)
-        as sum_of_all_races_no_tr -- shortcut to make a non-tr denominator
+        sum(student_am_count+
+            student_as_count+
+            student_hi_count+
+            student_bl_count+
+            student_wh_count+
+            student_hp_count)::int as total_students_no_tr_calculated,
 
-        student_am +
-        student_hi +
-        student_bl +
-         student_hp AS nhpi, -- the URG group - Native American + Hispanic + Black + Hawaiian
+        sum(student_am+
+            student_hi+
+            student_bl+
+            student_hp)::int as total_students_urg_calculated, 
 
-
-        CASE -- if the sum-of-all-races matches total_students then use total_students as denomninator
-            WHEN ssby.students_total = sum_of_all_races
-            THEN nhpi / students::float        
-        END AS urm_percent, -- this is the "classic" definition
-
-
-        CASE -- if sum-of-all-races is at least 70% of total students (i.e. seems like enough data we can use it)
-                -- then use sum-of-all-races as denominator and call this the "true" urg_percent. 
-            WHEN .7 <= sum_of_all_races / students::float    
-            THEN nhpi / sum_of_all_races::float              
-        END AS urm_percent_true,
-
-        CASE -- if we have non-zero student counts for any non-tr races, then calcluate the urm_perent WITHOUT tr
-            WHEN 0 < sum_of_all_races_no_tr
-            THEN nhpi / sum_of_all_races_no_tr::FLOAT
-        END AS urm_percent_no_tr,
-
-        case 
-            when total_frl_eligible is null 
-                or total_students is null 
-                or total_frl_eligible > total_students 
-            then null
-            else total_frl_eligible / total_students::float 
-        end                                                                                 as frl_eligible_percent,    
-        case 
-            when total_frl_eligible is null 
-                or total_students is null 
-            then null 
-            when (total_frl_eligible / total_students::float) > 0.5
-            then 1 
-            else 0 
-        end                                                                                 as is_high_needs,
 
         min(school_year) as first_survey_year,
         max(school_year) as survey_year
 
     from {{ ref('base_dashboard__school_stats_by_years') }}
     {{ dbt_utils.group_by(37) }}
+),
+
+final as (
+    select *,
+        case when total_students = student_total_calculated
+                then total_students_urg_calculated / total_students::float 
+        end                                                                     as pct_urg_students_calculated,
+        
+        case when total_students_calculated / total_students::float >= 0.7
+                then total_students_urg_calculated/ total_students_calculated
+        end                                                                     as pct_urg_students_calculated_true,
+
+        case when total_students_no_tr_calculated > 0 
+                then total_students_urg_calculated / total_students_calculated::float 
+        end                                                                     as pct_urg_students_no_tr
+
+        case when total_students < total_frl_eligible 
+                then total_frl_eligible / total_students::float 
+        end                                                                     as pct_frl_eligible
+
+        case when coalesce(total_frl_eligible,0) > 0.5 then 1 else 0 end as is_high_needs
+    from school_stats_by_years
 )
 
 select *
-from school_stats_by_years
+from final
