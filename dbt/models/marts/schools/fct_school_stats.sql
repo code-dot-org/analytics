@@ -6,8 +6,6 @@ school_stats_by_years as (
 
 school_stats_adjusted as (
     select *,
-
-        lag(total_students,1) as prev_total_students,
         
         (student_am_count + 
         student_as_count + 
@@ -18,16 +16,16 @@ school_stats_adjusted as (
         student_tr_count) as total_students_calculated,
         
         case when total_students = total_students_calculated
-                then total_students_urg_calculated / total_students::float 
-        end as pct_urg_students_calculated,
+                then total_students_urm_calculated / total_students::float 
+        end as pct_urm_students_calculated,
         
         case when total_students_calculated / total_students::float >= 0.7
-                then total_students_urg_calculated/ total_students_calculated
-        end as pct_urg_students_calculated_true,
+                then total_students_urm_calculated/ total_students_calculated
+        end as pct_urm_students_calculated_true,
 
         case when total_students_no_tr_calculated > 0 
                 then total_students_no_tr_calculated / total_students_calculated::float 
-        end as pct_urg_students_no_tr,
+        end as pct_urm_students_no_tr,
 
         case when total_students < total_frl_eligible 
                 then total_frl_eligible / total_students::float 
@@ -49,6 +47,7 @@ school_stats_19_20 as (
 
 select * 
 from combined
+
 /*
 combined as (
     select 
