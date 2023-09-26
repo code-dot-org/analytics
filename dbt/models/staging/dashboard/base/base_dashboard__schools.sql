@@ -20,6 +20,7 @@ renamed as (
         latitude,
         longitude,
         school_category,
+        state_school_id, -- (js) recently removed (see: https://github.com/code-dot-org/code-dot-org/pull/53871#event-10428323040)
         last_known_school_year_open
     from source
 )
