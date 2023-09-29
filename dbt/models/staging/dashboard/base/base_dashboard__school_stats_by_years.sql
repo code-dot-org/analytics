@@ -39,6 +39,7 @@ renamed as (
         coalesce(student_hp_count,0)    as count_student_hp,
         coalesce(student_tr_count,0)    as count_student_tr,
         coalesce(frl_eligible_total,0)  as total_frl_eligible_students,
+        
         created_at,
         updated_at,
         community_type
