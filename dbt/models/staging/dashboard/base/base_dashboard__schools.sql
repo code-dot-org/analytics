@@ -19,7 +19,6 @@ renamed as (
         address_line3,
         latitude,
         longitude,
-        state_school_id,
         school_category,
         last_known_school_year_open
     from source
