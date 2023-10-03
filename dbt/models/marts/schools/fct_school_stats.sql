@@ -1,84 +1,103 @@
 with 
 school_stats_by_years as (
-    select *,  
+    select *
     from {{ ref('stg_dashboard__school_stats_by_years') }}
 ),
 
-school_stats_adjusted as (
+combined as (
     select *,
-        
-        (student_am_count + 
-        student_as_count + 
-        student_hi_count + 
-        student_bl_count + 
-        student_wh_count + 
-        student_hp_count + 
-        student_tr_count) as total_students_calculated,
+        -- calculations 
+        sum(count_student_am 
+            + count_student_as
+            + count_student_hi
+            + count_student_bl
+            + count_student_wh
+            + count_student_hp) as total_urg_no_tr_students,
+
+        sum(count_student_am
+            + count_student_as
+            + count_student_hi
+            + count_student_bl
+            + count_student_wh
+            + count_student_hp
+            + count_student_tr) as total_urg_students,
+
+        sum(count_student_am  
+            + count_student_as  
+            + count_student_hi  
+            + count_student_bl  
+            + count_student_wh  
+            + count_student_hp
+            + count_student_tr) as total_students_calculated,
         
         case when total_students = total_students_calculated
-                then total_students_urm_calculated / total_students::float 
-        end as pct_urm_students_calculated,
+             then sum(count_student_am 
+                + count_student_hi  
+                + count_student_bl  
+                + count_student_hp) 
+                / total_students::float 
+        end as urg_percent,
         
-        case when total_students_calculated / total_students::float >= 0.7
-                then total_students_urm_calculated/ total_students_calculated
-        end as pct_urm_students_calculated_true,
-
-        case when total_students_no_tr_calculated > 0 
-                then total_students_no_tr_calculated / total_students_calculated::float 
-        end as pct_urm_students_no_tr,
-
-        case when total_students < total_frl_eligible 
-                then total_frl_eligible / total_students::float 
-        end as pct_frl_eligible
-
-        case when total_frl_eligible > 0.5 then 1 else 0 end as is_high_needs,
+        case when .7 <= sum(count_student_am  
+                + count_student_as  
+                + count_student_hi  
+                + count_student_bl  
+                + count_student_wh  
+                + count_student_hp  
+                + count_student_tr)::float
+                / total_students::float
+            then sum(count_student_am
+                + count_student_hi
+                + count_student_bl
+                + count_student_hp)
+                / 
+                sum(count_student_am
+                + count_student_as
+                + count_student_hi
+                + count_student_bl
+                + count_student_wh
+                + count_student_hp
+                + count_student_tr)::float 
+        end as urg_percent_true,
+        
+        case when 0 < sum(count_student_am
+                    + count_student_as
+                    + count_student_hi
+                    + count_student_bl
+                    + count_student_wh
+                    + count_student_hp)
+            then sum(count_student_am 
+                + count_student_hi
+                + count_student_bl
+                + count_student_hp)
+                / 
+                sum(count_student_am
+                + count_student_as
+                + count_student_hi
+                + count_student_bl
+                + count_student_wh  
+                + count_student_hp)::float 
+        end as urg_percent_no_tr,
+        
+        case 
+            when total_frl_eligible_students is null 
+            or total_students is null 
+            or total_frl_eligible_students > total_students 
+                then null
+            else total_frl_eligible_students / total_students::float 
+        end as frl_eligible_percent,    
+        case 
+            when total_frl_eligible_students is null 
+            or total_students is null 
+                then null 
+            when (total_frl_eligible_students / total_students::float) > 0.5
+            then 1 
+            else 0 
+        end as is_high_needs
 
     from school_stats_by_years
-),
-
--- adjusting this school year for Covid FRL effects
-school_stats_19_20 as (
-    select school_id,
-        case when total_students is null then lag(total_students
-        coalesce(total_students, total_frl_eligible_students
-    from school_stats_adjusted
-    where school_year = '2020-2021'
-),
+    {{ dbt_utils.group_by(41) }}
+)
 
 select * 
-from combined
-
-/*
-combined as (
-    select 
-        schools.school_id                                                   as school_id,
-        schools.school_name                                                 as school_name,
-        schools.city                                                        as city,
-        schools.zip                                                         as zip,
-        schools.state                                                       as state,
-        schools.latitude                                                    as latitude,
-        schools.longitude                                                   as longitude,
-        schools.school_type                                                 as school_type,
-        school_districts.school_district_id                                 as school_district_id,
-        school_districts.school_district_name                               as school_district_name,
-        survey_years.survey_year                                            as survey_year,
-        survey_years.first_survey_year                                      as first_survey_year,
-        ssby.grades_offered_lo                                              as grades_lo,
-        ssby.grades_offered_hi                                              as grades_hi,
-        ssby.is_stage_el                                                    as is_stage_el,
-        ssby.is_stage_mi                                                    as is_stage_mi,
-        ssby.is_stage_hi                                                    as is_stage_hi,
-        ssby.total_students                                                 as total_students,
-        ssby.count_student_am                                               as count_student_am,
-        ssby.count_student_as                                               as count_student_as,
-        ssby.count_student_hi                                               as count_student_hi,
-        ssby.count_student_bl                                               as count_student_bl,
-        ssby.count_student_wh                                               as count_student_wh,
-        ssby.count_student_hp                                               as count_student_hp,
-        ssby.count_student_tr                                               as count_student_tr,
-        ssby.students_summed,
-        ssby.urg_percent,
-        ssby.urg_percent_true,  ----------------  adds all schools where sum <> total reported students, this allows us to extrapolate percentages at the school
-        ssby.urg_percent_no_tr,
-        
-        /* this next section is where we made the edits to support the new FRL stop-gap logic*/
+from combined 
