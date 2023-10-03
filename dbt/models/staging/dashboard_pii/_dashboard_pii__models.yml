@@ -5,3 +5,6 @@ models:
   - name: stg_dashboard_pii__pd_international_opt_ins
     description: staging pd_intl_opt_in data 
     
+  - name: stg_dashboard_pii__user_school_infos 
+    description: staging user_school_infos data to connect teachers to schools
+    

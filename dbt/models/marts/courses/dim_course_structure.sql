@@ -47,8 +47,8 @@ script_names as (
 combined as (
     select 
         -- courses
-        ug.unit_group_id as course_id,
-        ug.name as course_name,
+        ug.unit_group_id        as course_id,
+        ug.name                 as course_name,
         cn.course_name_short,
         cn.course_name_long,
         sc.course_name_true,
@@ -69,12 +69,16 @@ combined as (
         case when sl.script_id = '26' 
               and lsl.level_id = '14633' 
              then 1 else lsl.level_id 
-        end as level_id,
-        lev.name as level_name,
-        sl.position as level_number,
-        rank() over(partition by sl.script_id order by st.stage_number, sl.position) as level_script_order,
+        end                             as level_id,
+        lev.name                        as level_name,
+        sl.position                     as level_number,
+        rank() over(
+            partition by sl.script_id 
+            order by st.stage_number, sl.position
+        )                               as level_script_order,
         sl.is_assessment,
         lev.updated_at
+
     from levels_script_levels as lsl 
     join script_levels as sl 
         on lsl.script_level_id = sl.script_level_id
