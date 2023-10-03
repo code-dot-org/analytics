@@ -45,6 +45,7 @@ user_school_info as (
         started_at,
         ended_at
     from {{ ref('stg_dashboard_pii__user_school_infos') }}
+    where user_id in (select user_id from user_geos)
 ),
 
 school_info as (
@@ -54,9 +55,11 @@ school_info as (
 
 combined as (
     select distinct 
+        
         teachers.user_id as teacher_user_id,
+        
         school_info.school_year,
-        teachers.school_info_id,
+        school_info.school_info_id,
         school_info.school_id,
         school_info.school_name
 
