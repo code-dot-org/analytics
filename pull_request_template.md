@@ -12,9 +12,12 @@ Jira ticket(s): []()
 ## Testing story
 
 - [ ] Does your change include appropriate tests?
+      eg. `not_null`, `unique`
 
-If so, please define which tests have been utilized (briefly)?
-
+**Note: when submitting a new model for review please make sure the following have been tested:**
+1. The model compiles (`dbt compile -m 'your_model'`)
+2. The model runs (`dbt run -m 'your_model'`)
+3. The model produces accessible data in the DW (`select 1 from 'your_model'`)
 
 ## Follow-up work
 
