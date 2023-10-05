@@ -48,7 +48,7 @@ user_school_info as (
     where user_id in (select user_id from user_geos)
 ),
 
-school_info as (
+schools as (
     select *
     from {{ ref('dim_schools') }}
 ),
@@ -58,10 +58,10 @@ combined as (
         
         teachers.user_id as teacher_user_id,
         
-        school_info.school_year,
-        school_info.school_info_id,
-        school_info.school_id,
-        school_info.school_name
+        school.school_year,
+        school.school_info_id,
+        school.school_id,
+        school.school_name
 
         -- (js) I don't understand how to bring in the course_name,
         -- in the proc (run_rosetta_v2) a 1=1 join is used but idk why...
@@ -84,7 +84,7 @@ combined as (
     left join user_school_info 
         on teachers.user_id = user_school_info.user_id 
     left join school_info 
-        on user_school_info.school_info_id = school_info.school_info_id 
+        on user_school_info.school_info_id = schools.school_info_id 
     
     {# left join course_structure 
         on 1=1 #}
