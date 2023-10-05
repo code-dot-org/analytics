@@ -47,11 +47,12 @@ school_stats_by_years_adjusted as (
         title_i_status,
 
         -- adjust for frl stop-gap logic
-        case when survey_years.survey_year = '2020-2021'
-             and ssby.total_students is null 
-                then ssby2.total_students
-            else ssby.total_students
-        end as total_students,
+        nullif(
+            case when survey_years.survey_year = '2020-2021'
+                and ssby.total_students is null 
+                    then ssby2.total_students
+                else ssby.total_students
+        end, 0) as total_students,
 
         count_student_am,
         count_student_as,
@@ -143,6 +144,7 @@ school_stats_by_years_adjusted as (
              when grades_offered_hi is null then null 
             else 0 
         end as is_stage_hi 
+
     from school_stats_by_years as ssby
     left join school_stats_2019_2020 as ssby2 
         on ssby.school_id = ssby2.school_id
