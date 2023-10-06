@@ -31,10 +31,10 @@ combined as (
     select 
         teachers.user_id as teacher_user_id,
         teachers.gender,
-        teachers.is_urm,
-        teachers.races,
+        teachers.is_urg,
+        -- teachers.races,
         teachers.is_active,
-        teachers.school_info_id,
+        -- teachers.school_info_id,
         ug.is_international,
         ug.country
     from teachers 

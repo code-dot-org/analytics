@@ -12,7 +12,7 @@ renamed as (
         indexed_at,
         city,
         state,
-        country,
+        lower(country) as country,
         postal_code
     from source
 )

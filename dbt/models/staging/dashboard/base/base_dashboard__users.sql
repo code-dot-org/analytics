@@ -11,9 +11,7 @@ renamed as (
         current_sign_in_at,
         last_sign_in_at,
         created_at,
-        updated_at,
-        provider,
-        admin,
+        updated_at,        
         gender,
         locale,
         birthday,
@@ -23,10 +21,7 @@ renamed as (
         active                      as is_active,
         deleted_at,
         purged_at,
-        invited_by_id,
-        invited_by_type,
-        terms_of_service_version,
-        urm                         as is_urm,
+        urm                         as is_urg, -- (js) new convention
         races,
         primary_contact_info_id
 

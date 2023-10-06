@@ -35,7 +35,6 @@ students as (
     from {{ ref('dim_students') }}
 ),
 
-
 user_geos as (
     select * 
     from {{ ref('stg_dashboard__user_geos')}}
@@ -83,7 +82,7 @@ combined as (
     join school_years as sy 
         on ul.created_at between sy.started_at and sy.ended_at
     join students as stu 
-        on ul.user_id = stu.student_user_id
+        on ul.user_id = stu.student_id
     join levels as lev 
         on ul.level_id = lev.level_id
     join user_geos as ug 
