@@ -49,7 +49,7 @@ combined as (
         purged_at,
         deleted_at
     from users 
-    left join user_geos 
+    join user_geos 
         on users.user_id = user_geos.user_id 
 )
 
