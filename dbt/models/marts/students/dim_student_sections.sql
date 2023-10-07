@@ -26,7 +26,8 @@ combined as (
         sections.user_id as teacher_user_id,
         sections.section_id, 
         sections.grade,
-        datediff(year,users.birthday,sy.started_at) as age_at_start,
+        users.age_years,
+        -- datediff(year,users.birthday,sy.started_at) as age_at_start,
         rank() over(partition by followers.student_user_id, sy.school_year
                     order by followers.created_at, 
                         sections.first_activity_at,
