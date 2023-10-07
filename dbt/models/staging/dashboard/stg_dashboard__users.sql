@@ -1,6 +1,6 @@
 with 
 users as (
-    select * 
+    select *
     from {{ ref('base_dashboard__users') }}
     where is_active 
         and deleted_at is null 
@@ -27,9 +27,9 @@ renamed as (
         current_sign_in_at,
         last_sign_in_at,
         created_at,
-        updated_at       
-    from users 
+        updated_at     
+    from users
 )
 
 select * 
-from renamed 
+from renamed
