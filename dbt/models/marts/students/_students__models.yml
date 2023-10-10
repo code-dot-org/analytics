@@ -6,3 +6,9 @@ models:
   
   - name: dim_students
     description: all student accounts ever created + georgraphic + activity info on the student
+    columns: 
+    - name: user_id
+      description: UID for individual user
+      tests: 
+        - not_null
+        - unique
