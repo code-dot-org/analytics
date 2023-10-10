@@ -2,6 +2,7 @@ with
 source as (
       select * 
       from {{ source('dashboard', 'users') }}
+      where deleted_at is null 
 ),
 
 renamed as (
@@ -20,7 +21,6 @@ renamed as (
         school_info_id,
         total_lines,
         active                      as is_active,
-        deleted_at,
         purged_at,
         urm                         as is_urg, -- (js) new convention
         races,
