@@ -25,7 +25,8 @@ renamed as (
         on_map              as is_on_map,
         funded              as is_funded,
         funding_type,
-        properties
+        properties,
+        module -- (js) new col added (see: https://github.com/code-dot-org/code-dot-org/pull/53949/files)
     from source
 )
 

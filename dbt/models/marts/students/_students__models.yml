@@ -6,9 +6,9 @@ models:
   
   - name: dim_students
     description: all student accounts ever created + georgraphic + activity info on the student
-  
-  - name: dim_user_levels
-    description: 1 row for every time a user touches a level
-
-  - name: dim_user_stages
-    description: 1 row for every time a user has activity within a stage, aggregates number of levels touched within stage
+    columns: 
+    - name: student_id
+      description: UID for individual user
+      tests: 
+        - not_null
+        - unique
