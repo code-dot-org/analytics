@@ -5,7 +5,7 @@ students as (
         from=ref('stg_dashboard__users'),
         except=["user_id",
             "teacher_id"]) }}
-    from {{ ('stg_dashboard__users') }}
+    from {{ ref('stg_dashboard__users') }}
     where student_id is not null 
 )
 

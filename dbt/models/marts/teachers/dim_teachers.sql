@@ -6,7 +6,7 @@ teachers as (
         except=["user_id",
             "is_urg",
             "student_id"]) }}
-    from {{ ('stg_dashboard__users') }}
+    from {{ ref('stg_dashboard__users') }}
     where teacher_id is not null 
 )
 
