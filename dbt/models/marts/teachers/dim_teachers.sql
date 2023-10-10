@@ -10,7 +10,6 @@ teachers as (
     where teacher_id is not null 
 ),
 
-
 user_geos as (
     select 
         user_id, 

@@ -3,7 +3,6 @@ users as (
     select *
     from {{ ref('base_dashboard__users') }}
     where is_active 
-        and deleted_at is null 
 ),
 
 renamed as (
