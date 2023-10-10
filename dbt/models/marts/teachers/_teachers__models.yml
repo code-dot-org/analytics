@@ -1,0 +1,12 @@
+version: 2
+
+models: 
+  - name: dim_teachers
+    description: ""
+    columns: 
+      - name: teacher_id
+        tests: 
+          - not_null
+          - unique
+
+  
