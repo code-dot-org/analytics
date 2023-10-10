@@ -2,10 +2,10 @@ with
 students as (
     select 
     {{ dbt_utils.star(
-        from=ref('dim_users'),
+        from=ref('stg_dashboard__users'),
         except=["user_id",
             "teacher_id"]) }}
-    from {{ ('dim_users') }}
+    from {{ ref('stg_dashboard__users') }}
     where student_id is not null 
 )
 
