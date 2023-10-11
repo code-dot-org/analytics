@@ -4,7 +4,9 @@ students as (
     {{ dbt_utils.star(
         from=ref('stg_dashboard__users'),
         except=["user_id",
-            "teacher_id"]) }}
+            "teacher_id",
+            "age_years",                                  
+            "studio_person_id"]) }}                       -- (AG) student age is actually not collected (defaults to 21+) and studio_person_id is not used for student accounts
     from {{ ref('stg_dashboard__users') }}
     where student_id is not null 
 ),
