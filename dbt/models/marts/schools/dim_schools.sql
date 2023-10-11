@@ -21,9 +21,18 @@ combined as (
         -- schools
         schools.school_id,
         school_stats_by_years.school_year,
+        school_stats_by_years.is_stage_el,
+        school_stats_by_years.is_stage_mi,
+        school_stats_by_years.is_stage_hi,
+        school_stats_by_years.is_rural,
+        school_stats_by_years.is_title_i,
+        school_stats_by_years.community_type,
         schools.school_category,
         schools.school_name,
         schools.school_type,
+        case when total_frl_eligible_students / total_students::float > 0.5
+            then 1 else 0 
+        end as is_high_needs,
 
         --school_districts
         school_districts.school_district_id,
@@ -39,7 +48,7 @@ combined as (
         and school_stats_by_years.row_num = 1
     left join school_districts
         on schools.school_district_id = school_districts.school_district_id
-    {{ dbt_utils.group_by(8) }}
+    {{ dbt_utils.group_by(15) }}
 )
 
 select *

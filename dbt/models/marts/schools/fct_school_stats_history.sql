@@ -2,7 +2,7 @@ with
 school_stats_by_years as (
     select 
         school_id,
-        school_year                                 as most_recent_school_year,
+        school_year,
         total_students,
         count_student_am,
         count_student_as,
@@ -37,9 +37,7 @@ school_stats_by_years as (
                 + count_student_wh  
                 + count_student_hp
                 + count_student_tr)
-            ,0) as total_students_calculated,
-        row_number() over(partition by school_id order by school_year desc) as row_num
-
+            ,0) as total_students_calculated
     from {{ ref('stg_dashboard__school_stats_by_years') }}
     {{ dbt_utils.group_by(11) }}
 ),
@@ -47,7 +45,7 @@ school_stats_by_years as (
 combined as (
     select 
         school_id,
-        most_recent_school_year,
+        school_year,
         total_students,
         count_student_am,
         count_student_as,
@@ -73,26 +71,25 @@ combined as (
         total_frl_eligible_students / total_students::float as frl_eligible_percent
 
     from school_stats_by_years
-    where row_num = 1
 )
 
 select 
     school_id,
-        most_recent_school_year,
-        total_students,
-        count_student_am,
-        count_student_as,
-        count_student_hi,
-        count_student_bl,
-        count_student_wh,
-        count_student_hp,
-        count_student_tr,
-        total_frl_eligible_students,
-        total_urg_no_tr_students,
-        total_urg_students,
-        total_students_calculated,
-        urg_percent,
-        urg_no_tr_percent,
-        -- cast(urg_percent_true as decimal(3,2)) as urg_percent_true,
-        frl_eligible_percent
+    school_year,
+    total_students,
+    count_student_am,
+    count_student_as,
+    count_student_hi,
+    count_student_bl,
+    count_student_wh,
+    count_student_hp,
+    count_student_tr,
+    total_frl_eligible_students,
+    total_urg_no_tr_students,
+    total_urg_students,
+    total_students_calculated,
+    urg_percent,
+    urg_no_tr_percent,
+    -- cast(urg_percent_true as decimal(3,2)) as urg_percent_true,              -- (ag) check validity of this with business cases
+    frl_eligible_percent
 from combined 
