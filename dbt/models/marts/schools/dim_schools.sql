@@ -39,7 +39,7 @@ combined as (
         and school_stats_by_years.row_num = 1
     left join school_districts
         on schools.school_district_id = school_districts.school_district_id
-    {{ dbt_utils.group_by(8)}}
+    {{ dbt_utils.group_by(8) }}
 )
 
 select *
