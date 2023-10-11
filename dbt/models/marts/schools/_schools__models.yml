@@ -2,13 +2,20 @@ version: 2
 
 models: 
   - name: dim_schools
-    description: school-level information by school year, formerly school_stats_by_years
+    description: school-level information for the most recent school year it is updated for
     columns: 
       - name: school_id 
         tests:
           - not_null
-          - unique:
-              column_name: "school_id || '-' || school_year"
+          - unique
 
   - name: fct_school_stats
     description: most recent school-level information + metrics about all NCES schools
+    columns: 
+      - name: school_id 
+        tests:
+          - not_null
+          - unique
+  
+  - name: fct_school_stats_history
+    description: all school-level information + metrics about all NCES schools by school year, formerly school_stats_by_years w/o dimensions
