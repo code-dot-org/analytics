@@ -34,26 +34,22 @@ school_infos as (
 ), 
 
 -- get teacher NCES school_id association
-
 teacher_schools as (
     select 
-        distinct teachers.teacher_id,
-	    usi.school_info_id,
-	    si.school_id,
-        usi.started_at,
-        usi.ended_at,
-        rank () over (partition by teachers.teacher_id order by school_id, ended_at desc) rnk
+        teachers.teacher_id,
+        si.school_id,
+        rank () over (partition by teachers.teacher_id order by si.school_id, usi.ended_at desc) rnk
     from teachers
-    left join user_school_infos usi    
+    left join user_school_infos as usi    
         on usi.user_id = teachers.teacher_id
-    left join school_infos si 
+    left join school_infos as si 
         on si.school_info_id = usi.school_info_id
-    where school_id is not null
+    where si.school_id is not null
 ),
 
 teacher_latest_school as (
     select 
-        distinct teacher_id,
+        teacher_id,
         school_id
     from teacher_schools
     where rnk = 1

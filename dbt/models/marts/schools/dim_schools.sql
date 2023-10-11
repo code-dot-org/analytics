@@ -12,7 +12,7 @@ school_districts as (
 ),
 
 school_stats_by_years as (
-    select *
+    select *, row_number() over(partition by school_id order by school_year desc) as row_num
     from {{ ref('stg_dashboard__school_stats_by_years') }}
 ),
 
@@ -36,6 +36,7 @@ combined as (
     from schools
     left join school_stats_by_years
         on schools.school_id = school_stats_by_years.school_id
+        and school_stats_by_years.row_num = 1
     left join school_districts
         on schools.school_district_id = school_districts.school_district_id
     {{ dbt_utils.group_by(8)}}
