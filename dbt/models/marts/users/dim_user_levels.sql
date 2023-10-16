@@ -38,19 +38,16 @@ combined as (
         ul.user_level_id,
         ul.user_id,
         ul.created_at as user_level_created_at,
+        ul.updated_at as user_level_updated_at,
         ul.level_id,
         ul.level_source_id,
         cs.stage_id,
         ul.script_id,
         sy.school_year,
-        cs.course_name_true                     as course_name
-
-        {# do we need any of this? 
+        cs.course_name_true as course_name,
         ul.best_result,
-        min(ul.created_at)                      as user_level_started_at,
-        max(ul.created_at)                      as user_level_ended_at,
-        sum(ul.attempts)                        as total_attempts,
-        count(distinct ul.level_id)             as total_levels_touched, #}
+        ul.attempts,
+        ul.time_spent
 
         {# rank () over (
             partition by ul.user_id, sy.school_year, cs.course_name_true
@@ -75,16 +72,19 @@ combined as (
             end)                               as course_progress_levels_touched #}
 
     from user_levels as ul 
-     join course_structure as cs 
+    join course_structure as cs 
         on ul.script_id = cs.script_id
+        and ul.level_id = cs.level_id
     join school_years as sy 
         on ul.created_at between sy.started_at and sy.ended_at
     join students as stu 
         on ul.user_id = stu.student_id
     join levels as lev 
         on ul.level_id = lev.level_id
-    {{ dbt_utils.group_by(9) }}
 )
 
-select * 
+select user_id, count(distinct user_level_id)
 from combined
+where user_id = 95292706
+group by 1
+having count(distinct user_level_id) > 1

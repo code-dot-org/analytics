@@ -1,30 +1,13 @@
 version: 2
 
 models: 
-  # - name: dim_schools
-  #   description: school-level information by school year, formerly school_stats_by_years
-  
-  - name: dim_users
-    description: user data with new FK for teacher, user_id
+  - name: dim_user_levels
+    description: 1 row for every time a user touches a level
     columns: 
-      - name: user_id
-        description: UID for individual user
+      - name: user_level_id
         tests: 
           - not_null
           - unique
-
-      - name: student_id
-        description: UID for individual user
-        tests: 
-          - unique
-
-      - name: teacher_id
-        description: UID for individual teacher
-        tests: 
-          - unique
-
-  - name: dim_user_levels
-    description: 1 row for every time a user touches a level
 
   - name: dim_user_stages
     description: 1 row for every time a user has activity within a stage, aggregates number of levels touched within stage
