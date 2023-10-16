@@ -1,52 +1,9 @@
 -- Model: dim_school_course_status
 -- Scope: course status data collected for active courses only collected by school
+-- Note: follow school_course_status; remove lead/lag() component
 -- Author: js
 
-with 
-teachers as (
-    select school_id,
-        school_year,
-        course_name,
-        count(distinct teacher_id) as num_teachers_started,
-        min(started_at) as first_started_at,
-        dense_rank() over(partition by school_id, course_name order by school_year asc) as sequence_num
-    from {{ ref('dim_teachers') }}
-    where started_at is not null 
-    {{ dbt_utils.group_by(3) }}
-),
-
-students as (
-    select 
-        school_id,
-        school_year,
-        course_name,
-        count(distinct student_id) as num_students_started
-    from {{ ref('dim_students') }}
-    where started_at is not null 
-    {{ dbt_utils.group_by(3) }}
-),
-
-schools as (
-    select * 
-    from {{ ref('dim_schools') }}
-),
-
-combined as (
-    select 
-        teachers.school_id,
-        teachers.school_year,
-        teachers.course_name, -- really need to update this to course_id for FK joins
-        students.num_students_started,
-        teachers.num_teachers_started,
-        teachers.first_started_at,
-        teachers.sequence_num
-    from teachers 
-    left join students 
-        on teachers.school_id = students.school_id 
-        and teachers.school_year = students.school_year 
-        and teachers.course_name = students.course_name
-),
-
+-- end product:
 final as (
     select 
         school_id,
@@ -77,6 +34,7 @@ final as (
         sum(num_teachers_started) as total_teachers_started,
         max(seq) as total_years_active
     from combined
+    
     {{ dbt_utils.group_by(5) }}
 )
 
