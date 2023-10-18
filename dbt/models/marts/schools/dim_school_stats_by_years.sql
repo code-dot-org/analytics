@@ -1,4 +1,4 @@
--- Note: this data is built using NCES data recevied
+i-- Note: this data is built using NCES data recevied
 
 with 
 school_stats_by_years as (
@@ -38,19 +38,18 @@ combined as (
         *,
 
         -- calculations 
-        total_urg_students / total_students_calculated::float as urg_percent,
+        total_urg_students / nullif(total_students_calculated,0)::float as urg_percent,
 
-        total_urg_no_tr_students / total_students_calculated::float as urg_no_tr_percent,
+        total_urg_no_tr_students / nullif(total_students_calculated,0)::float as urg_no_tr_percent,
 
         -- case when total_students_calculated / total_students >= .7
         --      then total_urg_students / total_students_calculated
         -- end as urg_percent_true,
         
-        total_frl_eligible_students / total_students::float as frl_eligible_percent
+        total_frl_eligible_students / nullif(total_students,0)::float as frl_eligible_percent
 
     from school_stats_by_years
 )
 
-select 
-    *
+select *
 from combined 
