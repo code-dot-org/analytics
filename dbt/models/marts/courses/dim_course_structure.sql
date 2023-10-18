@@ -41,7 +41,7 @@ course_names as (
 
 script_names as (
     select * 
-    from {{ ref('dim_script_names') }} --modeled seed file (otherwise, we don't ref() other dim tables in marts)
+    from {{ ref('dim_script_names') }} 
 ),
 
 combined as (

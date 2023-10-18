@@ -28,6 +28,7 @@ renamed as (
         grade_12_offered    as is_grade_12,
         grade_13_offered    as is_grade_13,
         
+        community_type,
         virtual_status,
         title_i_status,
         
@@ -42,8 +43,7 @@ renamed as (
         coalesce(frl_eligible_total,0)  as total_frl_eligible_students,
         
         created_at,
-        updated_at,
-        community_type
+        updated_at
     from source
 )
 

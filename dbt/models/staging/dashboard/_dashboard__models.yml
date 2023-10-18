@@ -52,6 +52,18 @@ models:
         tests: 
           - not_null
           - unique
+
+  - name: stg_dashboard__school_stats_by_years
+    description: staging model for `school_stats_by_years` source data
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - school_id
+            - school_year
+    columns: 
+      - name: school_id
+        tests:
+          - not_null
           
 
       
