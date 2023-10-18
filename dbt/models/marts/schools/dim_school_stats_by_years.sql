@@ -1,4 +1,4 @@
-i-- Note: this data is built using NCES data recevied
+-- Note: this data is built using NCES data recevied
 
 with 
 school_stats_by_years as (
