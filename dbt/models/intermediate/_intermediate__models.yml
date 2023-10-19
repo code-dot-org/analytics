@@ -1,7 +1,7 @@
 version: 2
 
 models: 
-  - name: dim_forms
+  - name: int_forms
     description: all forms data with form geos fields
     columns: 
       - name: form_id

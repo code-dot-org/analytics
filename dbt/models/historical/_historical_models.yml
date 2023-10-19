@@ -1,0 +1,7 @@
+version: 2
+
+models: 
+  - name: dim_students_history
+    description: loaded annually, contains all dim_students data prior to current school_year
+  - name: dim_teachers_history
+    description: loaded annually, contains all dim_teachers data prior to current school_year
