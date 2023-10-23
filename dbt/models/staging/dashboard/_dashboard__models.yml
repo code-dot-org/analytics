@@ -53,6 +53,14 @@ models:
           - not_null
           - unique
 
+  - name: stg_dashboard__schools 
+    description: staging model for core school data, where len(school_id)=11 we are applying a LPAD to maintain school length convention
+    columns:
+      - name: school_id 
+        tests: 
+          - unique
+          - not_null        
+
   - name: stg_dashboard__school_stats_by_years
     description: staging model for `school_stats_by_years` source data
     tests:
