@@ -3,6 +3,7 @@
 -- Author: js
 
 with 
+<<<<<<< Updated upstream:dbt/models/marts/schools/dim_school_course_status.sql
 teachers as (
     select school_id,
         school_year,
@@ -25,6 +26,16 @@ students as (
     from {{ ref('dim_students') }}
     where started_at is not null 
     {{ dbt_utils.group_by('3') }}
+=======
+courses as (
+    select * 
+    from {{ ref('dim_course_names') }}
+),
+
+course_structure as (
+    select * 
+    from {{ ref('dim_course_structure') }}
+>>>>>>> Stashed changes:dbt/dev/dim_school_course_status.sql
 ),
 
 schools as (
@@ -32,6 +43,7 @@ schools as (
     from {{ ref('dim_schools') }}
 ),
 
+<<<<<<< Updated upstream:dbt/models/marts/schools/dim_school_course_status.sql
 combined as (
     select 
         teachers.school_id,
@@ -48,6 +60,32 @@ combined as (
         and teachers.course_name = students.course_name
 ),
 
+=======
+school_stats as (
+    select * from {{ ref('dim_school_stats_by_years')}}
+),
+
+students as (
+    select * 
+    from {{ ref('dim_students') }}
+),
+
+teachers as (
+    select *
+    from {{ ref('dim_teachers') }}
+),
+
+school_teachers as (
+    select school_id, 
+        school_year,
+        /*  Suspending work to build out section_status to achieve 
+            LOD table with school and course info (js) */
+    from teachers 
+)
+
+
+-- end product:
+>>>>>>> Stashed changes:dbt/dev/dim_school_course_status.sql
 final as (
     select 
         school_id,
