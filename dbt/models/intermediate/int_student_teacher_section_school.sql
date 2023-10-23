@@ -1,4 +1,18 @@
--- rebuild: student_teacher_section_complete
+/* 
+1. Design:
+    school_year
+    student_id
+    teacher_id
+    section_id
+    course_id
+
+2. Definitions:
+    this table provides mapping across these foreign keys, 
+    serving as an intermediary (xref) model
+
+3. Sources:
+
+Ref: DATAOPS-321 */
 
 with 
 school_years as (
@@ -6,50 +20,42 @@ school_years as (
     from {{ ref('int_school_years') }}
 ),
 
-course_structure as (
-    select * 
-    from {{ ref('dim_course_structure') }}
+followers as (
+    select *
+    from {{ ref('stg_dashboard__followers') }}
 ),
 
-user_levels as (
-    select 
-        user_id as student_id,
-        script_id,
-        level_id,
-        user_level_created_at
-    from {{ ref('dim_user_levels') }}
-    where attempts > 0
+teachers as (
+    select distinct 
+        teacher_id,
+        school_id
+    from {{ ref('dim_teachers') }}
+),
+
+sections as (
+    select distinct 
+        user_id,
+        section_id
+    from {{ ref('dim_sections') }}
 ),
 
 combined as (
     select 
-        -- user level data 
-        ul.student_id,
-        ul.created_at as first_user_level_created_at,
-        
-        -- school year
-        sy.school_year,
-        
-        -- course data
-        cs.course_name_true as course_name,
-        cs.script_id,
-        cs.stage_id,
-        cs.level_id,
-
-        -- get the first ul.created_at for this student+school_year
-        row_number() over(partition by 
-            ul.student_id, 
-            sy.school_year 
-            order by ul.created_at asc) as row_num  -- (js) revisit later
-    from user_levels as ul
-    left join course_structure as cs 
-        on ul.script_id = cs.script_id
-        and ul.level_id = cs.level_id
-    join school_years as sy 
-        on ul.created_at 
-            between sy.started_at and sy.ended_at
+        school_years.school_year, 
+        followers.student_user_id   as student_id,
+        sections.user_id            as teacher_id,
+        sections.section_id         as section_id,
+        sections.course_id          as course_id,
+        teachers.school_id
+    from followers  
+    left join sections 
+        on followers.section_id = sections.section_id
+    left join teachers 
+        on sections.user_id = teachers.teacher_id
+    join school_years 
+        on followers.created_at 
+            between school_years.started_at and school_years.ended_at
 )
 
-select * 
-from final 
-where row_num = 1
+select 
+from combined

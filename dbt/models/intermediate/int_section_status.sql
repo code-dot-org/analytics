@@ -14,3 +14,8 @@
 Ref: dataops-316
 */
 
+student_teacher_section_school as (
+    select *
+    from {{ ref('int_student_teacher_section_school') }}
+),
+

@@ -12,3 +12,6 @@ models:
 
   - name: int_school_years
     description: 1 row per school year in different formats
+
+  - name: int_student_teacher_section_school
+    description: xref table to pull together these FK's for reference
