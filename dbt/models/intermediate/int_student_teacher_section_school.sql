@@ -35,7 +35,8 @@ teachers as (
 sections as (
     select distinct 
         user_id,
-        section_id
+        section_id,
+        course_id 
     from {{ ref('dim_sections') }}
 ),
 
@@ -57,5 +58,5 @@ combined as (
             between school_years.started_at and school_years.ended_at
 )
 
-select 
+select *
 from combined
