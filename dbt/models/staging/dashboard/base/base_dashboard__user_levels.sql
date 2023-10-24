@@ -1,6 +1,8 @@
 with 
 source as (
-      select * from {{ source('dashboard', 'user_levels') }}
+      select * 
+      from {{ source('dashboard', 'user_levels') }}
+      where deleted_at is not null 
 ),
 
 renamed as (
@@ -18,7 +20,6 @@ renamed as (
         submitted                   as is_submitted,
         readonly_answers            as is_read_only_answers,
         unlocked_at,
-        deleted_at,
         properties
     from source
 )
