@@ -9,4 +9,12 @@ models:
           - not_null
           - unique
 
+  - name: dim_teacher_status
+    description: 1 row per teacher, per school_year, with status
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - school_year
+            - teacher_id
+            - school_id
   

@@ -1,6 +1,13 @@
 -- Model: dim_school_course_status
 -- Scope: course status data collected for active courses only collected by school
 -- Note: follow school_course_status; remove lead/lag() component
+-- Statuses:
+    -- active retained: had an active section last SY and has an active section this SY (could be the same section ID, but needs to have 5+ active students both SYs)
+    -- active reacquired: did not have an active section last SY, but does have one this SY
+    -- active new: never has had an active section before, but has one this SY
+    -- inactive churn: did not have an active section last SY and does not have an active section this SY
+    -- inactive this year: had an active section last SY, does not have one this SY
+    -- market: has a teacher account but has never had an active section
 -- Author: js
 with 
 teachers as (
@@ -15,7 +22,7 @@ teachers as (
 sections as (
     select * 
     from {{ ref('dim_sections') }}
-    where user_id in (select teacher_id from teachers)
+    where is_active
 ),
 
 students as (

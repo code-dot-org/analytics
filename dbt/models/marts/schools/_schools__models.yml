@@ -9,13 +9,18 @@ models:
           - not_null
           - unique
 
-  - name: fct_school_stats
-    description: most recent school-level information + metrics about all NCES schools
-    columns: 
-      - name: school_id 
+  - name: dim_school_status
+    description: 1 row per school to show churn status
+    columns:
+      - name: school_id
         tests:
-          - not_null
-          - unique
-  
-  - name: fct_school_stats_history
-    description: all school-level information + metrics about all NCES schools by school year, formerly school_stats_by_years w/o dimensions
+        - not_null
+        - unique
+        
+  - name: dim_school_stats_by_year
+    description: most recent school-level information + metrics about all NCES schools
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - school_year
+            - school_id
