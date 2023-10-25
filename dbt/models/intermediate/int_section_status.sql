@@ -20,17 +20,12 @@ Ref: dataops-316
 
 with
 student_teacher_section_school as (
-    select 
-        section_id,
-        school_year,
-        count(distinct student_id) as total_students
+    select *
     from {{ ref('int_student_teacher_section_school') }}
-    {{ dbt_utils.group_by(2) }}
 ),
 
 user_levels as (
-    select 
-        user_id
+    select user_id
     from {{ ref('dim_user_levels') }}
     where user_id in (select student_id from student_teacher_section_school)
 ),
@@ -39,20 +34,20 @@ combined as (
     select 
         section_id,
         school_year, 
-        total_students,
-        count(distinct case when user_levels.user_id is not null then student_id end) as is_completing
+        count(distinct stss.student_id) as total_students,
+        count(distinct case when user_levels.user_id is not null then stss.student_id end) as is_completing
     from student_teacher_section_school as stss 
     left join user_levels 
         on stss.student_id = user_levels.user_id
-    {{ dbt_utils.group_by(4) }}
+    {{ dbt_utils.group_by(2) }}
 ),
 
 final as (
     select 
         section_id, 
         school_year,
-        case when total_students > 5 
-             and is_completing > 5 
+        case when total_students >= 5 
+             and is_completing >= 5 
         then 1 else 0 end as is_active
     from combined 
 )
