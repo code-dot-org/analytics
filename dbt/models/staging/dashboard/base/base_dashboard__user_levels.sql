@@ -24,4 +24,5 @@ renamed as (
     from source
 )
 
-select * from renamed where created_at > '2023-01-01'
+select * 
+from renamed 

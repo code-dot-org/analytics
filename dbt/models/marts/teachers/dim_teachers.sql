@@ -18,11 +18,6 @@ user_geos as (
     where user_id in (select teacher_id from teachers)
 ),
 
-school_years as (
-    select * 
-    from {{ ref('int_school_years') }}
-),
-
 user_school_infos as (
     select * 
     from {{ ref('stg_dashboard_pii__user_school_infos') }}

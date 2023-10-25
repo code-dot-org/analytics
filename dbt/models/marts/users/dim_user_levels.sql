@@ -35,7 +35,6 @@ students as (
 
 combined as (
     select 
-        ul.user_level_id,
         ul.user_id,
         ul.created_at as user_level_created_at,
         ul.updated_at as user_level_updated_at,
@@ -83,8 +82,5 @@ combined as (
         on ul.level_id = lev.level_id
 )
 
-select user_id, count(distinct user_level_id)
+select *
 from combined
-where user_id = 95292706
-group by 1
-having count(distinct user_level_id) > 1

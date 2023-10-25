@@ -2,12 +2,7 @@ version: 2
 
 models: 
   - name: dim_user_levels
-    description: 1 row for every time a user touches a level
-    columns: 
-      - name: user_level_id
-        tests: 
-          - not_null
-          - unique
+    description: user activity by levels
 
   - name: dim_user_stages
     description: 1 row for every time a user has activity within a stage, aggregates number of levels touched within stage
