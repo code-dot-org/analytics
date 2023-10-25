@@ -4,7 +4,6 @@
     student_id
     teacher_id
     section_id
-    course_id
 
 2. Definitions:
     this table provides mapping across these foreign keys, 
@@ -35,8 +34,7 @@ teachers as (
 sections as (
     select distinct 
         user_id,
-        section_id,
-        course_id 
+        section_id
     from {{ ref('dim_sections') }}
 ),
 
@@ -46,7 +44,6 @@ combined as (
         followers.student_user_id   as student_id,
         sections.user_id            as teacher_id,
         sections.section_id         as section_id,
-        sections.course_id          as course_id,
         teachers.school_id
     from followers  
     left join sections 

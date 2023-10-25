@@ -16,5 +16,4 @@ models:
           combination_of_columns:
             - school_year
             - teacher_id
-            - school_id
   
