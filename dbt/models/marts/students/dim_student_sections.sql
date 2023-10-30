@@ -27,12 +27,15 @@ combined as (
         sections.section_id, 
         sections.grade,
         users.age_years,
-        -- datediff(year,users.birthday,sy.started_at) as age_at_start,
-        rank() over(partition by followers.student_user_id, sy.school_year
-                    order by followers.created_at, 
-                        sections.first_activity_at,
-                        sections.script_id,
-                        sections.created_at
+        rank() over(
+            partition by 
+                followers.student_user_id, 
+                sy.school_year
+                order by 
+                    followers.created_at, 
+                    sections.first_activity_at,
+                    sections.script_id,
+                    sections.created_at
         ) as rnk
     from followers 
     left join sections 
@@ -45,3 +48,4 @@ combined as (
 
 select * 
 from combined 
+where rnk = 1

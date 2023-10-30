@@ -23,6 +23,7 @@ Ref: dataops-316
 with user_levels as (
     select * 
     from {{ ref('dim_user_levels') }}
+    where attempts > 0 
 ),
 
 course_structure as (
@@ -36,35 +37,35 @@ school_years as (
 ),
 
 combined as (
-    select ul.user_id as student_id
+    select 
+         ul.user_id as student_id
 		,sy.school_year
-		,ul.user_level_created_at
 		,cs.course_name_true as course_name
 		,cs.script_id
 		,cs.stage_id
 		,cs.level_id
-        ,row_number() over (partition by user_id, sy.school_year, course_name_true order by ul.user_level_created_at) as row_num  -----------------script id ordering
+		,ul.user_level_created_at
+        ,row_number() over (partition by user_id, sy.school_year, course_name_true order by ul.user_level_created_at) as row_num  -- (bf) script_id ordering
 	from user_levels ul 
 	join course_structure cs
 		on ul.script_id = cs.script_id and ul.level_id = cs.level_id 
 	join school_years sy 
-		on ul.user_level_created_at between sy.started_at and sy.ended_at --------------  In order to select one record per user per course per year we need to attach the activty to a school_year
-	where ul.attempts > 0  -- 0 attempts are ul records we want to ignore
-
+		on ul.user_level_created_at 
+            between sy.started_at and sy.ended_at -- (bf)  In order to select one record per user per course per year we need to attach the activty to a school_year
 ),
 
 final as (
-    select student_id
+    select 
+         student_id
         ,school_year
-        ,user_level_created_at
         ,course_name
         ,script_id
         ,stage_id
         ,level_id 
+        ,user_level_created_at
     from combined
     where row_num = 1
 )
 
 select * 
 from final
-
