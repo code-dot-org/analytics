@@ -5,11 +5,23 @@ the primary dimensions here are those relating to a user's level #}
 
 {# maybe a related table to this could be a fct_user_levels to show
 overall progress completion rates and such... #}
+{{
+    config(
+        materialized='incremental',
+        unique_key='user_level_id'
+    )
+}}
 
 with
 user_levels as (
     select * 
     from {{ ref('stg_dashboard__user_levels') }}
+    
+    {% if is_incremental() %}
+    
+    where created_at > (select max(created_at) from {{ this }} )
+
+    {% endif %}
 ),
 
 levels as (
@@ -75,7 +87,7 @@ combined as (
             end)                               as course_progress_levels_touched #}
 
     from user_levels as ul 
-     join course_structure as cs 
+    join course_structure as cs 
         on ul.script_id = cs.script_id
     join school_years as sy 
         on ul.created_at between sy.started_at and sy.ended_at

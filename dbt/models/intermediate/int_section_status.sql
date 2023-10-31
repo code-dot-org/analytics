@@ -33,6 +33,7 @@ teachers as (
     select distinct
         teacher_id
     from {{ ref('stg_dashboard__users') }}
+    where teacher_id is not null 
 ),
 
 sections as (
@@ -45,9 +46,9 @@ sections as (
 combined as (
     select 
         school_years.school_year, 
-        followers.student_id,
-        sections.section_id         as section_id,
-        sections.user_id            as teacher_id
+        sections.section_id                     as section_id,
+        sections.user_id                        as teacher_id,
+        count(distinct followers.student_id)    as total_students
     from followers  
     left join sections 
         on followers.section_id = sections.section_id
@@ -56,16 +57,15 @@ combined as (
     join school_years 
         on followers.created_at 
             between school_years.started_at and school_years.ended_at
+    {{ dbt_utils.group_by(3) }}
 ),
 
 section_status as (
     select 
         school_year, 
         section_id,
-        count(distinct student_id) as total_students
+        case when total_students >= 5 then 1 else 0 end as is_active
     from combined
-    {{ dbt_utils.group_by(2) }}
-    having total_students >= 5
 ),
 
 final as (
@@ -73,9 +73,9 @@ final as (
         combined.school_year,
         combined.section_id,
         combined.teacher_id,
-        case when section_status.section_id then 1 else 0 end as is_active
+        section_status.is_active
     from combined
-    left join section_status
+    join section_status
         on combined.section_id = section_status.section_id 
         and combined.school_year = section_status.school_year
 )
