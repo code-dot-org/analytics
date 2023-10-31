@@ -10,26 +10,23 @@ Logic: where teacher has active section, then:
 #}
 
 with 
-student_section as (
-    select 
-        school_year,
-        teacher_id,
-        section_id
-    from {{ ref('int_student_section') }}
+teachers as (
+    select * 
+    from {{ ref('dim_teachers') }}
 ),
 
 active_sections as (
-    select 
-        section_id
+    select *
     from {{ ref('int_active_sections') }}
+    where teacher_id 
 ),
 
 combined as (
     select 
         ss.school_year,
-        ss.teacher_id
-    from student_section as ss 
-    join active_sections as s
+        ss.teacher_id,
+        -- "status"
+    from active_sections as s
         on ss.section_id = s.section_id
     {{ dbt_utils.group_by(2) }}
 )

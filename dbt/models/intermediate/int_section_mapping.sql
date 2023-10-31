@@ -40,20 +40,39 @@ sections as (
 
 combined as (
     select 
-        school_years.school_year, 
+        sy.school_year, 
         followers.student_id,
         sections.user_id            as teacher_id,
         sections.section_id         as section_id,
-        teachers.school_id
+        teachers.school_id,
+        row_number() over(
+            partition by 
+                followers.student_id, 
+                sy.school_year
+                order by 
+                    followers.created_at
+        ) as row_num
+
     from followers  
     left join sections 
         on followers.section_id = sections.section_id
     left join teachers 
         on sections.user_id = teachers.teacher_id
-    join school_years 
+    join school_years as sy 
         on followers.created_at 
-            between school_years.started_at and school_years.ended_at
+            between sy.started_at and sy.ended_at
+),
+
+final as (
+    select 
+        student_id,
+        school_year,
+        section_id,
+        teacher_id,
+        school_id
+    from combined
+    where row_num = 1
 )
 
-select *
-from combined
+select * 
+from final 

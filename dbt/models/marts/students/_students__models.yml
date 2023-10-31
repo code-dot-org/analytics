@@ -1,9 +1,15 @@
 version: 2
 
 models: 
-  - name: dim_student_sections
-    description: all unique student-section associations by school year
-  
+  - name: dim_student_courses
+    description: course data for a given student and school year
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - student_id
+            - school_year
+            - section_id
+
   - name: dim_students
     description: all student accounts ever created + georgraphic + activity info on the student
     columns: 

@@ -21,17 +21,18 @@ Ref: dataops-316
 with
 student_section as (
     select *
-    from {{ ref('int_student_section') }}
+    from {{ ref('int_section_mapping') }}
 ),
 
 student_course_starts as (
     select *
-    from {{ ref('fct_student_course_starts') }}
+    from {{ ref('dim_student_courses') }}
     where student_id in (select student_id from student_section)
 ),
 
 combined as (
-    select ss.teacher_id
+    select 
+         ss.teacher_id
 		,ss.school_year
 		,scs.course_name
 		,ss.section_id
@@ -44,11 +45,11 @@ combined as (
 ),
 
 final as (
-    select teacher_id
-        , school_year
-        , course_name
-        , section_id
-        , 1 as active
+    select 
+         teacher_id
+        ,school_year
+        ,course_name
+        ,section_id
     from combined
     where num_students >= 5
 )

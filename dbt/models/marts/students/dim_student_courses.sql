@@ -45,13 +45,13 @@ combined as (
 		,cs.stage_id
 		,cs.level_id
 		,ul.user_level_created_at
-        ,row_number() over (partition by user_id, sy.school_year, course_name_true order by ul.user_level_created_at) as row_num  -- (bf) script_id ordering
+        ,row_number() over (partition by user_id, sy.school_year, course_name_true order by ul.user_level_created_at) as row_num
 	from user_levels ul 
 	join course_structure cs
 		on ul.script_id = cs.script_id and ul.level_id = cs.level_id 
 	join school_years sy 
 		on ul.user_level_created_at 
-            between sy.started_at and sy.ended_at -- (bf)  In order to select one record per user per course per year we need to attach the activty to a school_year
+            between sy.started_at and sy.ended_at
 ),
 
 final as (
@@ -62,7 +62,7 @@ final as (
         ,script_id
         ,stage_id
         ,level_id 
-        ,user_level_created_at
+        ,user_level_created_at as course_started_at
     from combined
     where row_num = 1
 )
