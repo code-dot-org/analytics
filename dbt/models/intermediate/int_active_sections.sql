@@ -2,7 +2,7 @@
 1. Design:
     school_year
     section_id
-    status
+    is_active
     -- student_id
     -- teacher_id
     -- school_id
@@ -64,8 +64,9 @@ section_status as (
     select 
         school_year, 
         section_id,
-        case when total_students >= 5 then 1 else 0 end as is_active
+        1 as is_active
     from combined
+    where total_students >= 5
 ),
 
 final as (

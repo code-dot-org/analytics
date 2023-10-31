@@ -24,11 +24,6 @@ user_levels as (
     {% endif %}
 ),
 
-levels as (
-    select * 
-    from {{ ref('dim_levels')}}
-),
-
 course_structure as (
     select * 
     from {{ ref('dim_course_structure') }}
@@ -37,12 +32,6 @@ course_structure as (
 school_years as (
     select * 
     from {{ ref('int_school_years') }}
-),
-
-students as (
-    select * 
-    from {{ ref('dim_students') }}
-    where is_international = 0
 ),
 
 combined as (
@@ -56,47 +45,12 @@ combined as (
         ul.script_id,
         sy.school_year,
         cs.course_name_true                     as course_name
-
-        {# do we need any of this? 
-        ul.best_result,
-        min(ul.created_at)                      as user_level_started_at,
-        max(ul.created_at)                      as user_level_ended_at,
-        sum(ul.attempts)                        as total_attempts,
-        count(distinct ul.level_id)             as total_levels_touched, #}
-
-        {# rank () over (
-            partition by ul.user_id, sy.school_year, cs.course_name_true
-            order by ul.created_at, ul.level_script_order, ul.level_number, ul.script_id, cs.stage_id asc 
-        ) as rnk_asc,
-
-        rank () over (
-            partition by ul.user_id, sy.school_year, cs.course_name_true
-            order by ul.created_at, ul.level_script_order, ul.level_number, ul.script_id, cs.stage_id desc 
-        ) as rnk_desc,
-
-        count(distinct 
-            case when lower(lev.type) in (
-                'curriculumreference',
-                'standalonevideo',
-                'freeresponse',
-                'external',
-                'map',
-                'levelgroup') 
-                    then null 
-                else ul.level_id 
-            end)                               as course_progress_levels_touched #}
-
     from user_levels as ul 
      join course_structure as cs 
         on ul.level_id = cs.level_id
         and ul.script_id = cs.script_id
     join school_years as sy 
         on ul.created_at between sy.started_at and sy.ended_at
-    join students as stu 
-        on ul.user_id = stu.student_id
-    join levels as lev 
-        on ul.level_id = lev.level_id
-    {{ dbt_utils.group_by(9) }}
 )
 
 select * 
