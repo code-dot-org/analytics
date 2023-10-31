@@ -1,6 +1,8 @@
 with 
 source as (
-      select * from {{ source('dashboard', 'user_scripts') }}
+    select * 
+    from {{ source('dashboard', 'user_scripts') }}
+    where deleted_at is null 
 ),
 
 renamed as (
@@ -13,9 +15,8 @@ renamed as (
         assigned_at,
         last_progress_at,
         created_at,
-        updated_at,
-        properties,
-        deleted_at
+        updated_at
+        -- properties,
     from source
 )
 

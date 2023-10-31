@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from {{ source('dashboard', 'level_sources') }}
+    select * 
+    from {{ source('dashboard', 'level_sources') }}
 ),
 
 renamed as (
@@ -15,4 +16,5 @@ renamed as (
     from source
 )
 
-select * from renamed 
+select * 
+from renamed 
