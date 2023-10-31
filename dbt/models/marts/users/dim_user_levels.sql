@@ -76,7 +76,8 @@ combined as (
 
     from user_levels as ul 
      join course_structure as cs 
-        on ul.script_id = cs.script_id
+        on ul.level_id = cs.level_id
+        and ul.script_id = cs.script_id
     join school_years as sy 
         on ul.created_at between sy.started_at and sy.ended_at
     join students as stu 
