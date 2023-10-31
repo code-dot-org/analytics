@@ -41,7 +41,7 @@ sections as (
 combined as (
     select 
         school_years.school_year, 
-        followers.student_user_id   as student_id,
+        followers.student_id,
         sections.user_id            as teacher_id,
         sections.section_id         as section_id,
         teachers.school_id
