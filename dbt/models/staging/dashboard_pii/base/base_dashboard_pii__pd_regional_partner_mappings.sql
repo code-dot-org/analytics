@@ -12,7 +12,7 @@ renamed as (
         state,
         zip_code,
         created_at,
-        updated_at,
+        updated_at
     from source
 )
 

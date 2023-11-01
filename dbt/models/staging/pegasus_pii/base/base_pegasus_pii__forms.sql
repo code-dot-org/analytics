@@ -24,7 +24,7 @@ renamed as (
         user_id,
         parent_id,
         location_country_code_s as location_country_code,
-        -- data_text               as form_data_text,  
+        data_text               as form_data_text,  
         processed_data_text
     from source
 )
