@@ -8,7 +8,7 @@ models:
           combination_of_columns:
             - student_id
             - school_year
-            - section_id
+            - course_name
 
   - name: dim_students
     description: all student accounts ever created + georgraphic + activity info on the student
