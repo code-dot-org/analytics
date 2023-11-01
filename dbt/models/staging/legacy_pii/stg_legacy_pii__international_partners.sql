@@ -22,7 +22,7 @@ renamed as (
             then 'no partner' 
             else lower(workshop_organizers) end                                             as workshop_organizers,
         contact_name,
-        contact_email
+        contact_email -- @allison is this approved as well? (js) 
         -- exceptions -- unclear if needed, removing for now (js)
     from international_partners
 )
