@@ -1,6 +1,8 @@
 with 
 source as (
-      select * from {{ source('dashboard_pii', 'pd_regional_partner_mappings') }}
+    select * 
+    from {{ source('dashboard_pii', 'pd_regional_partner_mappings') }}
+    where not deleted_at
 ),
 
 renamed as (
@@ -11,8 +13,8 @@ renamed as (
         zip_code,
         created_at,
         updated_at,
-        deleted_at
     from source
 )
 
-select * from renamed
+select * 
+from renamed

@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from {{ source('dashboard_pii', 'pd_post_course_surveys') }}
+    select * 
+    from {{ source('dashboard_pii', 'pd_post_course_surveys') }}
 ),
 
 renamed as (
@@ -8,7 +9,7 @@ renamed as (
         id,
         form_id,
         submission_id,
-        answers,
+        -- answers,
         year,
         user_id,
         course,
@@ -17,4 +18,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed
