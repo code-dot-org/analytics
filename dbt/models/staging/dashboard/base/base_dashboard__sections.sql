@@ -2,7 +2,7 @@ with
 source as (
     select * 
     from {{ source('dashboard', 'sections') }}
-    where not deleted_at 
+    where deleted_at is not null  
 ),
 
 renamed as (
