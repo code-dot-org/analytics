@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from {{ source('dashboard_pii', 'pd_workshop_facilitator_daily_surveys') }}
+    select * 
+    from {{ source('dashboard_pii', 'pd_workshop_facilitator_daily_surveys') }}
 ),
 
 renamed as (
@@ -12,11 +13,12 @@ renamed as (
         pd_session_id,
         pd_workshop_id,
         facilitator_id,
-        answers,
+        -- answers,
         day,
         created_at,
         updated_at
     from source
 )
 
-select * from renamed
+select * 
+from renamed

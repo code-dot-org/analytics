@@ -4,4 +4,5 @@ followers as (
     from {{ref('base_dashboard__followers')}}
 )
 
-select * from followers 
+select * 
+from followers 

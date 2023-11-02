@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from {{ source('dashboard_pii', 'user_school_infos') }}
+    select * 
+    from {{ source('dashboard_pii', 'user_school_infos') }}
 ),
 
 renamed as (
@@ -16,4 +17,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed

@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from {{ source('pegasus_pii', 'hoc_activity') }}
+    select * 
+    from {{ source('pegasus_pii', 'hoc_activity') }}
 ),
 
 renamed as (
@@ -21,5 +22,6 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed
   

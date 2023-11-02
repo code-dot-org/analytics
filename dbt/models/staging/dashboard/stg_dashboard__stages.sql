@@ -10,11 +10,12 @@ stages as (
         updated_at,
         is_lockable,
         relative_position,
-        properties,
+        -- properties,
         lesson_group_id,
         key,
         has_lesson_plan        
     from {{ ref('base_dashboard__stages') }}
 )
 
-select * from stages
+select * 
+from stages

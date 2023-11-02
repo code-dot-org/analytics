@@ -17,20 +17,20 @@ combined as (
         forms.email,
         forms.name,
         forms.form_kind,
-        forms.form_data,
+        -- forms.form_data,
         forms.updated_at,
         forms.indexed_at,
         forms.review,
         forms.reviewed_by,
         forms.reviewed_at,
         forms.processed_at,
-        forms.processed_data, 
+        -- forms.processed_data, 
         forms.notified_at,
         forms.user_id,
         forms.parent_id,
         forms.location_country_code,
-        forms.form_data_text,  
-        forms.processed_data_text,
+        -- forms.form_data_text,  
+        -- forms.processed_data_text,
         coalesce(forms.city,form_geos.city)                     as city,
         coalesce(forms.state,form_geos.state)                   as state,
         coalesce(forms.country,form_geos.country)               as country,
@@ -39,7 +39,7 @@ combined as (
     from forms 
     left join form_geos 
         on forms.form_id = form_geos.form_id
-    {{ dbt_utils.group_by(23) }}
+    {{ dbt_utils.group_by(19) }}
 )
 
 select * 

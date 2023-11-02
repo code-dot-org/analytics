@@ -6,7 +6,7 @@ with schools as (
 final as (
     select 
         case when len(school_id) = 11 
-             then lpad(school_id,12,'0') 
+             then lpad(school_id,12,'0') -- (js) adjustment to compensate for application dropping leading zeroes
         else school_id 
         end as school_id,
         school_district_id,

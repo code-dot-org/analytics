@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from {{ source('dashboard', 'contained_level_answers') }}
+    select * 
+    from {{ source('dashboard', 'contained_level_answers') }}
 ),
 
 renamed as (
@@ -15,4 +16,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed

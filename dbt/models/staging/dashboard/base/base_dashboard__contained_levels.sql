@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from {{ source('dashboard', 'contained_levels') }}
+    select * 
+    from {{ source('dashboard', 'contained_levels') }}
 ),
 
 renamed as (
@@ -17,4 +18,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed

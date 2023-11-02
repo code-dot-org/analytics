@@ -12,10 +12,8 @@ user_levels as (
 
     {% if is_incremental() %}
 
-  -- this filter will only be applied on an incremental run
-  -- (uses > to include records whose timestamp occurred since the last run of this model)
-    where coalesce(created_at,updated_at) > (select max(coalesce(created_at,updated_at)) from {{ this }} ) -- only new records
-
+    where coalesce(created_at,updated_at) > (select max(coalesce(created_at,updated_at)) from {{ this }} )
+    
     {% endif %}
 )
 

@@ -4,4 +4,5 @@ source as (
       from {{ source('legacy_pii', 'seed_international_partners') }}
 )
 
-select * from source
+select * 
+from source

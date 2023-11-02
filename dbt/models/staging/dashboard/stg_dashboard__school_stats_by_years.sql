@@ -9,7 +9,7 @@ survey_years as (
         min(school_year) as first_survey_year,
         max(school_year) as survey_year
     from school_stats_by_years  
-    group by 1
+{{ dbt_utils.group_by(1) }}
 ),
 
 school_stats_2019_2020 as (

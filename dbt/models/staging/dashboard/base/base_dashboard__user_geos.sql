@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from {{ source('dashboard', 'user_geos') }}
+    select * 
+    from {{ source('dashboard', 'user_geos') }}
 ),
 
 renamed as (
