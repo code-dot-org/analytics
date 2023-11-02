@@ -79,23 +79,31 @@ models:
       
       dashboard:
         base: 
-          +materialized: ephemeral
+          tags:
+            - "base" 
+          materialized: ephemeral
 
       dashboard_pii:
         tags:
-          - contains_pii
+          - "contains_pii"
         base: 
-          +materialized: ephemeral
+          tags:
+            - "base"
+          materialized: ephemeral
       
       legacy_pii:
         tags:
-          - contains_pii
+          - "contains_pii"
         base: 
-          +materialized: ephemeral
-        
+          tags:
+            - "base"
+          materialized: ephemeral
+      
+      
       pegasus_pii:
         tags:
-          - contains_pii
+          - "contains_pii"
         base: 
-          +materialized: ephemeral
-      
+          tags:
+            - "base"
+          materialized: ephemeral
