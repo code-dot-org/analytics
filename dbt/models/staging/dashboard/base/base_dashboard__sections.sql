@@ -1,8 +1,14 @@
 with 
 source as (
+<<<<<<< HEAD
       select * 
       from {{ source('dashboard', 'sections') }}
       where deleted_at is null 
+=======
+    select * 
+    from {{ source('dashboard', 'sections') }}
+    where deleted_at is not null  
+>>>>>>> main
 ),
 
 renamed as (

@@ -22,10 +22,9 @@ renamed as (
         total_lines,
         active                      as is_active,
         purged_at,
-        urm                         as is_urg, -- (js) new convention
+        urm                         as is_urg,
         races,
         primary_contact_info_id
-
     from source
 )
 

@@ -3,4 +3,5 @@ with regional_partners as (
     from {{ ref('base_dashboard_pii__regional_partners') }}
 )
 
-select * from regional_partners
+select * 
+from regional_partners

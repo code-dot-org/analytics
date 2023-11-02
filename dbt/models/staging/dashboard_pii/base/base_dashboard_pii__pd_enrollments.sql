@@ -1,6 +1,8 @@
 with 
 source as (
-      select * from {{ source('dashboard_pii', 'pd_enrollments') }}
+    select * 
+    from {{ source('dashboard_pii', 'pd_enrollments') }}
+    where not deleted_at
 ),
 
 renamed as (
@@ -8,9 +10,9 @@ renamed as (
         id as pd_enrollment_id,
         pd_workshop_id,
         name,
-        first_name,
-        last_name,
-        email,
+        -- first_name,
+        -- last_name,
+        -- email,
         created_at,
         updated_at,
         school,
@@ -19,10 +21,10 @@ renamed as (
         survey_sent_at,
         completed_survey_id,
         school_info_id,
-        deleted_at,
-        properties,
+        -- properties,
         application_id
     from source
 )
 
-select * from renamed
+select * 
+from renamed

@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from {{ source('dashboard_pii', 'foorm_submissions') }}
+    select * 
+    from {{ source('dashboard_pii', 'foorm_submissions') }}
 ),
 
 renamed as (
@@ -8,10 +9,11 @@ renamed as (
         id as foorm_submission_id,
         form_name,
         form_version,
-        answers,
+        -- answers,
         created_at,
         updated_at
     from source
 )
 
-select * from renamed
+select * 
+from renamed

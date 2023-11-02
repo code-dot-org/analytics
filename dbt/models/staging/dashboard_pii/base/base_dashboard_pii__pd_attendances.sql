@@ -1,6 +1,8 @@
 with 
 source as (
-      select * from {{ source('dashboard_pii', 'pd_attendances') }}
+    select * 
+    from {{ source('dashboard_pii', 'pd_attendances') }}
+    where not deleted_at
 ),
 
 renamed as (
@@ -10,10 +12,10 @@ renamed as (
         teacher_id,
         created_at,
         updated_at,
-        deleted_at,
         pd_enrollment_id,
         marked_by_user_id
     from source
 )
 
-select * from renamed
+select * 
+from renamed

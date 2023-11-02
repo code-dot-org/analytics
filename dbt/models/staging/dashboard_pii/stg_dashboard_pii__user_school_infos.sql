@@ -1,5 +1,4 @@
 with 
-
 user_school_infos as (
     select 
         user_school_info_id,

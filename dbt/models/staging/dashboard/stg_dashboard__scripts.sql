@@ -17,7 +17,6 @@ scripts as (
         wrapup_video_id,
         user_id,
         login_required,
-        --properties,
         json_extract_path_text(properties, 'supported_locales') as supported_locales,
         new_name,
         family_name,

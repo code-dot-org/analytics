@@ -1,6 +1,8 @@
 with 
 source as (
-      select * from {{ source('dashboard', 'followers') }}
+    select * 
+    from {{ source('dashboard', 'followers') }}
+    where deleted_at is null 
 ),
 
 renamed as (
@@ -10,8 +12,8 @@ renamed as (
         section_id,
         created_at,
         updated_at
-        deleted_at
     from source
 )
 
-select * from renamed
+select * 
+from renamed
