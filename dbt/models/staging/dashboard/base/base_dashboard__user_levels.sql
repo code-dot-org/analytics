@@ -19,8 +19,6 @@ renamed as (
         time_spent,
         submitted                   as is_submitted,
         readonly_answers            as is_read_only_answers,
-        unlocked_at,
-        properties,
         unlocked_at
         -- properties
     from source
