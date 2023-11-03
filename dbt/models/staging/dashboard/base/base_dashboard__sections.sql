@@ -1,14 +1,8 @@
 with 
 source as (
-<<<<<<< HEAD
-      select * 
-      from {{ source('dashboard', 'sections') }}
-      where deleted_at is null 
-=======
     select * 
     from {{ source('dashboard', 'sections') }}
     where deleted_at is not null  
->>>>>>> main
 ),
 
 renamed as (
@@ -33,7 +27,7 @@ renamed as (
         tts_autoplay_enabled    as is_tts_autoplay_enabled,
         restrict_section        as is_restrict_section,
         participant_type,
-        properties,
+        -- properties,
         
         -- timestamps
         created_at,
