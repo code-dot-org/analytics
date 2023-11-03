@@ -1,4 +1,4 @@
-state_abbreviation,state_namestate_abbr,state_name
+state_abbreviation,state_name
 AK,Alaska
 AL,Alabama
 AR,Arkansas
@@ -12,7 +12,7 @@ FL,Florida
 GA,Georgia
 HI,Hawaii
 IA,Iowa
-ID,Idahomain
+ID,Idaho
 IL,Illinois
 IN,Indiana
 KS,Kansas
