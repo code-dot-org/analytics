@@ -1,6 +1,8 @@
 with 
 source as (
-      select * from {{ source('dashboard_pii', 'pd_workshops') }}
+    select * 
+    from {{ source('dashboard_pii', 'pd_workshops') }}
+    where not deleted_at
 ),
 
 renamed as (
@@ -13,20 +15,21 @@ renamed as (
         course,
         subject,
         capacity,
-        notes,
+        -- notes,
         section_id,
         started_at,
         ended_at,
         created_at,
         updated_at,
         processed_at,
-        deleted_at,
         regional_partner_id,
         on_map              as is_on_map,
         funded              as is_funded,
         funding_type,
-        properties
+        -- properties,
+        module -- (js) new col added (see: https://github.com/code-dot-org/code-dot-org/pull/53949/files)
     from source
 )
 
-select * from renamed
+select * 
+from renamed

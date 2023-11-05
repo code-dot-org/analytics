@@ -1,16 +1,18 @@
 with 
 source as (
-      select * from {{ source('dashboard_pii', 'pd_teachercon_surveys') }}
+    select * 
+    from {{ source('dashboard_pii', 'pd_teachercon_surveys') }}
 ),
 
 renamed as (
     select
         id as pd_teachercon_survey_id,
         pd_enrollment_id,
-        form_data,
+        -- form_data,
         created_at,
         updated_at
     from source
 )
 
-select * from renamed
+select * 
+from renamed

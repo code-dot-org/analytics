@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from {{ source('dashboard_pii', 'foorm_library_questions') }}
+    select * 
+    from {{ source('dashboard_pii', 'foorm_library_questions') }}
 ),
 
 renamed as (
@@ -16,4 +17,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed

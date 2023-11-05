@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from {{ source('dashboard', 'schools') }}
+    select * 
+    from {{ source('dashboard', 'schools') }}
 ),
 
 renamed as (
@@ -19,10 +20,10 @@ renamed as (
         address_line3,
         latitude,
         longitude,
-        state_school_id,
         school_category,
         last_known_school_year_open
     from source
 )
 
-select * from renamed
+select * 
+from renamed

@@ -1,31 +1,7 @@
-with 
-
-schools as (
-    select * 
-    from {{ ref('stg_dashboard__schools') }}
-),
-
-school_stats_by_years as (
-    select * 
-    from {{ ref('stg_dashboard__school_stats_by_years') }}
-),
-
-school_districts as (
-    select * 
-    from {{ ref('stg_dashboard__school_districts')}}
-),
-
-school_stats_19_20 as (
-    select *
-    from school_stats_by_years
-    where school_year = '2019-2020'
-),
-
-combined as (
     select 
         schools.school_id                                                   as school_id,
         schools.school_name                                                 as school_name,
-        schools.city                                                        as city,
+        schools.city                                                     as city,
         schools.zip                                                         as zip,
         schools.state                                                       as state,
         schools.latitude                                                    as latitude,
@@ -50,16 +26,9 @@ combined as (
         ssby.count_student_tr                                               as count_student_tr,
         ssby.students_summed,
         ssby.urg_percent,
-        ssby.urg_percent_true,  ----------------  adds all schools where sum <> total reported students, this allows us to extrapolate percentages at the school
-        ssby.urg_percent_no_tr,
+        ssby.urg_percent_true, --  (bf) adds all schools where sum <> total reported students, this allows us to extrapolate percentages at the school
         
-        /* this next section is where we made the edits to support the new FRL stop-gap logic*/
-        case 
-            when survey_years.survey_year = '2020-2021' then coalesce(ssby2.total_frl_eligible, ssby.total_frl_eligible)   ---- coalesce statement added to next three fields to account for covid FRL effects
-            else ssby.total_frl_eligible
-        end as frl_eligible,
-        case 
-            when survey_years.survey_year = '2020-2021' 
+        -- (bf) this next section is where we made the edits to support the new FRL stop-gap logic          
             then coalesce(
                 (case  
                     when ssby2.total_frl_eligible is null or ssby2.total_students is null or ssby2.total_frl_eligible > ssby2.total_students then null
@@ -74,6 +43,7 @@ combined as (
             )
             else ssby.frl_eligible_percent
         end as frl_eligible_percent,    
+
         case 
             when survey_years.survey_year = '2020-2021' 
             then coalesce(
@@ -91,6 +61,8 @@ combined as (
             )
             else ssby.is_high_needs 
         end as is_high_needs,
+
+        case when urg_percent
         
         -- end altered code
         ssby.is_title_i,

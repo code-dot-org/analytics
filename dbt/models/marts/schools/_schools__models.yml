@@ -1,8 +1,26 @@
 version: 2
 
 models: 
-  # - name: dim_schools
-  #   description: school-level information by school year, formerly school_stats_by_years
-  
-  - name: fct_school_stats
+  - name: dim_schools
+    description: school-level information for the most recent school year it is updated for
+    columns: 
+      - name: school_id 
+        tests:
+          - not_null
+          - unique
+
+  # - name: dim_school_status
+  #   description: 1 row per school to show churn status
+  #   columns:
+  #     - name: school_id
+  #       tests:
+  #       - not_null
+  #       - unique
+        
+  - name: dim_school_stats_by_year
     description: most recent school-level information + metrics about all NCES schools
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - school_year
+            - school_id

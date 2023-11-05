@@ -26,7 +26,7 @@ models:
         tests:
           - unique
           - not_null
-      - name: student_user_id
+      - name: student_id
         description: fk for individual student user
         tests:
           - not_null
@@ -52,6 +52,26 @@ models:
         tests: 
           - not_null
           - unique
+
+  - name: stg_dashboard__schools 
+    description: staging model for core school data, where len(school_id)=11 we are applying a LPAD to maintain school length convention
+    columns:
+      - name: school_id 
+        tests: 
+          - unique
+          - not_null        
+
+  - name: stg_dashboard__school_stats_by_years
+    description: staging model for `school_stats_by_years` source data
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - school_id
+            - school_year
+    columns: 
+      - name: school_id
+        tests:
+          - not_null
           
 
       

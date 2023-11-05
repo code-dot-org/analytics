@@ -1,6 +1,8 @@
 with 
 source as (
-      select * from {{ source('dashboard_pii', 'regional_partners') }}
+    select * 
+    from {{ source('dashboard_pii', 'regional_partners') }}
+    where not deleted_at
 ),
 
 renamed as (
@@ -15,14 +17,14 @@ renamed as (
         city,
         state,
         zip_code,
-        phone_number,
-        notes,
+        -- phone_number,
+        -- notes,
         created_at,
         updated_at,
-        deleted_at,
-        properties,
+        -- properties,
         is_active
     from source
 )
 
-select * from renamed
+select * 
+from renamed

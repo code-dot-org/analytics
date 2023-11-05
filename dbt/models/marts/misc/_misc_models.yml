@@ -1,0 +1,11 @@
+version: 2
+
+models: 
+  - name: dim_forms
+    description: all forms data with form geos fields
+    columns: 
+      - name: form_id
+        description: unique id for table
+        tests:
+           - unique
+           - not_null

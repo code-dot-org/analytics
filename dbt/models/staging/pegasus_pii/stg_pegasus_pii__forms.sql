@@ -15,7 +15,7 @@ forms as (
         email,
         name,
         form_kind,
-        form_data,
+        -- form_data,
         created_at,
         {# created_ip, #}
         updated_at,
@@ -26,14 +26,14 @@ forms as (
         reviewed_at,
         {# reviewed_ip, #}
         processed_at,
-        processed_data, 
+        -- processed_data, 
         notified_at,
         user_id,
         parent_id,
         {# hashed_email, #}
         location_country_code,
-        form_data_text,  
-        processed_data_text,
+        -- form_data_text,  
+        -- processed_data_text,
         nullif(json_extract_path_text(processed_data_text, 'location_city_s', true), '')      as city,
         nullif(json_extract_path_text(processed_data_text, 'location_state_s', true), '')     as state,
         nullif(json_extract_path_text(processed_data_text, 'location_country_s', true), '')   as country,

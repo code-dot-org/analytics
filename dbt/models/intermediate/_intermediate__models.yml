@@ -1,14 +1,16 @@
 version: 2
 
 models: 
-  - name: dim_forms
-    description: all forms data with form geos fields
-    columns: 
-      - name: form_id
-        description: unique id for table
-        tests:
-           - unique
-           - not_null
-
   - name: int_school_years
     description: 1 row per school year in different formats
+
+  - name: int_section_mapping
+    description: xref table to pull together these FK's for reference
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - student_id
+            - school_year
+            - section_id
+            - teacher_id
+            - school_id 

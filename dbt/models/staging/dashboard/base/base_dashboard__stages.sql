@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from {{ source('dashboard', 'stages') }}
+    select * 
+    from {{ source('dashboard', 'stages') }}
 ),
 
 renamed as (
@@ -13,11 +14,12 @@ renamed as (
         updated_at,
         lockable            as is_lockable,
         relative_position,
-        properties,
+        -- properties,
         lesson_group_id,
         key,
         has_lesson_plan
     from source
 )
 
-select * from renamed
+select * 
+from renamed

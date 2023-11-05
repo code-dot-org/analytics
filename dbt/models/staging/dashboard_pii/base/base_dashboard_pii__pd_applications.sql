@@ -1,6 +1,8 @@
 with 
 source as (
-      select * from {{ source('dashboard_pii', 'pd_applications') }}
+    select * 
+    from {{ source('dashboard_pii', 'pd_applications') }}
+    where deleted_at is null
 ),
 
 renamed as (
@@ -13,19 +15,19 @@ renamed as (
         regional_partner_id,
         status,
         locked_at,
-        notes,
-        form_data,
+        -- notes,
+        -- form_data,
         created_at,
         updated_at,
         course,
         response_scores,
         application_guid,
         accepted_at,
-        properties,
-        deleted_at,
+        -- properties,
         status_timestamp_change_log,
         applied_at
     from source
 )
 
-select * from renamed
+select * 
+from renamed

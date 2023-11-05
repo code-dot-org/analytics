@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from {{ source('pegasus_pii', 'forms') }}
+    select * 
+    from {{ source('pegasus_pii', 'forms') }}
 ),
 
 renamed as (
@@ -11,7 +12,7 @@ renamed as (
         email,
         name,
         kind                    as form_kind,
-        data                    as form_data,
+        -- data                    as form_data,
         created_at,
         {# created_ip, #}
         updated_at,
@@ -22,7 +23,7 @@ renamed as (
         reviewed_at,
         {# reviewed_ip, #}
         processed_at,
-        processed_data, 
+        -- processed_data, 
         notified_at,
         user_id,
         parent_id,
@@ -33,5 +34,6 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed
   

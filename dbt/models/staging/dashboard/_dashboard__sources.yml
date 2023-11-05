@@ -69,6 +69,5 @@ sources:
       - name: user_geos
       - name: user_levels
       - name: user_project_storage_ids
-      - name: user_school_infos
       - name: user_scripts
       - name: users

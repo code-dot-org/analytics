@@ -2,7 +2,10 @@ with
 opt_ins as (
     select *,
         rank() over(
-            partition by teacher_user_id, workshop_organizer, workshop_course
+            partition by 
+                teacher_user_id,
+                workshop_organizer, 
+                workshop_course
             order by form_submitted_at desc) as rnk 
     from {{ ref('stg_dashboard_pii__pd_international_opt_ins')}}
 ),
@@ -26,14 +29,14 @@ combined as (
 
         -- teacher info
         teacher_user_id,
-        form_submitted_at as last_opt_in_at,
-        updated_at as last_opt_in_updated_at,
-        lower(first_name)   as first_name,
-        lower(pref_name)    as preferred_name,
-        lower(last_name)    as last_name,
-        lower(email)        as email,
-        lower(email_alt)    as email_alt,
-        gender,
+        form_submitted_at   as last_opt_in_at,
+        updated_at          as last_opt_in_updated_at,
+        -- lower(first_name)   as first_name,
+        -- lower(pref_name)    as preferred_name,
+        -- lower(last_name)    as last_name,
+        -- lower(email)        as email,
+        -- lower(email_alt)    as email_alt,
+        -- gender,
 
         -- school info
         school_department,

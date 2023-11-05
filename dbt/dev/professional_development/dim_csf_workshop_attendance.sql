@@ -4,6 +4,16 @@ csf_teachers_trained as (
     from {{ ref('dim_csf_teachers_trained') }}
 ),
 
+user_school_infos as (
+    select * 
+    from {{ ref('stg_dashboard_pii__user_school_infos') }}
+),
+
+school_infos as (
+    select * 
+    from {{ ref('stg_dashboard__school_infos') }}
+),
+
 pd_workshops as (
     select * 
     from {{ ref('stg_dashboard_pii__pd_workshops') }}
@@ -44,14 +54,9 @@ users as (
     from {{ ref('stg_dashboard_pii__users') }}
 ),
 
-school_infos as (
-    select * 
-    from {{ ref('stg_dashboard__school_infos') }}
-),
-
 school_stats as (
     select * 
-    from {{ ref('fct_school_stats') }}
+    from {{ ref('dim_schools') }}
 ),
 
 user_geos as (
@@ -210,7 +215,7 @@ sections_schools as ( --gets location based on the school of the facilitator for
     select 
         se.section_id as workshop_id, 
         'based on facilitator school' as processed_location,
-        ss_user.state as state, 
+        ss_user.state, 
         ss_user.zip as zip,      
         null::int as section_id
     from sections se 
@@ -218,10 +223,12 @@ sections_schools as ( --gets location based on the school of the facilitator for
     on se.section_id =  tt.section_id 
     join users u  -- users just needed to get school_info_id
     on se.user_id = u.user_id
-    join school_infos si_user
-    on si_user.school_info_id = u.school_info_id
+    join user_school_infos user_si 
+    on u.user_id = user_si.user_id
+    left join school_infos si 
+    on user_si.school_info_id = si.school_info_id
     join school_stats ss_user
-    on ss_user.school_id = si_user.school_id
+    on ss_user.school_id = si.school_id
     where ss_user.zip is not null 
     and ss_user.zip != ''
     and se.section_id not in (select workshop_id from sections_locations where workshop_id is not null)
@@ -352,7 +359,7 @@ pd_workshop_based as (
     where pdw.course = 'CS Fundamentals'
     and (pdw.subject in ( 'Intro Workshop', 'Intro', 'Deep Dive', 'District')  or pdw.subject is null)
     and pds.deleted_at is null
-    group by 1, 2, 3, 4, 5, 7, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, u.name, 22, 23, 25
+    {{ dbt_utils.group_by(24) }}
   ),
   
 sections_based as ( 
@@ -391,24 +398,24 @@ sections_based as (
         0                                                                       as future_event
     from csf_teachers_trained tt
     join sections se 
-    on se.section_id = tt.section_id 
+        on se.section_id = tt.section_id 
     join users u -- join to get facilitator data
-    on u.user_id = se.user_id
+        on u.user_id = se.user_id
     join training_school_years sy 
-    on tt.trained_at between sy.started_at and sy.ended_at
+        on tt.trained_at between sy.started_at and sy.ended_at
     left join section_state_zip ssz 
-    on ssz.workshop_id = tt.section_id 
+        on ssz.workshop_id = tt.section_id 
     left join state_abbreviations sa
-    on sa.state_name = ssz.state 
+        on sa.state_name = ssz.state 
         or sa.state_abbreviation = ssz.state -- join the sa table wether or not the ssz column is long form of name or short
     left join forms -- join to get additional data on the workshop
-    on forms.form_kind = 'ProfessionalDevelopmentWorkshop'
-    and tt.section_id = nullif(json_extract_path_text(form_data_text, 'section_id_s'),'')::int 
+        on forms.form_kind = 'ProfessionalDevelopmentWorkshop'
+        and tt.section_id = nullif(json_extract_path_text(form_data_text, 'section_id_s'),'')::int 
     left join pd_regional_partner_mappings rpm 
-    on rpm.state = sa.state_abbreviation 
+        on rpm.state = sa.state_abbreviation 
         or rpm.zip_code = ssz.zip 
     left join regional_partners rp  
-    on rpm.regional_partner_id = rp.regional_partner_id 
+        on rpm.regional_partner_id = rp.regional_partner_id 
     where tt.workshop_id is null   -- prevents double counting teachers and workshops that are recorded in pd_workshops *and* sections
        
 )

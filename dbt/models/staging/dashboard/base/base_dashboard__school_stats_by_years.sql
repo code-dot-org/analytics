@@ -1,14 +1,17 @@
 with 
 source as (
-      select * from {{ source('dashboard', 'school_stats_by_years') }}
+    select * 
+    from {{ source('dashboard', 'school_stats_by_years') }}
 ),
 
 renamed as (
     select
         school_id,
         school_year,
-        grades_offered_lo,
-        grades_offered_hi,
+
+        lower(grades_offered_lo) as grades_offered_lo,
+        lower(grades_offered_hi) as grades_offered_hi,
+        
         grade_pk_offered    as is_grade_pk,
         grade_kg_offered    as is_grade_kg,
         grade_01_offered    as is_grade_01,
@@ -24,21 +27,25 @@ renamed as (
         grade_11_offered    as is_grade_11,
         grade_12_offered    as is_grade_12,
         grade_13_offered    as is_grade_13,
+        
+        community_type,
         virtual_status,
-        students_total      as total_students,
-        student_am_count    as count_student_am,
-        student_as_count    as count_student_as,
-        student_hi_count    as count_student_hi,
-        student_bl_count    as count_student_bl,
-        student_wh_count    as count_student_wh,
-        student_hp_count    as count_student_hp,
-        student_tr_count    as count_student_tr,
         title_i_status,
-        frl_eligible_total  as total_frl_eligible,
+        
+        coalesce(students_total,0)      as total_students,
+        coalesce(student_am_count,0)    as count_student_am,
+        coalesce(student_as_count,0)    as count_student_as,
+        coalesce(student_hi_count,0)    as count_student_hi,
+        coalesce(student_bl_count,0)    as count_student_bl,
+        coalesce(student_wh_count,0)    as count_student_wh,
+        coalesce(student_hp_count,0)    as count_student_hp,
+        coalesce(student_tr_count,0)    as count_student_tr,
+        coalesce(frl_eligible_total,0)  as total_frl_eligible_students,
+        
         created_at,
-        updated_at,
-        community_type
+        updated_at
     from source
 )
 
-select * from renamed
+select * 
+from renamed

@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from {{ source('dashboard', 'user_project_storage_ids') }}
+    select * 
+    from {{ source('dashboard', 'user_project_storage_ids') }}
 ),
 
 renamed as (
@@ -10,4 +11,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed
