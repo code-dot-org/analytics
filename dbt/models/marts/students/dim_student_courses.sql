@@ -41,11 +41,12 @@ combined as (
          ul.user_id as student_id
 		,sy.school_year
 		,cs.course_name_true as course_name
+        ,cs.course_id
 		,cs.script_id
 		,cs.stage_id
 		,cs.level_id
 		,ul.user_level_created_at
-        ,row_number() over (partition by user_id, sy.school_year, course_name_true order by ul.user_level_created_at) as row_num
+        ,row_number() over (partition by user_id, sy.school_year, course_id order by ul.user_level_created_at) as row_num
 	from user_levels ul 
 	join course_structure cs
 		on ul.script_id = cs.script_id and ul.level_id = cs.level_id 
@@ -59,6 +60,7 @@ final as (
          student_id
         ,school_year
         ,course_name
+        ,course_id
         ,script_id
         ,stage_id
         ,level_id 
