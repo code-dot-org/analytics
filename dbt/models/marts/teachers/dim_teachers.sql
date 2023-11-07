@@ -4,6 +4,10 @@ teachers as (
     {{ dbt_utils.star(
         from=ref('stg_dashboard__users'),
         except=["user_id",
+            "studio_person_id",
+            "user_type",
+            "age_years",
+            "gender",
             "is_urg",
             "student_id"]) }}
     from {{ ref('stg_dashboard__users') }}

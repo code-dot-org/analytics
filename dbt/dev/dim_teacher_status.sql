@@ -10,25 +10,16 @@ Logic: where teacher has active section, then:
 #}
 
 with 
-teachers as (
-    select * 
-    from {{ ref('dim_teachers') }}
-),
-
 active_sections as (
-    select *
+    select *,
     from {{ ref('int_active_sections') }}
-    where teacher_id 
+    where teacher_id is not null 
 ),
 
-combined as (
-    select 
-        ss.school_year,
-        ss.teacher_id,
-        -- "status"
-    from active_sections as s
-        on ss.section_id = s.section_id
-    {{ dbt_utils.group_by(2) }}
+active_teachers as (
+    select school_year,
+        teacher_id,
+        max(case when is_
 )
 
 -- final as (

@@ -32,8 +32,8 @@ final as (
         ,school_year
         ,course_name
         ,section_id
+        ,case when num_students >= 5 then 1 else 0 end as is_active
     from combined
-    where num_students >= 5
 )
 
 select *

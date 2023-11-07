@@ -9,8 +9,6 @@
     this table provides mapping across these foreign keys, 
     serving as an intermediary (xref) model
 
-3. Sources:
-
 Ref: DATAOPS-321 */
 
 with 
@@ -49,10 +47,7 @@ combined as (
             partition by 
                 followers.student_id, 
                 sy.school_year
-                order by 
-                    followers.created_at
-        ) as row_num
-
+            order by followers.created_at) as row_num
     from followers  
     left join sections 
         on followers.section_id = sections.section_id
