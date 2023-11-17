@@ -56,12 +56,24 @@ final as (
         augmented.teacher_id,
         augmented.school_year,
         -- churn status
-        case when is_active and is_active_previous_year     then 'active - retained'
-             when is_active and not is_active_previous_year then 'active - reacquired'
-             when is_active and total_years_active = 1      then 'active - new'
-             when not is_active and not is_active_previous_year then 'inactive - churn'
-             when not is_active and is_active_previous_year then 'inactive - this year'
-             when total_years_active = 0 then 'market' else 'n/a' end as churn_status
+        case 
+             when is_active 
+             and is_active_previous_year then 'active - retained'
+             
+             when is_active 
+             and not is_active_previous_year then 'active - reacquired'
+             
+             when is_active 
+             and total_years_active = 1 then 'active - new'
+             
+             when not is_active 
+             and not is_active_previous_year then 'inactive - churn'
+
+             when not is_active 
+             and is_active_previous_year then 'inactive - this year'
+
+             when total_years_active = 0 then 'market' else 'n/a' 
+        end as churn_status
     from augmented
     join aggregated
         on augmented.teacher_id = aggregated.teacher_id

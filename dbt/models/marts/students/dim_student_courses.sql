@@ -41,6 +41,7 @@ combined as (
          ul.user_id as student_id
 		,sy.school_year
 		,cs.course_name_true as course_name
+        ,cs.course_id 
 		,cs.script_id
 		,cs.stage_id
 		,cs.level_id
@@ -59,6 +60,7 @@ final as (
          student_id
         ,school_year
         ,course_name
+        ,course_id
         ,script_id
         ,stage_id
         ,level_id 
