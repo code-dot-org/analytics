@@ -23,7 +23,11 @@ combined as (
 	join student_section ss 
 	on scs.student_id = ss.student_id 
     --and scs.course_id = ss.course_id 
+<<<<<<< HEAD
         and scs.school_year = ss.school_year 
+=======
+    and scs.school_year = ss.school_year 
+>>>>>>> a965d17c14c9e040c2337e6608226989ff173aa2
 	group by 1,2,3,4
 ),
 
