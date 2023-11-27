@@ -1,83 +1,126 @@
 {# Notes:
 Design: 1 row per teacher, school_year, churn_status
-Logic: where teacher has active section, then:
-    -- active retained: had an active section last SY and has an active section this SY (could be the same section ID, but needs to have 5+ active students both SYs)
-    -- active reacquired: did not have an active section last SY, but does have one this SY
-    -- active new: never has had an active section before, but has one this SY
-    -- inactive churn: did not have an active section last SY and does not have an active section this SY
-    -- inactive this year: had an active section last SY, does not have one this SY
-    -- market: has a teacher account but has never had an active section 
+Logic: we can determine status based on three properties we can compute for every user|school_year as a binary:
+    - 0/1 they are active this school_year - (A)ctive
+    - 0/1 they were active in the previous school_year - (P)rev year
+    - 0/1 they have ever been active in ANY school_year prior, incl. prev year - (E)ver before
+
+    These 3 values can be combined into an ordered 3-char string representing the concatenated true/false combinations 
+    for Active|Prev|Ever e.g. "101" means: ( Active = true AND Prev year = false AND Ever before = true )
+
+    - '000' (0) = 'market'              -- Not active now + never been active
+    - '001' (1) = 'inactive churn'      -- NOT active + NOT active prev year + active ever before
+    - '010' (2) = '<impossible status>' -- should not be possible, active in the prev year should imply active ever before
+    - '011' (3) = 'inactive this year'  -- NOT active + active prev year + (active ever before implied)
+    - '100' (4) = 'active new'          -- active this year + NOT active last year + NOT active ever before
+    - '101' (5) = 'active reacquired'   -- Active this year + NOT active last year + active in the past
+    - '110' (6) = '<impossible status>' -- impossible for same reason as status (2)
+    - '111' (7) = 'active retained'     -- active this year + active last year + (active ever before implied) 
 #}
 
 with 
-active_teachers as (
+teacher_section_started as (
     select teacher_id,
         school_year,
-        1 as is_active
+        listagg(distinct course_name, ', ') within group (order by course_name ASC) section_courses_started
     from {{ ref('int_active_sections') }}
     where teacher_id is not null 
+    group by 1, 2
 ),
+
+all_teacher_users as (
+
+    select
+        teacher_id,
+        created_at
+    from {{ref('dim_teachers')}}
+
+), 
 
 school_years as (
     select *
     from {{ ref('int_school_years') }}
 ),
 
-combined as (
-    select 
-        active_teachers.teacher_id,
-        school_years.school_year,
-        case when active_teachers.school_year is not null then 1 else 0 end as is_active 
-    from active_teachers 
-    left join school_years 
-        on active_teachers.school_year = school_years.school_year
-),
+all_teachers_school_years as (
 
-augmented as (
-    select 
+    select
+        u.teacher_id,
+        sy.school_year
+    from all_teacher_users u
+    join school_years sy on u.created_at <= sy.ended_at
+    where sy.started_at < current_timestamp
+
+), 
+
+active_status_simple as (
+
+    select
+        all_sy.teacher_id,
+        all_sy.school_year,
+        case when t.teacher_id is null then 0 else 1 end as is_active,
+        t.section_courses_started
+
+    from all_teachers_school_years all_sy
+    left join teacher_section_started t on t.teacher_id = all_sy.teacher_id and t.school_year = all_sy.school_year
+
+), 
+
+full_status as (
+    -- Determine the active status for each teacher in each year
+
+    select
         teacher_id,
         school_year,
         is_active,
-        lag(is_active,1) over(order by school_year) is_active_previous_year
-    from combined
-),
+        section_courses_started,
+        coalesce(
+            lag(is_active, 1) 
+                over (partition by teacher_id order by school_year) 
+            , 0
+        ) as prev_year_active,
+        coalesce( --force any NULL to be 0 for this function
+            max(is_active) 
+                over (partition by teacher_id order by school_year rows between unbounded preceding and 1 preceding)
+            , 0
+        ) as ever_active_before,
+        (is_active || prev_year_active || ever_active_before) status_code
+    from
+        active_status_simple
 
-aggregated as (
-    select teacher_id, 
-        min(school_year) as first_year_active,
-        max(school_year) as last_year_active,
-        sum(is_active) as total_years_active
-    from augmented
-    {{ dbt_utils.group_by(1) }}
+), 
+
+current_school_year as (
+
+    select 
+        school_year
+    from {{ref("int_school_years")}}
+    where current_date between started_at and ended_at
+
 ),
 
 final as (
-    select 
-        augmented.teacher_id,
-        augmented.school_year,
-        -- churn status
+
+    select
+        teacher_id,
+        school_year,
         case 
-             when is_active 
-             and is_active_previous_year then 'active - retained'
-             
-             when is_active 
-             and not is_active_previous_year then 'active - reacquired'
-             
-             when is_active 
-             and total_years_active = 1 then 'active - new'
-             
-             when not is_active 
-             and not is_active_previous_year then 'inactive - churn'
-
-             when not is_active 
-             and is_active_previous_year then 'inactive - this year'
-
-             when total_years_active = 0 then 'market' else 'n/a' 
-        end as churn_status
-    from augmented
-    join aggregated
-        on augmented.teacher_id = aggregated.teacher_id
+            when status_code = '000' then 'market'
+            when status_code = '001' then 'inactive churn'
+            when status_code = '010' then '<impossible status>'
+            when status_code = '011' then 'inactive this year'
+            when status_code = '100' then 'active new'
+            when status_code = '101' then 'active reacquired'
+            when status_code = '110' then '<impossible status>'
+            when status_code = '111' then 'active retained'
+        end as status,
+        section_courses_started
+    from
+        full_status
+    order by
+        teacher_id, school_year
 )
 
-select *
+select * 
 from final 
+
