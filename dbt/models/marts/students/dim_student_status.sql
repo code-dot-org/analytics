@@ -23,24 +23,35 @@ Logic: we can determine status based on three properties we can compute for ever
 
 */
 
-with student_courses_started as (
+with 
+
+student_courses_started as (
+
     select
         student_id,
         school_year,
         listagg(distinct course_name, ', ') within group (order by course_name ASC) courses_started
     from {{ ref('dim_student_courses') }}
     group by 1, 2
-)
-, all_student_users as (
+
+),
+
+all_student_users as (
+
     select
         student_id,
         created_at
     from {{ref('dim_students')}}
-)
-, school_years as (
+
+), 
+
+school_years as (
+
     select * from {{ref('int_school_years')}}
-)
-, all_students_school_years as (
+
+), 
+
+all_students_school_years as (
 
     select
         u.student_id,
@@ -49,8 +60,10 @@ with student_courses_started as (
     join school_years sy on u.created_at <= sy.ended_at
     where sy.started_at < current_timestamp
 
-)
-, active_status_simple as (
+), 
+
+active_status_simple as (
+
     select
         all_sy.student_id,
         all_sy.school_year,
@@ -59,51 +72,61 @@ with student_courses_started as (
 
     from all_students_school_years all_sy
     left join student_courses_started s on s.student_id = all_sy.student_id and s.school_year = all_sy.school_year
-)
-, full_status AS (
+
+), 
+
+full_status as (
     -- Determine the active status for each student in each year
-    SELECT
+
+    select
         student_id,
         school_year,
         is_active,
         courses_started,
         coalesce(
-            LAG(is_active, 1) OVER (PARTITION BY student_id ORDER BY school_year) 
+            lag(is_active, 1) 
+                over (partition by student_id order by school_year) 
             , 0
-        ) AS prev_year_active,
+        ) as prev_year_active,
         coalesce( --force any NULL to be 0 for this function
-            MAX(is_active) OVER (PARTITION BY student_id ORDER BY school_year ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING)
+            max(is_active) 
+                over (partition by student_id order by school_year rows between unbounded preceding and 1 preceding)
             , 0
-        ) AS ever_active_before,
+        ) as ever_active_before,
         (is_active || prev_year_active || ever_active_before) status_code
-    FROM
+    from
         active_status_simple
-)
-, current_school_year AS (
+
+), 
+
+current_school_year as (
+
     select 
         school_year
     from {{ref("int_school_years")}}
     where current_date between started_at and ended_at
+
 )
-SELECT
+
+select
     student_id,
     school_year,
-    courses_started,
-    is_active,
-    prev_year_active,
-    ever_active_before,
-    status_code,
-    CASE 
-        WHEN status_code = '000' THEN 'market'
-        WHEN status_code = '001' THEN 'inactive churn'
-        WHEN status_code = '010' THEN '<impossible status>'
-        WHEN status_code = '011' THEN 'inactive this year'
-        WHEN status_code = '100' THEN 'active new'
-        WHEN status_code = '101' THEN 'active reacquired'
-        WHEN status_code = '110' THEN '<impossible status>'
-        WHEN status_code = '111' THEN 'active retained'
-    END status
-FROM
+    --is_active,
+    --prev_year_active,
+    --ever_active_before,
+    --status_code,
+    case 
+        when status_code = '000' then 'market'
+        when status_code = '001' then 'inactive churn'
+        when status_code = '010' then '<impossible status>'
+        when status_code = '011' then 'inactive this year'
+        when status_code = '100' then 'active new'
+        when status_code = '101' then 'active reacquired'
+        when status_code = '110' then '<impossible status>'
+        when status_code = '111' then 'active retained'
+    end as status,
+    courses_started
+from
     full_status
-ORDER BY
+order by
     student_id, school_year
