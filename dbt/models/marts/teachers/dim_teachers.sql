@@ -28,6 +28,11 @@ school_infos as (
     from {{ ref('stg_dashboard__school_infos') }}
 ), 
 
+school_years as (
+    select * 
+    from {{ ref('int_school_years') }}
+),
+
 -- get teacher NCES school_id association
 teacher_schools as (
     select 
@@ -52,6 +57,7 @@ teacher_latest_school as (
 
 select 
     teachers.*, 
+    school_years.school_year as created_at_school_year,
     tls.school_id,
     user_geos.is_international
 from teachers 
@@ -59,3 +65,5 @@ join user_geos
     on teachers.teacher_id = user_geos.user_id
 left join teacher_latest_school tls 
     on tls.teacher_id = user_geos.user_id
+left join school_years 
+    on teachers.created_at between school_years.started_at and school_years.ended_at
