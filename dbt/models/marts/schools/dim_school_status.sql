@@ -18,13 +18,6 @@ Logic: we can determine status based on three properties we can compute for ever
     - '111' (7) = 'active retained'     -- active this year + active last year + (active ever before implied) 
 #}
 
-    -- select *
--- from teacher_activity ta
--- join school_years sy
--- on ta.school_year = sy.year
--- join usi_sy
--- on ta.id = usi_sy.user_id and sy.ended_at between started_at and ended_at
-
 with 
 
 all_schools as (
