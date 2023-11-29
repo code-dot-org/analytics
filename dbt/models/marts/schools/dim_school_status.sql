@@ -42,43 +42,47 @@ teacher_school_changes as (
     select *
     from {{ ref('int_teacher_schools_historical') }}
 ),
-
-teacher_status as (
-    select * 
-    from {{ ref('dim_teacher_status') }}
-),
-
-teacher_status_with_sy as (
+teacher_active_courses as (
     select 
-        ts.teacher_id,
-        ts.school_year,
-        ts.status,
-        ts.section_courses_started,
+        distinct teacher_id,
+        school_year,
+        course_name
+    from {{ref('int_active_sections')}}
+)
+,teacher_active_courses_with_sy as (
+
+    select
+        tac.teacher_id,
+        tac.school_year,
+        tac.course_name,
         tsc.school_id
-    from teacher_status ts
+    from teacher_active_courses tac 
     join school_years sy
-        on ts.school_year = sy.school_year
+        on tac.school_year = sy.school_year
     join teacher_school_changes tsc 
-        on ts.teacher_id = tsc.teacher_id 
-        and sy.ended_at between tsc.started_at and tsc.ended_at
+        on tac.teacher_id = tsc.teacher_id 
+        and sy.ended_at between tsc.started_at and tsc.ended_at 
 ),
 
 started_schools as (
     select 
         school_id,
-        school_year
-    from teacher_status_with_sy ts
-    where section_courses_started is not null
+        school_year,
+        listagg( distinct course_name, ', ') within group (order by course_name) active_courses
+    from teacher_active_courses_with_sy
+    group by 1, 2
 ),
 
 active_status_simple as (
     select 
         all_schools_sy.school_id,
         all_schools_sy.school_year,
-        case when started_schools.school_id is null then 0 else 1 end as is_active
+        case when started_schools.school_id is null then 0 else 1 end as is_active,
+        started_schools.active_courses
+    
 
     from all_schools_sy 
-    left join started_schools 
+    left join started_schools
         on started_schools.school_id = all_schools_sy.school_id 
         and started_schools.school_year = all_schools_sy.school_year
 ),
@@ -100,20 +104,12 @@ full_status as (
                 over (partition by school_id order by school_year rows between unbounded preceding and 1 preceding)
             , 0
         ) as ever_active_before,
-        (is_active || prev_year_active || ever_active_before) status_code
+        (is_active || prev_year_active || ever_active_before) status_code,
+        active_courses
     from
         active_status_simple
 
 ), 
-
-current_school_year as (
-
-    select 
-        school_year
-    from {{ref("int_school_years")}}
-    where current_date between started_at and ended_at
-
-),
 
 final as (
 
@@ -129,7 +125,8 @@ final as (
             when status_code = '101' then 'active reacquired'
             when status_code = '110' then '<impossible status>'
             when status_code = '111' then 'active retained'
-        end as status
+        end as status,
+        active_courses
         from full_status
     order by
         school_id, school_year
