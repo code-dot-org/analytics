@@ -17,7 +17,7 @@ final as (
         distinct user_levels.user_id,
         students.is_international,
         user_levels.level_id,
-        user_levels.level_source_id,
+        --user_levels.level_source_id,
         user_levels.script_id
     from user_levels 
     join students 

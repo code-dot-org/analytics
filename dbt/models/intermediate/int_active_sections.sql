@@ -28,7 +28,7 @@ combined as (
 
 final as (
     select 
-         teacher_id
+        distinct teacher_id
         ,school_year
         ,course_name
         ,section_id

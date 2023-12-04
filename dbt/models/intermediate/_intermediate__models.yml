@@ -9,6 +9,7 @@ models:
           combination_of_columns:
             - teacher_id
             - school_year
+            - course_name
             - section_id
 
   - name: int_school_years
