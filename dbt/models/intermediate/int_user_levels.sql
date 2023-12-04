@@ -14,7 +14,7 @@ students as (
 
 final as (
     select 
-        user_levels.user_id,
+        distinct user_levels.user_id,
         students.is_international,
         user_levels.level_id,
         user_levels.level_source_id,
