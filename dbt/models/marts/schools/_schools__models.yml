@@ -17,7 +17,7 @@ models:
   #       - not_null
   #       - unique
         
-  - name: dim_school_stats_by_year
+  - name: dim_school_stats_by_years
     description: most recent school-level information + metrics about all NCES schools
     tests:
       - dbt_utils.unique_combination_of_columns:
