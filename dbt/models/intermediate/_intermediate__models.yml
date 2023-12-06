@@ -1,17 +1,6 @@
 version: 2
 
 models: 
-
-  - name: int_active_sections
-    description: mapping active sections to student, teacher, school
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - teacher_id
-            - school_year
-            - course_name
-            - section_id
-
   - name: int_school_years
     description: 1 row per school year in different formats
 
@@ -25,12 +14,3 @@ models:
             - section_id
             - teacher_id
             - school_id 
-    
-  - name: int_user_levels
-    description: xref model for user_level foreign keys (could also be a fact table with a few more columns...)
-    tests: 
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - user_id
-            - level_id
-            - script_id

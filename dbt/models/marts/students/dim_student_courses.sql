@@ -22,7 +22,7 @@ Ref: dataops-316
 
 with user_levels as (
     select * 
-    from {{ ref('stg_dashboard__user_levels') }}
+    from {{ ref('dim_user_levels') }}
     where attempts > 0 
 ),
 
@@ -45,13 +45,13 @@ combined as (
 		,cs.script_id
 		,cs.stage_id
 		,cs.level_id
-		,ul.created_at
-        ,row_number() over (partition by user_id, sy.school_year, course_name_true order by ul.created_at) as row_num
+		,ul.user_level_created_at
+        ,row_number() over (partition by user_id, sy.school_year, course_name_true order by ul.user_level_created_at) as row_num
 	from user_levels ul 
 	join course_structure cs
 		on ul.script_id = cs.script_id and ul.level_id = cs.level_id 
 	join school_years sy 
-		on ul.created_at 
+		on ul.user_level_created_at 
             between sy.started_at and sy.ended_at
 ),
 
@@ -64,7 +64,7 @@ final as (
         ,script_id
         ,stage_id
         ,level_id 
-        ,created_at as course_started_at
+        ,user_level_created_at as course_started_at
     from combined
     where row_num = 1
 )

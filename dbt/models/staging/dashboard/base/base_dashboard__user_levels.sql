@@ -2,7 +2,7 @@ with
 source as (
       select * 
       from {{ source('dashboard', 'user_levels') }}
-      where deleted_at is null 
+      where deleted_at is not null 
 ),
 
 renamed as (
