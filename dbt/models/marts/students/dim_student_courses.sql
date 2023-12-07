@@ -55,7 +55,6 @@ combined as (
 	join school_years sy 
 		on ul.created_at 
             between sy.started_at and sy.ended_at
-    where cs.course_name_true is not null
     {{ dbt_utils.group_by(3) }}
 )
 
