@@ -35,7 +35,7 @@ sections as (
     select distinct 
         user_id,
         section_id
-    from {{ ref('dim_sections') }}
+    from {{ ref('stg_dashboard__sections') }}
 ),
 
 combined as (

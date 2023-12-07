@@ -12,7 +12,7 @@ user_levels as (
 
     {% if is_incremental() %}
 
-    where coalesce(created_at,updated_at) > (select max(coalesce(created_at,updated_at)) from {{ this }} )
+    where updated_at > (select max(updated_at) from {{ this }} )
     
     {% endif %}
 )
