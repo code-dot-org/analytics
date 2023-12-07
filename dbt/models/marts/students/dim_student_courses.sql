@@ -27,7 +27,6 @@ user_levels as (
         script_id,
         created_at
     from {{ ref('stg_dashboard__user_levels') }}
-    where attempts > 0 
 ),
 
 course_structure as (
