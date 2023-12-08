@@ -90,15 +90,6 @@ full_status as (
 
 ), 
 
-current_school_year as (
-
-    select 
-        school_year
-    from {{ref("int_school_years")}}
-    where current_date between started_at and ended_at
-
-),
-
 final as (
 
     select
@@ -122,5 +113,5 @@ final as (
 )
 
 select * 
-from final 
+from final
 
