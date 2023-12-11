@@ -50,10 +50,10 @@ combined as (
     select 
         -- courses
         ug.unit_group_id as course_id,
-        ug.name as course_name,
+        ug.name as course_name, 
         cn.course_name_short,
         cn.course_name_long,
-        sc.course_name_true,
+        sc.course_name_true, -- DIG HERE
 
         -- scripts
         sl.script_id,
@@ -65,7 +65,7 @@ combined as (
         -- stages
         st.stage_id,
         st.stage_name,
-        st.stage_number,
+        st.stage_number,  -- DIG HERE
 
         -- levels
         case when sl.script_id = '26' 
