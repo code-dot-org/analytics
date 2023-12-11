@@ -53,7 +53,7 @@ combined as (
         ug.name as course_name, 
         cn.course_name_short,
         cn.course_name_long,
-        sc.course_name_true, -- DIG HERE
+        sc.course_name_true,
 
         -- scripts
         sl.script_id,
@@ -65,7 +65,7 @@ combined as (
         -- stages
         st.stage_id,
         st.stage_name,
-        st.stage_number,  -- DIG HERE
+        st.stage_number,  
 
         -- levels
         case when sl.script_id = '26' 
