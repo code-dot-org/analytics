@@ -27,6 +27,11 @@ combined as (
         school_stats_by_years.is_stage_el,
         school_stats_by_years.is_stage_mi,
         school_stats_by_years.is_stage_hi,
+        (
+            (case when ss.stage_el = 1 then 'el' else '__' end ) ||
+            (case when ss.stage_mi = 1 then 'mi' else '__' end ) ||
+            (case when) ss.stage_hi = 1 then 'hi' else '__' end 
+        ) as school_level_simple,
         school_stats_by_years.is_rural,
         school_stats_by_years.is_title_i,
         school_stats_by_years.community_type,
