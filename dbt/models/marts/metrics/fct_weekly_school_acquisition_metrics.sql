@@ -15,7 +15,7 @@ school_status_sy as (
         school_status.school_year,
         school_status.status,
         school_status.active_courses,
-        school_status.school_level_simple,
+        dim_schools.school_level_simple,
         school_status.school_started_at
     from school_status 
     left join dim_schools 
@@ -44,9 +44,9 @@ running_totals_by_week as (
         start_week,
         sy_week_order,
         min(week_of)::date week_of,
-        sum(case when school_level like '%el%' then num_schools else 0 end) as el_schools,
-        sum(case when school_level like '%mi%' then num_schools else 0 end) as mi_schools,
-        sum(case when school_level like '%hi%' then num_schools else 0 end) as hi_schools,
+        sum(case when school_level_simple like '%el%' then num_schools else 0 end) as el_schools,
+        sum(case when school_level_simple like '%mi%' then num_schools else 0 end) as mi_schools,
+        sum(case when school_level_simple like '%hi%' then num_schools else 0 end) as hi_schools,
         sum(el_schools) over (
             partition by school_year, status order by sy_week_order
             rows between unbounded preceding and current row
@@ -63,7 +63,7 @@ running_totals_by_week as (
         ) hi_running_total
     from active_schools_by_week
     group by 1,2,3,4
-    order by school_status, sy_week_order
+    order by status, sy_week_order
 ),
 
 report_by_week as (

@@ -33,6 +33,8 @@ final as (
         ,school_year
         ,course_name
         ,section_id
+        ,section_started_at
+        ,num_students
     from combined
     where num_students >= 5
 )

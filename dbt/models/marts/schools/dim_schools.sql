@@ -28,9 +28,9 @@ combined as (
         school_stats_by_years.is_stage_mi,
         school_stats_by_years.is_stage_hi,
         (
-            (case when ss.stage_el = 1 then 'el' else '__' end ) ||
-            (case when ss.stage_mi = 1 then 'mi' else '__' end ) ||
-            (case when) ss.stage_hi = 1 then 'hi' else '__' end 
+            (case when school_stats_by_years.is_stage_el = 1 then 'el' else '__' end ) ||
+            (case when school_stats_by_years.is_stage_mi = 1 then 'mi' else '__' end ) ||
+            (case when school_stats_by_years.is_stage_hi = 1 then 'hi' else '__' end ) 
         ) as school_level_simple,
         school_stats_by_years.is_rural,
         school_stats_by_years.is_title_i,
@@ -99,7 +99,7 @@ combined as (
         and school_stats_by_years.row_num = 1
     left join school_districts
         on schools.school_district_id = school_districts.school_district_id
-    {{ dbt_utils.group_by(27) }}
+    {{ dbt_utils.group_by(28) }}
 )
 
 select *
