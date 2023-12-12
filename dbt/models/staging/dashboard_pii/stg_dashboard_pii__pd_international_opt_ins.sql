@@ -2,6 +2,8 @@ with
 international_opt_ins as (
     select * 
     from {{ ref('base_dashboard_pii__pd_international_opt_ins')}}
+<<<<<<< HEAD
+=======
 ),
 
 final as (
@@ -33,7 +35,8 @@ final as (
         json_extract_path_text(form_data, 'emailOptIn')          as email_opt_in
         {# form_data #}
     from international_opt_ins 
+>>>>>>> 4b8a79ea2e574f5113808694edb52d44efc7690b
 )
 
 select * 
-from final 
+from international_opt_ins 
