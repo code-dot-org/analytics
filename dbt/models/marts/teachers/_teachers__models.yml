@@ -2,7 +2,7 @@ version: 2
 
 models: 
   - name: dim_teachers
-    description: ""
+    description: essentially a rebuild of analysis.teachers
     columns: 
       - name: teacher_id
         tests: 
@@ -11,8 +11,8 @@ models:
 
   - name: dim_teacher_status
     description: 1 row per teacher, per school_year, with status
-    # tests:
-    #   - dbt_utils.unique_combination_of_columns:
-    #       combination_of_columns:
-    #         - school_year
-    #         - teacher_id
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - school_year
+            - teacher_id

@@ -1,29 +1,39 @@
 version: 2
 
 models: 
+  - name: dim_course_names
+    description: distinct list of course names sourced via seed file 
+
   - name: dim_course_structure
     description: dim table for courses data
-    columns: 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - course_id
+            - stage_id
+            - level_id
+            - script_id
+    columns:        
       - name: course_id
         description: unique id for table
-        # tests:
-        #   - unique
-        #   - not_null
+        tests:
+          - unique
+          - not_null
 
   - name: dim_levels
-    description: dim table for levels data
+    description: dimensional table to provide attrtibution to levels data
     columns: 
       - name: level_id
-        description: ""
+        description: uid for this model, 1 row per level_id
         tests: 
           - unique
           - not_null
 
-  - name: dim_sections
-    description: migration of run_section_log; dim table for sections
+  - name: dim_script_names
+    description: distinct list of script names provided via seed file
     columns: 
-      - name: section_id
-        description: ""
+      - name: versioned_script_id
+        description: uid for script by school year
         tests: 
           - unique
           - not_null
