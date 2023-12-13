@@ -6,9 +6,9 @@ models:
     columns: 
       - name: course_id
         description: unique id for table
-        # tests:
-        #   - unique
-        #   - not_null
+        tests:
+          - unique
+          - not_null
 
   - name: dim_levels
     description: dim table for levels data
@@ -19,11 +19,11 @@ models:
           - unique
           - not_null
 
-  - name: dim_sections
-    description: migration of run_section_log; dim table for sections
-    columns: 
-      - name: section_id
-        description: ""
-        tests: 
-          - unique
-          - not_null
+  # - name: dim_sections
+  #   description: migration of run_section_log; dim table for sections
+  #   columns: 
+  #     - name: section_id
+  #       description: ""
+  #       tests: 
+  #         - unique
+  #         - not_null
