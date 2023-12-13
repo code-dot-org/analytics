@@ -1,6 +1,9 @@
 version: 2
 
 models: 
+  - name: dim_course_names
+    description: distinct list of course names sourced via seed file 
+
   - name: dim_course_structure
     description: dim table for courses data
     # columns: 
@@ -10,11 +13,21 @@ models:
     #       - unique
     #       - not_null
 
+
   - name: dim_levels
-    description: dim table for levels data
+    description: dimensional table to provide attrtibution to levels data
     columns: 
       - name: level_id
-        description: ""
+        description: uid for this model, 1 row per level_id
+        tests: 
+          - unique
+          - not_null
+
+  - name: dim_script_names
+    description: distinct list of script names provided via seed file
+    columns: 
+      - name: versioned_script_id
+        description: uid for script by school year
         tests: 
           - unique
           - not_null

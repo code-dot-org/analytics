@@ -9,6 +9,9 @@ models:
       #       - student_id
       #       - school_year
       #       - course_id
+  - name: dim_student_status
+    # description: @allison @baker to provide
+    # columns: 
 
   - name: dim_students
     description: all student accounts ever created + georgraphic + activity info on the student
