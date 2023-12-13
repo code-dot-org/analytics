@@ -18,14 +18,12 @@ combined as (
 		,ss.school_year
 		,scs.course_name
 		,ss.section_id
+        ,min(scs.first_activity_at) as section_started_at
 		,count(distinct ss.student_id) as num_students 
 	from student_course_starts scs
 	join student_section ss 
 	on scs.student_id = ss.student_id 
-    --and scs.course_id = ss.course_id 
     and scs.school_year = ss.school_year 
-
-
 	group by 1,2,3,4
 ),
 
@@ -35,6 +33,8 @@ final as (
         ,school_year
         ,course_name
         ,section_id
+        ,section_started_at
+        ,num_students
     from combined
     where num_students >= 5
 )
