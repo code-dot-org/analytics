@@ -1,7 +1,6 @@
 version: 2
 
 models: 
-
   - name: int_active_sections
     description: mapping active sections to student, teacher, school
     tests:
@@ -25,6 +24,11 @@ models:
             - section_id
             - teacher_id
             - school_id 
+
+  - name: int_teacher_schools_historical
+    # description: ""
+    # tests: @allison @baker to update
+
     
   - name: int_user_levels
     description: xref model for user_level foreign keys (could also be a fact table with a few more columns...)
