@@ -6,7 +6,8 @@ students as (
         except=["user_id",
             "teacher_id",
             "age_years",                                  
-            "studio_person_id"]) }}
+            "studio_person_id",
+            "school_info_id"]) }}
     from {{ ref('stg_dashboard__users') }}
     where student_id is not null 
 ),

@@ -1,0 +1,22 @@
+version: 2
+
+models: 
+  - name: fct_weekly_school_acquisition_metrics
+    description: high-level aggregations used for the monthly initiative review on school acquisitions
+    columns:
+      - name: school_level
+        description: elementary, middle, or high school- note that a given school may be counted in multiple school level aggregations (e.g. K-8)
+      - name: school_year
+        description: school year in which the activity at a school is counted
+      - name: status
+        description: active status of the set of schools in the aggregations
+      - name: start_week
+        description: the week in which the set of schools was first considered active for within that school year
+      - name: sy_week_order
+        description: the week number of a schools start_week corresponding to the school year (not calendar year)
+      - name: week_of
+        description: start date of the week the data is aggregated for
+      - name: num_schools_this_week
+        description: total number of schools within the school level and active status dimensions within that week
+      - name: num_schools_running_total
+        description: total number of schools within the school level and active status dimensions as of that week
