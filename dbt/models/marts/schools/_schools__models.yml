@@ -1,6 +1,14 @@
 version: 2
 
 models: 
+  - name: dim_school_districs
+    descrition: 1 row per school_distric_id with dimensions and school related aggregations
+    columns:
+      - name: school_district_id
+        tests:
+          - not_null
+          - unique
+  
   - name: dim_school_stats_by_years
     description: most recent school-level information + metrics about all NCES schools
     tests:
