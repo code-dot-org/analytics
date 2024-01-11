@@ -52,11 +52,11 @@ models:
   cdo_analytics:
     # applies to all models 
   
-    post-hook:
-      - "grant select on {{ this }} to trevorio"
+    # post-hook:
+    #   - "grant select on {{ this }} to trevorio"
   
     +grants:
-      select: ['dbt']
+      select: ['dbt','trevorio']
   
     +query_tag: dbt
     bind: false
