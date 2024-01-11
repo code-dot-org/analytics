@@ -8,6 +8,6 @@ venv/
 /.vscode/
 /.DS_Store
 /requirements.txt
-/dev/
+dev/
 data/
 legacy/
