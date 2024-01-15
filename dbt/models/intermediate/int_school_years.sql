@@ -4,6 +4,6 @@ school_years as (
     from {{ ref('seed_school_years') }}
 )
 
-select * 
+select *,
 from school_years
 where current_date >= started_at
