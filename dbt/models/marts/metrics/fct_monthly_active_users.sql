@@ -11,14 +11,15 @@ I've left my original attempt commented out below.
 #}
 with sign_ins as (
     select *
-    from {{ ref('base_dashboard__sign_ins') }}
+    from {{ ref('base_dashboard__sign_ins') }} -- replace with stg_ eventually?
 ),
 
 all_users as (
     select
         user_id,
         user_type
-    from {{ ref('stg_dashboard__users') }}
+    from {{ ref('stg_dashboard__users') }} --WARNING this has already filtered out deleted users
+    
 ),
 
 user_geos as (
@@ -28,13 +29,6 @@ user_geos as (
     from {{ ref('stg_dashboard__user_geos') }}
 ),
 
-all_users_and_geos as (
-    select
-        u.*,
-        ug.is_international
-    from all_users as u
-    left join user_geos as ug on u.user_id = ug.user_id
-),
 
 -- student_geos as (
 --     select
@@ -79,7 +73,8 @@ select
     case when is_international = 1 then 'intl' else 'us' end as us_intl
 
 from sign_ins as si
-left join all_users_and_geos as ug on si.user_id = ug.user_id
+join all_users u on si.user_id = u.user_id --inner join to preserve filterd out deleted users
+left join user_geos ug on si.user_id = ug.user_id
 left join
     school_years as sy
     on sign_in_at::date between sy.started_at and sy.ended_at

@@ -3,41 +3,10 @@ accounts created by month - user account was created in the given month (and yea
 segmented by student/
 EXCLUDING "dummy accounts" - student accounts created but don't have a sign_in attempt.
 use case: teacher creates a section of picture accounts many of which don't get used.
+
+NOTE: right now delted accounts are filtered out at the base_users table.  Waiting on a change
+to that in order to make these counts accurate.
 #}
--- with student_accounts as (
---     select
---         student_id,
---         user_type,
---         is_international,
---         created_at,
---         created_at_school_year
---     from {{ ref('dim_students') }}
---     where current_sign_in_at is not NULL
--- ),
-
--- teacher_accounts as (
-
---     select
---         teacher_id,
---         user_type,
---         is_international,
---         created_at,
---         created_at_school_year
---     from {{ ref('dim_teachers') }}
---     where current_sign_in_at is not NULL -- don't think NULL is possible for a teacher account, but doing for sense of completion
--- ),
-
--- all_accounts as (
---     select
---         student_id as user_id,
---         user_type,
---         is_international,
---         created_at,
---         created_at_school_year
---     from student_accounts
---     union all
---     select * from teacher_accounts
--- )
 
 with all_users as (
     select 
@@ -64,9 +33,9 @@ with all_users as (
     from {{ ref('int_school_years') }}
 )
 select
-    count(distinct user_id) as num_accounts_created,
-    date_part(month, created_at) as account_created_month,
-    date_part(year, created_at) as account_created_year,
+    count(distinct user_id) as num_accounts,
+    date_part(month, created_at) as created_at_month,
+    date_part(year, created_at) as created_at_year,
     sy.school_year as created_at_school_year,
     user_type,
     case when is_international = 1 then 'intl' else 'us' end as us_intl
