@@ -54,19 +54,24 @@ with all_users as (
         is_international
     from {{ref('stg_dashboard__user_geos')}}
 )
-,all_users_and_geos as (
+,all_accounts as (
     select u.*, ug.is_international
     from all_users u
     left join user_geos ug on ug.user_id = u.user_id
+)
+, school_years as (
+    select *
+    from {{ ref('int_school_years') }}
 )
 select
     count(distinct user_id) as num_accounts_created,
     date_part(month, created_at) as account_created_month,
     date_part(year, created_at) as account_created_year,
-    created_at_school_year,
+    sy.school_year as created_at_school_year,
     user_type,
     case when is_international = 1 then 'intl' else 'us' end as us_intl
-from all_accounts
+from all_accounts ac
+left join school_years sy on ac.created_at::date between sy.started_at and sy.ended_at
 group by 2, 3, 4, 5, 6
 order by
     account_created_year asc,
