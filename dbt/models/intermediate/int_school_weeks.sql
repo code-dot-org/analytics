@@ -48,7 +48,14 @@ METHOD:
 
 -- Next 3 CTEs are SQL-y way of generating all the days (dates) from the beginning of code.org
 -- time, culminating in the CTE 'date_range'
-with numbers_small as (
+with 
+
+school_years as (
+    select * 
+    from {{ ref('seed_school_years') }}
+),
+
+numbers_small as (
     select 0 as num
     union all
     select 1
@@ -78,17 +85,15 @@ numbers_large as (
     cross join numbers_small as d
     cross join numbers_small as e
     order by 1
-)
-, date_range as (
+),
+
+date_range as (
     select
         sy.school_year,
         '2013-07-01'::date + num as date,
         date_part(week, date) as iso_week
-
-
     from numbers_large
-    left join
-        {{ ref('seed_school_years') }} as sy
+    left join school_years sy
         on
             '2013-07-01'::date
             + num between sy.started_at::date and sy.ended_at::date
@@ -105,7 +110,7 @@ flagged_week_changes as (
             when
                 iso_week != prev_iso_week
                 or (date_part(month, date) = 7 and date_part(day, date) = 1)
-                then 'flag'
+            then 'flag'
         end as week_change
     from date_range dr
     order by dr.date
@@ -115,19 +120,21 @@ school_week_calc as (
     select
         *,
         -- the school year week is the sum of all the "flagged" iso_week changes, including july 1, partition by school year so counting starts over each july 1
-        sum(case when week_change = 'flag' then 1 else 0 end)
+        sum(
+            case 
+                when week_change = 'flag' 
+                then 1 
+                else 0 
+            end)
             over (
                 partition by school_year
                 order by date rows between unbounded preceding and current row
-            )
-
-        as school_year_week
+            ) as school_year_week
     from flagged_week_changes
     order by date
 )
 
 select
-
     school_year,
     iso_week,
     school_year_week,
@@ -139,5 +146,4 @@ group by
     school_year,
     iso_week,
     school_year_week
-
 order by started_at
