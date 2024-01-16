@@ -8,7 +8,9 @@ NOTE: right now delted accounts are filtered out at the base_users table.  Waiti
 to that in order to make these counts accurate.
 #}
 
-with all_users as (
+with 
+
+all_users as (
     select 
         user_id,
         user_type,
@@ -16,34 +18,44 @@ with all_users as (
         current_sign_in_at
     from {{ref('stg_dashboard__users')}}
     where current_sign_in_at is not NULL -- don't count "dummy accounts"
-)
-, user_geos as (
+),
+
+user_geos as (
     select 
         user_id,
         is_international
     from {{ref('stg_dashboard__user_geos')}}
-)
-,all_accounts as (
+),
+
+all_accounts as (
     select u.*, ug.is_international
     from all_users u
     left join user_geos ug on ug.user_id = u.user_id
-)
-, school_years as (
+),
+
+school_years as (
     select *
     from {{ ref('int_school_years') }}
+),
+
+final as (
+    select
+        user_type,
+        case when is_international = 1 then 'intl' else 'us' end        as us_intl,
+        sy.school_year                                                  as created_at_school_year,
+        date_part(year, created_at)                                     as created_at_year,
+        date_part(month, created_at)                                    as created_at_month,
+        count(distinct user_id) as num_accounts
+    from all_accounts ac
+    left join school_years sy 
+        on ac.created_at::date between sy.started_at and sy.ended_at
+    {{ dbt_utils.group_by(5) }}
+    order by
+        created_at_year asc,
+        created_at_month asc,
+        user_type asc,
+        us_intl desc
 )
-select
-    count(distinct user_id) as num_accounts,
-    date_part(month, created_at) as created_at_month,
-    date_part(year, created_at) as created_at_year,
-    sy.school_year as created_at_school_year,
-    user_type,
-    case when is_international = 1 then 'intl' else 'us' end as us_intl
-from all_accounts ac
-left join school_years sy on ac.created_at::date between sy.started_at and sy.ended_at
-group by 2, 3, 4, 5, 6
-order by
-    account_created_year asc,
-    account_created_month asc,
-    user_type asc,
-    us_intl desc
+
+select * 
+from final
