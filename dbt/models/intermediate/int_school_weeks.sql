@@ -5,29 +5,30 @@ This creates a corallary to int_school_years, but for weeks of the school year i
 We frequently need to Report metrics on a weekly basis based on timestamps.  We want to do this using
 ISO weeks to the greatest extent possible, however, because our school year is defined to start on July 1 and end June 30.
 It means that the start of the school year can start either in ISO week 26 or 27 depending on the year.
-Furthermore, some years I have 52 weeks and some bleed into a 53rd week.
-When reporting you're over a year metrics based on school year, we want to line up the beginning of the year with July 1
-But adhere to standard iso week, boundaries as much as possible, since it's likely that other metrics might be grouped the same way.
+Furthermore, some years have 52 weeks and some bleed into a 53rd week.
+
+When reporting YoY metrics based on school year, we want to line up the beginning of the year with July 1, but 
+adhere to standard iso week boundaries as much as possible, since it's likely that other metrics might be grouped the same way.
 
 The SOLUTION. 
 
-1. This table numbers the "school year weeks" with week 1 being possibly a fragment (less than 7 days) of a week that starts with July 1,
-and stops at the ISO week boundary that first comes after july 1.
+1. This table numbers the "school year weeks" with week 1 possibly being a fragment (less than 7 days) of a week that starts with July 1,
+and stops at the frist ISO week boundary that comes after july 1.
 
-2. Weeks 2 through 51 fall on standard I so weak boundaries.
+2. Weeks 2 through 51 fall on standard ISO week boundaries.
 
-3. Week 52 (or 53 depending on the year) is another possible fragment of a week running from the ISO week boundary that is closest to June 30,
-and running up through June 30.
+3. Week 52 (or 53, depending on the year) is another possible fragment of a week running from the ISO week boundary that is closest to June 30,
+and running up through and including June 30.
 
-As a result, for example, the end of one school (june 30) and the start of another (july 1) year may fall entirely within ISO week 27, but in
-this table that might be split between "school year week" 52 (being 4 days) and school year week 1 of the next year being 3 days.
+As a result, for example, the end of one school year (june 30) and the start of another (july 1) may fall entirely within ISO week 27, but in
+this table you might see ISO week 27 split between "school year week" 52 (being 4 days) and school year week 1 of the next year being 3 days.
 
-The final table includes started_at and ended_at fields for joining to (a la our traditional practice with int_school_years)
-And for each school year week it also includes an ISO week reference.  Again, ISO weeks match up 1:1 with school_year weeks (albeit different values)
-EXCEPT for the week 52/week 1 boundaries.  
+The final table includes `started_at` and `ended_at` fields for joining (to align to our traditional practice with int_school_years).
+And for each school year week it also includes an ISO week reference.  Again, ISO week boundaries match up 1:1 with school_year week boundaries 
+EXCEPT for the school_year week 52/week 1 boundaries.  
 
 METHOD:
-1. Generate all possible dates (literally all the days) and their iso weeks from the beginning of code.org time (~July 1, 2013)
+1. Generate all possible dates (literally all the days) and their ISO weeks from the beginning of Code.org time (~July 1, 2013)
 2. Flag all the weeks where either the ISO week changes between days OR the school year changes
 3. The "school year week" is the sum/count of all the flags up to that date WITHIN (partitioned by) that school year. 
 
