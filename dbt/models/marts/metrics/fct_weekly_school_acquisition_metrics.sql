@@ -7,14 +7,9 @@ school_status as (
 dim_schools as (
     select * 
     from {{ ref('dim_schools') }}
-)
---, start_week_by_sy as (
---     select
---        school_year,
---        iso_start_week
---     from {{ref("int_school_years")}} 
--- )
-,school_status_sy as (
+),
+
+school_status_sy as (
     select 
         school_status.school_id,
         school_status.school_year,
@@ -26,9 +21,11 @@ dim_schools as (
     left join dim_schools 
         on school_status.school_id = dim_schools.school_id
 ),
+
 school_weeks as (
     select * FROM {{ref('int_school_weeks')}}
 )
+
 , active_schools_by_week as (
     select 
         sssy.school_year,
@@ -48,6 +45,7 @@ school_weeks as (
     group by 1,2,3,4,5,6,7
 
 ),
+
 running_totals_by_week as (
     select
         school_year,
@@ -79,14 +77,14 @@ running_totals_by_week as (
 
 report_by_week as (
     select
-        'elementary' as school_level,
+        'elementary'                as school_level,
         school_year,
         status,
-        start_week,
+        start_week                  as iso_week,
         school_year_week,
         week_of,
-        el_schools as num_schools_this_week,
-        el_running_total as num_schools_running_total
+        el_schools                  as num_schools_this_week,
+        el_running_total            as num_schools_running_total
     
     from running_totals_by_week
 
@@ -94,27 +92,27 @@ report_by_week as (
     union all
   
     select
-        'middle' as school_level,
+        'middle'                    as school_level,
         school_year,
         status,
-        start_week,
+        start_week                  as iso_week,
         school_year_week,
         week_of,
-        mi_schools as num_schools_this_week,
-        mi_running_total as num_schools_running_total
+        mi_schools                  as num_schools_this_week,
+        mi_running_total            as num_schools_running_total
     from running_totals_by_week
 
     union all
   
     select
-        'high' as school_level,
+        'high'                      as school_level,
         school_year,
         status,
-        start_week,
+        start_week                  as iso_week,
         school_year_week,
         week_of,
-        hi_schools as num_schools_this_week,
-        hi_running_total as num_schools_running_total
+        hi_schools                  as num_schools_this_week,
+        hi_running_total            as num_schools_running_total
     from running_totals_by_week
 )
 
