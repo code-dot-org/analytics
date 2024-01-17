@@ -34,18 +34,6 @@ METHOD:
 
 #}
 
-
-
--- This JINJA worked to generate all the days I think but was really slow.  Defered to composing in CTEs below with unions, joins, and multiplication
--- {% set n = 15000 %} -- Set your desired range here
--- with numbers_large as (
--- {% for i in range(n) %}
---     select {{ i }} as num
---     {% if not loop.last %}union all{% endif %}
--- {% endfor %}
--- )
-
-
 -- Next 3 CTEs are SQL-y way of generating all the days (dates) from the beginning of code.org
 -- time, culminating in the CTE 'date_range'
 with 
