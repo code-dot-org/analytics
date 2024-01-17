@@ -30,7 +30,7 @@ renamed as (
         -- user demogrphic info
         user_type,
         birthday,
-        datediff(year,birthday,current_date ) as age_years_today,
+        datediff(year,birthday,current_date ) as age_years,
         --nullif(lower(gender),'') as gender, 
 
         -- logic for gender code
