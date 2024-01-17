@@ -1,3 +1,4 @@
+
 with 
 school_status as (
     select * 
@@ -20,9 +21,11 @@ school_status_sy as (
     from school_status 
     left join dim_schools 
         on school_status.school_id = dim_schools.school_id
-),
+)
+-- DEBUGGING data type of school_started at
+--SELECT * FROM school_status_sy
 
-school_weeks as (
+, school_weeks as (
     select * FROM {{ref('int_school_weeks')}}
 )
 
@@ -44,9 +47,8 @@ school_weeks as (
     where status like 'active %'
     group by 1,2,3,4,5,6,7
 
-),
-
-running_totals_by_week as (
+)
+, running_totals_by_week as (
     select
         school_year,
         status,
@@ -118,7 +120,9 @@ report_by_week as (
 
 select * 
 from report_by_week 
-
+-- where school_level = 'high'
+-- and school_year = '2022-23'
+-- and status = 'active new'
 
 
 
