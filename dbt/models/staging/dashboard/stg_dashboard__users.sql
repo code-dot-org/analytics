@@ -27,10 +27,10 @@ renamed as (
         case when user_type = 'teacher' then user_id end as teacher_id,
         studio_person_id,
 
-        -- user info
+        -- user demogrphic info
         user_type,
         birthday,
-        datediff(year,birthday,current_date ) as age_years,
+        datediff(year,birthday,current_date ) as age_years_today,
         --nullif(lower(gender),'') as gender, 
 
         -- logic for gender code
@@ -46,7 +46,7 @@ renamed as (
         -- logic for making single-race/ethnicity designation. order of operations matters.
         case 
             -- If races matches any of these specific strings, return 'no_response'
-            -- These are all versions of choosing not to respond 
+            -- These are all versions of user choosing not to respond and is distinct from NULL
             when races IN ('closed_dialog', 'nonsense', 'opt_out') THEN 'no_response'
             
             -- hispanic with anything else = hispanic
