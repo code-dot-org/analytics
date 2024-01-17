@@ -29,8 +29,39 @@ renamed as (
 
         -- user info
         user_type,
+        birthday,
         datediff(year,birthday,current_date ) as age_years,
-        nullif(lower(gender),'') as gender,
+        --nullif(lower(gender),'') as gender, 
+
+        -- logic for gender code
+        case 
+            when gender = 'm' then 'm'
+            when gender = 'f' then 'f'
+            when gender = 'n' then 'nb' ------  non-binary
+            when gender = 'o' then 'nl' ------  not listed
+            when gender = '' OR gender = '-' then 'no_response' ----  empty string or '-'
+            else null
+        end as gender,
+    
+        -- logic for making single-race/ethnicity designation. order of operations matters.
+        case 
+            -- If races matches any of these specific strings, return 'no_response'
+            -- These are all versions of choosing not to respond 
+            when races IN ('closed_dialog', 'nonsense', 'opt_out') THEN 'no_response'
+            
+            -- hispanic with anything else = hispanic
+            when races LIKE '%hispanic%' THEN 'hispanic'
+
+            -- If races contains a comma, return 'tr' (_T_wo or more _R_aces), a common abbreviation
+            when races LIKE '%,%' THEN 'tr'
+
+            -- If races is NULL, return NULL.  NULL is different from no_response
+            when races IS NULL THEN NULL
+
+            -- Default case: return the input value
+            else races -- should be a single race. Additional logic may be required here in the future
+        END race,
+
         is_urg,
 
         -- misc.
