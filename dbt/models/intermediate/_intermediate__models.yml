@@ -2,7 +2,7 @@ version: 2
 
 models: 
   - name: int_active_sections
-    description: mapping active sections to student, teacher, school
+    description: all sections passing the "active" threshold in a given school year (5+ students completing 1+ levels of same course)
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -26,9 +26,7 @@ models:
             - school_id 
 
   - name: int_teacher_schools_historical
-    # description: ""
-    # tests: @allison @baker to update
-
+    description: all historical school associations made by teachers-- for a given school year, it takes their most recent school selection
     
   - name: int_user_levels
     description: xref model for user_level foreign keys (could also be a fact table with a few more columns...)

@@ -10,7 +10,7 @@ models:
           - unique
   
   - name: dim_school_stats_by_years
-    description: most recent school-level information + metrics about all NCES schools
+    description: historical record of all NCES school stats and associated calculations
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -25,13 +25,34 @@ models:
     #       - school_year
     #       - school_id
     columns:
+      - name: school_id
+        description: NCES school ID (this school must have been selected by teacher via NCES dropdown in account setup)
+      - name: school_year
+        description: school year in which an activity status is assigned
       - name: status
         description: '{{ doc("dim_school_status_status") }}'
+      - name: school_started_at
+        description: time of first activity from an active section at this school in this school year
+      - name: active_courses
+        description: comma separated list of courses associated with active sections at this school in this school year
 
   - name: dim_schools
-    description: school-level information for the most recent school year it is updated for
+    description: NCES school-level information for the most recent school year it is updated for
     columns: 
-      - name: school_id 
+      - name: school_id
+        description: the NCES id associated with a school 
         tests:
           - not_null
           - unique
+      - name: school_year
+        description: the school year associated with the most recent information about this school from NCES
+      - name: is_stage_el
+        description: binary; 1 if the school has any grade levels 0-5, 0 if not 
+      - name: is_stage_mi
+        description: binary; 1 if the school has any grade levels 6-8, 0 if not 
+      - name: is_stage_hi
+        description: binary; 1 if the school has any grade levels 9-12, 0 if not 
+      - name: school_level_simple
+        description: a combination of all school levels the school contains, separated by underscores
+      - name: total_urg_no_tr_students
+        description: total number of URG students, excluding those identifying as two or more races
