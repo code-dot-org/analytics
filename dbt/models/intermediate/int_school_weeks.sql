@@ -72,7 +72,6 @@ numbers_large as (
     cross join numbers_small as c
     cross join numbers_small as d
     cross join numbers_small as e
-    order by 1
 ),
 
 date_range as (
@@ -101,7 +100,6 @@ flagged_week_changes as (
             then 'flag'
         end as week_change
     from date_range dr
-    order by dr.date
 ),
 
 school_week_calc as (
@@ -119,7 +117,6 @@ school_week_calc as (
                 order by date rows between unbounded preceding and current row
             ) as school_year_week
     from flagged_week_changes
-    order by date
 )
 
 select
