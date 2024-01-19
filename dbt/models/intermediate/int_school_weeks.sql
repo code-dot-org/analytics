@@ -134,4 +134,3 @@ group by
     school_year,
     iso_week,
     school_year_week
-order by started_at
