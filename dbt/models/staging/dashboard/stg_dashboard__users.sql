@@ -43,7 +43,8 @@ renamed as (
         current_sign_in_at,
         last_sign_in_at,
         created_at,
-        updated_at,     
+        updated_at,  
+        deleted_at,   
         purged_at
     from users
 )
