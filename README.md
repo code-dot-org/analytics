@@ -3,9 +3,9 @@
 Hello friend,dbt Environment
 Welcome to the cdo-analytics dbt codebase. The following models and configurations are used to transform, load, and model data from our application into our data warehouse. Our anticipated release schedule is as follows:
 
-## Release                            Release Date (antc.)
-[Pre-Release] **Hydrone** v1.0.2023   2023-12-15
-[Release 1] **Hydrone** v1.1.2024     2024-02-05
+## Release Name (Release Date)
+0. [Pre-Release] **Hydrone** v1.0.2023   2023-12-15
+1. [Release 1] **Hydrone** v1.1.2024     2024-02-05
 
 
 ### Using dbt
