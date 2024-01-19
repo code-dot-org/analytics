@@ -18,10 +18,9 @@ For starters, you should set-up a local dbt-core install or dbt Cloud environmen
 
 After you set up dbt, try running the following commands:
 
-`dbt run
-`dbt test
-`dbt debug
-`dbt deps
+`dbt clean && dbt deps`
+`dbt debug`
+`dbt run --select /dbt/models/marts/*`
 
 #### Resources:
 Our style guide (for the most part...)
