@@ -17,14 +17,14 @@ school_status_sy as (
         school_status.status,
         school_status.active_courses,
         dim_schools.school_level_simple,
+        dim_schools.is_stage_el,
+        dim_schools.is_stage_mi,
+        dim_schools.is_stage_hi,
         school_status.school_started_at
     from school_status 
     left join dim_schools 
         on school_status.school_id = dim_schools.school_id
 )
--- DEBUGGING data type of school_started at
---SELECT * FROM school_status_sy
-
 , school_weeks as (
     select * FROM {{ref('int_school_weeks')}}
 )
@@ -32,20 +32,20 @@ school_status_sy as (
 , active_schools_by_week as (
     select 
         sssy.school_year,
-        school_level_simple,
-        status,
-        date_part(week, school_started_at) as start_week,
-        sw.iso_week,
+        sssy.school_level_simple,
+        sssy.is_stage_el,
+        sssy.is_stage_mi,
+        sssy.is_stage_hi,
+        sssy.status,
+        sw.iso_week start_week,
         sw.school_year_week,
         sw.started_at week_of,
-        --(start_week + 26) % 52 as sy_week_order, -- hardcoded for now, make dynamic later
-        --min(school_started_at) as week_of,
         count(distinct school_id) as num_schools
     from school_status_sy sssy
     left join school_weeks sw
         on school_started_at between sw.started_at and sw.ended_at
     where status like 'active %'
-    group by 1,2,3,4,5,6,7
+    group by 1,2,3,4,5,6,7,8,9
 
 )
 , running_totals_by_week as (
@@ -55,9 +55,9 @@ school_status_sy as (
         start_week,
         school_year_week,
         min(week_of)::date week_of,
-        sum(case when school_level_simple like '%el%' then num_schools else 0 end) as el_schools,
-        sum(case when school_level_simple like '%mi%' then num_schools else 0 end) as mi_schools,
-        sum(case when school_level_simple like '%hi%' then num_schools else 0 end) as hi_schools,
+        sum(case when is_stage_el=1 then num_schools else 0 end) as el_schools,
+        sum(case when is_stage_mi=1 then num_schools else 0 end) as mi_schools,
+        sum(case when is_stage_hi=1 then num_schools else 0 end) as hi_schools,
         sum(el_schools) over (
             partition by school_year, status order by school_year_week
             rows between unbounded preceding and current row
@@ -120,11 +120,3 @@ report_by_week as (
 
 select * 
 from report_by_week 
--- where school_level = 'high'
--- and school_year = '2022-23'
--- and status = 'active new'
-
-
-
-
-

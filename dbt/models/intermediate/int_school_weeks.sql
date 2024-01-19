@@ -124,8 +124,8 @@ school_week_calc as (
 
 select
     school_year,
-    iso_week,
-    school_year_week,
+    iso_week::integer,
+    school_year_week::integer,
     min(date)::timestamp as started_at,     --0:0:0 on start date
     dateadd(s, -1, max(date)+1) as ended_at,  --subtract 1 second from the next day to give 23:59:59 on end date
     (ended_at::date - started_at::date) + 1 as days_interval
