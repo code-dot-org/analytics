@@ -1,7 +1,12 @@
 # code-dot-org/analytics
 
-Hello friend,dbt Environment
-Welcome to the cdo-analytics dbt codebase. The following models and configurations are used to transform, load, and model data from our application into our data warehouse. Our anticipated release schedule is as follows:
+Hello friend,
+
+Welcome to the cdo-analytics dbt codebase. 
+
+The following models and configurations are used to transform, load, and model data from our studio application (amongst other third party sources) into our data warehouse. 
+
+Our anticipated release schedule is as follows:
 
 ## Release Name (Release Date)
 0. [Pre-Release] **Hydrone** v1.0.2023   2023-12-15
@@ -13,11 +18,12 @@ For starters, you should set-up a local dbt-core install or dbt Cloud environmen
 
 After you set up dbt, try running the following commands:
 
-dbt run
-dbt test
-dbt debug
-dbt deps
-Resources:
+`dbt run
+`dbt test
+`dbt debug
+`dbt deps
+
+#### Resources:
 Our style guide (for the most part...)
 For best practices in our design and implementation.
 For our sql style-guide (for the most part... no CAPS, TAB only, generous /n
