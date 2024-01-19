@@ -37,7 +37,7 @@ school_status_sy as (
         sssy.is_stage_mi,
         sssy.is_stage_hi,
         sssy.status,
-        sw.iso_week start_week,
+        sw.iso_week start_week, --keeping start_week alias for now, even though the output gets re-aliased as iso_week
         sw.school_year_week,
         sw.started_at week_of,
         count(distinct school_id) as num_schools
