@@ -2,7 +2,8 @@ with
  __dbt__cte__base_dashboard__levels_script_levels as (
 with 
 source as (
-      select * from "dashboard"."dashboard_production"."levels_script_levels"
+    select * 
+    from "dashboard"."dashboard_production"."levels_script_levels"
 ),
 
 renamed as (
@@ -12,9 +13,12 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed
 ), level_script_levels as (
-    select * from __dbt__cte__base_dashboard__levels_script_levels
+    select * 
+    from __dbt__cte__base_dashboard__levels_script_levels
 )
 
-select * from level_script_levels
+select * 
+from level_script_levels

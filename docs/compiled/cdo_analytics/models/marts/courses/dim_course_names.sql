@@ -1,7 +1,7 @@
 with 
 course_names as (
     select * 
-    from "dev"."dbt_allison"."seed_course_names"
+    from "dev"."dbt_jordan"."seed_course_names"
 )
 
 select * 

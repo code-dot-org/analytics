@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from "dashboard"."dashboard_production_pii"."peer_reviews"
+    select * 
+    from "dashboard"."dashboard_production_pii"."peer_reviews"
 ),
 
 renamed as (
@@ -12,7 +13,7 @@ renamed as (
         script_id,
         level_id,
         level_source_id,
-        data,
+        -- data,
         status,
         created_at,
         updated_at,
@@ -20,4 +21,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed

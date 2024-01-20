@@ -1,47 +1,49 @@
+
+
 with 
 scripts as (
     select *
-    from "dev"."dbt_allison"."stg_dashboard__scripts" 
+    from "dev"."dbt_jordan"."stg_dashboard__scripts" 
 ),
 
 levels as (
     select * 
-    from "dev"."dbt_allison"."stg_dashboard__levels"
+    from "dev"."dbt_jordan"."stg_dashboard__levels"
     ),
 
 stages as (
     select *
-    from "dev"."dbt_allison"."stg_dashboard__stages"
+    from "dev"."dbt_jordan"."stg_dashboard__stages"
 ),
 
 script_levels as (
     select *
-    from "dev"."dbt_allison"."stg_dashboard__script_levels"
+    from "dev"."dbt_jordan"."stg_dashboard__script_levels"
 ),
 
 levels_script_levels as (
     select * 
-    from "dev"."dbt_allison"."stg_dashboard__levels_script_levels"
+    from "dev"."dbt_jordan"."stg_dashboard__levels_script_levels"
 ),
 
 course_scripts as (
     select * 
-    from "dev"."dbt_allison"."stg_dashboard__course_scripts"
+    from "dev"."dbt_jordan"."stg_dashboard__course_scripts"
 ),
 
 unit_groups as (
     select * 
-    from "dev"."dbt_allison"."stg_dashboard__unit_groups"
+    from "dev"."dbt_jordan"."stg_dashboard__unit_groups"
 ),
 
 course_names as (
     select *
-    from "dev"."dbt_allison"."dim_course_names"
+    from "dev"."dbt_jordan"."dim_course_names"
 ),
 
 script_names as (
     select * 
-    from "dev"."dbt_allison"."dim_script_names" --modeled seed file (otherwise, we don't ref() other dim tables in marts)
+    from "dev"."dbt_jordan"."dim_script_names" 
 ),
 
 combined as (
@@ -94,4 +96,5 @@ combined as (
         on sc.script_id = sn.versioned_script_id
 )
 
-select * from combined
+select * 
+from combined

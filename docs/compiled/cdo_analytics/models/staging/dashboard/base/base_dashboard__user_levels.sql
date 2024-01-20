@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from "dashboard"."dashboard_production"."user_levels"
+      select * 
+      from "dashboard"."dashboard_production"."user_levels"
 ),
 
 renamed as (
@@ -17,10 +18,10 @@ renamed as (
         time_spent,
         submitted                   as is_submitted,
         readonly_answers            as is_read_only_answers,
-        unlocked_at,
-        deleted_at,
-        properties
+        unlocked_at
+        -- properties
     from source
 )
 
-select * from renamed where created_at > '2023-01-01'
+select * 
+from renamed

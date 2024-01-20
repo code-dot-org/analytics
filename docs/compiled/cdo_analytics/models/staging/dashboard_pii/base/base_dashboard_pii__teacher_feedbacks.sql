@@ -1,18 +1,19 @@
 with 
 source as (
-      select * from "dashboard"."dashboard_production_pii"."teacher_feedbacks"
+    select * 
+    from "dashboard"."dashboard_production_pii"."teacher_feedbacks"
+    where not deleted_at
 ),
 
 renamed as (
     select
         id as teacher_feedback_id,
-        comment,
+        -- comment,
         student_id,
         level_id,
         teacher_id,
         created_at,
         updated_at,
-        deleted_at,
         performance,
         student_visit_count,
         student_first_visited_at,
@@ -24,4 +25,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed

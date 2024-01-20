@@ -2,7 +2,8 @@ with
  __dbt__cte__base_dashboard__unit_groups as (
 with 
 source as (
-      select * from "dashboard"."dashboard_production"."unit_groups"
+    select * 
+    from "dashboard"."dashboard_production"."unit_groups"
 ),
 
 renamed as (
@@ -19,9 +20,12 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed
 ), unit_groups as (
-    select * from __dbt__cte__base_dashboard__unit_groups
+    select * 
+    from __dbt__cte__base_dashboard__unit_groups
 )
 
-select * from unit_groups
+select * 
+from unit_groups

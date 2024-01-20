@@ -1,6 +1,8 @@
 with 
 source as (
-      select * from "dashboard"."dashboard_production"."users"
+      select * 
+      from "dashboard"."dashboard_production"."users"
+      --where deleted_at is null 
 ),
 
 renamed as (
@@ -12,8 +14,7 @@ renamed as (
         last_sign_in_at,
         created_at,
         updated_at,
-        provider,
-        admin,
+        deleted_at,        
         gender,
         locale,
         birthday,
@@ -21,16 +22,12 @@ renamed as (
         school_info_id,
         total_lines,
         active                      as is_active,
-        deleted_at,
         purged_at,
-        invited_by_id,
-        invited_by_type,
-        terms_of_service_version,
-        urm                         as is_urm,
+        urm                         as is_urg,
         races,
         primary_contact_info_id
-
     from source
 )
 
-select * from renamed
+select * 
+from renamed

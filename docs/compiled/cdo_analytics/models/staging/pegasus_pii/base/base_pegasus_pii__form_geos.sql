@@ -1,11 +1,11 @@
 with 
 source as (
-      select * from "dashboard"."pegasus_pii"."form_geos"
+    select * 
+    from "dashboard"."pegasus_pii"."form_geos"
 ),
 
 renamed as (
     select
-     
         id as form_geo_id,
         form_id,
         created_at,
@@ -19,4 +19,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed

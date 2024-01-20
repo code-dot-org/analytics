@@ -1,7 +1,8 @@
 with  __dbt__cte__base_dashboard_pii__pd_workshops_facilitators as (
 with 
 source as (
-      select * from "dashboard"."dashboard_production_pii"."pd_workshops_facilitators"
+    select * 
+    from "dashboard"."dashboard_production_pii"."pd_workshops_facilitators"
 ),
 
 renamed as (
@@ -11,10 +12,12 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed
 ), pd_workshop_facilitators as (
     select * 
     from __dbt__cte__base_dashboard_pii__pd_workshops_facilitators
 )
 
-select * from pd_workshop_facilitators
+select * 
+from pd_workshop_facilitators

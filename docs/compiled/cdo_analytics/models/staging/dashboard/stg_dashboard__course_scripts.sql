@@ -2,7 +2,8 @@ with
  __dbt__cte__base_dashboard__course_scripts as (
 with 
 source as (
-      select * from "dashboard"."dashboard_production"."course_scripts"
+    select * 
+    from "dashboard"."dashboard_production"."course_scripts"
 ),
 
 renamed as (
@@ -16,9 +17,12 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed
 ), course_scripts as (
-    select * from __dbt__cte__base_dashboard__course_scripts
+    select * 
+    from __dbt__cte__base_dashboard__course_scripts
 )
 
-select * from course_scripts
+select * 
+from course_scripts

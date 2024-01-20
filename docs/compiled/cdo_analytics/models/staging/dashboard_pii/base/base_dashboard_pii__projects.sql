@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from "dashboard"."dashboard_production_pii"."projects"
+    select * 
+    from "dashboard"."dashboard_production_pii"."projects"
 ),
 
 renamed as (
@@ -9,7 +10,7 @@ renamed as (
         storage_id,
         value,
         updated_at,
-        updated_ip,
+        -- updated_ip,
         state,
         created_at,
         abuse_score,
@@ -21,4 +22,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed

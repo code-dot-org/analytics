@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from "dashboard"."dashboard_production"."user_proficiencies"
+    select * 
+    from "dashboard"."dashboard_production"."user_proficiencies"
 ),
 
 renamed as (
@@ -64,4 +65,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed

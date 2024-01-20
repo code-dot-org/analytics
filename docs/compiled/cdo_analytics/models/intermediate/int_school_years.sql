@@ -1,8 +1,17 @@
+
+
 with 
 school_years as (
-    select * 
-    from "dev"."dbt_allison"."seed_school_years"
+    select
+        school_year::varchar,
+        school_year_int::integer,
+        started_at::timestamp,
+        ended_at::timestamp,
+        school_year_long::varchar
+    from "dev"."dbt_jordan"."seed_school_years"
 )
 
-select * 
+select
+*
 from school_years
+where current_date >= started_at
