@@ -1,57 +1,78 @@
 with 
 teachers as (
-    select "user_id",
+    select 
+    "teacher_id",
   "studio_person_id",
+  "user_type",
+  "age_years",
+  "gender",
+  "locale",
   "sign_in_count",
+  "school_info_id",
+  "total_lines",
   "current_sign_in_at",
   "last_sign_in_at",
   "created_at",
   "updated_at",
-  "provider",
-  "gender",
-  "locale",
-  "user_type",
-  "school_info_id",
-  "total_lines",
-  "is_active",
-  "deleted_at",
-  "purged_at",
-  "invited_by_id",
-  "invited_by_type",
-  "terms_of_service_version",
-  "is_urm",
-  "races"
-    from "dev"."dbt_allison"."stg_dashboard__users"
-    where user_type = 'teacher'
-        and purged_at is null 
-        and created_at >= '2023-01-01'
+  "purged_at"
+    from "dev"."dbt_jordan"."stg_dashboard__users"
+    where teacher_id is not null 
 ),
 
 user_geos as (
     select 
-        user_id,
-        is_international,
-        lower(country) as country
-    from "dev"."dbt_allison"."stg_dashboard__user_geos"
-    where user_id in (select user_id from teachers)
+        user_id, 
+        is_international
+    from "dev"."dbt_jordan"."stg_dashboard__user_geos"
+    where user_id in (select teacher_id from teachers)
 ),
 
- 
+user_school_infos as (
+    select * 
+    from "dev"."dbt_jordan"."stg_dashboard_pii__user_school_infos"
+),
 
-combined as (
+school_infos as (
+    select * 
+    from "dev"."dbt_jordan"."stg_dashboard__school_infos"
+), 
+
+school_years as (
+    select * 
+    from "dev"."dbt_jordan"."int_school_years"
+),
+
+-- get teacher NCES school_id association
+teacher_schools as (
     select 
-        teachers.user_id as teacher_user_id,
-        teachers.gender,
-        teachers.is_urm,
-        teachers.races,
-        teachers.is_active,
-        teachers.school_info_id,
-        ug.is_international,
-        ug.country
-    from teachers 
-    left join user_geos as ug 
-        on teachers.user_id = ug.user_id
+        teachers.teacher_id,
+        si.school_id,
+        rank () over (partition by teachers.teacher_id order by si.school_id, usi.ended_at desc) rnk
+    from teachers
+    left join user_school_infos as usi    
+        on usi.user_id = teachers.teacher_id
+    left join school_infos as si 
+        on si.school_info_id = usi.school_info_id
+    where si.school_id is not null
+),
+
+teacher_latest_school as (
+    select 
+        teacher_id,
+        school_id
+    from teacher_schools
+    where rnk = 1
 )
 
-select * 
-from combined
+select 
+    teachers.*, 
+    school_years.school_year as created_at_school_year,
+    tls.school_id,
+    user_geos.is_international
+from teachers 
+join user_geos 
+    on teachers.teacher_id = user_geos.user_id
+left join teacher_latest_school tls 
+    on tls.teacher_id = user_geos.user_id
+left join school_years 
+    on teachers.created_at between school_years.started_at and school_years.ended_at

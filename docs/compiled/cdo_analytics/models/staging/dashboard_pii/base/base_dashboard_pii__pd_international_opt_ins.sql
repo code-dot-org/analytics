@@ -8,7 +8,7 @@ renamed as (
     select 
         id as international_opt_in_id,
         user_id,
-        form_data, -- would do well to unpack this in stg model
+        form_data,
         created_at,
         updated_at
     from source 

@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from "dashboard"."dashboard_production_pii"."pd_teacher_applications"
+    select * 
+    from "dashboard"."dashboard_production_pii"."pd_teacher_applications"
 ),
 
 renamed as (
@@ -9,12 +10,13 @@ renamed as (
         created_at,
         updated_at,
         user_id,
-        primary_email,
-        secondary_email,
+        -- primary_email,
+        -- secondary_email,
         application,
         regional_partner_override,
         program_registration_id
     from source
 )
 
-select * from renamed
+select * 
+from renamed

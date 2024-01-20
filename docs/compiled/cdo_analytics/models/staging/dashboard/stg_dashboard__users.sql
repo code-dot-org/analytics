@@ -1,8 +1,12 @@
+
+
 with 
  __dbt__cte__base_dashboard__users as (
 with 
 source as (
-      select * from "dashboard"."dashboard_production"."users"
+      select * 
+      from "dashboard"."dashboard_production"."users"
+      --where deleted_at is null 
 ),
 
 renamed as (
@@ -14,8 +18,7 @@ renamed as (
         last_sign_in_at,
         created_at,
         updated_at,
-        provider,
-        admin,
+        deleted_at,        
         gender,
         locale,
         birthday,
@@ -23,22 +26,58 @@ renamed as (
         school_info_id,
         total_lines,
         active                      as is_active,
-        deleted_at,
         purged_at,
-        invited_by_id,
-        invited_by_type,
-        terms_of_service_version,
-        urm                         as is_urm,
+        urm                         as is_urg,
         races,
         primary_contact_info_id
-
     from source
 )
 
-select * from renamed
+select * 
+from renamed
 ), users as (
-    select * 
+    select *
     from __dbt__cte__base_dashboard__users
+    where is_active
+
+    
+
+    and updated_at > (select max(updated_at) from "dev"."dbt_jordan"."stg_dashboard__users" )
+    
+    
+),
+
+renamed as (
+    select 
+        -- PK
+        user_id,
+
+        -- FK's
+        case when user_type = 'student' then user_id end as student_id,
+        case when user_type = 'teacher' then user_id end as teacher_id,
+        studio_person_id,
+
+        -- user info
+        user_type,
+        datediff(year,birthday,current_date ) as age_years,
+        nullif(lower(gender),'') as gender,
+        is_urg,
+
+        -- misc.
+        locale,
+        sign_in_count,
+        school_info_id,
+        total_lines,
+
+        -- dates         
+        current_sign_in_at,
+        last_sign_in_at,
+        created_at,
+        updated_at,  
+        deleted_at,   
+        purged_at
+    from users
 )
 
-select * from users
+select * 
+from renamed

@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from "dashboard"."dashboard_production_pii"."pd_workshops_facilitators"
+    select * 
+    from "dashboard"."dashboard_production_pii"."pd_workshops_facilitators"
 ),
 
 renamed as (
@@ -10,4 +11,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed

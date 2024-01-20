@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from "dashboard"."dashboard_production"."parent_levels_child_levels"
+    select * 
+    from "dashboard"."dashboard_production"."parent_levels_child_levels"
 ),
 
 renamed as (
@@ -13,4 +14,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select *
+from renamed

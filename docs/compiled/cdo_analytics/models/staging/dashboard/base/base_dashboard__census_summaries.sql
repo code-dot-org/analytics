@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from "dashboard"."dashboard_production"."census_summaries"
+    select * 
+    from "dashboard"."dashboard_production"."census_summaries"
 ),
 
 renamed as (
@@ -15,4 +16,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed

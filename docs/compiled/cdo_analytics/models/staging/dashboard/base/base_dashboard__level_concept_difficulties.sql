@@ -1,5 +1,6 @@
 with source as (
-      select * from "dashboard"."dashboard_production"."level_concept_difficulties"
+    select * 
+    from "dashboard"."dashboard_production"."level_concept_difficulties"
 ),
 
 renamed as (
@@ -21,4 +22,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed

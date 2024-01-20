@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from "dashboard"."dashboard_production"."user_geos"
+    select * 
+    from "dashboard"."dashboard_production"."user_geos"
 ),
 
 renamed as (
@@ -12,9 +13,10 @@ renamed as (
         indexed_at,
         city,
         state,
-        country,
+        lower(country) as country,
         postal_code
     from source
 )
 
-select * from renamed
+select * 
+from renamed

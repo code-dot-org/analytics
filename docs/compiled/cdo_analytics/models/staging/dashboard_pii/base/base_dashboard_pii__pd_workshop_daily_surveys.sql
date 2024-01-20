@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from "dashboard"."dashboard_production_pii"."pd_workshop_daily_surveys"
+    select * 
+    from "dashboard"."dashboard_production_pii"."pd_workshop_daily_surveys"
 ),
 
 renamed as (
@@ -11,11 +12,12 @@ renamed as (
         user_id,
         pd_session_id,
         pd_workshop_id,
-        answers,
+        -- answers,
         day,
         created_at,
         updated_at
     from source
 )
 
-select * from renamed
+select * 
+from renamed

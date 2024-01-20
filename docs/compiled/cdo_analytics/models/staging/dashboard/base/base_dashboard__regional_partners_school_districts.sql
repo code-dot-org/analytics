@@ -1,6 +1,7 @@
 with 
 source as (
-      select * from "dashboard"."dashboard_production"."regional_partners_school_districts"
+    select * 
+    from "dashboard"."dashboard_production"."regional_partners_school_districts"
 ),
 
 renamed as (
@@ -12,4 +13,5 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed

@@ -2,7 +2,8 @@ with
  __dbt__cte__base_dashboard__school_infos as (
 with 
 source as (
-      select * from "dashboard"."dashboard_production"."school_infos"
+    select * 
+    from "dashboard"."dashboard_production"."school_infos"
 ),
 
 renamed as (
@@ -25,9 +26,12 @@ renamed as (
     from source
 )
 
-select * from renamed
+select * 
+from renamed
 ), school_infos as (
-    select * from __dbt__cte__base_dashboard__school_infos
+    select * 
+    from __dbt__cte__base_dashboard__school_infos
 )
 
-select * from school_infos
+select * 
+from school_infos

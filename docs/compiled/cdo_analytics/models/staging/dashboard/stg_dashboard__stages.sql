@@ -2,7 +2,8 @@ with
  __dbt__cte__base_dashboard__stages as (
 with 
 source as (
-      select * from "dashboard"."dashboard_production"."stages"
+    select * 
+    from "dashboard"."dashboard_production"."stages"
 ),
 
 renamed as (
@@ -15,14 +16,15 @@ renamed as (
         updated_at,
         lockable            as is_lockable,
         relative_position,
-        properties,
+        -- properties,
         lesson_group_id,
         key,
         has_lesson_plan
     from source
 )
 
-select * from renamed
+select * 
+from renamed
 ), stages as (
     select 
         stage_id,
@@ -34,11 +36,12 @@ select * from renamed
         updated_at,
         is_lockable,
         relative_position,
-        properties,
+        -- properties,
         lesson_group_id,
         key,
         has_lesson_plan        
     from __dbt__cte__base_dashboard__stages
 )
 
-select * from stages
+select * 
+from stages

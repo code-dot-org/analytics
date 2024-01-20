@@ -1,0 +1,55 @@
+-- Note: this data is built using NCES data recevied
+
+with 
+school_stats_by_years as (
+    select 
+        *,
+
+        -- pre-process these totals here
+        sum(count_student_am 
+            + count_student_hi
+            + count_student_bl
+            + count_student_hp)
+        as total_urg_no_tr_students,
+
+        sum(count_student_am
+            + count_student_hi
+            + count_student_bl
+            + count_student_hp
+            + count_student_tr)
+         as total_urg_students,
+
+        sum(count_student_am  
+            + count_student_as  
+            + count_student_hi  
+            + count_student_bl  
+            + count_student_wh  
+            + count_student_hp
+            + count_student_tr)
+        as total_students_calculated
+
+    from "dev"."dbt_jordan"."stg_dashboard__school_stats_by_years"
+    
+    group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40
+),
+
+combined as (
+    select 
+        *,
+
+        -- calculations 
+        total_urg_students / nullif(total_students_calculated,0)::float as urg_percent,
+
+        total_urg_no_tr_students / nullif(total_students_calculated,0)::float as urg_no_tr_percent,
+
+        -- case when total_students_calculated / total_students >= .7
+        --      then total_urg_students / total_students_calculated
+        -- end as urg_percent_true,
+        
+        total_frl_eligible_students / nullif(total_students,0)::float as frl_eligible_percent
+
+    from school_stats_by_years
+)
+
+select *
+from combined

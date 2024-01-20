@@ -2,7 +2,8 @@ with
  __dbt__cte__base_dashboard__user_geos as (
 with 
 source as (
-      select * from "dashboard"."dashboard_production"."user_geos"
+    select * 
+    from "dashboard"."dashboard_production"."user_geos"
 ),
 
 renamed as (
@@ -14,19 +15,42 @@ renamed as (
         indexed_at,
         city,
         state,
-        country,
+        lower(country) as country,
         postal_code
     from source
 )
 
-select * from renamed
+select * 
+from renamed
 ), user_geos as (
     select *,
-        case when lower(country) = 'united states' then 1 
-             when lower(country) <> 'united states' then 0 
+        row_number() over (partition by user_id order by user_geo_id desc) as row_number,
+        case when country = 'united states' then 0
+             when country <> 'united states' then 1 
              else null 
         end as is_international
     from __dbt__cte__base_dashboard__user_geos
+),
+
+final as (
+    select
+        -- pk
+        user_id,
+
+        -- geos 
+        city,
+        state,
+        postal_code,
+        country,
+        is_international,
+        
+        -- dates
+        created_at,
+        updated_at,
+        indexed_at
+    from user_geos
+    where row_number = 1
 )
 
-select * from user_geos
+select *
+from final
