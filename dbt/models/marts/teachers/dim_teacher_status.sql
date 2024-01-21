@@ -22,6 +22,7 @@ with
 teacher_section_started as (
     select teacher_id,
         school_year,
+        min(section_started_at) as started_teaching_at,
         listagg(distinct course_name, ', ') within group (order by course_name ASC) section_courses_started
     from {{ ref('int_active_sections') }}
     where teacher_id is not null 
@@ -59,7 +60,8 @@ active_status_simple as (
         all_sy.teacher_id,
         all_sy.school_year,
         case when t.teacher_id is null then 0 else 1 end as is_active,
-        t.section_courses_started
+        t.section_courses_started,
+        t.started_teaching_at
 
     from all_teachers_school_years all_sy
     left join teacher_section_started t on t.teacher_id = all_sy.teacher_id and t.school_year = all_sy.school_year
@@ -74,6 +76,7 @@ full_status as (
         school_year,
         is_active,
         section_courses_started,
+        started_teaching_at,
         coalesce(
             lag(is_active, 1) 
                 over (partition by teacher_id order by school_year) 
@@ -105,7 +108,8 @@ final as (
             when status_code = '110' then '<impossible status>'
             when status_code = '111' then 'active retained'
         end as status,
-        section_courses_started
+        section_courses_started,
+        started_teaching_at
     from
         full_status
     order by
