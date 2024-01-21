@@ -62,12 +62,18 @@ models:
     bind: false
 
     intermediate:
+      tags:
+        - "int"
       +materialized: table
 
     marts: 
+      tags:
+        - "mart"
       +materialized: table
 
     staging:
+      tags:
+        - "staging"
       +materialized: view
       
       dashboard:

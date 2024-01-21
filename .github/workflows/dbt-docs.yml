@@ -1,0 +1,41 @@
+dbt-docs.yml
+
+# how to serve dbt docs
+# author: chat GPT3.5
+
+name: dbt-docs
+
+on:
+  push:
+    branches:
+      - main # Adjust this if your main branch has a different name
+
+jobs:
+  dbt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install dbt
+          dbt deps
+
+      - name: Run dbt
+        run: dbt run
+
+      - name: Generate dbt Docs
+        run: dbt docs generate
+
+      - name: Deploy dbt Docs to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: target/pkgs
