@@ -14,16 +14,14 @@ school_infos as (
         school_district_id,
         school_district_other,
         school_district_name,
-        case when len(school_id) = 11 then lpad(school_id,12,'0') -- (bef) this is same padding that's done in schools. there's not an upstream place to do this.
+        {{ pad_school_id('school_id') }}  as school_id,   
         school_other,
         school_name,
         full_address,
         created_at,
         updated_at,
         validation_type
-
-
+    from school_infos
 )
-
-select * 
-from school_infos
+select *
+from final

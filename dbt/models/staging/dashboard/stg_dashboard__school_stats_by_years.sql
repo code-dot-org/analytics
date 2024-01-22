@@ -5,7 +5,8 @@ school_stats_by_years as (
 ),
 
 survey_years as (
-    select school_id,
+    select 
+        school_id,
         min(school_year) as first_survey_year,
         max(school_year) as survey_year
     from school_stats_by_years  
@@ -22,7 +23,7 @@ school_stats_2019_2020 as (
 
 school_stats_by_years_adjusted as (
     select 
-        ssby.school_id,
+        {{ pad_school_id('ssby.school_id') }}  as school_id,
         school_year,
         survey_year,
         first_survey_year,
@@ -152,5 +153,5 @@ school_stats_by_years_adjusted as (
         on ssby.school_id = survey_years.school_id
 )
 
-select * 
+select *
 from school_stats_by_years_adjusted
