@@ -23,7 +23,7 @@ After you set up dbt, try running the following commands:
 * `dbt run --select /dbt/models/marts/*`
 
 #### Resources:
-* Please refer to our `sql`/`dbt` [style guide] for building models
+* Please refer to our `sql`/`dbt` [style guide](https://docs.getdbt.com/best-practices/how-we-style/1-how-we-style-our-dbt-models) for building models
 * For a more detailed guide on buildilng our `dbt-project` see [here](https://handbook.gitlab.com/handbook/business-technology/data-team/platform/dbt-guide/)
 * Join the chat on [Slack](getdbt.slack.com) for live discussions and support
 * Check out the [blog](https://docs.getdbt.com/blog) for the latest news on dbt's development and best practices
