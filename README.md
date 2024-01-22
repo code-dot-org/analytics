@@ -8,12 +8,12 @@ The following models and configurations are used to transform, load, and model d
 
 Our anticipated release schedule is as follows:
 
-## Release Name (Release Date)
+### Release Name (Release Date)
 0. [Pre-Release] **Hydrone** v1.0.2023   2023-12-15
 1. [Release 1] **Hydrone** v1.1.2024     2024-02-05
 
 
-### Using dbt
+#### Using dbt
 For starters, you should set-up a local dbt-core install or dbt Cloud environment.
 
 After you set up dbt, try running the following commands:
@@ -23,10 +23,7 @@ After you set up dbt, try running the following commands:
 * `dbt run --select /dbt/models/marts/*`
 
 #### Resources:
-Our [style guide](https://docs.getdbt.com/best-practices/how-we-style/0-how-we-style-our-dbt-projects) (for the most part...)
-* For best practices in our design and implementation.
-* For our **sql** style-guide, we follow [Gitlab's standards](https://handbook.gitlab.com/handbook/business-technology/data-team/platform/sql-style-guide/)
-* If you really want to [nerd out...](https://handbook.gitlab.com/handbook/business-technology/data-team/platform/dbt-guide/)
-
+* Please refer to our `sql`/`dbt` [style guide](https://docs.getdbt.com/best-practices/how-we-style/1-how-we-style-our-dbt-models) for building models
+* For a more detailed guide on buildilng our `dbt-project` see [here](https://handbook.gitlab.com/handbook/business-technology/data-team/platform/dbt-guide/)
 * Join the chat on [Slack](getdbt.slack.com) for live discussions and support
 * Check out the [blog](https://docs.getdbt.com/blog) for the latest news on dbt's development and best practices
