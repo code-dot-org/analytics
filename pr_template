@@ -15,30 +15,31 @@ Jira ticket(s): []()
       eg. `not_null`, `unique`
 
 **Note: when submitting a new model for review please make sure the following have been tested:**
-1. The model compiles (`dbt compile -m 'your_model'`)
+1. The model compiles (`dbt build -m 'your_model'`)
 2. The model runs (`dbt run -m 'your_model'`)
 3. The model produces accessible data in the DW (`select 1 from 'your_model'`)
-
-## Follow-up work
-
-Any related, outstanding, blocking, or follow-up work:
 
 
 ## Privacy
 
 - [ ] 1.	Does this change involve the collection, use, or sharing of new Personal Data?
-
-
 - [ ] 2.	Does this change involve a new or changed use or sharing of existing Personal Data?
+      If yes to either, list the models and columns:
+      a. 
+      b. 
+      c. 
 
 
 ## PR Checklist:
+--> **Note: if these are not all checked, the PR will be sent back.**
 
 - [ ] Tests provide adequate coverage
 - [ ] Privacy and Security impacts have been assessed
-- [ ] Code adheres to style-guide and is DRY
-- [ ] Code is well-commented
+- [ ] Code adheres to [style guide](https://docs.getdbt.com/best-practices/how-we-style/0-how-we-style-our-dbt-projects)👀 and is **[DRY](https://docs.getdbt.com/terms/dry)**
+- [ ] Code is well-commented (please refer to style guide for commenting conventions^)
 - [ ] New features are translatable or updates will not break up/downstream models
-- [ ] Relevant documentation has been added or updated
-- [ ] Pull Request is labeled appropriately
-- [ ] Follow-up work items (including potential tech debt) are tracked and linked
+- [ ] Relevant documentation has been added or updated (i.e. `dbt docs` has been published to [site](code-dot-org.github.io/analytics/).
+- [ ] Pull Request is labeled appropriately (eg. `chore/`, `feature/`, `fix/`)
+- [ ] Follow-up work items (including potential tech debt) are tracked and linked (if applicable)
+
+#updated 2024-01-22 ls
