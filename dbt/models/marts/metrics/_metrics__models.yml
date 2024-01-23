@@ -23,32 +23,68 @@ models:
 
   - name: fct_monthly_accounts_created
     description: total teacher and student accounts created each month, segmented by user type and us/intl
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_type
+            - us_intl
+            - created_at_school_year
+            - created_at_year
+            - created_at_month
     columns:
       - name: user_type
         description: teacher or student
+        tests:
+          - not_null
       - name: us_intl
         description: whether the account was created in the US or outside the US
+        tests:
+          - not_null
       - name: created_at_school_year
         description: school year in which the accounts were created
+        tests:
+          - not_null
       - name: created_at_year
         description: the calendar year in which the accounts were created
+        tests:
+          - not_null
       - name: created_at_month
         description: the month number in which the accounts were created
+        tests:
+          - not_null
       - name: num_accounts
         description: the number of accounts created in that school year, month, user type and geography
 
   - name: fct_monthly_signed_in_users
     description: total users who signed in each month, segmented by user type and us/intl
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_type
+            - us_intl
+            - sign_in_school_year
+            - sign_in_year
+            - sign_in_month
     columns:
       - name: user_type
         description: teacher or student
+        tests: 
+          - not_null
       - name: us_intl
-        description: whether the account was created in the US or outside the US
-      - name: created_at_school_year
-        description: school year in which the accounts were created
-      - name: created_at_year
-        description: the calendar year in which the accounts were created
-      - name: created_at_month
-        description: the month number in which the accounts were created
-      - name: num_accounts
-        description: the number of accounts created in that school year, month, user type and geography
+        description: whether the user who signed in was in the US or outside the US
+        tests:
+          - not_null
+      - name: sign_in_school_year
+        description: school year in which users signed in
+        tests:
+          - not_null
+      - name: sign_in_year
+        description: the calendar year in which users signed in
+        tests:
+          - not_null
+      - name: sign_in_month
+        description: the month number in which users signed in
+        tests:
+          - not_null
+      - name: num_signed_in_users
+        description: the number of users who signed in in that school year, month, user type and geography

@@ -2,7 +2,7 @@ version: 2
 
 models: 
   - name: dim_school_districs
-    descrition: 1 row per school_distric_id with dimensions and school related aggregations
+    description: 1 row per school_distric_id with dimensions and school related aggregations
     columns:
       - name: school_district_id
         tests:
