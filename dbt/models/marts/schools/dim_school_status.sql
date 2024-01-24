@@ -76,22 +76,32 @@ started_schools as (
         listagg( distinct course_name, ', ') within group (order by course_name) active_courses
     from teacher_active_courses_with_sy
     group by 1, 2
-),
-
-active_status_simple as (
+)
+, active_status_simple as (
     select 
         all_schools_sy.school_id,
         all_schools_sy.school_year,
-        case when started_schools.school_id is null then 0 else 1 end as is_active,
+        --case when started_schools.school_id is null then 0 else 1 end as is_active,
+
+        case when -- for a school to be active it has to have started a course that is NOT hoc-only
+            started_schools.school_id is not null 
+            and started_schools.active_courses <> 'hoc' then 1 
+            else 0 
+        end as is_active,
+
         started_schools.school_started_at,
         started_schools.active_courses
     from all_schools_sy 
     left join started_schools
         on started_schools.school_id = all_schools_sy.school_id 
         and started_schools.school_year = all_schools_sy.school_year
-),
+)
+-- select *
+-- FROM active_status_simple
+-- WHERE school_id IN ('00000088','00000962','00000995')
+-- order by school_id, school_year
 
-full_status as (
+, full_status as (
     -- Determine the active status for each school in each school year
 
     select
@@ -139,4 +149,4 @@ final as (
 )
 
 select * 
-from final 
+from final
