@@ -96,11 +96,6 @@ started_schools as (
         on started_schools.school_id = all_schools_sy.school_id 
         and started_schools.school_year = all_schools_sy.school_year
 )
--- select *
--- FROM active_status_simple
--- WHERE school_id IN ('00000088','00000962','00000995')
--- order by school_id, school_year
-
 , full_status as (
     -- Determine the active status for each school in each school year
 
