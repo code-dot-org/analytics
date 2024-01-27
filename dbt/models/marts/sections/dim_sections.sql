@@ -31,6 +31,7 @@ active_sections as (
         section_id,
         school_year,
         num_students,
+        course_name,
         1 as is_active
     from {{ ref('int_active_sections') }}
 )
@@ -47,6 +48,7 @@ select
     sections.updated_at,
     section_metrics.num_students_added,
     active_sections.num_students                                as num_students_active,
+    active_sections.course_name,
     case when active_sections.is_active = 1 then 1 else 0 end   as is_active 
 from section_metrics
 left join sections 
