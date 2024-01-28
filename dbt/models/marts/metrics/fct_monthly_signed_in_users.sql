@@ -4,7 +4,7 @@ segmented by student/teacher and us/intl
 #}
 with sign_ins as (
     select *
-    from {{ ref('base_dashboard__sign_ins') }} -- replace with stg_ eventually?
+    from {{ ref('stg_dashboard__sign_ins') }}
 ),
 
 all_users as (
