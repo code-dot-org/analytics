@@ -24,13 +24,6 @@ followers as (
     from {{ ref('stg_dashboard__followers') }}
 ),
 
--- teachers as (
---     select distinct 
---         teacher_id,
---         school_id
---     from {{ ref('dim_teachers') }}
--- ),
-
 teacher_school_changes as (
     select *
     from {{ ref('int_teacher_schools_historical') }}
@@ -61,8 +54,6 @@ combined as (
     from followers  
     left join sections 
         on followers.section_id = sections.section_id
-    -- left join teachers 
-    --     on sections.user_id = teachers.teacher_id
     join school_years as sy 
         on followers.created_at 
             between sy.started_at and sy.ended_at
