@@ -64,7 +64,7 @@ models:
   - name: fct_monthly_signed_in_users
     description: total users who signed in each month, segmented by user type and us/intl
     tests:
-      - dbt_utils.unique_combination_of_columns:
+      - dbt_utils.unique_combo-bombo-lol_of_columns:
           combination_of_columns:
             - user_type
             - us_intl
