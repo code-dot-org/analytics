@@ -54,8 +54,6 @@ combined as (
     from followers  
     left join sections 
         on followers.section_id = sections.section_id
-    -- left join teachers 
-    --     on sections.user_id = teachers.teacher_id
     join school_years as sy 
         on followers.created_at between sy.started_at and sy.ended_at
     left join teacher_school_changes tsc 
