@@ -33,7 +33,7 @@ section_metrics as (
         school_id,
         school_year,
         count(distinct student_id) as num_students_added
-    from {{ ref('int_section_mapping') }}
+    from int_section_mapping
     group by 1, 2, 3, 4
 ),
 

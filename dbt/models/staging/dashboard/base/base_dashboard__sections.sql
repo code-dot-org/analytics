@@ -2,7 +2,7 @@ with
 source as (
     select * 
     from {{ source('dashboard', 'sections') }}
-    where deleted_at is null  
+    --where deleted_at is null  
 ),
 
 renamed as (
@@ -34,6 +34,5 @@ renamed as (
         first_activity_at
     from source
 )
-
 select * 
 from renamed
