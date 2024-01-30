@@ -1,17 +1,18 @@
 version: 2
 
-models:  
-  - name: dim_school_stats_by_years
-    description: historical record of all NCES school stats and associated calculations
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - school_year
-            - school_id
+models: 
+  - name: dim_districts
+    description: 1 row per school_district_id with dimensions and school related aggregations
+    columns:
+      - name: school_district_id
+        tests:
+          - not_null
+          - unique
+      - name: 
 
-  - name: dim_school_status
+  - name: dim_district_status
     description: |
-      1 row per school, per school_year, with "active" defined by having a techer with a section of 5+ students completing 1+ levels of the same course. The school's status can thus be defined by one of the following in a given school year--
+      1 row per district, per school_year, with "active" defined by having at least one "active" school (has a teacher with a section of 5+ students completing 1+ levels of the same course). The district's status can thus be defined by one of the following in a given school year--
       ### active new 
       * has never before been "active" until this school year
       ### active retained 
@@ -23,27 +24,27 @@ models:
       ### inactive churn 
       * was "inactive" last school year and so far this school year. 
       ### market 
-      * has never been considered "active" on code.org 
+      * has never had a school considered "active" on code.org 
     
     tests:
       - dbt_utils.unique_combination_of_columns:
         combination_of_columns:
-          - school_id
+          - school_district_id
           - school_year
     columns:
-      - name: school_id
-        description: NCES school ID (this school must have been selected by teacher via NCES dropdown in account setup)
+      - name: school_district_id
+        description: NCES ID associated with this school district
       - name: school_year
         description: school year in which an activity status is assigned
       - name: status
-        description: '{{ doc("dim_school_status_status") }}'
-      - name: school_started_at
-        description: time of first activity from an active section at this school in this school year
+        description: the activity status of that school district in that school year as defined in the model description. 
+      - name: district_started_at
+        description: time of first activity from an active school in this district in this school year
       - name: active_courses
-        description: comma separated list of courses associated with active sections at this school in this school year
+        description: comma separated list of courses associated with active schools in this school year
 
   - name: dim_schools
-    description: NCES school-level information for the most recent school year it is updated for
+    description: NCES school-level information for the most recent school year it is updated for. This table includes all schools in the US, not just schools on our platform. 
     columns: 
       - name: school_id
         description: the NCES id associated with a school 
