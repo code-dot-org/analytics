@@ -24,7 +24,7 @@ models:
         description: total number of schools within the school level and active status dimensions as of that week
 
   - name: fct_monthly_accounts_created
-    description: total teacher and student accounts created each month, segmented by user type and us/intl
+    description: user accounts created by month
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
