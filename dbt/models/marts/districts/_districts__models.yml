@@ -8,6 +8,41 @@ models:
         tests:
           - not_null
           - unique
+        description: unique ID for each school district, as defined by NCES. 
+      - name: school_district_name
+        description: NCES name of school district 
+      - name: school_district_city
+        description: NCES city the district resides in 
+      - name: school_district_state
+        description: NCES state the district resides in
+      - name: school_district_zip
+        description: NCES zip code the district resides in
+      - name: last_known_school_year_open
+        description: NCES last year the school was confirmed open
+      - name: num_schools
+        description: the number of schools in the district
+      - name: num_schools_stage_el
+        description: the number of schools with grades 0-5 in the district
+      - name: num_schools_stage_mi
+        description: the number of schools with grades 6-8 in the district
+      - name: num_schools_stage_hi
+        description: the number of schools with grades 9-12 in the district
+      - name: num_schools_rural
+        description: the number of rural schools in the district
+      - name: num_schools_title_i
+        description: the numebr of title I schools in the district
+      - name: num_schools_high_needs
+        description: the number of high needs schools (> 50% FRL eligible) in the district 
+      - name: num_students
+        description: the number of students across all schools in district
+      - name: num_students_frl_eligible
+        description: the number of students who are eligible for free and reduced lunch in the district 
+      - name: num_students_urg
+        description: the number of students from an underrepresented racial group (not white or asian) in the district
+      - name: district_urg_percent
+        description: the percent of students in the district who are from an underrepresented racial group (not white or asian)
+      - name: district_frl_eligible_percent
+        description: the percent of students in the district who are eligible for free and reduced lunch
 
   - name: dim_district_status
     description: |
