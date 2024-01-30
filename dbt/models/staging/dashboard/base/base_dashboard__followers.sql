@@ -2,6 +2,7 @@ with
 source as (
     select * 
     from {{ source('dashboard', 'followers') }}
+    
 ),
 
 renamed as (
