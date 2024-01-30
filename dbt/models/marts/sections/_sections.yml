@@ -7,6 +7,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - teacher_id
-            - school_year
+            - created_at_school_year
+            - added_students_school_year
             - course_name
             - section_id

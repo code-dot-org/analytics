@@ -11,8 +11,7 @@ renamed as (
         id                      as section_id,
         name                    as section_name,
         section_type,
-
-        user_id,
+        user_id                 as teacher_id,
         login_type,
         code,
         script_id,
