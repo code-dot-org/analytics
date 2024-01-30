@@ -17,7 +17,6 @@ user_geos as (
         user_id, 
         is_international
     from {{ ref('stg_dashboard__user_geos') }}
-    where user_id in (select student_id from students)
 ),
 
 school_years as (
