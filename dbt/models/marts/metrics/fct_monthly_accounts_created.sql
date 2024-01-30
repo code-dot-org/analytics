@@ -48,7 +48,7 @@ final as (
         count(distinct user_id) as num_accounts
     from all_accounts ac
     left join school_years sy 
-        on ac.created_at::date between sy.started_at and sy.ended_at
+        on ac.created_at between sy.started_at and sy.ended_at
     {{ dbt_utils.group_by(5) }}
     order by
         created_at_year asc,
