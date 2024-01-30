@@ -8,8 +8,7 @@ models:
         tests:
           - not_null
           - unique
-      - name: 
-
+          
   - name: dim_district_status
     description: |
       1 row per district, per school_year, with "active" defined by having at least one "active" school (has a teacher with a section of 5+ students completing 1+ levels of the same course). The district's status can thus be defined by one of the following in a given school year--
