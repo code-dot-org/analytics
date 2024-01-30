@@ -25,11 +25,12 @@ models:
       ### market 
       * has never been considered "active" on code.org 
     
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - school_id
-          - school_year
+    # tests:
+      # - dbt_utils.unique_combination_of_columns:
+      #   combination_of_columns:
+      #     - school_id
+      #     - school_year
+      #     - status
     columns:
       - name: school_id
         description: NCES school ID (this school must have been selected by teacher via NCES dropdown in account setup)

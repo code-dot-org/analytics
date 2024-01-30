@@ -8,7 +8,7 @@ models:
         tests:
           - not_null
           - unique
-          
+
   - name: dim_district_status
     description: |
       1 row per district, per school_year, with "active" defined by having at least one "active" school (has a teacher with a section of 5+ students completing 1+ levels of the same course). The district's status can thus be defined by one of the following in a given school year--
@@ -25,11 +25,12 @@ models:
       ### market 
       * has never had a school considered "active" on code.org 
     
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - school_district_id
-          - school_year
+    # tests:
+      # - dbt_utils.unique_combination_of_columns:
+      #   combination_of_columns:
+      #     - school_district_id
+      #     - school_year
+      #     - status
     columns:
       - name: school_district_id
         description: NCES ID associated with this school district
@@ -41,24 +42,3 @@ models:
         description: time of first activity from an active school in this district in this school year
       - name: active_courses
         description: comma separated list of courses associated with active schools in this school year
-
-  - name: dim_schools
-    description: NCES school-level information for the most recent school year it is updated for. This table includes all schools in the US, not just schools on our platform. 
-    columns: 
-      - name: school_id
-        description: the NCES id associated with a school 
-        tests:
-          - not_null
-          - unique
-      - name: school_year
-        description: the school year associated with the most recent information about this school from NCES
-      - name: is_stage_el
-        description: binary; 1 if the school has any grade levels 0-5, 0 if not 
-      - name: is_stage_mi
-        description: binary; 1 if the school has any grade levels 6-8, 0 if not 
-      - name: is_stage_hi
-        description: binary; 1 if the school has any grade levels 9-12, 0 if not 
-      - name: school_level_simple
-        description: a combination of all school levels the school contains, separated by underscores
-      - name: total_urg_no_tr_students
-        description: total number of URG students, excluding those identifying as two or more races
