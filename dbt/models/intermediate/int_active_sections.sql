@@ -37,7 +37,7 @@ final as (
         ,num_students
     from combined
     where num_students >= 5
-
+)
 
 select *
 from final
