@@ -2,7 +2,7 @@ version: 2
 
 models: 
   - name: dim_student_courses
-    description: This model is a log of all student-course activity within a school year
+    description: This model is a log of all student-course activity within a school year.
     # tests:
       # - dbt_utils.unique_combination_of_columns:
       #     combination_of_columns:

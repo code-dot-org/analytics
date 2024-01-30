@@ -4,14 +4,14 @@ segmented by student/teacher and us/intl
 #}
 with sign_ins as (
     select *
-    from {{ ref('stg_dashboard__sign_ins') }}
+    from {{ ref('stg_dashboard__sign_ins')}}
 ),
 
 all_users as (
     select
         user_id,
         user_type
-    from {{ ref('stg_dashboard__users') }} --WARNING this has already filtered out deleted users
+    from {{ ref('stg_dashboard__users') }} 
     
 ),
 
@@ -30,18 +30,18 @@ school_years as (
 final as (
 
     select
-        user_type,
+        u.user_type,
         case when is_international = 1 then 'intl' else 'us' end        as us_intl,
         sy.school_year                                                  as sign_in_school_year,
-        date_part(year, si.sign_in_at)                                  as sign_in_year,
-        date_part(month, si.sign_in_at)                                 as sign_in_month,
+        date_part(year, si.sign_in_at)::integer                         as sign_in_year,
+        date_part(month, si.sign_in_at)::integer                        as sign_in_month,
         count(distinct si.user_id)                                      as num_signed_in_users
 
     from sign_ins as si
-    join all_users u on si.user_id = u.user_id --inner join to preserve filterd out deleted users
+    left join all_users u on si.user_id = u.user_id
     left join user_geos ug on si.user_id = ug.user_id
     left join school_years sy
-        on sign_in_at::date between sy.started_at and sy.ended_at
+        on sign_in_at between sy.started_at and sy.ended_at
     {{ dbt_utils.group_by(5) }}
 )
 
