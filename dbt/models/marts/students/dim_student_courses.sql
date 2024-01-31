@@ -56,7 +56,7 @@ combined as (
         ul.user_id,
         u.user_type,
         sy.school_year,
-        cs.course_name_true,  
+        cs.course_name_true                     as course_name,  
         min(ul.created_at)                      as first_activity_at,
 		max(ul.created_at)                      as last_activity_at
 	from user_levels ul 
