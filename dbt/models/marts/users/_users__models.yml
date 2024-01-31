@@ -2,7 +2,7 @@ version: 2
 
 models: 
   - name: dim_course_activity
-    description: This model is a log of all student and teacher course activity within a school year.
+    description: This model is a log of all user (students and teachers) course activity within a school year.
 
     columns:
     - name: user_id
@@ -17,15 +17,15 @@ models:
         - not_null 
         
     - name: course_name
-      description: the course associated with the individual student's activity in a given school year
+      description: the course associated with the individual users's activity in a given school year
       tests: 
         - not_null 
     
     - name: first_activity_at
-      description: timestamp of the student's first activity within the given course and school year- this field is later used to determine when a section/school first started teaching
+      description: timestamp of the user's first activity within the given course and school year- this field is later used to determine when a section/school first started teaching
     
     - name: last_activity_at 
-      description: timestamp of the student's latest activity within the given course and school year
+      description: timestamp of the user's latest activity within the given course and school year
 
   - name: dim_users 
     description: 1 row per user + user_geos; student_id, teacher_id fields
