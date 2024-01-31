@@ -31,7 +31,8 @@ student_courses_started as (
         student_id,
         school_year,
         listagg(distinct course_name, ', ') within group (order by course_name ASC) courses_started
-    from {{ ref('dim_student_courses') }}
+    from {{ ref('dim_course_activity') }}
+    where user_type = 'student'
     group by 1, 2
 
 ),

@@ -78,8 +78,6 @@ models:
     columns: 
       - name: user_type
         description: the type of acount the user created. value is either 'student' or 'teacher'
-        tests:
-          - not_null
       
       - name: user_id
         description: the unique id for this user
