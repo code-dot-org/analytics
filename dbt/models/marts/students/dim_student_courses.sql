@@ -54,7 +54,7 @@ users as (
 combined as (
     select 
         ul.user_id,
-        u.user_type
+        u.user_type,
         sy.school_year,
         cs.course_name_true,  
         min(ul.created_at)                      as first_activity_at,
