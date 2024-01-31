@@ -9,10 +9,8 @@ models:
           combination_of_columns:
             - school_level
             - school_year
-            - status
-            - iso_week
             - school_year_week
-            - week_of
+            - status
 
     columns:
       - name: school_level
