@@ -141,7 +141,7 @@ final as (
         end as status,
         district_started_at,
         active_courses
-        from full_status
+    from full_status
     order by
         school_district_id, school_year
 )

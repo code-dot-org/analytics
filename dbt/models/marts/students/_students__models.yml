@@ -2,13 +2,13 @@ version: 2
 
 models: 
   - name: dim_student_courses
-    description: This model is a log of all student-course activity within a school year
-    # tests:
-      # - dbt_utils.unique_combination_of_columns:
-      #     combination_of_columns:
-      #       - student_id
-      #       - school_year
-      #       - course_id
+    description: This model is a log of all student-course activity within a school year. A student will have a row in this table for every school year/ course name they completed a level of. For example, if a student did 10 levels of CSF and 1 level of CSP in 2017-18, they will have 2 rows in this table for 2017-28- one for CSF and one for CSP. 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - student_id
+            - school_year
+            - course_name
     columns:
     - name: student_id
       description: the unique ID associated with the activity
@@ -21,20 +21,20 @@ models:
     - name: last_activity_at 
       description: timestamp of the student's latest activity within the given course and school year
 
-  - name: dim_student_status
-    description: This model categorizes students based on their activity status across different school years. It provides insights into user engagement by assigning a status that reflects their activity in the current, previous, and any earlier school years.
-    columns: 
-    - name: student_id
-      description: the unique ID associated with the activity
-    - name: school_year
-      description: school year in which an activity status is assigned
-    - name: status
-      description: the activity status of a student in a given school year- active if they have attempted at least 1 level of a course
-    - name: courses_started
-      description: comma separated list of courses associated with the levels attemped by the student in a given school year
+  # - name: dim_student_status
+  #   description: This model categorizes students based on their activity status across different school years. It provides insights into user engagement by assigning a status that reflects their activity in the current, previous, and any earlier school years.
+  #   columns: 
+  #   - name: student_id
+  #     description: the unique ID associated with the activity
+  #   - name: school_year
+  #     description: school year in which an activity status is assigned
+  #   - name: status
+  #     description: the activity status of a student in a given school year- active if they have attempted at least 1 level of a course
+  #   - name: courses_started
+  #     description: comma separated list of courses associated with the levels attemped by the student in a given school year
 
   - name: dim_students
-    description: This model contains all student accounts ever created + georgraphic + platform activity info on the student
+    description: This model contains all student accounts ever created + georgraphic info on the student
     columns: 
     - name: student_id
       description: unique ID for individual student user

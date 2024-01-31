@@ -1,14 +1,6 @@
 version: 2
 
-models: 
-  - name: dim_school_districs
-    descrition: 1 row per school_distric_id with dimensions and school related aggregations
-    columns:
-      - name: school_district_id
-        tests:
-          - not_null
-          - unique
-  
+models:  
   - name: dim_school_stats_by_years
     description: historical record of all NCES school stats and associated calculations
     tests:
@@ -18,12 +10,27 @@ models:
             - school_id
 
   - name: dim_school_status
-    description: This model categorizes schools based on their activity status across different school years. It provides insights into user engagement by assigning a status that reflects their activity in the current, previous, and any earlier school years.
+    description: |
+      1 row per school, per school_year, with "active" defined by having a techer with a section of 5+ students completing 1+ levels of the same course. The school's status can thus be defined by one of the following in a given school year--
+      ### active new 
+      * has never before been "active" until this school year
+      ### active retained 
+      * was "active" the previous school year and this school year
+      ### active reacquired 
+      * was "inactive churn" last school year and now "active" this school year.  
+      ### inactive this year 
+      * was "active" last school year, but not so far this school year. 
+      ### inactive churn 
+      * was "inactive" last school year and so far this school year. 
+      ### market 
+      * has never been considered "active" on code.org 
+    
     # tests:
-    #   - dbt_utils.unique_combination_of_columns:
-    #     combination_of_columns:
-    #       - school_year
-    #       - school_id
+      # - dbt_utils.unique_combination_of_columns:
+      #   combination_of_columns:
+      #     - school_id
+      #     - school_year
+      #     - status
     columns:
       - name: school_id
         description: NCES school ID (this school must have been selected by teacher via NCES dropdown in account setup)

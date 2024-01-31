@@ -1,0 +1,79 @@
+version: 2
+
+models: 
+  - name: dim_districts
+    description: 1 row per school_district_id with dimensions and school related aggregations
+    columns:
+      - name: school_district_id
+        tests:
+          - not_null
+          - unique
+        description: unique ID for each school district, as defined by NCES. 
+      - name: school_district_name
+        description: NCES name of school district 
+      - name: school_district_city
+        description: NCES city the district resides in 
+      - name: school_district_state
+        description: NCES state the district resides in
+      - name: school_district_zip
+        description: NCES zip code the district resides in
+      - name: last_known_school_year_open
+        description: NCES last year the school was confirmed open
+      - name: num_schools
+        description: the number of schools in the district
+      - name: num_schools_stage_el
+        description: the number of schools with grades 0-5 in the district
+      - name: num_schools_stage_mi
+        description: the number of schools with grades 6-8 in the district
+      - name: num_schools_stage_hi
+        description: the number of schools with grades 9-12 in the district
+      - name: num_schools_rural
+        description: the number of rural schools in the district
+      - name: num_schools_title_i
+        description: the numebr of title I schools in the district
+      - name: num_schools_high_needs
+        description: the number of high needs schools (> 50% FRL eligible) in the district 
+      - name: num_students
+        description: the number of students across all schools in district
+      - name: num_students_frl_eligible
+        description: the number of students who are eligible for free and reduced lunch in the district 
+      - name: num_students_urg
+        description: the number of students from an underrepresented racial group (not white or asian) in the district
+      - name: district_urg_percent
+        description: the percent of students in the district who are from an underrepresented racial group (not white or asian)
+      - name: district_frl_eligible_percent
+        description: the percent of students in the district who are eligible for free and reduced lunch
+
+  - name: dim_district_status
+    description: |
+      1 row per district, per school_year, with "active" defined by having at least one "active" school (has a teacher with a section of 5+ students completing 1+ levels of the same course). The district's status can thus be defined by one of the following in a given school year--
+      ### active new 
+      * has never before been "active" until this school year
+      ### active retained 
+      * was "active" the previous school year and this school year
+      ### active reacquired 
+      * was "inactive churn" last school year and now "active" this school year.  
+      ### inactive this year 
+      * was "active" last school year, but not so far this school year. 
+      ### inactive churn 
+      * was "inactive" last school year and so far this school year. 
+      ### market 
+      * has never had a school considered "active" on code.org 
+    
+    # tests:
+      # - dbt_utils.unique_combination_of_columns:
+      #   combination_of_columns:
+      #     - school_district_id
+      #     - school_year
+      #     - status
+    columns:
+      - name: school_district_id
+        description: NCES ID associated with this school district
+      - name: school_year
+        description: school year in which an activity status is assigned
+      - name: status
+        description: the activity status of that school district in that school year as defined in the model description. 
+      - name: district_started_at
+        description: time of first activity from an active school in this district in this school year
+      - name: active_courses
+        description: comma separated list of courses associated with active schools in this school year
