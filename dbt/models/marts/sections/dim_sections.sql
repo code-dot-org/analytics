@@ -1,14 +1,4 @@
 with 
-school_years as (
-    select * 
-    from {{ ref('int_school_years') }}
-),
-
-teacher_school_changes as (
-    select *
-    from {{ ref('int_teacher_schools_historical') }}
-),
-
 sections as (
     select 
         section_id,
@@ -21,63 +11,81 @@ sections as (
     from {{ ref('stg_dashboard__sections') }}
 ),
 
-int_section_mapping as (
-    select * 
-    from {{ ref('int_section_mapping') }}
-),
-
-section_metrics as (
-    select
-        section_id,
-        teacher_id,
-        school_id,
-        school_year,
-        count(distinct student_id) as num_students_added
-    from int_section_mapping
-    group by 1, 2, 3, 4
-),
-
 active_sections as (
     select 
         section_id,
         school_year,
-        num_students,
         course_name,
-        1 as is_active
+        1 as is_active,
+        num_students as num_students_active
     from {{ ref('int_active_sections') }}
 ),
 
-all_sections_mapping as (
+section_mapping as (
     select 
-        sections.*, 
-        tsc.school_id,
-        sy.school_year as created_at_school_year
-    from sections 
-    join school_years sy 
-        on sections.created_at between sy.started_at and sy.ended_at 
-    join teacher_school_changes tsc 
-        on sections.teacher_id = tsc.teacher_id 
-        and sy.ended_at between tsc.started_at and tsc.ended_at 
-)
+        section_id, 
+        teacher_id,
+        school_id,
+        school_year,
+        count(distinct student_id) as num_students_added
+    from {{ ref('int_section_mapping') }}
+    {{ dbt_utils.group_by(4) }}
+),
 
-select 
-    asm.section_id,
-    asm.teacher_id,
-    asm.school_id,
-    asm.created_at_school_year,
-    section_metrics.school_year                                 as added_students_school_year,
-    asm.section_name, 
-    asm.login_type,
-    asm.grade,
-    asm.created_at,
-    asm.updated_at,
-    section_metrics.num_students_added,
-    active_sections.num_students                                as num_students_active,
-    active_sections.course_name,
-    case when active_sections.is_active = 1 then 1 else 0 end   as is_active 
-from all_sections_mapping asm
-left join section_metrics 
-    on section_metrics.section_id = asm.section_id
-left join active_sections
-    on section_metrics.section_id = active_sections.section_id
-    and section_metrics.school_year = active_sections.school_year
+school_years as (
+    select * 
+    from {{ ref('int_school_years') }}
+),
+
+teacher_school_changes as (
+    select 
+        school_id,
+        teacher_id,
+        started_at,
+        ended_at
+    from {{ ref('int_teacher_schools_historical') }}
+),
+
+combined as (
+    select 
+        sec.*,
+        tsc.school_id,
+        sy.school_year as school_year_created
+    from sections as sec 
+    join school_years as sy
+        on sec.created_at 
+            between sy.started_at and sy.ended_at
+    join teacher_school_changes as tsc 
+        on sec.teacher_id = tsc.teacher_id
+        and sy.ended_at 
+            between tsc.started_at and tsc.ended_at
+),
+
+final as (
+    select 
+        comb.section_id,
+        comb.teacher_id,
+        comb.school_id,
+        comb.school_year_created,
+        comb.section_name,
+        comb.login_type, 
+        comb.grade,
+        comb.created_at,
+        comb.updated_at,
+        
+        act.course_name,
+        isnull(act.is_active, 0) as is_active,
+        act.num_students_active,
+        
+        sm.num_students_added,
+        sm.school_year as school_year_students_added
+    from combined as comb 
+    left join section_mapping as sm 
+        on comb.section_id = sm.section_id
+    left join active_sections as act
+        on sm.section_id = act.section_id
+        and sm.school_year = act.school_year
+)
+    
+select * 
+from final 

@@ -72,6 +72,28 @@ models:
       - name: school_id
         tests:
           - not_null
+
+  - name: stg_dashboard__users
+    description: staging model for `users` table from scource data
+    columns: 
+      - name: user_type
+        description: the type of acount the user created. value is either 'student' or 'teacher'
+        tests:
+          - not_null
+      
+      - name: user_id
+        description: the unique id for this user
+        tests:
+          - not_null
+          - unique
+      
+      - name: birthday
+        description: an inexact date of birth for the user, calcuated as the date of account creation X years prior based on user reporting that their age is X.
+      
+      - name: age_in_years
+        description: a calculation based on `birthday` to be how many years old the user is today. note - max age is 22.
+
+      
           
 
       
