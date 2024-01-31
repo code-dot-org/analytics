@@ -1,4 +1,9 @@
 /* 
+Updated 1/31/24 - NZM: Given that all users' activity is included, made changes for consistency:
+        Unrestricted courses
+        Added user_type by joining to stg_dashboard__users
+        Filtered user_levels to bring in only those with non-zero attempts
+
 Updated 1/24/24: Filtered out certain courses from "counting" toward a student's being active
 
 Updated 12/6/23:
