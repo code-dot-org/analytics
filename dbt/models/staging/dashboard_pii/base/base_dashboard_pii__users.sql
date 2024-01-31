@@ -34,7 +34,7 @@ renamed as (
         invited_by_type,
         terms_of_service_version,
         urm                         as is_urg,
-        -- races,
+        races,
         primary_contact_info_id
 
     from source

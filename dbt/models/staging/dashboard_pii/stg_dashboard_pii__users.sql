@@ -34,6 +34,7 @@ renamed as (
         user_type,
         datediff(year,birthday,current_date ) as age_years,
         nullif(lower(gender),'') as gender,
+        races,
         is_urg,
 
         -- misc.
