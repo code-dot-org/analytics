@@ -2,7 +2,8 @@ version: 2
 
 models: 
   - name: dim_teachers
-    description: This model contains all teacher accounts ever created
+    description: one row per teacher account ever created, with geographic information and current school association
+      
     columns: 
       - name: teacher_id
         description: unique ID for every teacher account created
@@ -13,8 +14,8 @@ models:
         description: ID used for PD applications where we want to associated multiple teacher IDs with a single application
       - name: user_type
         description: always "teacher" - used for verification
-      - name: school_info_id
-        description: ID populated for any school manually entered by the teacher or found through the NCES dropdown- generally we do not use this field downstream
+      # - name: school_info_id
+      #   description: ID populated for any school manually entered by the teacher or found through the NCES dropdown- generally we do not use this field downstream
       - name: created_at_school_year
         description: the school year in which the teacher account was created
       - name: school_id
@@ -23,7 +24,21 @@ models:
         description: 1 if the most recent sign in from the teacher account was from outside the US, 0 otherwise 
 
   - name: dim_teacher_status
-    description: 1 row per teacher, per school_year, with status
+    description: |
+      1 row per teacher, per school_year, with "active" defined by having a section of 5+ students completing 1+ levels of the same course. The teacher's status can thus be defined by one of the following in a given school year--
+      ### active new 
+      * has never before been "active" until this school year
+      ### active retained 
+      * was "active" the previous school year and this school year
+      ### active reacquired 
+      * was "inactive churn" last school year and now "active" this school year.  
+      ### inactive this year 
+      * was "active" last school year, but not so far this school year. 
+      ### inactive churn 
+      * was "inactive" last school year and so far this school year. 
+      ### market 
+      * has a code.org account, but has never been considered "active" 
+
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

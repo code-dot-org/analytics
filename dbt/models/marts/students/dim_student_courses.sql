@@ -1,4 +1,6 @@
 /* 
+Updated 1/24/24: Filtered out certain courses from "counting" toward a student's being active
+
 Updated 12/6/23:
 
 1. Design:
@@ -44,11 +46,21 @@ school_years as (
 
 combined as (
     select 
-         ul.user_id             as student_id
-		,sy.school_year
-		,cs.course_name_true    as course_name
-        ,min(ul.created_at)     as first_activity_at 
-		,max(ul.created_at)     as last_activity_at
+        ul.user_id                              as student_id,
+        sy.school_year,
+        case 
+            when cs.course_name_true in (  
+                'ai',
+                'csf',
+                'csp',
+                'csd',
+                'hoc',
+                'csc',
+                'csa'
+            ) then cs.course_name_true
+        end                                     as course_name,  
+        min(ul.created_at)                      as first_activity_at,
+		max(ul.created_at)                      as last_activity_at
 	from user_levels ul 
 	join course_structure cs
 		on ul.script_id = cs.script_id 

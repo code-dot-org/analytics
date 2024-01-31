@@ -1,8 +1,14 @@
 version: 2
 
-models: 
+models:
   - name: fct_weekly_school_acquisition_metrics
-    description: high-level aggregations used for the monthly initiative review on school acquisitions
+    description: |
+      ### high-level school activity aggregations used for the monthly initiative review on school acquisitions, including the following-- 
+      * total # schools that became active in a given week 
+      * running total # schools that are active in a given week since the start of the school year
+
+      ![codeorg logo](https://studio.code.org/assets/logo-2acd4ebc69c447786b866b98034bb3c0777b5f67cd8bd7955e97bba0b16f2bd1.svg)
+
     columns:
       - name: school_level
         description: elementary, middle, or high school- note that a given school may be counted in multiple school level aggregations (e.g. K-8)

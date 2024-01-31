@@ -1,8 +1,20 @@
+{{
+    config(
+        materialized='incremental',
+        unique_key='user_id')
+}}
+
 with 
 users as (
     select *
     from {{ ref('base_dashboard__users') }}
-    where is_active 
+    where is_active
+
+    {% if is_incremental() %}
+
+    and updated_at > (select max(updated_at) from {{ this }} )
+    
+    {% endif %}
 ),
 
 renamed as (
@@ -31,7 +43,8 @@ renamed as (
         current_sign_in_at,
         last_sign_in_at,
         created_at,
-        updated_at,     
+        updated_at,  
+        deleted_at,   
         purged_at
     from users
 )
