@@ -2,7 +2,6 @@ with
 source as (
       select * 
       from {{ source('dashboard', 'users') }}
-      --where deleted_at is null 
 ),
 
 renamed as (
