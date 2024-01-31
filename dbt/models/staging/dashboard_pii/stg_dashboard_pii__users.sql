@@ -30,7 +30,26 @@ renamed as (
 
         --PII
         races,
-         case
+        is_urg,
+
+        locale,
+        sign_in_count,
+
+        -- user info
+        school_info_id,
+        total_lines,
+        current_sign_in_at,
+
+        last_sign_in_at,
+
+        created_at,
+        updated_at,
+
+        deleted_at,
+
+        -- misc.
+        purged_at,
+        case
             -- If races contains 'hispanic', return 'hispanic'
             when races like '%hispanic%' then 'hispanic'
 
@@ -51,7 +70,6 @@ renamed as (
             -- Default case: return the input value
             else races -- Additional logic may be required here
         end as race_group,
-
         nullif(lower(gender), '') as gender,
         case
             when gender = 'm' then 'm'
@@ -60,38 +78,20 @@ renamed as (
             when gender = 'o' then 'nl' ------  not listed
             ----  empty string or '-'
             when gender = '' or gender = '-' then 'no_response'
-            when gender is null or gender in ('k','d','x','v','b','a','A') then 'not_collected'
+            when
+                gender is null or gender in ('k', 'd', 'x', 'v', 'b', 'a', 'A') --these all have a single user associated with them.
+                then 'not_collected'
             else 'unexpected value: ' || gender
         end as gender_group,
-
-        -- user info
-        is_urg,
-        locale,
-        sign_in_count,
-
-        school_info_id,
-
-        total_lines,
-        current_sign_in_at,
-
-        last_sign_in_at,
-
-        -- misc.
-        created_at,
-        updated_at,
-        deleted_at,
-        purged_at,
 
         -- dates         
         case when user_type = 'student' then user_id end as student_id,
         case when user_type = 'teacher' then user_id end as teacher_id,
         datediff(year, birthday, current_date) as age_years
 
-       
+
     from users
 )
 
 select *
 from renamed
-
-SELECT count(*), race_group FROM {{ref('stg_dashboard_pii__users')}} group by 2 order by 2 LIMIT 100
