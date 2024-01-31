@@ -7,9 +7,11 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - teacher_id
-            - created_at_sy
+            - school_id
             - course_name
             - section_id
+            - school_year_created
+            - school_year_added
     columns:
       - name: section_id
         description: the unique id associated with the section

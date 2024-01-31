@@ -50,7 +50,7 @@ combined as (
     select 
         sec.*,
         tsc.school_id,
-        sy.school_year as created_at_sy
+        sy.school_year as school_year_created
     from sections as sec 
     join school_years as sy
         on sec.created_at 
@@ -66,7 +66,7 @@ final as (
         comb.section_id,
         comb.teacher_id,
         comb.school_id,
-        comb.created_at_sy,
+        comb.school_year_created,
         comb.section_name,
         comb.login_type, 
         comb.grade,
@@ -78,7 +78,7 @@ final as (
         act.num_students_active,
         
         sm.num_students_added,
-        sm.school_year as added_at_sy
+        sm.school_year as school_year_students_added
     from combined as comb 
     left join section_mapping as sm 
         on comb.section_id = sm.section_id

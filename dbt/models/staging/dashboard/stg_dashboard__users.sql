@@ -9,7 +9,7 @@ users as (
     select *
     from {{ ref('base_dashboard__users') }}
     where is_active
-    and user_type is not null -- exclusion. bad data if this happens.
+        and user_type is not null 
 
     {% if is_incremental() %}
 
