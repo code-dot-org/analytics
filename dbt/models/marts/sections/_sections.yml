@@ -10,3 +10,32 @@ models:
             - created_at_sy
             - course_name
             - section_id
+    columns:
+      - name: section_id
+        description: the unique id associated with the section
+      - name: teacher_id
+        description: the id of the teacher who created the section
+      - name: school_id
+        description: the school id associated with the teacher of the section in the school year of adding students to the section (teachers can change their school association across school years!) 
+      - name: created_at_school_year
+        description: the school year in which the section was created
+      - name: added_students_school_year
+        description: the school year in which the teacher added students to the section. As an example, a section that was created in 2016-17 but gets re-used by the teacher every school year will have a row for every school year the teacher has added new students to it.
+      - name: section_name
+        description: the name the teacher gave to the section
+      - name: login_type
+        description: the login type the teacher selected for the section
+      - name: grade
+        description: the primary grade level the teacher selected for the section 
+      - name: created_at
+        description: the timestamp for when the section was created
+      - name: updated_at
+        description: the timestamp for the last time the section information was updated
+      - name: num_students_added
+        description: the number of students added to the section (this does not necessarily mean these students are all active!)
+      - name: num_students_active
+        description: the number of students considered "active" in the section (has completed 1+ levels of the given course)
+      - name: course_name
+        description: the course associated with the student activity in the section. If a section is "active" (has 5+ students completing 1+ levels of the same course) in multiple courses, they will have a row for each one.
+      - name: is_active
+        description: a 0/1 flag for whether or not the section is "active" (has 5+ students completing 1+ levels of the same course). 

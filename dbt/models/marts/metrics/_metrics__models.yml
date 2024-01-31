@@ -2,7 +2,9 @@ version: 2
 
 models:
   - name: fct_weekly_school_acquisition_metrics
+
     description: weekly counts of school acquisitions by status (new, retained, reacquired, inactive, churn, market).  These are the top line metrics we use to measure against our goals of active schools.
+
 
 
     columns:
