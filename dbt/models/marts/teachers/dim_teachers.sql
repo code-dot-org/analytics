@@ -63,7 +63,7 @@ select
     tls.school_id,
     user_geos.is_international
 from teachers 
-join user_geos 
+left join user_geos 
     on teachers.teacher_id = user_geos.user_id
 left join teacher_latest_school tls 
     on tls.teacher_id = user_geos.user_id
