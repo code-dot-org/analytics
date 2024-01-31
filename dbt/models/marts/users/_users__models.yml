@@ -1,0 +1,32 @@
+version: 2
+
+models: 
+
+  - name: dim_users 
+    description: 1 row per user + user_geos; student_id, teacher_id fields
+    columns: 
+      - name: user_id
+        description: UID for eah user
+        tests: 
+          - not_null
+          - unique
+          
+      - name: student_id 
+        description: UID for each student
+        tests: 
+            - unique
+      
+      - name: teacher_id 
+        description: UID for each teacher
+        tests: 
+            - unique
+
+  # - name: dim_user_stages
+  #   description: 1 row for every time a user has activity within a stage, aggregates number of levels touched within stage
+  #   tests:
+  #   - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #           - user_id
+  #           - course_id
+  #           - script_id
+  #           - stage_id
