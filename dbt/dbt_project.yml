@@ -93,11 +93,6 @@ models:
       legacy_pii:
         tags:
           - "contains_pii"
-        base: 
-          tags:
-            - "base"
-          materialized: ephemeral
-      
       
       pegasus_pii:
         tags:
