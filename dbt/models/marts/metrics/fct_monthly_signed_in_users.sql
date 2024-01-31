@@ -1,3 +1,9 @@
+{#
+FUTURE WORK: this should be built as an incremental model.  Some of the increment criteria
+are tricky since this is an aggregated metrics table where the current month will update every
+day, but past months should remain unchanged.  
+#}
+
 with sign_ins as (
     select *
     from {{ ref('stg_dashboard__sign_ins')}}
