@@ -32,13 +32,13 @@ school_years as (
 
 final as (
     select
-        case when u.user_type is null then '' else u.user_type end      as user_type,
-        case when ug.is_international = 1 then 'intl' else 'us' end     as us_intl,
-        sy.school_year                                                  as sign_in_school_year,
-        date_part(year, si.sign_in_at)::integer                         as sign_in_year,
-        date_part(month, si.sign_in_at)::integer                        as sign_in_month,
-        count(distinct si.user_id)                                      as num_signed_in_users
-
+        u.user_type,
+        case when ug.is_international = 1 then 'intl' else 'us' end as us_intl,
+        sy.school_year as sign_in_school_year,
+        extract(year from si.sign_in_at) as sign_in_year,
+        extract(month from si.sign_in_at) as sign_in_month,
+        count(distinct si.user_id) as num_signed_in_users
+ 
     from sign_ins as si
     left join users u 
         on si.user_id = u.user_id
