@@ -6,7 +6,7 @@ models:
     description: 1 row per user + user_geos; student_id, teacher_id fields
     columns: 
       - name: user_id
-        description: UID for eah user
+        description: UID for each user
         tests: 
           - not_null
           - unique
@@ -21,12 +21,30 @@ models:
         tests: 
             - unique
 
-  # - name: dim_user_stages
-  #   description: 1 row for every time a user has activity within a stage, aggregates number of levels touched within stage
-  #   tests:
-  #   - dbt_utils.unique_combination_of_columns:
-  #         combination_of_columns:
-  #           - user_id
-  #           - course_id
-  #           - script_id
-  #           - stage_id
+      - name: races
+        description: raw value for race 
+        tests:
+          - not_null
+        tags: 
+          - contains_pii
+
+      - name: race_group
+        description: race categorization column
+        tests:
+          - not_null
+        tags: 
+          - contains_pii
+      
+      - name: gender 
+        description: raw value for gender
+        tests: 
+          - not_null
+        tags: 
+          - contains_pii
+      
+      - name: gender_group
+        description: gender categorization column
+        tests: 
+          - not_null
+        tags: 
+          - contains_pii

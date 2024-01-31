@@ -9,11 +9,24 @@ user_geos as (
     from {{ ref('stg_dashboard__user_geos') }}
 ),
 
+users_pii as (
+    select *
+    from {{ ref('stg_dashboard_pii__users')}}
+),
+
 final as (
     select 
         users.*, 
-        ug.is_international
+        users_pii.age_years,
+        users_pii.races,
+        users_pii.race_group,
+        users_pii.gender,
+        users_pii.gender_group,
+        ug.is_international,
+        case when ug.is_international = 1 then 'international' else 'united states' end as us_intl
     from users 
+    left join users_pii 
+        on users.user_id = users_pii.user_id
     left join user_geos as ug 
         on users.user_id = ug.user_id
 )
