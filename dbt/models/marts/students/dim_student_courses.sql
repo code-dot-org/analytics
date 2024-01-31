@@ -68,7 +68,7 @@ combined as (
 	join school_years sy 
 		on ul.created_at 
             between sy.started_at and sy.ended_at
-    {{ dbt_utils.group_by(3) }}
+    {{ dbt_utils.group_by(4) }}
 )
 
 select *
