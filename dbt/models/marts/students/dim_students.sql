@@ -29,7 +29,7 @@ select
     user_geos.is_international,
     sy.school_year created_at_school_year
 from students 
-join user_geos 
+left join user_geos 
     on students.student_id = user_geos.user_id
 left join school_years sy on students.created_at between sy.started_at and sy.ended_at
 )
