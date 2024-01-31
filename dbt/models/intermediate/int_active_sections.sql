@@ -36,7 +36,7 @@ final as (
         ,section_started_at
         ,num_students
     from combined
-    where num_students >= 5 --alignment check: rosetta does use >= 5 students as well
+    where num_students >= 5
 )
 
 select *

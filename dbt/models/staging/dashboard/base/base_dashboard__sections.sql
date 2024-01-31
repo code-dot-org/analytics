@@ -2,7 +2,6 @@ with
 source as (
     select * 
     from {{ source('dashboard', 'sections') }}
-    -- where deleted_at is null  
 ),
 
 renamed as (
@@ -11,8 +10,7 @@ renamed as (
         id                      as section_id,
         name                    as section_name,
         section_type,
-
-        user_id,
+        user_id                 as teacher_id,
         login_type,
         code,
         script_id,
@@ -36,6 +34,5 @@ renamed as (
         deleted_at
     from source
 )
-
 select * 
 from renamed
