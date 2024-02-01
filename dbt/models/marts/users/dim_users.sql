@@ -17,6 +17,7 @@ users_pii as (
 final as (
     select 
         users.*, 
+        users_pii.teacher_email,
         users_pii.age_years,
         users_pii.races,
         users_pii.race_group,

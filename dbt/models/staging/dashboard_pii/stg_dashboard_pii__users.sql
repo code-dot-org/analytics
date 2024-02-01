@@ -26,6 +26,7 @@ renamed as (
         case when user_type = 'student' then user_id end as student_id,
         case when user_type = 'teacher' then user_id end as teacher_id,
         -- PII
+        case when user_type = 'teacher' then email else null end as teacher_email,
         birthday,
         datediff(year, birthday, current_date) as age_years,
         races,
