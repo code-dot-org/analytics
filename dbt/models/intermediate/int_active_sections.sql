@@ -22,7 +22,7 @@ combined as (
 		,count(distinct ss.student_id) as num_students 
 	from student_course_starts scs
 	join student_section ss 
-	on scs.student_id = ss.student_id 
+	on scs.user_id = ss.student_id 
     and scs.school_year = ss.school_year 
 	group by 1,2,3,4
 ),
