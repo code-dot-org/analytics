@@ -77,9 +77,7 @@ models:
     description: staging model for `users` table from scource data
     columns: 
       - name: user_type
-        description: the type of acount the user created. value is either 'student' or 'teacher'
-        tests:
-          - not_null
+        description: the type of acount the user created. value is either 'student' or 'teacher', but can also be null if a user did not finish their account sign up. 
       
       - name: user_id
         description: the unique id for this user
