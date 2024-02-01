@@ -9,6 +9,7 @@ renamed as (
     select
         id                          as user_id,
         user_type,
+        email,
         gender,
         birthday,
         active                      as is_active,

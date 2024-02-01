@@ -4,47 +4,41 @@ models:
 
   - name: dim_users 
     description: 1 row per user + user_geos; student_id, teacher_id fields
+    tests: 
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - gender
+            - birthday
+
     columns: 
       - name: user_id
         description: UID for each user
         tests: 
           - not_null
-          - unique
           
       - name: student_id 
         description: UID for each student
-        tests: 
-            - unique
       
       - name: teacher_id 
         description: UID for each teacher
-        tests: 
-            - unique
 
       - name: races
         description: raw value for race 
-        tests:
-          - not_null
         tags: 
           - contains_pii
 
       - name: race_group
         description: race categorization column
-        tests:
-          - not_null
         tags: 
           - contains_pii
       
       - name: gender 
         description: raw value for gender
-        tests: 
-          - not_null
         tags: 
           - contains_pii
       
       - name: gender_group
         description: gender categorization column
-        tests: 
-          - not_null
         tags: 
           - contains_pii

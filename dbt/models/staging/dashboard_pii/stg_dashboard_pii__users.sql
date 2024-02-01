@@ -1,21 +1,8 @@
-{{
-    config(
-        materialized='incremental',
-        unique_key='user_id')
-}}
-
 with
 users as (
     select *
     from {{ ref('base_dashboard_pii__users') }}
-    where
-        is_active
-
-        {% if is_incremental() %}
-
-        and updated_at > (select max(updated_at) from {{ this }})
-
-        {% endif %}
+    where is_active
 ),
 
 renamed as (
