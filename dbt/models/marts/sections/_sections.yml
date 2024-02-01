@@ -2,7 +2,7 @@ version: 2
 
 models: 
   - name: dim_sections
-    description: all sections ever created, with activity metrics for those that are "active" (5+ students completing 1+ levels of same course)
+    description: all sections ever created, with activity metrics for those that are "active" (5+ students starting 1+ levels of same course during a school year)
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -11,7 +11,7 @@ models:
             - course_name
             - section_id
             - school_year_created
-            - school_year_added
+            - school_year
     columns:
       - name: section_id
         description: the unique id associated with the section
@@ -21,7 +21,7 @@ models:
         description: the school id associated with the teacher of the section in the school year of adding students to the section (teachers can change their school association across school years!) 
       - name: created_at_school_year
         description: the school year in which the section was created
-      - name: added_students_school_year
+      - name: school_year
         description: the school year in which the teacher added students to the section. As an example, a section that was created in 2016-17 but gets re-used by the teacher every school year will have a row for every school year the teacher has added new students to it.
       - name: section_name
         description: the name the teacher gave to the section
@@ -36,8 +36,8 @@ models:
       - name: num_students_added
         description: the number of students added to the section (this does not necessarily mean these students are all active!)
       - name: num_students_active
-        description: the number of students considered "active" in the section (has completed 1+ levels of the given course)
+        description: the number of students considered "active" in the section (has started 1+ levels of the given course)
       - name: course_name
-        description: the course associated with the student activity in the section. If a section is "active" (has 5+ students completing 1+ levels of the same course) in multiple courses, they will have a row for each one.
+        description: the course associated with the student activity in the section. If a section is "active" (has 5+ students starting 1+ levels of the same course in a year) in multiple courses, they will have a row for each one.
       - name: is_active
-        description: a 0/1 flag for whether or not the section is "active" (has 5+ students completing 1+ levels of the same course). 
+        description: a 0/1 flag for whether or not the section is "active" for that course and school year (has 5+ students starting 1+ levels of the same course in a year). 

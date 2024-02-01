@@ -78,7 +78,7 @@ final as (
         act.num_students_active,
         
         sm.num_students_added,
-        sm.school_year as school_year_students_added
+        sm.school_year as school_year
     from combined as comb 
     left join section_mapping as sm 
         on comb.section_id = sm.section_id
