@@ -8,8 +8,8 @@ student_section as (
 
 student_course_starts as (
     select *
-    from {{ ref('dim_student_courses') }}
-    where student_id in (select student_id from student_section)
+    from {{ ref('dim_user_course_activity') }}
+    where user_id in (select student_id from student_section)
 ),
 
 combined as (

@@ -18,10 +18,8 @@ final as (
     select 
         users.*, 
         users_pii.teacher_email,
-        users_pii.age_years,
         users_pii.races,
         users_pii.race_group,
-        users_pii.gender,
         users_pii.gender_group,
         ug.is_international,
         case when ug.is_international = 1 then 'international' else 'united states' end as us_intl

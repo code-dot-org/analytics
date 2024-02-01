@@ -55,7 +55,7 @@ users as (
     select 
         user_id,
         user_type
-    from {{ ref('stg_dashboard__users') }}
+    from {{ ref('dim_users') }}
 ),
 
 combined as (
