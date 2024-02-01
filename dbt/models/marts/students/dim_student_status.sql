@@ -26,7 +26,7 @@ Logic: we can determine status based on three properties we can compute for ever
 with 
 student_courses_started as (
     select
-        student_id,
+        user_id,
         school_year,
         listagg(distinct course_name, ', ') within group (order by course_name asc) courses_started
     from {{ ref('dim_user_course_activity') }}
@@ -60,11 +60,11 @@ active_status_simple as (
     select
         all_sy.student_id,
         all_sy.school_year,
-        case when s.student_id is null then 0 else 1 end as is_active,
+        case when s.user_id is null then 0 else 1 end as is_active,
         s.courses_started
     from all_students_school_years all_sy
     left join student_courses_started s 
-        on s.student_id = all_sy.student_id 
+        on s.user_id = all_sy.student_id 
         and s.school_year = all_sy.school_year
 ), 
 
