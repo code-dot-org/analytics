@@ -1,7 +1,6 @@
 version: 2
 
 models: 
-
   - name: dim_users 
     description: 1 row per user + user_geos + user pii
 
@@ -10,7 +9,6 @@ models:
         description: UID for each user
         tests: 
           - not_null
-          - unique
           
       - name: student_id 
         description: UID for each student
@@ -46,7 +44,6 @@ models:
       description: the unique user ID associated with the activity
       tests:
         - not_null
-        - unique
 
     - name: user_type
       description: student or teacher

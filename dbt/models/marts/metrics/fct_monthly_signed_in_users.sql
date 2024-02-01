@@ -12,17 +12,9 @@ with sign_ins as (
 users as (
     select
         user_id,
-        user_type
-    from {{ ref('stg_dashboard__users') }} 
-    where user_id in (select user_id from sign_ins)
-),
-
-user_geos as (
-    select
-        user_id,
+        user_type,
         is_international
-    from {{ ref('stg_dashboard__user_geos') }}
-    where user_id in (select user_id from users)
+    from {{ ref('dim_users') }}
 ),
 
 school_years as (
@@ -33,17 +25,15 @@ school_years as (
 final as (
     select
         u.user_type,
-        case when ug.is_international = 1 then 'intl' else 'us' end as us_intl,
+        case when u.is_international = 1 then 'intl' else 'us' end as us_intl,
         sy.school_year as sign_in_school_year,
         extract(year from si.sign_in_at) as sign_in_year,
         extract(month from si.sign_in_at) as sign_in_month,
         count(distinct si.user_id) as num_signed_in_users
- 
+
     from sign_ins as si
     left join users u 
         on si.user_id = u.user_id
-    left join user_geos ug 
-        on si.user_id = ug.user_id
     left join school_years sy
         on sign_in_at 
             between sy.started_at and sy.ended_at

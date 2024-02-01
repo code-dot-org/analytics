@@ -24,61 +24,52 @@ Logic: we can determine status based on three properties we can compute for ever
 */
 
 with 
-
 student_courses_started as (
-
     select
         student_id,
         school_year,
-        listagg(distinct course_name, ', ') within group (order by course_name ASC) courses_started
+        listagg(distinct course_name, ', ') within group (order by course_name asc) courses_started
     from {{ ref('dim_user_course_activity') }}
     where user_type = 'student'
-    group by 1, 2
-
+    {{ dbt_utils.group_by(2)}}
 ),
 
 all_student_users as (
-
     select
         student_id,
         created_at
     from {{ref('dim_students')}}
-
 ), 
 
 school_years as (
-
-    select * from {{ref('int_school_years')}}
-
+    select * 
+    from {{ref('int_school_years')}}
 ), 
 
 all_students_school_years as (
-
     select
         u.student_id,
         sy.school_year
     from all_student_users u
-    join school_years sy on u.created_at <= sy.ended_at
+    join school_years sy 
+        on u.created_at <= sy.ended_at
     where sy.started_at < current_timestamp
-
 ), 
 
 active_status_simple as (
-
     select
         all_sy.student_id,
         all_sy.school_year,
         case when s.student_id is null then 0 else 1 end as is_active,
         s.courses_started
-
     from all_students_school_years all_sy
-    left join student_courses_started s on s.student_id = all_sy.student_id and s.school_year = all_sy.school_year
-
+    left join student_courses_started s 
+        on s.student_id = all_sy.student_id 
+        and s.school_year = all_sy.school_year
 ), 
 
 full_status as (
     -- Determine the active status for each student in each year
-
     select
         student_id,
         school_year,
@@ -87,47 +78,43 @@ full_status as (
         coalesce(
             lag(is_active, 1) 
                 over (partition by student_id order by school_year) 
-            , 0
-        ) as prev_year_active,
+        ,0) as prev_year_active,
         coalesce( --force any NULL to be 0 for this function
             max(is_active) 
-                over (partition by student_id order by school_year rows between unbounded preceding and 1 preceding)
-            , 0
-        ) as ever_active_before,
-        (is_active || prev_year_active || ever_active_before) status_code
-    from
-        active_status_simple
-
+                over (
+                    partition by student_id 
+                    order by school_year 
+                    rows between unbounded preceding and 1 preceding)
+        , 0) as ever_active_before,
+        (is_active || prev_year_active || ever_active_before) as status_code
+    from active_status_simple
 ), 
 
 current_school_year as (
-
     select 
         school_year
     from {{ref("int_school_years")}}
-    where current_date between started_at and ended_at
+    where current_date 
+        between started_at and ended_at
+),
 
+final as (
+    select
+        student_id,
+        school_year,
+        case 
+            when status_code = '000' then 'market'
+            when status_code = '001' then 'inactive churn'
+            when status_code = '010' then '<impossible status>'
+            when status_code = '011' then 'inactive this year'
+            when status_code = '100' then 'active new'
+            when status_code = '101' then 'active reacquired'
+            when status_code = '110' then '<impossible status>'
+            when status_code = '111' then 'active retained'
+        end as status,
+        courses_started
+    from full_status
 )
 
-select
-    student_id,
-    school_year,
-    --is_active,
-    --prev_year_active,
-    --ever_active_before,
-    --status_code,
-    case 
-        when status_code = '000' then 'market'
-        when status_code = '001' then 'inactive churn'
-        when status_code = '010' then '<impossible status>'
-        when status_code = '011' then 'inactive this year'
-        when status_code = '100' then 'active new'
-        when status_code = '101' then 'active reacquired'
-        when status_code = '110' then '<impossible status>'
-        when status_code = '111' then 'active retained'
-    end as status,
-    courses_started
-from
-    full_status
-order by
-    student_id, school_year
+select * 
+from final 

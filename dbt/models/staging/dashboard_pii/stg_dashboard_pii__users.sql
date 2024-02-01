@@ -3,6 +3,7 @@ users as (
     select *
     from {{ ref('base_dashboard_pii__users') }}
     where is_active
+    and user_type is not null 
 ),
 
 renamed as (
