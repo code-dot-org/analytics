@@ -1,0 +1,48 @@
+name: dbt-docs-test
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  dbt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install dbt
+          dbt deps
+        # If your dbt project is in a subdirectory, add:
+        # working-directory: path/to/your/dbt_project
+
+      - name: Run dbt
+        run: dbt run
+        # If your dbt project is in a subdirectory, add:
+        # working-directory: path/to/your/dbt_project
+
+      - name: Generate dbt Docs
+        run: dbt docs generate
+        # If your dbt project is in a subdirectory, add:
+        # working-directory: path/to/your/dbt_project
+
+      - name: Deploy dbt Docs to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: target/pkgs
+          # No need to specify working-directory here unless your deployment needs it
