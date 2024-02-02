@@ -9,8 +9,8 @@ The following models and configurations are used to transform, load, and model d
 Our anticipated release schedule is as follows:
 
 ### Release Name (Release Date)
-0. [Pre-Release] **Hydrone** v1.0.2023   2023-12-15
-1. [Release 1] **Hydrone** v1.1.2024     2024-02-05
+0. [Pre-Release] **Hydrone** v1.0.2023   [2023-12-15]
+1. [Release 1] **Hydrone** v1.1.2024     [2024-02-02] <-- today!
 
 
 #### Using dbt
@@ -20,7 +20,7 @@ After you set up dbt, try running the following commands:
 
 * `dbt clean && dbt deps`
 * `dbt debug`
-* `dbt run --select /dbt/models/marts/*`
+* `dbt run && dbt docs generate`
 
 #### Resources:
 * Please refer to our `sql`/`dbt` [style guide](https://docs.getdbt.com/best-practices/how-we-style/1-how-we-style-our-dbt-models) for building models
