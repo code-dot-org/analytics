@@ -2,9 +2,9 @@
 
 Hello friend,
 
-Welcome to the cdo-analytics dbt codebase. 
+Welcome to the code.org analytics codebase! 
 
-The following models and configurations are used to transform, load, and model data from our studio application (amongst other third party sources) into our data warehouse. 
+The following models and configurations are used to transform, load, and model data from our studio application (and other third party sources) into our data warehouse. 
 
 Our anticipated release schedule is as follows:
 
