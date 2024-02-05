@@ -53,10 +53,11 @@ models:
     # applies to all models 
   
     post-hook:
-      - "grant select on {{ this }} to trevorio"
+      - "grant select on {{ this }} to group reader_pii_dbt"
+      # - "grant select on {{ this }} to group trevorio"
   
-    +grants:
-      select: ['dbt','trevorio']
+    # +grants:
+    #   select: ['dbt','trevorio']
   
     +query_tag: dbt
     bind: false
