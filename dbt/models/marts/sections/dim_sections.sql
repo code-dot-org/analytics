@@ -31,13 +31,11 @@ section_mapping as (
     from {{ ref('int_section_mapping') }}
     {{ dbt_utils.group_by(4) }}
 ),
-
 school_years as (
     select * 
     from {{ ref('int_school_years') }}
 ),
-
-teacher_school_changes as (
+teacher_school_changes as ( --i'm not sure we need this here.  isn't it covered by section mapping?
     select 
         school_id,
         teacher_id,
