@@ -2,7 +2,6 @@ version: 2
 
 models:
   - name: fct_weekly_school_acquisition_metrics
-
     description: weekly counts of school acquisitions by status (new, retained, reacquired, inactive, churn, market).  These are the top line metrics we use to measure against our goals of active schools.
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -51,7 +50,7 @@ models:
               config:
                 severity: warn
                 # error_if: "<1"
-                warn_if: "<1"
+                warn_if: "<10"
       
       - name: num_schools_running_total
         description: total number of schools within the school level and active status dimensions as of that week
@@ -75,8 +74,8 @@ models:
           - unique:
               config:
                 severity: error
-                error_if: ">10"
-                warn_if: "<10"
+                error_if: ">3"
+                warn_if: "=3"
         # tests:
         #   - not_null
           
