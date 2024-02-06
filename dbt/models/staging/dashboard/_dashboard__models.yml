@@ -35,15 +35,6 @@ models:
       #   tests:
       #     - not_null 
 
-  - name: stg_dashboard__user_levels
-    description: staging model for `user_levels` source data
-    columns: 
-      - name: user_level_id
-        description: unique id for for each user at each level
-        tests:
-          - unique
-          - not_null
-
   - name: stg_dashboard__sections
     description: staging model for `sections` source data
     columns: 
@@ -78,6 +69,8 @@ models:
     columns: 
       - name: user_type
         description: the type of acount the user created. value is either 'student' or 'teacher'
+        tests:
+            - not_null 
       
       - name: user_id
         description: the unique id for this user
@@ -91,8 +84,11 @@ models:
       - name: age_in_years
         description: a calculation based on `birthday` to be how many years old the user is today. note - max age is 22.
 
-      
-          
-
-      
-        
+  - name: stg_dashboard__user_levels
+    description: staging model for `user_levels` source data
+    columns: 
+      - name: user_level_id
+        description: unique id for for each user at each level
+        tests:
+          - unique
+          - not_null
