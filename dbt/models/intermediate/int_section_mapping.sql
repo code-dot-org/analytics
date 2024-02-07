@@ -43,7 +43,7 @@ combined as (
         sections.teacher_id,
         sections.section_id         as section_id,
         tsc.school_id,
-        row_number() over(  -- number rows where studenst have multiple sections with same teacher in same school year.
+        row_number() over(  -- number rows where the student has multiple sections within the same school year.
             partition by 
                 followers.student_id, 
                 sy.school_year
@@ -69,7 +69,7 @@ final as (
         teacher_id,
         school_id
     from combined
-    where row_num = 1  -- take the first section the student was added to that school year
+    where row_num = 1  -- take the first section the student was added to that school year (this is a choice rosetta makes for analysis.students)
 )
 select * 
 from final 
