@@ -4,7 +4,8 @@ are tricky since this is an aggregated metrics table where the current month wil
 day, but past months should remain unchanged.  
 #}
 
-with sign_ins as (
+with 
+sign_ins as (
     select *
     from {{ ref('stg_dashboard__sign_ins')}}
 ),

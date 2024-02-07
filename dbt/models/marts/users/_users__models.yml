@@ -9,7 +9,13 @@ models:
         description: UID for each user
         tests: 
           - not_null
-          
+
+      - name: user_type
+        description: student or teacherm if NULL = fail
+            # - accepted_values:
+            #     values: ['teacher','student']
+        tests: 
+            - not_null
       - name: student_id 
         description: UID for each student
       
