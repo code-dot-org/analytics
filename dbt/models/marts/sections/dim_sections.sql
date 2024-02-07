@@ -35,7 +35,6 @@ teacher_school_changes as (
         school_years as sy
         on sec.created_at between sy.started_at and sy.ended_at
 )
--- should we attach followers here to show sections that have followers but don't get mapped?
 , num_students_per_section as (
     select 
         section_id, 
@@ -44,7 +43,7 @@ teacher_school_changes as (
         school_year,
         count(distinct student_id) as num_students_added
     
-    from {{ ref('int_section_mapping') }}               --this table limits each student to 1 section per year
+    from {{ ref('int_section_mapping') }}               --NOTE: this table limits each student to 1 section per year, and it chooses the first section a student was added to that school year.
     {{ dbt_utils.group_by(4) }}
 )
 , teacher_active_courses as (
@@ -62,9 +61,7 @@ teacher_school_changes as (
 
     select
         tac.teacher_id,
-        --
         tac.section_id,
-        --
         tac.school_year,
         tac.course_name,
         tac.section_started_at,
@@ -82,10 +79,9 @@ teacher_school_changes as (
 , final as (
     select
 
-        -- general section stuff
+        -- general section data from the sections table
         sec.section_id,
         sec.teacher_id,
-        act.school_id,
         sec.school_year_created,
         sec.section_name,
         sec.login_type,
@@ -93,21 +89,17 @@ teacher_school_changes as (
         sec.created_at, 
         sec.updated_at,
 
-        -- section activity within school year
-        act.course_name,
-
-        act.is_active,  -- I think is_active is potentially confusing/misleading here because of the school_year as part of the grain.  
-                        -- It means WAS active in the the school year for which this section was active.
-                        -- There are also other clues in the fields that this was active in a particular year
-
-        act.num_students_active,
+        -- data from followers based on school year (number of students added to the section within the active school year)
         nsps.num_students_added,
-        --students_added_school_year,  --was failing a test where 6 columns where the same except for num_students_added.  This means that the section added students in different school year, but had no official acitivity.  Also means there are 3 SYs we need to consider.  SY created _at, SY students added, SY activity_started_at
 
-        act.section_started_at, --adding response to request
-        coalesce(act.school_year, nsps.school_year) school_year-- coalesce because some sections have students added in a school year but no measureable activity.  These school_years are the same in cases were both exist. Q: should this be called active_school_year or something like that?
-
-        
+        -- section activity within a school/school year
+        act.school_id,
+        act.course_name,
+        act.is_active,              -- note: this is a convenience field.  If anything from teacher_active_courses_with_sy is non-null then it means the section was active
+        act.num_students_active,
+        act.section_started_at,     
+        coalesce(act.school_year, nsps.school_year) school_year    -- coalesce because some sections add students to a school year but have no measurable activity. First choice is legit acitivity year, otherwise year students added
+                                                                
     from all_sections as sec
 
     left join num_students_per_section as nsps 
