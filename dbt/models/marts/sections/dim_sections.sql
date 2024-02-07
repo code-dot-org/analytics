@@ -4,12 +4,11 @@ Re-write of dim_sections by Baker on 2.6.24
 Table creates one record per section/teacher per school year REGARDLESS of activity in the section.
 Sections that were created but never active have NULL activity.
 
-I kept all columns and names from original dim_sections, but I think we might consider modifying some of them for clarity -- noted in inline comments below.
+I kept all columns and names from original dim_sections, but I think we might consider modifying 
+some of them for clarity -- noted in inline comments below.
 
-Because this table is derived from int_section_mapping, the number of distinct sections will not
-match the total number of sections (some get excluded through int_section_mapping)
-but it should match, and contain, the same sections that are in int_section_mapping + 
-all sections that were never activited or had any followers.
+This model should have every distinct section_id that appears in stg__sections.  However, some sections 
+will show students added but no activity because the activity is excluded by int_active_sections.
 
 #}
 
