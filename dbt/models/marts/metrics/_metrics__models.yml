@@ -119,7 +119,7 @@ models:
               config:
                 severity: error
                 error_if: ">3"
-                warn_if: "<10"
+                warn_if: "=3"
       
       - name: us_intl
         description: whether the user who signed in was in the US or outside the US
