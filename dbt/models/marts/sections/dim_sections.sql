@@ -4,7 +4,7 @@ Re-write of dim_sections by Baker on 2.6.24
 Table creates one record per section/teacher per school year REGARDLESS of activity in the section.
 Sections that were created but never active have NULL activity.
 
-I kept all columns and names from original dim_sections
+I kept all columns and names from original dim_sections, but I think we might consider modifying some of them for clarity -- noted in inline comments below.
 
 Because this table is derived from int_section_mapping, the number of distinct sections will not
 match the total number of sections (some get excluded through int_section_mapping)
