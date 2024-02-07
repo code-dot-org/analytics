@@ -118,7 +118,7 @@ models:
           - unique:
               config:
                 severity: error
-                error_if: ">10"
+                error_if: ">3"
                 warn_if: "<10"
       
       - name: us_intl
