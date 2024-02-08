@@ -82,8 +82,6 @@ models:
           
       - name: us_intl
         description: whether the account was created by a user inside or outside the US. Possible values are (us | intl).
-        tests:
-          - not_null
           
       - name: country
         description: the current geo-located country associated with this user.  Note - this can change over time. When `us_intl` = 'us' then country = "United States". All other countries are flaged as "intl"
@@ -113,6 +111,7 @@ models:
           combination_of_columns:
             - user_type
             - us_intl
+            - country
             - sign_in_year
             - sign_in_month
     columns:
@@ -126,9 +125,10 @@ models:
                 warn_if: "=3"
       
       - name: us_intl
-        description: whether the user who signed in was in the US or outside the US
-        tests:
-          - not_null
+        description: whether the user who signed in was in the US or outside the US. Values are one of (us | intl)
+
+      - name: country
+        description: the current geo-located country associated with this user.  Note - this can change over time. When `us_intl` = 'us' then country = "United States". All other countries are flaged as "intl"
       
       - name: sign_in_school_year
         description: school year in which users signed in

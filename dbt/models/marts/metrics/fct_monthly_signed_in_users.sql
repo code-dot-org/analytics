@@ -14,7 +14,9 @@ users as (
     select
         user_id,
         user_type,
-        is_international
+        is_international,
+        us_intl,
+        country
     from {{ ref('dim_users') }}
 ),
 
@@ -26,7 +28,9 @@ school_years as (
 final as (
     select
         u.user_type,
-        case when u.is_international = 1 then 'intl' else 'us' end as us_intl,
+        u.country,
+        --case when u.is_international = 1 then 'intl' else 'us' end as us_intl,
+        u.us_intl,
         sy.school_year as sign_in_school_year,
         extract(year from si.sign_in_at) as sign_in_year,
         extract(month from si.sign_in_at) as sign_in_month,
@@ -38,7 +42,7 @@ final as (
     left join school_years sy
         on sign_in_at 
             between sy.started_at and sy.ended_at
-    {{ dbt_utils.group_by(5) }}
+    {{ dbt_utils.group_by(6) }}
 )
 
 select * 
