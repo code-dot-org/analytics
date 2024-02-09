@@ -1,23 +1,7 @@
 version: 2
 
-models: 
-  # - name: stg_dashboard__course_scripts
-  #   description: staging model for course_scripts source data
-  #   columns:
-  #     - name: course_script_id
-  #       description: unique id for each course and script combination
-  #       tests: 
-  #         - unique
-  #         - not_null
-  #     - name: course_id 
-  #       description: unique id for each course
-  #       tests: 
-  #         - not_null
-  #     - name: script_id 
-  #       description: unique id for each script
-  #       tests: 
-  #         - not_null
-        
+models:   
+
   - name: stg_dashboard__followers
     description: staging model for followers source data
     columns: 
@@ -26,23 +10,6 @@ models:
         tests:
           - unique
           - not_null
-      - name: student_id
-        description: fk for individual student user
-        tests:
-          - not_null
-      # - name: section_id
-      #   description: fk for follower section
-      #   tests:
-      #     - not_null 
-
-  - name: stg_dashboard__sections
-    description: staging model for `sections` source data
-    columns: 
-      - name: section_id 
-        description: unique id for each section
-        tests: 
-          - not_null
-          - unique
 
   - name: stg_dashboard__schools 
     description: staging model for core school data, where len(school_id)=11 we are applying a LPAD to maintain school length convention
@@ -51,6 +18,7 @@ models:
         tests: 
           - unique
           - not_null        
+
 
   - name: stg_dashboard__school_stats_by_years
     description: staging model for `school_stats_by_years` source data
@@ -64,6 +32,15 @@ models:
         tests:
           - not_null
 
+  - name: stg_dashboard__sections
+    description: staging model for `sections` source data
+    columns: 
+      - name: section_id 
+        description: unique id for each section
+        tests: 
+          - not_null
+          - unique
+          
   - name: stg_dashboard__users
     description: staging model for `users` table from scource data
     columns: 

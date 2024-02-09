@@ -9,38 +9,15 @@ models:
         description: UID for each user
         tests: 
           - not_null
-
-      - name: user_type
-        description: student or teacherm if NULL = fail
-            # - accepted_values:
-            #     values: ['teacher','student']
-        tests: 
-            - not_null
-      - name: student_id 
-        description: UID for each student
+          - unique
+          
+      #  deprecated 2/9/24 (js)
+      # - name: student_id 
+      #   description: UID for each student
       
-      - name: teacher_id 
-        description: UID for each teacher
+      # - name: teacher_id 
+      #   description: UID for each teacher
 
-      - name: races
-        description: raw value for race 
-        tags: 
-          - contains_pii
-
-      - name: race_group
-        description: race categorization column
-        tags: 
-          - contains_pii
-      
-      - name: gender 
-        description: raw value for gender
-        tags: 
-          - contains_pii
-      
-      - name: gender_group
-        description: gender categorization column
-        tags: 
-          - contains_pii
   
   - name: dim_user_course_activity
     description: This model is a log of all student- and teacher-course activity within a school year.
