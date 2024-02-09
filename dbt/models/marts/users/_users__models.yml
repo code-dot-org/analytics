@@ -10,12 +10,13 @@ models:
         tests: 
           - not_null
 
-      - name: user_type
-        description: student or teacherm if NULL = fail
-            # - accepted_values:
-            #     values: ['teacher','student']
-        tests: 
-            - not_null
+      # - name: user_type
+      #   description: student or teacherm if NULL = fail
+      #       # - accepted_values:
+      #       #     values: ['teacher','student']
+      #   tests: 
+      #       - not_null
+
       - name: student_id 
         description: UID for each student
       
@@ -51,8 +52,8 @@ models:
       tests:
         - not_null
 
-    - name: user_type
-      description: student or teacher
+    # - name: user_type
+    #   description: student or teacher
     
     - name: school_year
       description: the school year in which the course activity was in

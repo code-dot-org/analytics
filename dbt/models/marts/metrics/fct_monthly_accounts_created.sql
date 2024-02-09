@@ -8,9 +8,9 @@ with all_users as (
     select
         user_id,
         created_at,
-        user_type,
+        -- user_type,
         is_international,
-        us_intl,
+        -- us_intl,
         country
     from {{ ref('dim_users') }}
 ),

@@ -1,8 +1,10 @@
 with 
 teachers as (
-    select * 
+    select 
+        {{ dbt_utils.star(from=teachers),
+            except=['teacher_id','user_type'] }}
     from {{ ref('dim_users')}}
-    where teacher_id is not null 
+    where user_type = 'teacher'
 ),
 
 user_school_infos as (
@@ -13,6 +15,7 @@ user_school_infos as (
 school_infos as (
     select * 
     from {{ ref('stg_dashboard__school_infos') }}
+    where school_id is not null
 ), 
 
 school_years as (
@@ -23,7 +26,7 @@ school_years as (
 -- get teacher NCES school_id association
 teacher_schools as (
     select 
-        teachers.teacher_id,
+        teachers.user_id as teacher_id,
         si.school_id,
         rank () over (
             partition by teachers.teacher_id 
@@ -33,24 +36,31 @@ teacher_schools as (
         on usi.user_id = teachers.teacher_id
     left join school_infos as si 
         on si.school_info_id = usi.school_info_id
-    where si.school_id is not null
 ),
 
-teacher_latest_school as (
-    select 
-        teacher_id,
-        school_id
-    from teacher_schools
-    where rnk = 1
-)
+-- teacher_latest_school as (
+--     select 
+--         teacher_id,
+--         school_id
+--     from teacher_schools
+--     where rnk = 1
+-- ),
 
-select 
-    teachers.*, 
-    tls.school_id,
-    school_years.school_year as created_at_school_year
-from teachers 
-left join teacher_latest_school tls 
-    on teachers.teacher_id = tls.teacher_id
-left join school_years 
-    on teachers.created_at 
-        between school_years.started_at and school_years.ended_at
+final as (
+    select 
+        -- all user data from dim_users
+        teachers.*, 
+
+        -- foreign keys
+        ts.school_id,
+        school_years.school_year as created_at_school_year
+    from teachers 
+    left join teacher_schools as ts 
+        on teachers.teacher_id = ts.teacher_id
+    left join school_years 
+        on teachers.created_at 
+            between school_years.started_at 
+                and school_years.ended_at)
+
+select * 
+from final
