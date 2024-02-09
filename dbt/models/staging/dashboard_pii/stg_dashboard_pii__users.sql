@@ -11,8 +11,10 @@ renamed as (
         -- PK
         user_id,
         user_type,
-        case when user_type = 'student' then user_id end as student_id,
-        case when user_type = 'teacher' then user_id end as teacher_id,
+
+        -- deprecated 2/9/24 (js)
+        -- case when user_type = 'student' then user_id end as student_id,
+        -- case when user_type = 'teacher' then user_id end as teacher_id,
         -- PII
         case when user_type = 'teacher' then email else null end as teacher_email,
         birthday,
