@@ -43,7 +43,7 @@ combined as (
         sections.teacher_id,
         sections.section_id         as section_id,
         tsc.school_id,
-        row_number() over(  -- number rows where the student has multiple sections within the same school year.
+        row_number() over(
             partition by 
                 followers.student_id, 
                 sy.school_year
