@@ -98,7 +98,7 @@ teacher_school_changes as (
         act.is_active,              -- note: this is a convenience field.  If anything from teacher_active_courses_with_sy is non-null then it means the section was active
         act.num_students_active,
         act.section_started_at,     
-        coalesce(act.school_year, nsps.school_year) school_year    -- coalesce because some sections add students to a school year but have no measurable activity. First choice is legit acitivity year, otherwise year students added
+        coalesce(act.school_year, nsps.school_year) school_year    -- coalesce first activity school_year with year of student activity
                                                                 
     from all_sections as sec
 
