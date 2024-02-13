@@ -9,7 +9,6 @@ user_levels as (
 students as (
     select * 
     from {{ ref('dim_students') }}
-    where student_id in (select user_id from user_levels)
 ),
 
 final as (
@@ -20,7 +19,7 @@ final as (
         user_levels.script_id
     from user_levels 
     join students 
-        on user_levels.user_id = students.student_id 
+        on user_levels.user_id = students.user_id 
 )
 
 select * 

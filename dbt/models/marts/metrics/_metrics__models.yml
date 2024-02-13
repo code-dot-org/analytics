@@ -109,20 +109,19 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - user_type
+            # - user_type
             - us_intl
             - country
-            - sign_in_year
-            - sign_in_month
+            - school_year
     columns:
-      - name: user_type
-        description: teacher or student
-        tests:
-          - unique:
-              config:
-                severity: error
-                error_if: ">3"
-                warn_if: "=3"
+      # - name: user_type
+      #   description: teacher or student
+      #   tests:
+      #     - unique:
+      #         config:
+      #           severity: error
+      #           error_if: ">3"
+      #           warn_if: "=3"
       
       - name: us_intl
         description: whether the user who signed in was in the US or outside the US. Values are one of (us | intl)
@@ -130,20 +129,20 @@ models:
       - name: country
         description: the current geo-located country associated with this user.  Note - this can change over time. When `us_intl` = 'us' then country = "United States". All other countries are flaged as "intl"
       
-      - name: sign_in_school_year
-        description: school year in which users signed in
-        tests:
-          - not_null
+      # - name: sign_in_school_year
+      #   description: school year in which users signed in
+      #   tests:
+      #     - not_null
       
-      - name: sign_in_year
-        description: the calendar year in which users signed in
-        tests:
-          - not_null
+      # - name: sign_in_year
+      #   description: the calendar year in which users signed in
+      #   tests:
+      #     - not_null
       
-      - name: sign_in_month
-        description: the month number in which users signed in
-        tests:
-          - not_null
+      # - name: sign_in_month
+      #   description: the month number in which users signed in
+      #   tests:
+      #     - not_null
       
       - name: num_signed_in_users
         description: the number of users who signed in in that school year, month, user type and geography

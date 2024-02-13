@@ -22,19 +22,20 @@ school_years as (
 
 final as (
     select
-        u.user_type,
+        -- u.user_type,
         u.country,
-        u.us_intl,
+        case when u.is_international = 1 then 'international' 
+             when u.is_international = 0 then 'us' 
+             else 'unknown' end as us_intl,
         sy.school_year                  as created_at_school_year,
         date_part(year, u.created_at)   as created_at_year,
         date_part(month, u.created_at)  as created_at_month,
         count(distinct u.user_id)       as num_accounts
     from all_users as u
     left join school_years as sy
-        on
-            u.created_at
+        on u.created_at
             between sy.started_at and sy.ended_at
-    {{ dbt_utils.group_by(6) }}
+    {{ dbt_utils.group_by(5) }}
 )
 
 select *

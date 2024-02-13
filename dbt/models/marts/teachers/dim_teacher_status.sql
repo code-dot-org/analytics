@@ -19,23 +19,21 @@ Logic: we can determine status based on three properties we can compute for ever
 #}
 
 with 
-teacher_section_started as (
+teacher_sections as (
     select teacher_id,
         school_year,
         min(section_started_at) as started_teaching_at,
-        listagg(distinct course_name, ', ') within group (order by course_name ASC) section_courses_started
+        listagg(distinct course_name, ', ') within group (order by course_name asc) section_courses_started
     from {{ ref('int_active_sections') }}
     where teacher_id is not null 
-    group by 1, 2
+    {{ dbt_utils.group_by(2) }}
 ),
 
-all_teacher_users as (
-
+teachers as (
     select
-        teacher_id,
+        user_id,
         created_at
     from {{ref('dim_teachers')}}
-
 ), 
 
 school_years as (
@@ -46,7 +44,7 @@ school_years as (
 all_teachers_school_years as (
 
     select
-        u.teacher_id,
+        u.user_id,
         sy.school_year
     from all_teacher_users u
     join school_years sy on u.created_at <= sy.ended_at
@@ -57,34 +55,32 @@ all_teachers_school_years as (
 active_status_simple as (
 
     select
-        all_sy.teacher_id,
+        all_sy.user_id,
         all_sy.school_year,
-        case when t.teacher_id is null then 0 else 1 end as is_active,
+        case when t.user_id is null then 0 else 1 end as is_active,
         t.section_courses_started,
         t.started_teaching_at
-
     from all_teachers_school_years all_sy
-    left join teacher_section_started t on t.teacher_id = all_sy.teacher_id and t.school_year = all_sy.school_year
-
+    left join teacher_section_started t on t.user_id = all_sy.user_id and t.school_year = all_sy.school_year
 ), 
 
 full_status as (
     -- Determine the active status for each teacher in each year
 
     select
-        teacher_id,
+        user_id,
         school_year,
         is_active,
         section_courses_started,
         started_teaching_at,
         coalesce(
             lag(is_active, 1) 
-                over (partition by teacher_id order by school_year) 
+                over (partition by user_id order by school_year) 
             , 0
         ) as prev_year_active,
         coalesce( --force any NULL to be 0 for this function
             max(is_active) 
-                over (partition by teacher_id order by school_year rows between unbounded preceding and 1 preceding)
+                over (partition by user_id order by school_year rows between unbounded preceding and 1 preceding)
             , 0
         ) as ever_active_before,
         (is_active || prev_year_active || ever_active_before) status_code
@@ -96,7 +92,7 @@ full_status as (
 final as (
 
     select
-        teacher_id,
+        user_id,
         school_year,
         case 
             when status_code = '000' then 'market'
@@ -112,8 +108,8 @@ final as (
         started_teaching_at
     from
         full_status
-    order by
-        teacher_id, school_year
+    -- order by
+    --     user_id, school_year
 )
 
 select * 

@@ -1,8 +1,6 @@
 with 
 students as (
-    select 
-        {{ dbt_utils.star(from=teachers),
-            except=['student_id','user_type'] }}
+    select *    
     from {{ ref('dim_users')}}
     where user_type = 'student'
 ),

@@ -10,16 +10,22 @@ models:
         tests: 
           - not_null
           - unique
+
       - name: studio_person_id
         description: ID used for PD applications where we want to associated multiple teacher IDs with a single application
-      - name: user_type
-        description: always "teacher" - used for verification
+      
+      # - name: user_type
+      #   description: always "teacher" - used for verification
+      
       # - name: school_info_id
       #   description: ID populated for any school manually entered by the teacher or found through the NCES dropdown- generally we do not use this field downstream
+      
       - name: created_at_school_year
         description: the school year in which the teacher account was created
+      
       - name: school_id
         description: ID populated if the teacher selected their school from the NCES dropdown menu- this is the school identifier used in downstream models
+      
       - name: is_international
         description: 1 if the most recent sign in from the teacher account was from outside the US, 0 otherwise 
 
