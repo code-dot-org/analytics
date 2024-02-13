@@ -69,8 +69,7 @@ final as (
         teacher_id,
         school_id
     from combined
-    where row_num = 1
+    where row_num = 1 
 )
-
 select * 
 from final 
