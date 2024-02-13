@@ -112,7 +112,7 @@ teacher_school_changes as (
             nsps.section_id = act.section_id
             and nsps.school_year = act.school_year
             and nsps.teacher_id = act.teacher_id
-            and nsps.school_id = act.school_id --it's possible we don't want to include this because of weird null stuff
+            and nsps.school_id = act.school_id 
 )
 select *
 from final
