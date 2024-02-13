@@ -43,7 +43,7 @@ teacher_school_changes as (
         school_year,
         count(distinct student_id) as num_students_added
     
-    from {{ ref('int_section_mapping') }}               --NOTE: this table limits each student to 1 section per year, and it chooses the first section a student was added to that school year.
+    from {{ ref('int_section_mapping') }}
     {{ dbt_utils.group_by(4) }}
 )
 , teacher_active_courses as (
