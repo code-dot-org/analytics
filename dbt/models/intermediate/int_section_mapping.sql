@@ -69,7 +69,7 @@ final as (
         teacher_id,
         school_id
     from combined
-    where row_num = 1  -- take the first section the student was added to that school year (this is a choice rosetta makes for analysis.students)
+    where row_num = 1 
 )
 select * 
 from final 
