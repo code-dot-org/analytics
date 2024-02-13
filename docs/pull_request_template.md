@@ -1,11 +1,9 @@
-# Please follow the instructions below when submitting a pull request:
-
-## For dbt Cloud Pull Request:
-
-If you are trying to test your branch, submit a pull request and dbt Cloud will kick-off a run to validate.
-If you are trying to **draft** a pull request, please select "Draft" so as to avoid dbt Cloud kicking-off and unnecessary job.
-
-## Description
+NOTE: Please follow the instructions below when submitting a pull request
+      For dbt Cloud Pull Request:
+      * If you are trying to test your branch, submit a pull request and dbt Cloud will kick-off a run to validate.
+      * If you are trying to **draft** a pull request, please select "Draft" so as to avoid dbt Cloud kicking-off and unnecessary job.
+***
+# Description
 
 Please include a summary of the change, including any relevant background, motivation, and context.
 
