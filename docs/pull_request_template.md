@@ -44,7 +44,7 @@ Jira ticket(s): []()
 
 
 ## PR Checklist:
---> **Note: if these are not all checked, the PR will be sent back.**
+**Note: if these are not all checked, the PR will be sent back.**
 
 - [ ] Tests provide adequate coverage
 - [ ] Privacy and Security impacts have been assessed
