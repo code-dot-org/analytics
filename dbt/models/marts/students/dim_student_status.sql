@@ -15,13 +15,14 @@ student_courses as (
 ),
 
 combined as (
-    select sc.user_id,
+    select 
+        sc.user_id,
         sy.school_year,
         sc.course_name,
         case when sc.user_id is not null then 1 else 0 end as is_active
     from student_courses    as sc 
     left join school_years  as sy 
-        on student_courses.school_year = school_years.school_year
+        on sc.school_year = sy.school_year
 ),
 
 aggregated as (
@@ -31,6 +32,8 @@ aggregated as (
         is_active,
         lag(is_active) over (
             partition by user_id order by school_year) as is_active_previous_year,
+        listagg(distinct course_name, ', ') 
+            within group (order by course_name asc) as courses_started,
         max(is_active) over (
             partition by user_id) as is_active_all_years
     from combined 
@@ -39,32 +42,32 @@ aggregated as (
 
 final as (
     select 
-        user_id,
+        user_id as student_id,
         school_year, 
-        is_active,
-        is_active_previous_year,
-        is_active_all_years,
+        courses_started,
 
         case when is_active 
-                and not is_active_previous_year 
-            then 'active - new'
+             and not is_active_previous_year 
+            then 'active - new student'
              
             when is_active 
-                and is_active_previous_year 
-            then 'active - retained'
+             and is_active_previous_year 
+            then 'active - returning student'
 
             when not is_active 
-                and is_active_previous_year 
-            then 'inactive - churn'
+             and is_active_previous_year 
+            then 'inactive - former student'
             
             when not is_active 
-                and not is_active_previous_year 
-            then 'inactive'
+             and not is_active_previous_year 
+             and is_active_all_years
+            then 'inactive - churned'
 
             when not is_active_all_years then 'market'
 
             else (is_active || is_active_previous_year || is_active_all_years)
-        end as status
+        end as student_status
+
     from aggregated)
 
 select * 
