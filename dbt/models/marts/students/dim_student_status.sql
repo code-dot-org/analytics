@@ -32,10 +32,10 @@ aggregated as (
         is_active,
         lag(is_active) over (
             partition by user_id order by school_year) as is_active_previous_year,
-        listagg(distinct course_name, ', ') 
-            within group (order by course_name asc) as courses_started,
         max(is_active) over (
-            partition by user_id) as is_active_all_years
+            partition by user_id) as is_active_all_years,
+        listagg(distinct course_name, ', ') 
+            within group (order by course_name asc) as courses_started
     from combined 
     {{ dbt_utils.group_by(3) }}
 ),

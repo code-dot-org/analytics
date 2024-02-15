@@ -5,7 +5,7 @@ models:
     description: one row per teacher account ever created, with geographic information and current school association
       
     columns: 
-      - name: teacher_id
+      - name: user_id
         description: unique ID for every teacher account created
         tests: 
           - not_null
