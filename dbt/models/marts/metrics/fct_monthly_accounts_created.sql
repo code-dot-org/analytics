@@ -13,6 +13,7 @@ with all_users as (
         us_intl,
         country
     from {{ ref('dim_users') }}
+    where current_sign_in_at is not null -- exclude dummy accounts
 ),
 
 school_years as (
