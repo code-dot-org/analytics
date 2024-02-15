@@ -28,21 +28,13 @@ teacher_schools as (
         si.school_id,
         rank () over (
             partition by teachers.user_id 
-            order by si.school_id, usi.ended_at desc) rnk
+            order by si.school_id, usi.ended_at desc) as rnk
     from teachers
     left join user_school_infos as usi    
         on usi.user_id = teachers.user_id
     left join school_infos as si 
         on si.school_info_id = usi.school_info_id
 ),
-
--- teacher_latest_school as (
---     select 
---         teacher_id,
---         school_id
---     from teacher_schools
---     where rnk = 1
--- ),
 
 final as (
     select 
@@ -58,7 +50,8 @@ final as (
     left join school_years 
         on teachers.created_at 
             between school_years.started_at 
-                and school_years.ended_at)
+                and school_years.ended_at
+    where teacher_schools.rnk = 1)
 
 select * 
 from final
