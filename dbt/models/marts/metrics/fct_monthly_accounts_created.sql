@@ -7,7 +7,7 @@ users as (
         is_international,
         case when is_international = 1 then 'intl' 
              when is_international = 0 then 'us' 
-             else 'unknown' end as us_intl,
+             else 'missing' end as us_intl,
         country
     from {{ ref('dim_users') }}
     where current_sign_in_at is not null -- exclude dummy accounts
