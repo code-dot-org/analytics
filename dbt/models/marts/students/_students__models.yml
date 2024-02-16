@@ -3,7 +3,7 @@ version: 2
 models: 
 
   - name: dim_students
-    description: This model contains all student accounts ever created + georgraphic info on the student
+    description: This model contains all student accounts ever created + geographic info on the student
     columns: 
     - name: user_id
       description: unique ID for individual student user
