@@ -9,9 +9,9 @@
 {% macro us_intl_label(is_international) %}
 
 case 
-    when {{is_international}} = 1 then 'International'
-    when {{is_international}} = 0 then 'United States'
-    when {{is_international}} is null then 'Missing'
+    when {{is_international}} = 1 then 'intl'
+    when {{is_international}} = 0 then 'us'
+    when {{is_international}} is null then 'missing'
 end
 
 {% endmacro %}
