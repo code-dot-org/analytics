@@ -51,7 +51,7 @@ final as (
         on teachers.created_at 
             between school_years.started_at 
                 and school_years.ended_at
-    where teacher_schools.rnk = 1)
+    where ts.rnk = 1)
 
 select * 
 from final

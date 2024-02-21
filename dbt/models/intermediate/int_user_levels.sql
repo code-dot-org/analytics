@@ -13,7 +13,7 @@ students as (
 
 final as (
     select 
-        distinct user_levels.user_id,
+        user_levels.user_id,
         students.is_international,
         user_levels.level_id,
         user_levels.script_id

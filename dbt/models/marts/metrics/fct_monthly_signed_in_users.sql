@@ -29,7 +29,7 @@ final as (
         sy.school_year,
         extract(year from si.sign_in_at)    as sign_in_year,
         extract(month from si.sign_in_at)   as sign_in_month,
-        count(distinct si.user_id)          as total_user_sign_ins
+        count(distinct si.user_id)          as num_signed_in_users
 
     from sign_ins as si
     left join users as u

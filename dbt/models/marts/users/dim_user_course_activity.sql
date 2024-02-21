@@ -51,29 +51,31 @@ school_years as (
     from {{ ref('int_school_years') }}
 ),
 
--- users as (
---     select 
---         user_id,
---         user_type
---     from {{ ref('dim_users') }}
--- ),
+users as (
+    select 
+        user_id,
+        user_type
+    from {{ ref('dim_users') }}
+),
 
 combined as (
     select 
         ul.user_id,
-       u.user_type,
+        u.user_type,
         sy.school_year,
         cs.course_name_true                     as course_name,  
         min(ul.created_at)                      as first_activity_at,
 		max(ul.created_at)                      as last_activity_at
 	from user_levels ul 
+    join users u
+        on ul.user_id = u.user_id
 	join course_structure cs
 		on ul.script_id = cs.script_id 
         and ul.level_id = cs.level_id 
 	join school_years sy 
 		on ul.created_at 
             between sy.started_at and sy.ended_at
-    {{ dbt_utils.group_by(3) }}
+    {{ dbt_utils.group_by(4) }}
 )
 
 select *
