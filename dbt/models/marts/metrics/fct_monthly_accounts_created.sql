@@ -25,7 +25,7 @@ final as (
         date_part(month, u.created_at)  as created_month,
         count(distinct u.user_id)       as num_users_created
     from users as u
-    left join school_years as sy
+    join school_years as sy
         on u.created_at
             between sy.started_at and sy.ended_at
     {{ dbt_utils.group_by(6) }}

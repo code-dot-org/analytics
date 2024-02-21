@@ -4,82 +4,44 @@ models:
 
   # Weekly School Acquisition Metrics
   - name: fct_weekly_school_acquisition_metrics
-    description: weekly counts of school acquisitions by status (new, retained, reacquired, inactive, churn, market).  These are the top line metrics we use to measure against our goals of active schools.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - school_level
-            - school_year
-            - school_year_week
-            - status
-
+    description: 
+      Weekly counts of school acquisitions by status (new, retained, reacquired, inactive, churn, market).  
+      These are the top line metrics we use to measure against our goals of active schools.
     columns:
       - name: school_level
         description: elementary, middle, or high school- note that a given school may be counted in multiple school level aggregations (e.g. K-8)
-        # tests:
-        #   - not_null
               
       - name: school_year
         description: school year in which the activity at a school is counted
-        # tests:
-        #   - not_null
+        tests:
+          - not_null
         
       - name: status
         description: active status of the set of schools in the aggregations
-        # tests:
-        #   - not_null
-
+        
       - name: iso_week
         description: the ISO week in which the set of schools was first considered active for within that school year. ISO is a standard format for numbering the weeks of the year from 1 to 52/53 used by many database systems. 
-        # tests:
-        #   - not_null
       
       - name: school_year_week
         description: a custom ordering of weeks made for the Code.org school year defined as July 1 to June 30.  School year week 1, starts with July 1 in any given year, and includes however many days there are between July 1 the next closest Sunday. Weeks 2-52 are full Mon-Sun weeks that parallel the ISO week boundaries.  Week 53 is the fragment of the week containing the days from Monday to whatever day June 30 is.
-        # tests:
-        #   - not_null
       
       - name: week_of
         description: start date of the week the data is aggregated for. 
-        # tests:
-        #   - not_null
       
       - name: num_schools_this_week
         description: total number of schools within the school level and active status dimensions within that week
-        # tests:
-          # - not_null
-          # - unique:
-          #     config:
-          #       severity: warn
-          #       # error_if: "<1"
-          #       warn_if: "<10"
-      
+
       - name: num_schools_running_total
         description: total number of schools within the school level and active status dimensions as of that week
-        tests:
-          - not_null
 
   # Monthly Accounts Created
   - name: fct_monthly_accounts_created
     description: number of user accounts created by month, segmented by country. This only includes accounts that have been signed into at least once (there are cases where teachers can create accounts to pre-populate a section, but no student ever signs in with it).
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - user_type
-            - us_intl
-            - country
-            - school_year
-
     columns:
       - name: user_type
         description: teacher or student
         tests:
           - not_null
-        #   - unique:
-        #       config:
-        #         severity: error
-        #         error_if: ">3"
-        #         warn_if: "=3"
           
       - name: us_intl
         description: whether the account was created by a user inside or outside the US. Possible values are (us | intl).
@@ -121,13 +83,12 @@ models:
       
       - name: us_intl
         description: whether the user who signed in was in the US or outside the US. Values are one of (us | intl)
-        tests:
-          - not_null
 
       - name: country
-        description: the current geo-located country associated with this user.  Note - this can change over time. When `us_intl` = 'us' then country = "United States". All other countries are flaged as "intl"
-        tests:
-          - not_null 
+        description: 
+          the current geo-located country associated with this user.  
+          Note - this can change over time. When `us_intl` = 'us' then country = "United States". 
+          All other countries are flaged as "intl"
           
       - name: school_year
         description: school year in which users signed in

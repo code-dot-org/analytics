@@ -11,6 +11,7 @@ users as (
         us_intl,
         country
     from {{ ref('dim_users') }}
+    where current_sign_in_at is not null -- exclude dummy accounts
 ),
 
 school_years as (
@@ -28,9 +29,9 @@ final as (
         extract(month from si.sign_in_at)   as sign_in_month,
         count(distinct si.user_id)          as num_signed_in_users
     from sign_ins as si
-    left join users as u
+    join users as u
         on si.user_id = u.user_id
-    left join school_years as sy
+    join school_years as sy
         on sign_in_at
             between sy.started_at and sy.ended_at
     {{ dbt_utils.group_by(6) }})

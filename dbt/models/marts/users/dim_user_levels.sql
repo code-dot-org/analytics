@@ -26,4 +26,4 @@ combined as (
 )
 
 select * 
-from final
+from combineds
