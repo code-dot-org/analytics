@@ -26,14 +26,13 @@ teacher_schools as (
     select 
         teachers.user_id,
         si.school_id,
-        rank () over (
-            partition by teachers.user_id 
-            order by si.school_id, usi.ended_at desc) as rnk
+        max(usi.ended_at) as most_recent_ended_at    
     from teachers
     left join user_school_infos as usi    
         on usi.user_id = teachers.user_id
     left join school_infos as si 
         on si.school_info_id = usi.school_info_id
+    {{ dbt_utils.group_by(2) }}
 ),
 
 final as (
@@ -50,8 +49,7 @@ final as (
     left join school_years 
         on teachers.created_at 
             between school_years.started_at 
-                and school_years.ended_at
-    where ts.rnk = 1)
+                and school_years.ended_at)
 
 select * 
 from final

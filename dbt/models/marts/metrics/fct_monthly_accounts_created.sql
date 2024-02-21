@@ -26,7 +26,7 @@ final as (
         sy.school_year                  as school_year,
         date_part(year, u.created_at)   as created_year,
         date_part(month, u.created_at)  as created_month,
-        count(distinct u.user_id)       as total_users_created
+        count(distinct u.user_id)       as num_users_created
     from users as u
     left join school_years as sy
         on u.created_at
