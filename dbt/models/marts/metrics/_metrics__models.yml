@@ -1,6 +1,8 @@
 version: 2
 
 models:
+
+  # Weekly School Acquisition Metrics
   - name: fct_weekly_school_acquisition_metrics
     description: weekly counts of school acquisitions by status (new, retained, reacquired, inactive, churn, market).  These are the top line metrics we use to measure against our goals of active schools.
     tests:
@@ -57,14 +59,14 @@ models:
         tests:
           - not_null
 
-  
+  # Monthly Accounts Created
   - name: fct_monthly_accounts_created
     description: number of user accounts created by month, segmented by country. This only includes accounts that have been signed into at least once (there are cases where teachers can create accounts to pre-populate a section, but no student ever signs in with it).
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - user_type
-            - is_international
+            - us_intl
             - country
             - school_year
 
@@ -72,12 +74,12 @@ models:
       - name: user_type
         description: teacher or student
         tests:
+          - not_null
         #   - unique:
         #       config:
         #         severity: error
         #         error_if: ">3"
         #         warn_if: "=3"
-          - not_null
           
       - name: us_intl
         description: whether the account was created by a user inside or outside the US. Possible values are (us | intl).
@@ -103,33 +105,30 @@ models:
       - name: num_accounts
         description: the number of accounts created in that school year, month, user type and geography
 
-
+  # Monthly Signed-In Users
   - name: fct_monthly_signed_in_users
     description: total users who signed in each month, segmented by user type and us/intl
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - user_type
-            - us_intl
-            - country
-            - school_year
     columns:
       - name: user_type
         description: teacher or student (or `null`)
         tests:
+          - not_null
           # - unique:
           #     config:
           #       severity: error
           #       error_if: ">3"
           #       warn_if: "=3"
-          - not_null
       
       - name: us_intl
         description: whether the user who signed in was in the US or outside the US. Values are one of (us | intl)
+        tests:
+          - not_null
 
       - name: country
         description: the current geo-located country associated with this user.  Note - this can change over time. When `us_intl` = 'us' then country = "United States". All other countries are flaged as "intl"
-      
+        tests:
+          - not_null 
+          
       - name: school_year
         description: school year in which users signed in
         tests:

@@ -42,6 +42,11 @@ models:
         description: gender categorization column
         tags: 
           - contains_pii
+
+  - name: dim_user_levels 
+    description: replaces int_user_levels with a few more columns
+    columns:
+      - 
   
   - name: dim_user_course_activity
     description: This model is a log of all student- and teacher-course activity within a school year.
