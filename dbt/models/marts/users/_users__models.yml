@@ -46,19 +46,16 @@ models:
   - name: dim_user_levels 
     description: replaces int_user_levels with a few more columns
     columns:
-      - 
-  
-  - name: dim_user_course_activity
-    description: This model is a log of all student- and teacher-course activity within a school year.
-
-    columns:
     - name: user_id
       description: the unique user ID associated with the activity
       tests:
         - not_null
-
-    # - name: user_type
-    #   description: student or teacher
+    
+  - name: dim_user_course_activity
+    description: This model is a log of all student- and teacher-course activity within a school year.
+    columns:
+    - name: user_type
+      description: student or teacher
     
     - name: school_year
       description: the school year in which the course activity was in
