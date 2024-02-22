@@ -42,10 +42,10 @@ final as (
         ts.school_id,
         school_years.school_year as created_at_school_year
     from teachers 
-    left join teacher_schools as ts 
+    inner join teacher_schools as ts 
         on teachers.user_id = ts.user_id
         and ts.rnk = 1
-    left join school_years 
+    inner join school_years 
         on teachers.created_at 
             between school_years.started_at 
                 and school_years.ended_at)

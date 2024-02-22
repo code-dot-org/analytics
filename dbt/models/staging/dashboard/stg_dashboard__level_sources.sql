@@ -5,4 +5,4 @@ level_sources as (
 )
 
 select * 
-from leve_sources
+from level_sources
