@@ -28,7 +28,7 @@ teacher_schools as (
         si.school_id,
         rank () over (
             partition by teachers.user_id 
-            order by si.school_id, usi.ended_at desc) as rnk
+            order by usi.ended_at desc) as rnk
     from teachers
     left join user_school_infos as usi    
         on usi.user_id = teachers.user_id
@@ -38,10 +38,7 @@ teacher_schools as (
 
 final as (
     select 
-        -- all user data from dim_users
         teachers.*, 
-
-        -- foreign keys
         ts.school_id,
         school_years.school_year as created_at_school_year
     from teachers 
