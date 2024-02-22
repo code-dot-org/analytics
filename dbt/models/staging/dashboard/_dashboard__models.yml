@@ -35,9 +35,6 @@ models:
       #   tests:
       #     - not_null 
 
-  - name: int_parent_levels_child_levels 
-    description: mapping parent and child level ids
-
   - name: stg_dashboard__sections
     description: staging model for `sections` source data
     columns: 
@@ -64,6 +61,17 @@ models:
             - school_year
     columns: 
       - name: school_id
+        tests:
+          - not_null
+
+  - name: stg_dashboard__section_instructors
+    description: co-teachers data 
+    columns: 
+      - name: instructor_id
+        tests: 
+          - not_null
+
+      - name: section_id
         tests:
           - not_null
 
