@@ -25,6 +25,9 @@ models:
             - teacher_id
             - school_id 
 
+  - name: int_parent_levels_child_levels 
+    description: mapping parent and child level ids
+
   - name: int_teacher_schools_historical
     description: all historical school associations made by teachers-- for a given school year, it takes their most recent school selection
     
