@@ -11,6 +11,7 @@ sources:
       - name: foorm_simple_survey_forms
       - name: foorm_simple_survey_submissions
       - name: foorm_submissions
+      - name: level_sources
       - name: pd_applications
       - name: pd_attendances
       - name: pd_enrollments
