@@ -11,8 +11,7 @@ final as (
         created_at,
         updated_at
     from level_sources
-    where row_num = 1
-)
+    where row_num = 1)
 
 select *
 from final 
