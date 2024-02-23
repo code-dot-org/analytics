@@ -33,10 +33,7 @@ models:
       # - name: section_id
       #   description: fk for follower section
       #   tests:
-      #     - not_null 
-
-  - name: int_parent_levels_child_levels 
-    description: mapping parent and child level ids
+      #     - not_null
 
   - name: stg_dashboard__sections
     description: staging model for `sections` source data
