@@ -59,6 +59,7 @@ sources:
       - name: script_levels
       - name: scripts
       - name: sections
+      - name: section_instructors
       - name: sign_ins
       - name: stages
       - name: studio_people
