@@ -1,87 +1,113 @@
+{# Notes:
+Design: 1 row per teacher, school_year, churn_status
+Logic: we can determine status based on three properties we can compute for every user|school_year as a binary:
+    - 0/1 they are active this school_year - (A)ctive
+    - 0/1 they were active in the previous school_year - (P)rev year
+    - 0/1 they have ever been active in ANY school_year prior, incl. prev year - (E)ver before
+
+    These 3 values can be combined into an ordered 3-char string representing the concatenated true/false combinations 
+    for Active|Prev|Ever e.g. "101" means: ( Active = true AND Prev year = false AND Ever before = true )
+
+    - '000' (0) = 'market'              -- Not active now + never been active
+    - '001' (1) = 'inactive churn'      -- NOT active + NOT active prev year + active ever before
+    - '010' (2) = '<impossible status>' -- should not be possible, active in the prev year should imply active ever before
+    - '011' (3) = 'inactive this year'  -- NOT active + active prev year + (active ever before implied)
+    - '100' (4) = 'active new'          -- active this year + NOT active last year + NOT active ever before
+    - '101' (5) = 'active reacquired'   -- Active this year + NOT active last year + active in the past
+    - '110' (6) = '<impossible status>' -- impossible for same reason as status (2)
+    - '111' (7) = 'active retained'     -- active this year + active last year + (active ever before implied) 
+#}
+
 with 
+teacher_section_started as (
+    select teacher_id,
+        school_year,
+        min(section_started_at) as started_teaching_at,
+        listagg(distinct course_name, ', ') within group (order by course_name ASC) section_courses_started
+    from {{ ref('int_active_sections') }}
+    where teacher_id is not null 
+        and course_name in ('csa', 'csp', 'csd', 'csf', 'csc', 'ai', 'hoc') -- Without this filter, it is counting as active teachers who are not teaching student-facing courses, or courses that are defined as not counting towards our metrics: they might be teaching PD courses, or some old virtual courses. We wouldn't consider as 'active' the teacher or the school of such a teacher if they are not teaching a student-facing course. Once we redesign course_structure we can adjust this filter to something more evergreen.
+    group by 1, 2
+),
+
+all_teacher_users as (
+    select
+        user_id as teacher_id,
+        created_at
+    from {{ref('dim_teachers')}}
+), 
+
 school_years as (
     select *
     from {{ ref('int_school_years') }}
 ),
 
-teachers as (
-    select * 
-    from {{ ref('dim_teachers')}}
-),
+all_teachers_school_years as (
+    select
+        u.teacher_id,
+        sy.school_year
+    from all_teacher_users u
+    join school_years sy on u.created_at <= sy.ended_at
+    where sy.started_at < current_timestamp
+), 
 
-sections as (
-    select 
+active_status_simple as (
+    select
+        all_sy.teacher_id,
+        all_sy.school_year,
+        case when t.teacher_id is null then 0 else 1 end as is_active,
+        t.section_courses_started,
+        t.started_teaching_at
+    from all_teachers_school_years all_sy
+    left join teacher_section_started t 
+        on t.teacher_id = all_sy.teacher_id 
+        and t.school_year = all_sy.school_year
+), 
+
+full_status as (
+    -- Determine the active status for each teacher in each year
+    select
         teacher_id,
         school_year,
-        course_name,
-        case when teacher_id is not null then 1 else 0 end as is_active,
-        min(section_started_at) as started_teaching_at
-    from {{ ref('int_active_sections') }}
-    where teacher_id is not null 
-and course_name in ('csa', 'csp', 'csd', 'csf', 'csc', 'ai', 'hoc') -- Without this filter, it is counting as active teachers who are not teaching student-facing courses, or courses that are defined as not counting towards our metrics: they might be teaching PD courses, or some old virtual courses. We wouldn't consider as 'active' the teacher or the school of such a teacher if they are not teaching a student-facing course. Once we redesign course_structure we can adjust this filter to something more evergreen.
-    {{ dbt_utils.group_by(4) }}
-),
-
-combined as (
-    select 
-        teachers.user_id as teacher_id,
-        school_years.school_year,
         is_active,
-
-        lag(is_active) over (
-            partition by teachers.user_id 
-            order by school_years.school_year
-        ) as is_active_previous_year,
-        
-        max(is_active) over (
-            partition by teachers.user_id 
-        ) as is_active_all_years,
-        
-        listagg(sections.course_name, ', ') 
-            within group (order by sections.course_name) as courses_taught
-    
-    from teachers 
-    join school_years 
-        on teachers.created_at
-            between school_years.started_at 
-            and school_years.ended_at
-    left join sections 
-        on teachers.user_id = sections.teacher_id
-        and school_years.school_year = sections.school_year
-    {{ dbt_utils.group_by(3) }}
-),
+        section_courses_started,
+        started_teaching_at,
+        coalesce(
+            lag(is_active, 1) 
+                over (partition by teacher_id order by school_year) 
+            , 0
+        ) as prev_year_active,
+        coalesce( --force any NULL to be 0 for this function
+            max(is_active) 
+                over (partition by teacher_id order by school_year rows between unbounded preceding and 1 preceding)
+            , 0
+        ) as ever_active_before,
+        (is_active || prev_year_active || ever_active_before) status_code
+    from
+        active_status_simple
+), 
 
 final as (
-    select 
+    select
         teacher_id,
         school_year,
-        courses_taught,
-
-        case when is_active 
-             and not is_active_previous_year
-             then 'active - new teacher'
-            
-            when is_active 
-             and is_active_previous_year
-             then 'active - returning teacher'
-
-            when not is_active 
-             and is_active_previous_year
-             then 'inactive - former teacher'
-
-            when not is_active 
-             and not is_active_previous_year
-             and is_active_all_years
-             then 'inactive - churned'
-            
-            when not is_active_all_years
-             then 'market'
-
-            else (is_active || is_active_previous_year || is_active_all_years)
-        end as teacher_status
-
-    from combined 
+        case 
+            when status_code = '000' then 'market'
+            when status_code = '001' then 'inactive churn'
+            when status_code = '010' then '<impossible status>'
+            when status_code = '011' then 'inactive this year'
+            when status_code = '100' then 'active new'
+            when status_code = '101' then 'active reacquired'
+            when status_code = '110' then '<impossible status>'
+            when status_code = '111' then 'active retained'
+        end as status,
+        section_courses_started,
+        started_teaching_at
+    from
+        full_status
+    order by
+        teacher_id, school_year
 )
 
 select * 
-from final 
+from final
