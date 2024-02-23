@@ -30,20 +30,12 @@ models:
 
   - name: int_teacher_schools_historical
     description: all historical school associations made by teachers-- for a given school year, it takes their most recent school selection
-    
-  # - name: int_user_levels
-  #   description: xref model for user_level foreign keys (could also be a fact table with a few more columns...)
-  #   tests: 
-  #     - dbt_utils.unique_combination_of_columns:
-  #         combination_of_columns:
-  #           - user_id
-  #           - level_id
-  #           - script_id
-  # - name: int_school_weeks
-  #   description: This model allows us to report metrics on a weekly basis based on timestamps.  We want to do this using ISO weeks to the greatest extent possible because our school year is defined to start on July 1 and end June 30. This means that the start of the school year can start either in ISO week 26 or 27 depending on the year. Some years have 52 weeks and some bleed into a 53rd week. This table numbers the "school year weeks" with week 1 possibly being a fragment (less than 7 days) of a week that starts with July 1, and stops at the first ISO week boundary that comes after july 1. Weeks 2 through 51 fall on standard ISO week boundaries. Week 52 (or 53, depending on the year) is another possible fragment of a week running from the ISO week boundary that is closest to June 30, and running up through and including June 30. As a result, for example, the end of one school year (june 30) and the start of another (july 1) may fall entirely within ISO week 27, but in this table you might see ISO week 27 split between "school year week" 52 (being 4 days) and school year week 1 of the next year being 3 days.
-  #   tests: 
-  #     - dbt_utils.unique_combination_of_columns:
-  #         combination_of_columns:
-  #           - school_year
-  #           - iso_week
-  #           - school_year_week
+            
+  - name: int_school_weeks
+    description: This model allows us to report metrics on a weekly basis based on timestamps.  We want to do this using ISO weeks to the greatest extent possible because our school year is defined to start on July 1 and end June 30. This means that the start of the school year can start either in ISO week 26 or 27 depending on the year. Some years have 52 weeks and some bleed into a 53rd week. This table numbers the "school year weeks" with week 1 possibly being a fragment (less than 7 days) of a week that starts with July 1, and stops at the first ISO week boundary that comes after july 1. Weeks 2 through 51 fall on standard ISO week boundaries. Week 52 (or 53, depending on the year) is another possible fragment of a week running from the ISO week boundary that is closest to June 30, and running up through and including June 30. As a result, for example, the end of one school year (june 30) and the start of another (july 1) may fall entirely within ISO week 27, but in this table you might see ISO week 27 split between "school year week" 52 (being 4 days) and school year week 1 of the next year being 3 days.
+    tests: 
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - school_year
+            - iso_week
+            - school_year_week
