@@ -34,7 +34,7 @@ models:
       #   description: fk for follower section
       #   tests:
       #     - not_null 
-
+      
   - name: stg_dashboard__sections
     description: staging model for `sections` source data
     columns: 
