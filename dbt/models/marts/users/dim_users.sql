@@ -35,6 +35,7 @@ final as (
         users_pii.races,
         users_pii.race_group,
         users_pii.gender_group,
+        users_pii.age_years,
         ug.country
     from users 
     left join users_pii 
