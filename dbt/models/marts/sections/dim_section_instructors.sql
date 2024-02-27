@@ -28,7 +28,7 @@ combined as (
         courses.course_name,
         courses.course_name_long,        
         courses.script_id,
-        courses.level_id,
+--        courses.level_id,
 
         -- metadata
         sei.created_at,
