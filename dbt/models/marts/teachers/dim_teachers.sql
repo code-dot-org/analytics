@@ -20,6 +20,13 @@ school_years as (
     from {{ ref('int_school_years') }}
 ),
 
+coteachers as (
+    select * 
+    from {{ ref('stg_dashboard__section_instructors') }}
+),
+
+
+
 -- get teacher NCES school_id association
 teacher_schools as (
     select 
