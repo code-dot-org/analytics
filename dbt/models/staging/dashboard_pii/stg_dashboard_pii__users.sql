@@ -11,13 +11,15 @@ renamed as (
         -- PK
         user_id,
         user_type,
-        case when user_type = 'student' then user_id end as student_id,
-        case when user_type = 'teacher' then user_id end as teacher_id,
+
         -- PII
         case when user_type = 'teacher' then email else null end as teacher_email,
         birthday,
         datediff(year, birthday, current_date) as age_years,
         races,
+        nullif(lower(gender), '') as gender,
+        
+        -- calculated fields
         case
             -- If races contains 'hispanic', return 'hispanic'
             when races like '%hispanic%' then 'hispanic'
@@ -34,7 +36,7 @@ renamed as (
             -- Default case: return the input value
             else races -- Additional logic may be required here
         end as race_group,
-        nullif(lower(gender), '') as gender,
+    
         case
             when gender = 'm' then 'm'
             when gender = 'f' then 'f'
@@ -47,6 +49,7 @@ renamed as (
                 then 'not_collected'
             else 'unexpected value: ' || gender
         end as gender_group
+        
     from users
 )
 

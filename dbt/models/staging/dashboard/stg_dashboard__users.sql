@@ -21,26 +21,14 @@ users as (
 renamed as (
     select 
         user_id,
-        case when user_type = 'student' then user_id end as student_id,
-        case when user_type = 'teacher' then user_id end as teacher_id,
-        studio_person_id,
         user_type,
-        birthday,
-        datediff(year,birthday,current_date ) as age_years,
-        nullif(lower(gender),'') as gender,
         is_urg,
-        locale,
-        sign_in_count,
         school_info_id,
-        total_lines,     
         current_sign_in_at,
         last_sign_in_at,
         created_at,
-        updated_at,  
-        deleted_at,   
-        purged_at
-    from users
-)
+        updated_at 
+    from users)
 
 select * 
 from renamed

@@ -4,7 +4,18 @@ with
 section_instructors as (
     select * 
     from {{ ref('base_dashboard__section_instructors') }}
-    where invited_by_id is not null)
+),
+
+renamed as (
+    select 
+        {# section_instructor_id, #}
+        instructor_id, -- teacher_id 
+        section_id,
+        invited_by_id, -- teacher who invited
+        status, 
+        created_at,
+        updated_at
+    from section_instructors)
 
 select * 
-from section_instructors
+from renamed

@@ -16,13 +16,25 @@ users_pii as (
 
 final as (
     select 
-        users.*, 
+        -- user info
+        users.user_id,
+        users.user_type,
+        users.is_urg, 
+        users.school_info_id,
+        {# users.current_sign_in_at,
+        users.last_sign_in_at #}
+        users.created_at,
+        users.updated_at,
+        
+        -- geo info 
+        ug.is_international,
+        ug.us_intl,
+        
+        -- pii info 
         users_pii.teacher_email,
         users_pii.races,
         users_pii.race_group,
         users_pii.gender_group,
-        ug.is_international,
-        case when ug.is_international = 1 then 'international' else 'united states' end as us_intl,
         ug.country
     from users 
     left join users_pii 
