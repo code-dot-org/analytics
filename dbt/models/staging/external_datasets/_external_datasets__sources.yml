@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: dashboard_analysis
+    database: dashboard 
+    schema: analysis
+    tables:
+      - name: stg_ap_exam_results_school_level_2023_csp

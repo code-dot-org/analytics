@@ -6,7 +6,7 @@
 with
     unpivoted_data as (
         -- see macros/unpivot_dynamic
-        {{ unpivot_big_table("stg_2022_school_level_ap_exam_results_raw", 7) }}
+        {{ unpivot_big_table("base_external_datasets__ap_school_level_exam_results_2022", 7) }}
     ),
     intermediate as (
         select
@@ -16,13 +16,14 @@ with
             high_school as high_school_name,
             state_abbrev as state,
             analysis_school_type as school_type,
-            case
-                when subject_nm = 'Computer Sci A'
-                then 'csa'
-                when subject_nm = 'Computer Sci Prin'
-                then 'csp'
-                else 'ERROR'
-            end exam,
+            -- case
+            --     when subject_nm = 'Computer Sci A'
+            --     then 'csa'
+            --     when subject_nm = 'Computer Sci Prin'
+            --     then 'csp'
+            --     else 'ERROR'
+            -- end exam,
+            {{ap_norm_exam_subject('subject_nm')}} as exam,
             orig_col_name,
 
             left(

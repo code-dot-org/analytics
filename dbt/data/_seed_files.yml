@@ -4,19 +4,6 @@ seeds:
   - name: seed_course_names
   - name: seed_school_years
   - name: seed_script_names
-<<<<<<< HEAD
-  - name: seed_2022_agg_ap_exam_results
-  - name: seed_2022_school_level_ap_exam_results
-    config:
-      column_types:
-        high_school: varchar(255)
-        examyr4: varchar(32)
-        country_descr: varchar(32)
-        ai_code: varchar(6)
-        state_abbrev: varchar(2)
-        analysis_school_type: varchar(32)
-        subject_nm:  varchar(32)
-=======
   - name: seed_csf_plugged_stage_counts
     description: pulled manually from the output of what is currently in redshift
 
@@ -29,4 +16,3 @@ seeds:
     description: pulled manually from the output of what is currently in redshift
   
   - name: seed_workshop_state_zip_manual
->>>>>>> 4b8a79ea2e574f5113808694edb52d44efc7690b

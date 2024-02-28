@@ -9,7 +9,7 @@
 WITH unpivoted_data AS (
     -- see macros/unpivot_dynamic
 
-    {{ unpivot_big_table('stg_2017_2022_agg_ap_exam_results_raw', 5)}}
+    {{ unpivot_big_table('base_external_datasets__ap_agg_exam_results_2017_2022', 5)}}
 
     -- Should result in a reshaped table of the raw ap exam results that looks like:
     -- exam_year | pd_year | exam_group  | exam | rp_id  | orig_col_name | orig_value |
