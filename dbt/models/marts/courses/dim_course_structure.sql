@@ -1,3 +1,5 @@
+{# needs optimization #}
+
 with 
 scripts as (
     select *
@@ -94,4 +96,5 @@ combined as (
         on sc.script_id = sn.versioned_script_id
 )
 
-select * from combined
+select * 
+from combined

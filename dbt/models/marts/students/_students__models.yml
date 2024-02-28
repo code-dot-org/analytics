@@ -1,20 +1,41 @@
 version: 2
 
 models: 
-  - name: dim_student_courses
-    description: course data for a given student and school year
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - student_id
-            - school_year
-            - course_id
 
   - name: dim_students
-    description: all student accounts ever created + georgraphic + activity info on the student
+    description: This model contains all student accounts ever created + georgraphic info on the student
     columns: 
     - name: student_id
-      description: UID for individual user
+      description: unique ID for individual student user
       tests: 
         - not_null
         - unique
+        
+    - name: user_type
+      description: always "student"- used for verification
+      tests: 
+        - not_null 
+        
+    - name: gender
+      description: the classified gender of a student based on their free-response input
+    
+    - name: is_urg
+      description: flag to determine whether a student selected at least one of the following races- black, hispanic, hawaiian/ pacific islander, native american
+    
+    - name: is_international 
+      description: 1 if last activity was outside the US, 0 otherwise
+    
+    - name: created_at_school_year
+      description: the school year in which the student account was created
+
+# - name: dim_student_status
+#   description: This model categorizes students based on their activity status across different school years. It provides insights into user engagement by assigning a status that reflects their activity in the current, previous, and any earlier school years.
+#   columns: 
+#   - name: student_id
+#     description: the unique ID associated with the activity
+#   - name: school_year
+#     description: school year in which an activity status is assigned
+#   - name: status
+#     description: the activity status of a student in a given school year- active if they have attempted at least 1 level of a course
+#   - name: courses_started
+#     description: comma separated list of courses associated with the levels attemped by the student in a given school year

@@ -1,6 +1,9 @@
 version: 2
 
 models:
+  - name: stg_dashboard_pii__level_sources
+    description: bringing in these data for level source mapping
+    
   - name: stg_dashboard_pii__pd_applications
     description: staging pd applications data 
 
@@ -13,8 +16,8 @@ models:
   - name: stg_dashboard_pii__pd_international_opt_ins
     description: staging pd_intl_opt_in data 
 
-  - name: stg_dashboard_pii__regional_partner_mappings
-    description: staging regional partner mapping data 
+  # - name: stg_dashboard_pii__regional_partner_mappings
+  #   description: staging regional partner mapping data 
 
   - name: stg_dashboard_pii__pd_sessions
     description: staging pd session data 

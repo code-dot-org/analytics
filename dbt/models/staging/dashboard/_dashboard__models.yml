@@ -33,16 +33,7 @@ models:
       # - name: section_id
       #   description: fk for follower section
       #   tests:
-      #     - not_null 
-
-  - name: stg_dashboard__user_levels
-    description: staging model for `user_levels` source data
-    columns: 
-      - name: user_level_id
-        description: unique id for for each user at each level
-        tests:
-          - unique
-          - not_null
+      #     - not_null
 
   - name: stg_dashboard__sections
     description: staging model for `sections` source data
@@ -52,6 +43,18 @@ models:
         tests: 
           - not_null
           - unique
+          
+  - name: stg_dashboard__section_instructors
+    description: coteacher data 
+    columns: 
+      - name: instructor_id
+        description: coteacher id
+        tests:
+          - not_null
+      - name: section_id 
+        description: ""
+        tests:
+          - not_null
 
   - name: stg_dashboard__schools 
     description: staging model for core school data, where len(school_id)=11 we are applying a LPAD to maintain school length convention
@@ -72,7 +75,32 @@ models:
       - name: school_id
         tests:
           - not_null
-          
 
+  - name: stg_dashboard__users
+    description: staging model for `users` table from scource data
+    columns: 
+      - name: user_type
+        description: the type of acount the user created. value is either 'student' or 'teacher'
+        tests:
+            - not_null 
       
-        
+      - name: user_id
+        description: the unique id for this user
+        tests:
+          - not_null
+          - unique
+      
+      - name: birthday
+        description: an inexact date of birth for the user, calcuated as the date of account creation X years prior based on user reporting that their age is X.
+      
+      - name: age_in_years
+        description: a calculation based on `birthday` to be how many years old the user is today. note - max age is 22.
+
+  - name: stg_dashboard__user_levels
+    description: staging model for `user_levels` source data
+    columns: 
+      - name: user_level_id
+        description: unique id for for each user at each level
+        tests:
+          - unique
+          - not_null
