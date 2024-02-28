@@ -43,6 +43,16 @@ models:
         tags: 
           - contains_pii
 
+  # - name: dim_user_surveys
+  #   description: modeling survey data 
+  #   columns: 
+  #     - name: user_id 
+  #       tests: 
+  #         - not_null
+  #     - name: section_id 
+  #       tests: 
+  #         - not_null
+
   - name: dim_user_levels 
     description: replaces int_user_levels with a few more columns
     columns:
