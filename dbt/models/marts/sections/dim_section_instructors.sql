@@ -1,5 +1,5 @@
 -- model: dim_section_instructors
--- scope: invited co-teachers
+-- scope: all teachers who created sections since 10/17/2023 when the co-teacher feature was added to the platform. 
 
 -- option 1: dim_section_instructors
 -- this is BP in terms of bringing in this data. we would then affect dim_teachers using this dim model.
