@@ -8,7 +8,6 @@ section_instructors as (
 
 renamed as (
     select 
-        {# section_instructor_id, #}
         instructor_id, -- teacher_id 
         section_id,
         invited_by_id, -- teacher who invited

@@ -51,6 +51,7 @@ models:
         description: coteacher id
         tests:
           - not_null
+          
       - name: section_id 
         description: ""
         tests:
