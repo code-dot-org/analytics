@@ -22,7 +22,10 @@ final as (
         is_international,
 
         -- moving this to staging (also avail as a macro)
-        case when ug.is_international = 1 then 'international' else 'united states' end as us_intl,
+        case when ug.is_international = 1 then 'international' 
+             when ug.is_international = 0 then 'united states' 
+            else null 
+        end as us_intl,
         -- dates
         created_at,
         updated_at,

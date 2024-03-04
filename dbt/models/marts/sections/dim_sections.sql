@@ -15,8 +15,8 @@ will show students added but no activity because the activity is excluded by int
 with school_years as (
     select * 
     from {{ ref('int_school_years') }}
-),
-teacher_school_changes as (
+)
+, teacher_school_changes as (
     select *
     from {{ ref('int_teacher_schools_historical') }}
 )
@@ -42,7 +42,6 @@ teacher_school_changes as (
         school_id,
         school_year,
         count(distinct student_id) as num_students_added
-    
     from {{ ref('int_section_mapping') }}
     {{ dbt_utils.group_by(4) }}
 )
@@ -57,7 +56,7 @@ teacher_school_changes as (
         num_students as num_students_active
     from {{ ref('int_active_sections') }}
 )
-,teacher_active_courses_with_sy as (
+, teacher_active_courses_with_sy as (
 
     select
         tac.teacher_id,
@@ -78,7 +77,6 @@ teacher_school_changes as (
 )
 , final as (
     select
-
         -- general section data from the sections table
         sec.section_id,
         sec.teacher_id,
@@ -101,12 +99,10 @@ teacher_school_changes as (
         coalesce(act.school_year, nsps.school_year) school_year    -- coalesce first activity school_year with year of student activity
                                                                 
     from all_sections as sec
-
     left join num_students_per_section as nsps 
         on
             sec.section_id = nsps.section_id
             and sec.teacher_id = nsps.teacher_id
-
     left join teacher_active_courses_with_sy as act
         on
             nsps.section_id = act.section_id

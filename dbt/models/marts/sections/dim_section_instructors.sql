@@ -7,35 +7,37 @@
 
 with 
 section_instructors as (
-    select * 
+    select *, 
+        case when invited_by_id is null -- wasn't invited 
+            then 1 else 0 
+        end as is_section_owner,
+
     from {{ ref('stg_dashboard__section_instructors') }}
 ),
 
-courses as (
-    select * 
-    from {{ ref('dim_course_structure') }}
+sections as (
+    select *
+    from {{ ref('dim_sections') }}
 ),
 
 combined as (
     select 
-        sei.instructor_id   as user_id, -- teacher_id 
-        sei.invited_by_id   as invited_by_user_id, -- teacher who invited this teacher
-        sei.section_id,
-        sei.status          as section_instructor_status, -- status of this teacher in this section  
+        -- coteacher
+        section_instructors.instructor_id   as coteacher_id,
+        section_instructors.status          as coteacher_status,
+        section_instructors.invited_by_id   as invited_by_teacher_id,
+        section_instructors.section_id,
 
-        -- course info 
-        courses.course_id,
-        courses.course_name,
-        courses.course_name_long,        
-        courses.script_id,
---        courses.level_id,
-
-        -- metadata
-        sei.created_at,
-        sei.updated_at
-    from section_instructors as sei 
-    left join courses
-        on section_instructors.section_id = courses.section_id)
+        -- related section information
+        sections.section_name,
+        sections.script_id,
+        sections.course_name,
+        sections.is_active,
+        sections.section_started_at
+    from section_instructors
+    left join sections
+        on section_instructors.section_id = sections.section_id
+)
 
 select *
 from combined
