@@ -25,6 +25,11 @@ sources:
       - name: level_sources_multi_types
       - name: levels
       - name: levels_script_levels
+      - name: lti_courses
+      - name: lti_deployments
+      - name: lti_integrations
+      - name: lti_sections
+      - name: lti_user_identities
       - name: parent_levels_child_levels
       - name: pd_applications
       - name: pd_attendances
