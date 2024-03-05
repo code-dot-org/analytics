@@ -27,6 +27,8 @@ combined as (
         section_instructors.status          as coteacher_status,
         section_instructors.invited_by_id   as invited_by_teacher_id,
         section_instructors.section_id,
+        section_instructors.created_at      as coteacher_created_at,
+        section_instructors.updated_at      as coteacher_updated_at,
 
         -- related section information
         sections.section_name,

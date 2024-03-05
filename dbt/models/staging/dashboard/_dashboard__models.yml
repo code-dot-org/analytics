@@ -17,7 +17,16 @@ models:
   #       description: unique id for each script
   #       tests: 
   #         - not_null
-        
+  - name: stg_dashboard__lti_courses
+    description: ""
+  - name: stg_dashboard__lti_deployments
+    description: ""
+  - name: stg_dashboard__lti_integrations
+    description: ""
+  - name: stg_dashboard__lti_sections
+    description: ""
+  - name: stg_dashboard__lti_user_identities
+    description: ""
   - name: stg_dashboard__followers
     description: staging model for followers source data
     columns: 
