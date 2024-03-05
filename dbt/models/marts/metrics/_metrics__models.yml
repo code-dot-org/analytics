@@ -82,7 +82,7 @@ models:
           #       warn_if: "=3"
       
       - name: us_intl
-        description: whether the user who signed in was in the US or outside the US. Values are one of (us | intl)
+        description: whether the user who signed in was in the US or outside the US. Values are one of (us | intl | missing)
 
       - name: country
         description: 
