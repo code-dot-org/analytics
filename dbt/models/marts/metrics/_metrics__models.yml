@@ -89,7 +89,7 @@ models:
           the current geo-located country associated with this user.  
           Note - this can change over time. 
           When `us_intl` = 'us' then country = "United States". 
-          All other countries are flaged as "intl"
+          All other countries are classified as "intl"
           
       - name: school_year
         description: school year in which users signed in
