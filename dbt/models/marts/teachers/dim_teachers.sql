@@ -2,7 +2,7 @@ with
 teachers as (
     select *
     from {{ ref('dim_users')}}
-    where user_type = 'teacher' 
+    where user_type = 'teacher'
 ),
 
 user_school_infos as (
@@ -14,7 +14,7 @@ user_school_infos as (
 school_infos as (
     select * 
     from {{ ref('stg_dashboard__school_infos') }}
-    where school_id is not null 
+--     where school_id is not null 
 ), 
 
 school_years as (
@@ -51,9 +51,8 @@ teacher_latest_school as (
     where rnk = 1
 ),
 
-final as (    
+final as (
     select 
-
         -- teacher info 
         teachers.user_id, 
         teachers.teacher_email,
@@ -70,11 +69,12 @@ final as (
         school_years.school_year as created_at_school_year,
         teachers.created_at,
         teachers.updated_at
-        
+
     from teachers 
-    left join teacher_latest_school tls 
-        on teachers.user_id = tls.user_id
-    left join school_years 
+    inner join teacher_schools as ts 
+        on teachers.user_id = ts.user_id
+        and ts.rnk = 1
+    inner join school_years 
         on teachers.created_at 
             between school_years.started_at 
                 and school_years.ended_at

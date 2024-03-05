@@ -5,7 +5,11 @@ user_geos as (
         case when country = 'united states' then 0
              when country <> 'united states' then 1 
              else null 
-        end as is_international
+        end as is_international,
+        case when country = 'united states' then 'us'
+             when country <> 'united states' then 'intl'
+             else null 
+        end as us_intl
     from {{ ref('base_dashboard__user_geos') }}
 ),
 
@@ -20,20 +24,20 @@ final as (
         postal_code,
         country,
         is_international,
-
+  
         -- moving this to staging (also avail as a macro)
         case when ug.is_international = 1 then 'international' 
              when ug.is_international = 0 then 'united states' 
             else null 
         end as us_intl,
+
         -- dates
         created_at,
         updated_at,
         indexed_at
         
     from user_geos
-    where row_number = 1
-)
+    where row_number = 1)
 
 select *
 from final 

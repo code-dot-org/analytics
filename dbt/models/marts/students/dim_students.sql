@@ -3,7 +3,6 @@ students as (
     select {{ dbt_utils.star(
         ref('dim_users'), 
         except=['teacher_email']) }}
-
     from {{ ref('dim_users') }}
     where user_type = 'student'
 ),
