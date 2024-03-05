@@ -44,7 +44,7 @@ models:
           - not_null
           
       - name: us_intl
-        description: whether the account was created by a user inside or outside the US. Possible values are (us | intl).
+        description: whether the account was created by a user inside or outside the US. Possible values are (us | intl |missing).
           
       - name: country
         description: the current geo-located country associated with this user.  Note - this can change over time. When `us_intl` = 'us' then country = "United States". All other countries are flaged as "intl"
