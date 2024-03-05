@@ -87,7 +87,8 @@ models:
       - name: country
         description: 
           the current geo-located country associated with this user.  
-          Note - this can change over time. When `us_intl` = 'us' then country = "United States". 
+          Note - this can change over time. 
+          When `us_intl` = 'us' then country = "United States". 
           All other countries are flaged as "intl"
           
       - name: school_year
