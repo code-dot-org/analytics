@@ -26,16 +26,16 @@ teacher_section_started as (
         listagg(distinct course_name, ', ') within group (order by course_name ASC) section_courses_started
     from {{ ref('int_active_sections') }}
     where teacher_id is not null 
+        and course_name in ('csa', 'csp', 'csd', 'csf', 'csc', 'ai') -- Without this filter, it is counting as active teachers who are not teaching student-facing courses, or courses that are defined as not counting towards our metrics: they might be teaching PD courses, or some old virtual courses. We wouldn't consider as 'active' the teacher or the school of such a teacher if they are not teaching a student-facing course. Once we redesign course_structure we can adjust this filter to something more evergreen. @nataliazm99 
+
     group by 1, 2
 ),
 
 all_teacher_users as (
-
     select
-        teacher_id,
+        user_id as teacher_id,
         created_at
     from {{ref('dim_teachers')}}
-
 ), 
 
 school_years as (
@@ -44,33 +44,29 @@ school_years as (
 ),
 
 all_teachers_school_years as (
-
     select
         u.teacher_id,
         sy.school_year
     from all_teacher_users u
     join school_years sy on u.created_at <= sy.ended_at
     where sy.started_at < current_timestamp
-
 ), 
 
 active_status_simple as (
-
     select
         all_sy.teacher_id,
         all_sy.school_year,
         case when t.teacher_id is null then 0 else 1 end as is_active,
         t.section_courses_started,
         t.started_teaching_at
-
     from all_teachers_school_years all_sy
-    left join teacher_section_started t on t.teacher_id = all_sy.teacher_id and t.school_year = all_sy.school_year
-
+    left join teacher_section_started t 
+        on t.teacher_id = all_sy.teacher_id 
+        and t.school_year = all_sy.school_year
 ), 
 
 full_status as (
     -- Determine the active status for each teacher in each year
-
     select
         teacher_id,
         school_year,
@@ -90,11 +86,9 @@ full_status as (
         (is_active || prev_year_active || ever_active_before) status_code
     from
         active_status_simple
-
 ), 
 
 final as (
-
     select
         teacher_id,
         school_year,
@@ -118,4 +112,3 @@ final as (
 
 select * 
 from final
-

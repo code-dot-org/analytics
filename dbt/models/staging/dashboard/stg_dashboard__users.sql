@@ -21,13 +21,11 @@ users as (
 renamed as (
     select 
         user_id,
-        case when user_type = 'student' then user_id end as student_id,
-        case when user_type = 'teacher' then user_id end as teacher_id,
         studio_person_id,
         user_type,
-        birthday,
-        datediff(year,birthday,current_date ) as age_years,
-        nullif(lower(gender),'') as gender,
+        -- birthday,
+        -- datediff(year,birthday,current_date ) as age_years,
+        -- nullif(lower(gender),'') as gender,
         is_urg,
         locale,
         sign_in_count,

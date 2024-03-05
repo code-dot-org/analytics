@@ -22,7 +22,7 @@ final as (
         users_pii.race_group,
         users_pii.gender_group,
         ug.is_international,
-        case when ug.is_international = 1 then 'international' else 'united states' end as us_intl,
+        ug.us_intl,
         ug.country
     from users 
     left join users_pii 
