@@ -23,6 +23,7 @@ renamed as (
         user_id,
         case when user_type = 'student' then user_id end as student_id,
         case when user_type = 'teacher' then user_id end as teacher_id,
+        studio_person_id,
         user_type,
         is_urg,
         locale,
