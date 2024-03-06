@@ -23,13 +23,18 @@ renamed as (
         user_id,
         case when user_type = 'student' then user_id end as student_id,
         case when user_type = 'teacher' then user_id end as teacher_id,
-        studio_person_id,
         user_type,
-        is_urg,
-        locale,
-        sign_in_count,
+
+        studio_person_id,
         school_info_id,
+        is_urg,
+        gender,
+        locale,
+        birthday,
+        
+        sign_in_count,
         total_lines,     
+        
         current_sign_in_at,
         last_sign_in_at,
         created_at,
