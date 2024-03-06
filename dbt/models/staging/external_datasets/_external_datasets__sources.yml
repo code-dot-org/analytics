@@ -6,3 +6,5 @@ sources:
     schema: analysis
     tables:
       - name: stg_ap_exam_results_school_level_2023_csp
+      - name: stg_ap_exam_results_school_level_2023_csa
+      - name: stg_agg_ap_exam_results_raw_2023

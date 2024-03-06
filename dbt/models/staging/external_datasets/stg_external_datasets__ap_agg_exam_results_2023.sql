@@ -18,18 +18,15 @@
 */
 with unpivoted_data as (
     -- see macros/unpivot_dynamic
-    {{ unpivot_big_table('base_external_datasets__ap_agg_exam_results_2017_2022', 5)}}
-), 
-
-
-normalized_values AS (
+    {{ unpivot_big_table('base_external_datasets__ap_agg_exam_results_2023', 2)}}
+)
+, normalized_values AS (
     SELECT
 
-        exam_year,
-        pd_year,
-        {{ ap_norm_exam_group('exam_group') }} as exam_group, --TO DO: macro to norm this
-        rp_id,
-        --exam,
+        '2023' as exam_year,
+        NULL as pd_year,
+        {{ ap_norm_exam_group('exam_group') }} as exam_group, 
+        NULL as rp_id,
         {{ ap_norm_exam_subject('exam') }} as exam,
         orig_col_name,
         {{ ap_split_column('orig_col_name') }},                   -- splits e.g. 'black_1' into two cols demographic_group_raw = 'black' and score_category_raw=1
