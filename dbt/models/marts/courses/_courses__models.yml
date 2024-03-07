@@ -6,9 +6,12 @@ models:
 
   - name: dim_course_structure
     description: dim table for courses data
-    # columns: 
-    #   - name: course_id
-    #     description: unique id for table
+    columns: 
+      - name: level_id
+        description: |
+          This field includes a hard coded error correction, 
+          level_script_levels defines the first level of this script as 
+          id '14633' when user_levels defines this level as '1'...
     #     tests:
     #       - unique
     #       - not_null
