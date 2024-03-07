@@ -11,10 +11,10 @@ users as (
 
 user_geos as (
     select *, 
-        case when country = 'us' 
-            then 'united states' 
-            else 'International' 
-        end as us_intl
+        case when is_international = 1 then 'intl'
+             when is_international = 0 then 'us'
+             else null end as us_intl
+        {# {{ us_intl_label('is_international') }} as us_intl #}
     from {{ ref('stg_dashboard__user_geos') }}
 ),
 
@@ -23,7 +23,7 @@ users_pii as (
     from {{ ref('stg_dashboard_pii__users')}}
 ),
 
-renamed as (
+combined as (
     select 
         -- user info
         users.user_id,
@@ -32,6 +32,7 @@ renamed as (
         users.teacher_id,
         users.studio_person_id,
         users.school_info_id,
+        users.locale,
         users.total_lines,
 
         -- user_pii info 
@@ -44,13 +45,11 @@ renamed as (
         users_pii.age_years,
         users_pii.races,
         users_pii.gender,
-        users_pii.locale,
 
         -- user_geo info
         ug.country,
         ug.is_international,
         ug.us_intl,
-<<<<<<< HEAD
 
         -- sysdates
         users.current_sign_in_at,
@@ -59,9 +58,6 @@ renamed as (
         users.updated_at,
         users.deleted_at,
         users.purged_at
-=======
-        ug.country
->>>>>>> bd4abcd7997aa74af7307fead15856c154c22d4b
     from users 
     left join users_pii 
         on users.user_id = users_pii.user_id
@@ -69,10 +65,7 @@ renamed as (
         on users.user_id = ug.user_id
     left join school_years as sy 
         on users.created_at 
-            between sy.started_at and sy.ended_at
-),
-
-
+            between sy.started_at and sy.ended_at)
 
 select *
-from final
+from combined

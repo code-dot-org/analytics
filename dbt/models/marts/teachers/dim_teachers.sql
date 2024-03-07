@@ -59,14 +59,6 @@ teacher_schools as (
     -- where si.school_id is not null
 ),
 
--- teacher_latest_school as (
---     select 
---         teacher_id,
---         school_id
---     from teacher_schools
---     where rnk = 1
--- ),
-
 combined as (
     select 
         --teacher info
@@ -107,12 +99,12 @@ final as (
         age_years,
         locale,
         country,
-        is_internatioal,
+        is_international,
         us_intl,
         total_lines,
         current_sign_in_at,
         last_sign_in_at,
-        created,_at,
+        created_at,
         updated_at,
         purged_at,
         deleted_at

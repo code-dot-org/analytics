@@ -5,7 +5,7 @@ models:
     description: one row per teacher account ever created, with geographic information and current school association
       
     columns: 
-      - name: user_id
+      - name: teacher_id
         description: unique ID for every teacher account created
         tests: 
           - not_null
@@ -44,9 +44,12 @@ models:
       * was "inactive" last school year and so far this school year. 
       ### market 
       * has a code.org account, but has never been considered "active" 
-
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - school_year
             - teacher_id
+    columns:
+      - name: course_name
+        description: |
+        Without this filter, it is counting as active teachers who are not teaching student-facing courses, or courses that are defined as not counting towards our metrics: they might be teaching PD courses, or some old virtual courses. We wouldn't consider as 'active' the teacher or the school of such a teacher if they are not teaching a student-facing course. Once we redesign course_structure we can adjust this filter to something more evergreen. @nataliazm99 
