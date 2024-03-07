@@ -8,10 +8,9 @@
 with 
 section_instructors as (
     select *, 
-        case when invited_by_id is null -- wasn't invited 
+        case when invited_by_id is null -- wasn't invited (is the teacher)
             then 1 else 0 
         end as is_section_owner
-
     from {{ ref('stg_dashboard__section_instructors') }}
 ),
 
@@ -23,18 +22,20 @@ sections as (
 combined as (
     select 
         -- coteacher
-        section_instructors.instructor_id       as coteacher_id,
-        section_instructors.status              as coteacher_status,
+        section_instructors.instructor_id       as teacher_id,
+        section_instructors.status,
         section_instructors.invited_by_id       as invited_by_teacher_id,
-        section_instructors.is_section_owner    as is_section_owner,
-        section_instructors.created_at          as coteacher_created_at,
-        section_instructors.updated_at          as coteacher_updated_at,
+        section_instructors.is_section_owner,
 
         -- related section information
         sections.section_id,
         sections.is_active,
         sections.course_name,
-        sections.section_started_at
+
+        -- dates
+        sections.section_started_at,
+        section_instructors.created_at,
+        section_instructors.updated_at
 
     from section_instructors
     left join sections

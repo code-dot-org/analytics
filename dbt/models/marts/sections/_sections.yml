@@ -41,10 +41,11 @@ models:
         description: the course associated with the student activity in the section. If a section is "active" (has 5+ students starting 1+ levels of the same course in a year) in multiple courses, they will have a row for each one.
       - name: is_active
         description: a 0/1 flag for whether or not the section is "active" for that course and school year (has 5+ students starting 1+ levels of the same course in a year). 
+  
   - name: dim_section_instructors
     description: dim model for coteacher data, to be augmented by teacher data
     columns: 
-      - name: coteacher_id
+      - name: teacher_id
         description: user_id of invited teacher
         tests: 
           - not_null

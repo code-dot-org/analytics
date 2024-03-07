@@ -8,7 +8,7 @@ renamed as (
     select
         id                          as user_id,
         studio_person_id,
-        primary_contact_info_id
+        primary_contact_info_id,
         sign_in_count,
         locale,
         birthday,
