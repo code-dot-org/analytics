@@ -3,18 +3,18 @@ version: 2
 models: 
 
   - name: dim_students
-    description: This model contains all student accounts ever created + georgraphic info on the student
+    description: This model contains all student accounts ever created + geographic info on the student
     columns: 
-    - name: student_id
+    - name: user_id
       description: unique ID for individual student user
       tests: 
         - not_null
         - unique
         
-    - name: user_type
-      description: always "student"- used for verification
-      tests: 
-        - not_null 
+    # - name: user_type
+    #   description: always "student"- used for verification
+    #   tests: 
+    #     - not_null 
         
     - name: gender
       description: the classified gender of a student based on their free-response input

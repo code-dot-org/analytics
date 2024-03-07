@@ -50,6 +50,7 @@ renamed as (
         ug.country,
         ug.is_international,
         ug.us_intl,
+<<<<<<< HEAD
 
         -- sysdates
         users.current_sign_in_at,
@@ -58,6 +59,9 @@ renamed as (
         users.updated_at,
         users.deleted_at,
         users.purged_at
+=======
+        ug.country
+>>>>>>> bd4abcd7997aa74af7307fead15856c154c22d4b
     from users 
     left join users_pii 
         on users.user_id = users_pii.user_id

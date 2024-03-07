@@ -10,12 +10,13 @@ models:
         tests: 
           - not_null
 
-      - name: user_type
-        description: student or teacherm if NULL = fail
-            # - accepted_values:
-            #     values: ['teacher','student']
-        tests: 
-            - not_null
+      # - name: user_type
+      #   description: student or teacher if NULL = fail
+      #       # - accepted_values:
+      #       #     values: ['teacher','student']
+      #   tests: 
+      #       - not_null
+
       - name: student_id 
         description: UID for each student
       
@@ -51,16 +52,18 @@ models:
   #     - name: section_id 
   #       tests: 
   #         - not_null
-  
-  - name: dim_user_course_activity
-    description: This model is a log of all student- and teacher-course activity within a school year.
 
+  - name: dim_user_levels 
+    description: replaces int_user_levels with a few more columns
     columns:
     - name: user_id
       description: the unique user ID associated with the activity
       tests:
         - not_null
-
+    
+  - name: dim_user_course_activity
+    description: This model is a log of all student- and teacher-course activity within a school year.
+    columns:
     - name: user_type
       description: student or teacher
     

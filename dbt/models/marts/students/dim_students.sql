@@ -1,8 +1,8 @@
 with 
 students as (
-    select * 
-    from {{ ref('dim_users') }}
-    where student_id is not null 
+    select *    
+    from {{ ref('dim_users')}}
+    where user_type = 'student'
 ),
 
 school_years as (

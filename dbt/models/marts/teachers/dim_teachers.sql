@@ -5,6 +5,7 @@
 
 with 
 teachers as (
+<<<<<<< HEAD
     select {{dbt_utils.star('dim_users'),
             exclude=[
                 "student_id",
@@ -29,6 +30,11 @@ coteachers as (
 school_years as (
     select * 
     from {{ref('int_school_years') }}
+=======
+    select *
+    from {{ ref('dim_users')}}
+    where user_type = 'teacher'
+>>>>>>> bd4abcd7997aa74af7307fead15856c154c22d4b
 ),
 
 user_school_infos as (
@@ -40,7 +46,11 @@ user_school_infos as (
 school_infos as (
     select * 
     from {{ ref('stg_dashboard__school_infos') }}
+<<<<<<< HEAD
     where school_info_id in (select school_info_id from user_school_infos)
+=======
+    where school_id is not null
+>>>>>>> bd4abcd7997aa74af7307fead15856c154c22d4b
 ), 
 
 -- get teacher NCES school_id association
@@ -56,6 +66,7 @@ teacher_schools as (
         on usi.user_id = teachers.user_id
     left join school_infos as si 
         on si.school_info_id = usi.school_info_id
+<<<<<<< HEAD
     -- where si.school_id is not null
 ),
 
@@ -118,3 +129,23 @@ final as (
 
 select *
 from final 
+=======
+),
+
+final as (
+    select 
+        teachers.*, 
+        ts.school_id,
+        school_years.school_year as created_at_school_year
+    from teachers 
+    inner join teacher_schools as ts 
+        on teachers.user_id = ts.user_id
+        and ts.rnk = 1
+    inner join school_years 
+        on teachers.created_at 
+            between school_years.started_at 
+                and school_years.ended_at)
+
+select * 
+from final
+>>>>>>> bd4abcd7997aa74af7307fead15856c154c22d4b
