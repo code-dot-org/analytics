@@ -1,11 +1,20 @@
 with 
+school_years as (
+    select *
+    from {{ ref('int_school_years') }}
+), 
+
 users as (
-    select * 
+    select *
     from {{ ref('stg_dashboard__users') }}
 ),
 
 user_geos as (
-    select * 
+    select *, 
+        case when country = 'us' 
+            then 'united states' 
+            else 'International' 
+        end as us_intl
     from {{ ref('stg_dashboard__user_geos') }}
 ),
 
@@ -14,22 +23,52 @@ users_pii as (
     from {{ ref('stg_dashboard_pii__users')}}
 ),
 
-final as (
+renamed as (
     select 
-        users.*, 
+        -- user info
+        users.user_id,
+        users.user_type,
+        users.student_id,
+        users.teacher_id,
+        users.studio_person_id,
+        users.school_info_id,
+        users.total_lines,
+
+        -- user_pii info 
         users_pii.teacher_email,
-        users_pii.races,
         users_pii.race_group,
         users_pii.gender_group,
+        users_pii.is_urg,
+
+        users_pii.birthday,
+        users_pii.age_years,
+        users_pii.races,
+        users_pii.gender,
+        users_pii.locale,
+
+        -- user_geo info
+        ug.country,
         ug.is_international,
-        case when ug.is_international = 1 then 'international' else 'united states' end as us_intl,
-        ug.country
+        ug.us_intl,
+
+        -- sysdates
+        users.current_sign_in_at,
+        users.last_sign_in_at,
+        users.created_at,
+        users.updated_at,
+        users.deleted_at,
+        users.purged_at
     from users 
     left join users_pii 
         on users.user_id = users_pii.user_id
     left join user_geos as ug 
         on users.user_id = ug.user_id
-)
+    left join school_years as sy 
+        on users.created_at 
+            between sy.started_at and sy.ended_at
+),
+
+
 
 select *
 from final

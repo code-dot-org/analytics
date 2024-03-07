@@ -27,11 +27,13 @@ combined as (
         school_stats_by_years.is_stage_el,
         school_stats_by_years.is_stage_mi,
         school_stats_by_years.is_stage_hi,
+
         (
             (case when school_stats_by_years.is_stage_el = 1 then 'el' else '__' end ) ||
             (case when school_stats_by_years.is_stage_mi = 1 then 'mi' else '__' end ) ||
             (case when school_stats_by_years.is_stage_hi = 1 then 'hi' else '__' end ) 
         ) as school_level_simple,
+        
         school_stats_by_years.is_rural,
         school_stats_by_years.is_title_i,
         school_stats_by_years.community_type,
@@ -93,14 +95,14 @@ combined as (
         -- dates 
         min(schools.created_at) as school_created_at,
         max(schools.updated_at) as school_last_updated_at
+
     from schools
     left join school_stats_by_years
         on schools.school_id = school_stats_by_years.school_id
         and school_stats_by_years.row_num = 1
     left join school_districts
         on schools.school_district_id = school_districts.school_district_id
-    {{ dbt_utils.group_by(28) }}
-)
+    {{ dbt_utils.group_by(28) }})
 
 select *
 from combined
