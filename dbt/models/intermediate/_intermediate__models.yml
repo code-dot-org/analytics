@@ -30,7 +30,7 @@ models:
 
   - name: int_teacher_schools_historical
     description: all historical school associations made by teachers-- for a given school year, it takes their most recent school selection
-    
+
   - name: int_user_levels
     description: xref model for user_level foreign keys (could also be a fact table with a few more columns...)
     tests: 

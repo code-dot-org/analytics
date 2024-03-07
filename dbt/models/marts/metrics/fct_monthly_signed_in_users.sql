@@ -1,9 +1,3 @@
-{#
-FUTURE WORK: this should be built as an incremental model.  Some of the increment criteria
-are tricky since this is an aggregated metrics table where the current month will update every
-day, but past months should remain unchanged.  
-#}
-
 with
 sign_ins as (
     select *
@@ -14,10 +8,10 @@ users as (
     select
         user_id,
         user_type,
-        is_international,
         us_intl,
         country
     from {{ ref('dim_users') }}
+    where current_sign_in_at is not null -- exclude dummy accounts
 ),
 
 school_years as (
@@ -27,23 +21,20 @@ school_years as (
 
 final as (
     select
-        u.user_type,
-        u.country,
+        u.user_type,                         
         u.us_intl,
-        sy.school_year                      as sign_in_school_year,
+        u.country,
+        sy.school_year,
         extract(year from si.sign_in_at)    as sign_in_year,
         extract(month from si.sign_in_at)   as sign_in_month,
         count(distinct si.user_id)          as num_signed_in_users
-
     from sign_ins as si
-    left join users as u
+    join users as u
         on si.user_id = u.user_id
-    left join school_years as sy
-        on
-            sign_in_at
+    join school_years as sy
+        on sign_in_at
             between sy.started_at and sy.ended_at
-    {{ dbt_utils.group_by(6) }}
-)
+    {{ dbt_utils.group_by(6) }})
 
 select *
 from final
