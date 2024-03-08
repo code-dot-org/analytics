@@ -42,6 +42,18 @@ levels_script_levels as (
         from parent_levels_child_levels)
 ),
 
+contained_level_answers as (
+    select * 
+    from {{ ref('stg_dashboard__contained_level_answers') }}
+),
+
+answer_texts as (
+    select level_id,
+        answer_number,
+        answer_texts
+    from {{ ref('stg_dashboard__answer_texts') }}
+),
+
 user_levels as (
     select * 
     from {{ ref('dim_user_levels') }}

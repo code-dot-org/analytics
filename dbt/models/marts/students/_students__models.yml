@@ -28,6 +28,16 @@ models:
     - name: created_at_school_year
       description: the school year in which the student account was created
 
+  - name: dim_student_surveys 
+    description: capturing student survey data from user levels
+    columns: 
+      - name: user_id 
+        tests: 
+          - not_null
+      - name: section_id 
+        tests: 
+          - not_null
+
 # - name: dim_student_status
 #   description: This model categorizes students based on their activity status across different school years. It provides insights into user engagement by assigning a status that reflects their activity in the current, previous, and any earlier school years.
 #   columns: 
