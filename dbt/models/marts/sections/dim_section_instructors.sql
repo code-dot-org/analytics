@@ -10,7 +10,7 @@ section_instructors as (
     select *, 
 --        case when invited_by_id is null -- wasn't invited (is the teacher)
 --            then 1 else 0 
-        end as is_section_owner
+--        end as is_section_owner
     from {{ ref('stg_dashboard__section_instructors') }}
 ),
 
