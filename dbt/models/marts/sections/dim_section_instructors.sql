@@ -1,46 +1,41 @@
--- model: dim_section_instructors
+-- model: stg_dashboard_section_instructors
 -- scope: all teachers who created sections since 10/17/2023 when the co-teacher feature was added to the platform. 
-
--- option 1: dim_section_instructors
--- this is BP in terms of bringing in this data. we would then affect dim_teachers using this dim model.
-
 
 with 
 section_instructors as (
-    select *, 
---        case when invited_by_id is null -- wasn't invited (is the teacher)
---            then 1 else 0 
---        end as is_section_owner
+    select *
     from {{ ref('stg_dashboard__section_instructors') }}
 ),
 
 sections as (
-    select *
-    from {{ ref('dim_sections') }}
+    select * 
+    from {{ ref('stg_dashboard__sections') }}
+    where created_at >= '2023-10-17'
 ),
 
 combined as (
     select 
-        -- coteacher
-        section_instructors.instructor_id       as teacher_id,
-        section_instructors.status,
-        section_instructors.invited_by_id       as invited_by_teacher_id,
-        section_instructors.is_section_owner,
+        si.*,
+        case when sec.teacher_id is not null 
+             then 1 else 0 
+        end as is_section_owner
+    from section_instructors    as si
+    left join sections          as sec
+        on si.section_id = sec.section_id
+        and si.instructor_id = sec.teacher_id
+),
 
-        -- related section information
-        sections.section_id,
-        sections.is_active,
-        sections.course_name,
-
-        -- dates
-        sections.section_started_at,
-        section_instructors.created_at,
-        section_instructors.updated_at
-
-    from section_instructors
-    left join sections
-        on section_instructors.section_id = sections.section_id
-)
+final as (
+    select 
+        teacher_id,
+        section_id,
+        is_section_owner,
+        invited_by_teacher_id,
+        status,
+        created_at,
+        updated_at,
+        deleted_at
+    from section_instructors)
 
 select *
-from combined
+from final

@@ -1,14 +1,15 @@
 with 
 user_geos as (
     select *,
-        row_number() over (
-            partition by user_id 
-            order by user_geo_id desc) as row_number,
             
         case when country = 'united states' then 0
              when country <> 'united states' then 1 
              else null 
-        end as is_international
+        end as is_international,
+        
+        row_number() over (
+            partition by user_id  
+            order by user_geo_id desc) as row_number
 
     from {{ ref('base_dashboard__user_geos') }}
 ),

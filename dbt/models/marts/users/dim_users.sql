@@ -14,7 +14,6 @@ user_geos as (
         case when is_international = 1 then 'intl'
              when is_international = 0 then 'us'
              else null end as us_intl
-        {# {{ us_intl_label('is_international') }} as us_intl #}
     from {{ ref('stg_dashboard__user_geos') }}
 ),
 
@@ -37,14 +36,12 @@ combined as (
 
         -- user_pii info 
         users_pii.teacher_email,
+        users_pii.races,
         users_pii.race_group,
         users_pii.gender_group,
-        users_pii.is_urg,
-
+        users_pii.gender,
         users_pii.birthday,
         users_pii.age_years,
-        users_pii.races,
-        users_pii.gender,
 
         -- user_geo info
         ug.country,

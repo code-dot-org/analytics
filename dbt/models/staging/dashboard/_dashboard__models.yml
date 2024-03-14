@@ -47,7 +47,7 @@ models:
   - name: stg_dashboard__section_instructors
     description: coteacher data 
     columns: 
-      - name: instructor_id
+      - name: teacher_id # fka. instructor_id
         description: coteacher id
         tests:
           - not_null

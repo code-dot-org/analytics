@@ -15,15 +15,11 @@ teachers as (
 ),
 
 coteachers as (
-    select 
+    select distinct 
         teacher_id,
-        max(is_section_owner) as is_section_owner
+        section_id,
+        is_section_owner
     from {{ ref('dim_section_instructors') }}
-
-    where teacher_id in (select teacher_id from teachers)
-    -- filters out co-teachers who are not in our teachers mart
-
-    {{dbt_utils.group_by(1)}}
 ),
 
 school_years as (
@@ -34,13 +30,17 @@ school_years as (
 user_school_infos as (
     select * 
     from {{ ref('stg_dashboard_pii__user_school_infos') }}
-    where user_id in (select teacher_id from teachers)
+    where user_id in (
+        select teacher_id 
+        from teachers)
 ),
 
 school_infos as (
     select * 
     from {{ ref('stg_dashboard__school_infos') }}
-    where school_info_id in (select school_info_id from user_school_infos)
+    where school_info_id in (
+        select school_info_id 
+        from user_school_infos)
 ), 
 
 -- get teacher NCES school_id association
@@ -56,20 +56,18 @@ teacher_schools as (
         on usi.user_id = teachers.teacher_id
     left join school_infos as si 
         on si.school_info_id = usi.school_info_id
-    -- where si.school_id is not null
 ),
 
 combined as (
     select 
         --teacher info
         teachers.*,
+        coteachers.is_section_owner,
 
         --school info
         school_years.school_year,
-        teacher_schools.school_id,
+        teacher_schools.school_id
         
-        --co-teacher flag
-        case when not coteachers.is_section_owner then 1 else 0 end as is_coteacher
     from teachers 
     inner join teacher_schools
         on teachers.teacher_id = teacher_schools.teacher_id
@@ -80,6 +78,7 @@ combined as (
                 and school_years.ended_at
     left join coteachers 
         on teachers.teacher_id = coteachers.teacher_id    
+        and teachers.section_id = coteachers.section_id
 ),
 
 final as (
@@ -89,8 +88,7 @@ final as (
         school_id,
         school_info_id,
         teacher_email, -- PII!
-        is_coteacher,
-        is_urg,
+        is_section_owner,
         races,
         race_group,
         gender,

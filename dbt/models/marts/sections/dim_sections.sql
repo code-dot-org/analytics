@@ -15,10 +15,14 @@ will show students added but no activity because the activity is excluded by int
 with school_years as (
     select * 
     from {{ ref('int_school_years') }}
-),
-teacher_school_changes as (
+)
+, teacher_school_changes as (
     select *
     from {{ ref('int_teacher_schools_historical') }}
+)
+, section_instructors as (
+    select teacher_id, section_id
+    from {{ ref('stg_dashboard__section_instructors') }}
 )
 , all_sections as (
     select 
@@ -34,6 +38,19 @@ teacher_school_changes as (
     inner join
         school_years as sy
         on sec.created_at between sy.started_at and sy.ended_at
+)
+, sections as (
+    select 
+        sec.*,
+        case when si.teacher_id is not null 
+             then 1 else 0 
+        end as is_section_owner
+
+    from all_sections as sec 
+    left join section_instructors as si
+        on sec.section_id = si.section_id
+        and sec.teacher_id = si.teacher_id 
+
 )
 , num_students_per_section as (
     select 
@@ -57,8 +74,7 @@ teacher_school_changes as (
         num_students as num_students_active
     from {{ ref('int_active_sections') }}
 )
-,teacher_active_courses_with_sy as (
-
+, teacher_active_courses_with_sy as (
     select
         tac.teacher_id,
         tac.section_id,
@@ -78,7 +94,6 @@ teacher_school_changes as (
 )
 , final as (
     select
-
         -- general section data from the sections table
         sec.section_id,
         sec.teacher_id,
@@ -98,9 +113,9 @@ teacher_school_changes as (
         act.is_active,
         act.num_students_active,
         act.section_started_at,     
-        coalesce(act.school_year, nsps.school_year) school_year    -- coalesce first activity school_year with year of student activity
+        coalesce(act.school_year, nsps.school_year) as school_year    -- coalesce first activity school_year with year of student activity
                                                                 
-    from all_sections as sec
+    from sections as sec
 
     left join num_students_per_section as nsps 
         on

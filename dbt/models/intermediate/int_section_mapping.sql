@@ -3,15 +3,13 @@
     school_year
     student_id
     teacher_id
+    *coteacher_id
     section_id
 
 2. Definitions:
     this table provides mapping across these foreign keys, 
     serving as an intermediary (xref) model
-
-3. Sources:
-
-Ref: DATAOPS-321 */
+*/
 
 with 
 school_years as (
@@ -33,7 +31,15 @@ sections as (
     select distinct 
         teacher_id,
         section_id
-    from {{ ref('stg_dashboard__sections') }}
+    from {{ ref('dim_sections') }}
+),
+
+section_instructors as (
+    select distinct 
+        teacher_id,
+        section_id,
+        is_section_owner
+    from {{ ref('dim_section_instructors') }}
 ),
 
 combined as (
@@ -41,7 +47,8 @@ combined as (
         sy.school_year, 
         followers.student_id,
         sections.teacher_id,
-        sections.section_id         as section_id,
+        sections.section_id as section_id,
+        seci.is_section_owner,
         tsc.school_id,
         row_number() over(
             partition by 
@@ -54,6 +61,9 @@ combined as (
     from followers  
     left join sections 
         on followers.section_id = sections.section_id
+    left join section_instructors   
+        on sections.section_id = section_instructors.section_id
+        and sections.teacher_id = section_instructors.teacher_id
     join school_years as sy 
         on followers.created_at between sy.started_at and sy.ended_at
     left join teacher_school_changes tsc 
@@ -67,6 +77,7 @@ final as (
         school_year,
         section_id,
         teacher_id,
+        is_section_owner,
         school_id
     from combined
     where row_num = 1 

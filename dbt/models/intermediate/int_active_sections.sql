@@ -18,13 +18,14 @@ combined as (
 		,ss.school_year
 		,scs.course_name
 		,ss.section_id
+        ,ss.is_section_owner
         ,min(scs.first_activity_at) as section_started_at
 		,count(distinct ss.student_id) as num_students 
 	from student_course_starts scs
 	join student_section ss 
-	on scs.user_id = ss.student_id 
-    and scs.school_year = ss.school_year 
-	group by 1,2,3,4
+        on scs.user_id = ss.student_id 
+        and scs.school_year = ss.school_year 
+	{{ dbt_utils.group_by(5) }}
 ),
 
 final as (
@@ -33,6 +34,7 @@ final as (
         ,school_year
         ,course_name
         ,section_id
+        ,is_section_owner
         ,section_started_at
         ,num_students
     from combined
