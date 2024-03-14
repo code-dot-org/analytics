@@ -27,29 +27,23 @@ teacher_school_changes as (
     from {{ ref('int_teacher_schools_historical') }}
 ),
 
-sections as (
-    select distinct 
-        teacher_id,
-        section_id
-    from {{ ref('dim_sections') }}
-),
-
 section_instructors as (
     select distinct 
         teacher_id,
         section_id,
         is_section_owner
-    from {{ ref('dim_section_instructors') }}
+    from {{ ref('stg_dashboard__section_instructors') }}
 ),
 
 combined as (
     select 
         sy.school_year, 
         followers.student_id,
-        sections.teacher_id,
-        sections.section_id as section_id,
+        seci.teacher_id,
+        seci.section_id,
         seci.is_section_owner,
         tsc.school_id,
+        
         row_number() over(
             partition by 
                 followers.student_id, 
