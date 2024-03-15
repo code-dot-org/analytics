@@ -33,11 +33,7 @@ models:
       # - name: section_id
       #   description: fk for follower section
       #   tests:
-<<<<<<< HEAD
       #     - not_null 
-=======
-      #     - not_null
->>>>>>> 11b3dbeb0e26d163f791230fbdb3d913dd02615e
 
   - name: stg_dashboard__sections
     description: staging model for `sections` source data

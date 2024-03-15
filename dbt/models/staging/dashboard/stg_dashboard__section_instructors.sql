@@ -3,12 +3,20 @@
 with
 section_instructors as (
     select * 
-    from {{ ref('base_dashboard__section_instructors') }}
-    where invited_by_id is not null)
+    from {{ ref('base_dashboard__section_instructors') }} 
+    -- where invited_by_id is not null
+),
+
+final as (
+    select 
+    instructor_id as teacher_id,
+    section_id,
+    invited_by_id,
+    status,
+    created_at,
+    updated_at,
+    deleted_at
+)
 
 select * 
-<<<<<<< HEAD
 from section_instructors
-=======
-from section_instructors
->>>>>>> 11b3dbeb0e26d163f791230fbdb3d913dd02615e
