@@ -12,30 +12,49 @@ will show students added but no activity because the activity is excluded by int
 
 #}
 
-with school_years as (
-    select * 
-    from {{ ref('int_school_years') }}
+with 
+sections as (
+    select *
+    from {{ ref('stg_dashboard__sections')}}
 ),
+
+section_instructors as (
+    select * 
+    from {{ ref("stg_dashboard__section_instructors")}}
+),
+
+school_years as (
+    select * 
+    from {{ ref('int_school_years')}}
+),
+
+combined as (
+    select 
+        sec.section_id,
+        sec.section_name, 
+        sec.teacher_id,
+        sei.is_section_owner,
+        sec.login_type,
+        sec.grade,
+        sec.created_at,
+        sy.school_year as school_year_created,
+        sec.updated_at 
+    from sections as sec 
+    left join section_instructors as sei 
+        on sec.section_id = sei.section_id
+       and sec.teacher_id = sei.teacher_id 
+
+    inner join school_years as sy
+        on sec.created_at 
+            between sy.started_at and sy.ended_at
+),
+
 teacher_school_changes as (
     select *
     from {{ ref('int_teacher_schools_historical') }}
-)
-, all_sections as (
-    select 
-        section_id,
-        section_name, 
-        teacher_id,
-        login_type,
-        grade,
-        created_at,
-        sy.school_year as school_year_created,
-        updated_at 
-    from {{ ref('stg_dashboard__sections') }} as sec
-    inner join
-        school_years as sy
-        on sec.created_at between sy.started_at and sy.ended_at
-)
-, num_students_per_section as (
+), 
+
+num_students_per_section as (
     select 
         section_id, 
         teacher_id,

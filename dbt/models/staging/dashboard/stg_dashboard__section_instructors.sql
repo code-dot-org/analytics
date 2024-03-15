@@ -7,16 +7,24 @@ section_instructors as (
     -- where invited_by_id is not null
 ),
 
-final as (
+sections as (
+    select distinct 
+        teacher_id,
+        section_id 
+    from {{ ref('stg_dashboard__sections') }}
+),
+
+combined as (
     select 
-    instructor_id as teacher_id,
-    section_id,
-    invited_by_id,
-    status,
-    created_at,
-    updated_at,
-    deleted_at
-)
+        section_instructors.*,
+        case when 
+    from section_instructors 
+    left join sections 
+        on section_instructors.instructor_id = sections.user_id 
+       and section_instructors.section_id = sections.section_id 
+),
+
+final as 
 
 select * 
 from section_instructors
