@@ -14,14 +14,6 @@ teachers as (
     where user_type = 'teacher'
 ),
 
-coteachers as (
-    select distinct 
-        teacher_id,
-        section_id,
-        is_section_owner
-    from {{ ref('dim_section_instructors') }}
-),
-
 school_years as (
     select * 
     from {{ref('int_school_years') }}
@@ -62,7 +54,6 @@ combined as (
     select 
         --teacher info
         teachers.*,
-        coteachers.is_section_owner,
 
         --school info
         school_years.school_year,
@@ -76,9 +67,6 @@ combined as (
         on teachers.created_at 
             between school_years.started_at 
                 and school_years.ended_at
-    left join coteachers 
-        on teachers.teacher_id = coteachers.teacher_id    
-        and teachers.section_id = coteachers.section_id
 ),
 
 final as (
@@ -88,7 +76,7 @@ final as (
         school_id,
         school_info_id,
         teacher_email, -- PII!
-        is_section_owner,
+        -- is_section_owner,
         races,
         race_group,
         gender,

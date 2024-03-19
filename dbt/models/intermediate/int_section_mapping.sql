@@ -22,6 +22,12 @@ followers as (
     from {{ ref('stg_dashboard__followers') }}
 ),
 
+sections as (
+    select * 
+    from {{ ref('stg_dashboard__sections')}}
+),
+
+
 teacher_school_changes as (
     select *
     from {{ ref('int_teacher_schools_historical') }}
@@ -38,31 +44,35 @@ section_instructors as (
 combined as (
     select 
         sy.school_year, 
-        followers.student_id,
-        seci.teacher_id,
-        seci.section_id,
-        seci.is_section_owner,
+        foll.student_id,
+        sec.teacher_id,
+        sec.section_id,
+        sei.is_section_owner,
         tsc.school_id,
         
         row_number() over(
             partition by 
-                followers.student_id, 
+                foll.student_id, 
                 sy.school_year
                 order by 
-                    followers.created_at
+                    foll.created_at
         ) as row_num
 
-    from followers  
-    left join sections 
-        on followers.section_id = sections.section_id
-    left join section_instructors   
-        on sections.section_id = section_instructors.section_id
-        and sections.teacher_id = section_instructors.teacher_id
+    from followers as foll 
+    left join sections as sec 
+        on foll.section_id = sec.section_id
+    left join section_instructors as sei 
+        on sec.section_id = sei.section_id
+        and sec.teacher_id = sei.teacher_id
     join school_years as sy 
-        on followers.created_at between sy.started_at and sy.ended_at
-    left join teacher_school_changes tsc 
-        on sections.teacher_id = tsc.teacher_id 
-        and sy.ended_at between tsc.started_at and tsc.ended_at 
+        on foll.created_at 
+            between sy.started_at 
+                and sy.ended_at
+    left join teacher_school_changes as tsc 
+        on sec.teacher_id = tsc.teacher_id 
+        and sy.ended_at 
+            between tsc.started_at 
+            and tsc.ended_at 
 ),
 
 final as (

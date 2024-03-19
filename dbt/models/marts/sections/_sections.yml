@@ -42,14 +42,3 @@ models:
       - name: is_active
         description: a 0/1 flag for whether or not the section is "active" for that course and school year (has 5+ students starting 1+ levels of the same course in a year). 
   
-  - name: dim_section_instructors
-    description: dim model for coteacher data, to be augmented by teacher data
-    columns: 
-      - name: teacher_id
-        description: user_id of invited teacher
-        tests: 
-          - not_null
-          # - unique?
-
-      - name: invited_by_teacher_id
-        description: teacher who sent invite; if null then orig. teacher
