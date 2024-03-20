@@ -9,9 +9,10 @@ renamed as (
         stage_id,
         stage_name,
         
-        case when is_lockable = 1 
+        case 
+            when is_lesson_lockable = 1 
             then absolute_position 
-                else relative_position 
+            else relative_position 
         end as stage_number,
 
         absolute_position,

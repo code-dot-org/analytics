@@ -107,10 +107,9 @@ combined as (
 
         -- parent_child_levels
         plcl.parent_level_kind,
-        case when plcl.parent_level_id is not null 
-            then 1 
-                else 0 
-        end                     as is_parent_level,
+        case 
+            when plcl.parent_level_id is not null 
+            then 1 else 0 end   as is_parent_level,
 
         coalesce(
             ug.family_name,
@@ -145,24 +144,33 @@ combined as (
         lev.updated_at                  as updated_at
 
     from levels_script_levels as lsl 
+    
     join script_levels as sl 
         on lsl.script_level_id = sl.script_level_id
+    
     join levels as lev
         on lsl.level_id = lev.level_id  
+    
     join scripts as sc 
         on sl.script_id = sc.script_id
+    
     join stages as st 
         on sl.stage_id = st.stage_id 
+    
     left join course_scripts as cs 
         on sc.script_id = cs.script_id
+    
     left join unit_groups as ug 
         on cs.course_id = ug.unit_group_id
+    
     left join course_names as cn 
         on ug.unit_group_id = cn.versioned_course_id   
+    
     left join script_names as sn 
-        on sc.script_id = sn.versioned_script_id)
+        on sc.script_id = sn.versioned_script_id
+    
     left join parent_levels_child_levels as plcl 
-        on lsl.level_id = plcl.child_level_id
+        on lsl.level_id = plcl.child_level_id )
 
 select * 
 from combined
