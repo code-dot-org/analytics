@@ -6,8 +6,8 @@ parent_levels_child_levels as (
     select 
         parent_level_id,
         child_level_id,
-        position,
-        kind 
+        kind as parent_level_kind,
+        position
     from {{ ref('base_dashboard__parent_levels_child_levels') }}
 )
 

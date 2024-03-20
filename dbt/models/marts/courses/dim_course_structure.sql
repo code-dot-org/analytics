@@ -41,6 +41,11 @@ unit_groups as (
     from {{ ref('stg_dashboard__unit_groups') }}
 ),
 
+parent_levels_child_levels as (
+    select *
+    from {{ ref('int_parent_levels_child_levels') }}
+),
+
 course_names as (
     select *
     from {{ ref('dim_course_names') }}
@@ -73,7 +78,7 @@ combined as (
         st.stage_name,
         st.absolute_position as stage_number,
         st.relative_position,
-        st.is_lockable,
+        st.is_lesson_lockable,
 
         -- script_levels
         sl.is_assessment,
@@ -100,14 +105,21 @@ combined as (
         lev.project_template_level_name,
         lev.is_submittable,
 
+        -- parent_child_levels
+        plcl.parent_level_kind,
+        case when plcl.parent_level_id is not null 
+            then 1 
+                else 0 
+        end                     as is_parent_level,
+
         coalesce(
             ug.family_name,
-            sc.family_name) as family_name, 
-            -- from script if course info not available
+            sc.family_name)     as family_name, 
+        -- from script if course info not available
 
         coalesce(
             ug.version_year, 
-            sc.version_year) as version_year,
+            sc.version_year)    as version_year,
         -- from script if course info not available
 
         coalesce(
@@ -117,7 +129,7 @@ combined as (
 
         coalesce(
             ug.instruction_type,
-            sc.instruction_type) as instruction_type,
+            sc.instruction_type)    as instruction_type,
         -- from course info if available, from script if not
         
         coalesce(
@@ -127,10 +139,10 @@ combined as (
         
         coalesce(
             ug.participant_audience,
-            sc.participant_audience) as participant_audience,
+            sc.participant_audience)    as participant_audience,
         -- from course info if available, from script if not
         
-        lev.updated_at as updated_at
+        lev.updated_at                  as updated_at
 
     from levels_script_levels as lsl 
     join script_levels as sl 
@@ -149,6 +161,8 @@ combined as (
         on ug.unit_group_id = cn.versioned_course_id   
     left join script_names as sn 
         on sc.script_id = sn.versioned_script_id)
+    left join parent_levels_child_levels as plcl 
+        on lsl.level_id = plcl.child_level_id
 
 select * 
 from combined
