@@ -11,7 +11,7 @@ renamed as (
         
         case 
             when is_lesson_lockable = 1 
-            then absolute_position 
+                then absolute_position 
             else relative_position 
         end as stage_number,
 
@@ -26,7 +26,7 @@ renamed as (
            -- json extraction fields 
         json_extract_path_text(
             properties, 
-            'lesson_unplugged')    as is_lesson_unplugged,
+            'unplugged')    as is_lesson_unplugged,
 
         created_at,
         updated_at

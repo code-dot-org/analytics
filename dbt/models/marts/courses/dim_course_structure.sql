@@ -14,7 +14,7 @@ scripts as (
 levels as (
     select * 
     from {{ ref('stg_dashboard__levels') }}
-    ),
+),
 
 stages as (
     select *
@@ -114,63 +114,57 @@ combined as (
         coalesce(
             ug.family_name,
             sc.family_name)     as family_name, 
-        -- from script if course info not available
 
         coalesce(
             ug.version_year, 
             sc.version_year)    as version_year,
-        -- from script if course info not available
 
         coalesce(
             ug.published_state,
             sc.published_state) as published_state,
-        -- from course info if available, from script if not
 
         coalesce(
             ug.instruction_type,
             sc.instruction_type)    as instruction_type,
-        -- from course info if available, from script if not
         
         coalesce(
             ug.instructor_audience,
             sc.instructor_audience) as instructor_audience,
-        -- from course info if available, from script if not
         
         coalesce(
             ug.participant_audience,
             sc.participant_audience)    as participant_audience,
-        -- from course info if available, from script if not
         
         lev.updated_at                  as updated_at
 
-    from levels_script_levels as lsl 
+    from scripts as sc 
+
+    left join script_levels as sl 
+        on sc.script_id = sl.script_id
     
-    join script_levels as sl 
+    left join levels_script_levels as lsl 
         on lsl.script_level_id = sl.script_level_id
     
-    join levels as lev
-        on lsl.level_id = lev.level_id  
+    left join stages as st 
+        on st.stage_id = sl.stage_id
     
-    join scripts as sc 
-        on sl.script_id = sc.script_id
-    
-    join stages as st 
-        on sl.stage_id = st.stage_id 
+    left join levels as lev
+        on lev.level_id = lsl.level_id 
     
     left join course_scripts as cs 
         on sc.script_id = cs.script_id
     
     left join unit_groups as ug 
-        on cs.course_id = ug.unit_group_id
+        on ug.unit_group_id = cs.course_id 
     
     left join course_names as cn 
         on ug.unit_group_id = cn.versioned_course_id   
     
     left join script_names as sn 
-        on sc.script_id = sn.versioned_script_id
+        on sn.versioned_script_id = sc.script_id
     
     left join parent_levels_child_levels as plcl 
-        on lsl.level_id = plcl.child_level_id )
+        on plcl.parent_level_id = lsl.level_id )
 
 select * 
 from combined
