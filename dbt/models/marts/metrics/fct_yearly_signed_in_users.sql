@@ -4,7 +4,7 @@
     ref: dataops-593
 
     notes: 
-    - we should make an update here to only dun the metrics mart once a month on the last day
+    - we should make an update here to only run the metrics mart once a month on the last day
 #}
 
 with
