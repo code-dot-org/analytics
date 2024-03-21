@@ -75,16 +75,11 @@ models:
         description: teacher or student (or `null`)
         tests:
           - not_null
-          # - unique:
-          #     config:
-          #       severity: error
-          #       error_if: ">3"
-          #       warn_if: "=3"
       
       - name: us_intl
         description: whether the user who signed in was in the US or outside the US. Values are one of (us | intl | missing)
       
-      - name: total_user_sign_ins
+      - name: num_signed_in_users
         description: the number of users who signed in in that school year, month, user type and geography
 
   ## Yearly Signed In Users (will refactor later)
