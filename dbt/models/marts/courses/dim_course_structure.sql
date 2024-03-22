@@ -166,5 +166,6 @@ combined as (
     left join parent_levels_child_levels as plcl 
         on plcl.parent_level_id = lsl.level_id )
 
-select * 
+select count(*)
 from combined
+where is_assessment is null 

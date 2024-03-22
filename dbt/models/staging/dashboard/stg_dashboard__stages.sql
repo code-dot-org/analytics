@@ -14,16 +14,17 @@ renamed as (
                 then absolute_position 
             else relative_position 
         end as stage_number,
-
+        
         absolute_position,
         relative_position,
-        script_id,
         key,
-        is_lesson_lockable,
+
+        script_id,
         lesson_group_id,
+        is_lesson_lockable,
         has_lesson_plan,
 
-           -- json extraction fields 
+        -- json extraction fields 
         json_extract_path_text(
             properties, 
             'unplugged')    as is_lesson_unplugged,

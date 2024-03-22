@@ -24,7 +24,7 @@ final as (
         activity_section_id,
         activity_section_position,
         seed_key,
-        properties,
+        -- properties,
         created_at,
         updated_at
     from script_levels)
