@@ -90,9 +90,22 @@ models:
         description: teacher or student (or `null`)
         tests:
           - not_null
-          # - unique:
-          #     config:
-          #       severity: error
-          #       error_if: ">3"
-          #       warn_if: "=3"
-      
+
+#                   ##### DEVELOPMENT #####
+
+#   ## User Sign In's
+#   - name: fct_user_sign_ins
+#     description: an extensible model for calculating
+#     several variations of "signed in users" in Trevor.
+#     columns:
+#       - name: user_type
+#         description: teacher or student (or `null`)
+#         tests:
+#           - not_null
+
+#       - name: us_intl
+#         description: whether the user who signed in was in the US or outside the US. Values are one of (us | intl | missing)
+        
+#         tests:
+#           - accepted_values:
+#             values: ["us,"intl","missing"]
