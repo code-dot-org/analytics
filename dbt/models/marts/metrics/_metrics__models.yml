@@ -91,7 +91,7 @@ models:
         tests:
           - not_null
 
-#                   ##### DEVELOPMENT #####
+# DEVELOPMENT #
 
 #   ## User Sign In's
 #   - name: fct_user_sign_ins
@@ -105,7 +105,6 @@ models:
 
 #       - name: us_intl
 #         description: whether the user who signed in was in the US or outside the US. Values are one of (us | intl | missing)
-        
 #         tests:
 #           - accepted_values:
 #             values: ["us,"intl","missing"]
