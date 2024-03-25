@@ -2,7 +2,7 @@
 
     model: dim_sections
 
-    this model requires soe refactoring when 
+    this model requires some refactoring when 
     we have the time...
 
 #}
