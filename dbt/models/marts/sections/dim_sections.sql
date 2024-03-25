@@ -1,26 +1,28 @@
 {# 
-Re-write of dim_sections by Baker on 2.6.24
 
-Table creates one record per section/teacher per school year REGARDLESS of activity in the section.
-Sections that were created but never active have NULL activity.
+    model: dim_sections
 
-I kept all columns and names from original dim_sections, but I think we might consider modifying 
-some of them for clarity -- noted in inline comments below.
-
-This model should have every distinct section_id that appears in stg__sections.  However, some sections 
-will show students added but no activity because the activity is excluded by int_active_sections.
+    this model requires some refactoring when 
+    we have the time...
 
 #}
 
 with school_years as (
     select * 
     from {{ ref('int_school_years') }}
-),
-teacher_school_changes as (
+)
+, teacher_school_changes as (
     select *
     from {{ ref('int_teacher_schools_historical') }}
 )
-, all_sections as (
+, section_instructors as (
+    select distinct  
+        teacher_id, 
+        section_id, 
+        is_section_owner
+    from {{ ref('stg_dashboard__section_instructors') }}
+)
+, sections as (
     select 
         section_id,
         section_name, 
@@ -33,7 +35,8 @@ teacher_school_changes as (
     from {{ ref('stg_dashboard__sections') }} as sec
     inner join
         school_years as sy
-        on sec.created_at between sy.started_at and sy.ended_at
+        on sec.created_at 
+            between sy.started_at and sy.ended_at
 )
 , num_students_per_section as (
     select 
@@ -42,7 +45,6 @@ teacher_school_changes as (
         school_id,
         school_year,
         count(distinct student_id) as num_students_added
-    
     from {{ ref('int_section_mapping') }}
     {{ dbt_utils.group_by(4) }}
 )
@@ -57,8 +59,7 @@ teacher_school_changes as (
         num_students as num_students_active
     from {{ ref('int_active_sections') }}
 )
-,teacher_active_courses_with_sy as (
-
+, teacher_active_courses_with_sy as (
     select
         tac.teacher_id,
         tac.section_id,
@@ -72,13 +73,11 @@ teacher_school_changes as (
     inner join school_years as sy
         on tac.school_year = sy.school_year
     left join teacher_school_changes as tsc 
-        on
-            tac.teacher_id = tsc.teacher_id 
+        on tac.teacher_id = tsc.teacher_id 
             and sy.ended_at between tsc.started_at and tsc.ended_at 
 )
 , final as (
     select
-
         -- general section data from the sections table
         sec.section_id,
         sec.teacher_id,
@@ -98,21 +97,21 @@ teacher_school_changes as (
         act.is_active,
         act.num_students_active,
         act.section_started_at,     
-        coalesce(act.school_year, nsps.school_year) school_year    -- coalesce first activity school_year with year of student activity
+        
+        -- coalesce first activity school_year with year of student activity
+        coalesce(act.school_year, nsps.school_year) as school_year    
                                                                 
-    from all_sections as sec
+    from sections as sec
 
     left join num_students_per_section as nsps 
-        on
-            sec.section_id = nsps.section_id
+        on  sec.section_id = nsps.section_id
             and sec.teacher_id = nsps.teacher_id
 
     left join teacher_active_courses_with_sy as act
-        on
-            nsps.section_id = act.section_id
+        on  nsps.section_id = act.section_id
             and nsps.school_year = act.school_year
             and nsps.teacher_id = act.teacher_id
-            and nsps.school_id = act.school_id 
-)
+            and nsps.school_id = act.school_id)
+
 select *
 from final
