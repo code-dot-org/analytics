@@ -47,7 +47,7 @@ renamed as (
             when races is null then 'not_collected'
         
             -- Default case: return the input value
-            -- else races -- Additional logic may be required here
+            else races -- Additional logic may be required here
         
             else null
         end as race_group,
