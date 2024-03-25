@@ -75,36 +75,36 @@ models:
         description: teacher or student (or `null`)
         tests:
           - not_null
-          # - unique:
-          #     config:
-          #       severity: error
-          #       error_if: ">3"
-          #       warn_if: "=3"
       
       - name: us_intl
         description: whether the user who signed in was in the US or outside the US. Values are one of (us | intl | missing)
-
-      - name: country
-        description: 
-          the current geo-located country associated with this user.  
-          Note - this can change over time. 
-          When `us_intl` = 'us' then country = "United States". 
-          All other countries are classified as "intl"
-          
-      - name: school_year
-        description: school year in which users signed in
-        tests:
-          - not_null
       
-      - name: sign_in_year
-        description: the calendar year in which users signed in
-        tests:
-          - not_null
-      
-      - name: sign_in_month
-        description: the month number in which users signed in
-        tests:
-          - not_null
-      
-      - name: total_user_sign_ins
+      - name: num_signed_in_users
         description: the number of users who signed in in that school year, month, user type and geography
+
+  ## Yearly Signed In Users (will refactor later)
+  - name: fct_yearly_signed_in_users 
+    description: total users who signed in each month, segmented by user type and us/intl
+    columns:
+      - name: user_type
+        description: teacher or student (or `null`)
+        tests:
+          - not_null
+
+# DEVELOPMENT #
+
+#   ## User Sign In's
+#   - name: fct_user_sign_ins
+#     description: an extensible model for calculating
+#     several variations of "signed in users" in Trevor.
+#     columns:
+#       - name: user_type
+#         description: teacher or student (or `null`)
+#         tests:
+#           - not_null
+
+#       - name: us_intl
+#         description: whether the user who signed in was in the US or outside the US. Values are one of (us | intl | missing)
+#         tests:
+#           - accepted_values:
+#             values: ["us,"intl","missing"]
