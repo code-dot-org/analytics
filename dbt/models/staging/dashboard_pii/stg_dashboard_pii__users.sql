@@ -34,17 +34,20 @@ renamed as (
             when races like '%hispanic%' then 'hispanic'
 
             -- If races contains a comma AND is_urg return 'two or more urg'
-            when races like '%,%' and is_urg = 1 then 'two or more urg'
+            when races like '%,%' 
+             and is_urg = 1 
+                then 'two or more urg'
             
             -- If races contains a comma and not caught by case above, then urg is 0 or null, return 'two or more non urg'
-            when races like '%,%' then 'two or more non urg'
+            when races like '%,%' 
+                then 'two or more non urg'
             
             -- If races matches any of these specific strings, return 'no_response'
             -- when
             --     races in ('closed_dialog', 'nonsense', 'opt_out')
             --     then 'n/a'
             -- If races is NULL, return NULL
-            when races is null then 'not_collected'
+            when races is null then 'not collected'
         
             -- Default case: return the input value
             -- else races -- Additional logic may be required here
@@ -55,7 +58,7 @@ renamed as (
         nullif(lower(gender), '') as gender,
         case 
             when lower(gender) in ('m','f','n','o') 
-            then lower(gender)
+                then lower(gender)
             else null 
         end as gender_group,
 
