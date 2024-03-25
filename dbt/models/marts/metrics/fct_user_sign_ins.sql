@@ -46,25 +46,13 @@ combined as (
     select 
         -- user info 
         si.user_id,
-        si.sign_in_at,
         us.user_type,
-        
-        case 
-            when us.user_type = 'student'
-                then si.user_id 
-            else null 
-        end as student_id,
-        
-        case 
-            when us.user_type = 'teacher'
-                then si.user_id 
-            else null 
-        end as teacher_id,
 
         us.us_intl,
         us.country,
         sy.school_year,
         
+        si.sign_in_at,
         extract(month   from si.sign_in_at)     as sign_in_month,
         extract(year    from si.sign_in_at)     as sign_in_year
 
@@ -85,12 +73,12 @@ aggregated as (
         school_year                 as "School Year",
         'monthly'                   as "Report Type",   
         sign_in_month               as "Report Date",
+        user_type                   as "User Type",     
         us_intl                     as "US / International",
         country                     as "Country",
-        count(distinct student_id)  as "Student Sign Ins",
-        count(distinct teacher_id)  as "Teacher Sign Ins"
+        count(distinct user_id)     as "Number of Sign Ins"
     from combined
-    {{ dbt_utils.group_by(5) }}
+    {{ dbt_utils.group_by(6) }}
 
     union all 
 
@@ -98,12 +86,13 @@ aggregated as (
         school_year,
         'annual',
         sign_in_year,
+        user_type,
         us_intl,
         country,
         count(distinct student_id),
         count(distinct teacher_id)
     from combined
-    {{ dbt_utils.group_by(5) }}
+    {{ dbt_utils.group_by(6) }}
 ),
 
 final as (

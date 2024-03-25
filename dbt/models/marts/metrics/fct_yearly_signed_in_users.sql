@@ -35,7 +35,6 @@ final as (
         u.country,
         sy.school_year,
         extract(year from si.sign_in_at)    as sign_in_year,
-        -- extract(month from si.sign_in_at)   as sign_in_month,
         count(distinct si.user_id)          as num_signed_in_users
     from sign_ins as si
     join users as u
