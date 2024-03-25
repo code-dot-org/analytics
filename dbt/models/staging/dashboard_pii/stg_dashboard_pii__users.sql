@@ -37,14 +37,14 @@ renamed as (
             when races like '%,%' and is_urg = 1 then 'two or more urg'
             
             -- If races contains a comma and not caught by case above, then urg is 0 or null, return 'two or more non urg'
-            when races like '%,%' then 'two or more'
+            when races like '%,%' then 'two or more non urg'
             
             -- If races matches any of these specific strings, return 'no_response'
             -- when
             --     races in ('closed_dialog', 'nonsense', 'opt_out')
             --     then 'n/a'
             -- If races is NULL, return NULL
-            -- when races is null then 'n/a'
+            when races is null then 'not_collected'
         
             -- Default case: return the input value
             -- else races -- Additional logic may be required here

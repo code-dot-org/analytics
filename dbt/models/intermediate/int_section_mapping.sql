@@ -35,7 +35,7 @@ teacher_school_changes as (
 
 section_instructors as (
     select distinct 
-        teacher_id,
+        instructor_id as teacher_id,
         section_id,
         is_section_owner
     from {{ ref('stg_dashboard__section_instructors') }}

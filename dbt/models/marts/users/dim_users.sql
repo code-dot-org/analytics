@@ -10,10 +10,7 @@ users as (
 ),
 
 user_geos as (
-    select *, 
-        case when is_international = 1 then 'intl'
-             when is_international = 0 then 'us'
-             else null end as us_intl
+    select *
     from {{ ref('stg_dashboard__user_geos') }}
 ),
 
@@ -33,11 +30,13 @@ combined as (
         users.school_info_id,
         users.locale,
         users.total_lines,
+        users.sign_in_count,
 
         -- user_pii info 
         users_pii.teacher_email,
         users_pii.races,
         users_pii.race_group,
+        users_pii.is_urg,
         users_pii.gender_group,
         users_pii.gender,
         users_pii.birthday,
