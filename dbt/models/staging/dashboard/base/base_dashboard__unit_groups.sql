@@ -7,7 +7,7 @@ source as (
 renamed as (
     select
         id as unit_group_id,
-        name,
+        name as unit_group_name,
         properties,
         created_at,
         updated_at,

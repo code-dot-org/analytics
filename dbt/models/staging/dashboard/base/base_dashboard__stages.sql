@@ -12,9 +12,9 @@ renamed as (
         script_id,
         created_at,
         updated_at,
-        lockable            as is_lockable,
+        lockable            as is_lesson_lockable,
         relative_position,
-        -- properties,
+        properties,
         lesson_group_id,
         key,
         has_lesson_plan
