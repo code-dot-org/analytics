@@ -1,6 +1,10 @@
 {# Notes:
 Design: 1 row per teacher, school year
 Logic: For every school year, assign the latest school the teacher was associated with in that school year. 
+
+js 2024-03-28: 
+    this model could use some refactoring,
+    and should be made a dimensional model.
 #}
 
 with 
@@ -21,9 +25,15 @@ school_years as (
 
 user_school_infos_sy as (
     select 
-        usi.user_id,
+        usi.user_id as teacher_id,
         sy.school_year as started_at_sy,
-        row_number() over (partition by usi.user_id, sy.school_year order by usi.started_at desc) as row_num,
+        
+        row_number() over (
+            partition by 
+                usi.user_id, 
+                sy.school_year 
+            order by usi.started_at desc) as row_num,
+
         usi.school_info_id,
         si.school_id,
         usi.started_at,
@@ -32,21 +42,25 @@ user_school_infos_sy as (
     left join school_infos si 
         on usi.school_info_id = si.school_info_id
     join school_years sy 
-        on usi.started_at between sy.started_at and sy.ended_at
+        on usi.started_at 
+            between sy.started_at 
+                and sy.ended_at
 ),
 
 final as (
     select 
-        usi_sy.user_id as teacher_id,
+        usi_sy.teacher_id,
+        usi_sy.school_id,
+        usi_sy.school_info_id,
+        
         usi_sy.started_at_sy,
         usi_sy.started_at, 
-        usi_sy.ended_at,
-        usi_sy.school_info_id,
-        usi_sy.school_id
+        usi_sy.ended_at
+
     from user_school_infos_sy as usi_sy 
     where row_num = 1
-    order by started_at_sy
 )
 
 select * 
 from final 
+order by started_at_sy

@@ -57,6 +57,10 @@ teacher_school_changes as (
         num_students as num_students_active
     from {{ ref('int_active_sections') }}
 )
+, section_instructors as (
+    select * 
+    from {{ref('stg_dashboard__section_instructors')}}
+)
 ,teacher_active_courses_with_sy as (
 
     select
@@ -82,6 +86,12 @@ teacher_school_changes as (
         -- general section data from the sections table
         sec.section_id,
         sec.teacher_id,
+        
+        coalesce(case -- if null, force to 0
+            when sei.teacher_id is not null 
+            then 1 else 0 
+        end,0) as is_section_owner,
+
         sec.school_year_created,
         sec.section_name,
         sec.login_type,
@@ -98,9 +108,14 @@ teacher_school_changes as (
         act.is_active,
         act.num_students_active,
         act.section_started_at,     
-        coalesce(act.school_year, nsps.school_year) school_year    -- coalesce first activity school_year with year of student activity
+        coalesce(act.school_year, nsps.school_year) as school_year    -- coalesce first activity school_year with year of student activity
                                                                 
     from all_sections as sec
+
+    left join section_instructors as sei 
+        on 
+            sec.section_id = sei.section_id
+            and sec.teacher_id = sei.teacher_id
 
     left join num_students_per_section as nsps 
         on

@@ -10,6 +10,7 @@ models:
             - school_year
             - course_name
             - section_id
+            - is_section_owner
 
   - name: int_school_years
     description: 1 row per school year in different formats
