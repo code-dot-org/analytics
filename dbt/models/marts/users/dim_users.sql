@@ -23,9 +23,9 @@ combined as (
         users.*,
         
         -- user geos 
+        ug.country,
         ug.is_international,
         ug.us_intl,
-        ug.country,
         
         -- PII!!!
         usp.teacher_email
@@ -46,6 +46,7 @@ final as (
         studio_person_id,
         school_info_id,
         
+        -- user info
         user_type,
         locale,
         is_urg,    
@@ -56,9 +57,17 @@ final as (
         gender,
         gender_group,
 
+        -- users pii
+        teacher_email,
+        
         -- counts
         sign_in_count,
         total_lines,     
+
+        -- user geos
+        country,
+        is_international,
+        us_intl,
         
         -- sysdates
         current_sign_in_at,
