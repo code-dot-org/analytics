@@ -10,54 +10,64 @@ user_geos as (
 ),
 
 users_pii as (
-    select *
+    select 
+        user_id,
+        teacher_email
     from {{ ref('stg_dashboard_pii__users')}}
+    where user_type = 'teacher'
+),
+
+combined as (
+    select 
+        -- users
+        users.*,
+        
+        -- user geos 
+        ug.is_international,
+        ug.us_intl,
+        ug.country,
+        
+        -- PII!!!
+        usp.teacher_email
+
+    from users 
+    left join users_pii as usp  
+        on users.user_id = usp.user_id
+    left join user_geos as ug 
+        on users.user_id = ug.user_id
 ),
 
 final as (
     select 
-        -- users
-        users.user_id,
-        users.user_type,
-
-        case 
-            when users.user_type = 'student' 
-                then users.user_id end as student_id,
-        case 
-            when users.user_type = 'teacher' 
-                then users.user_id end as teacher_id,
-
-        users.studio_person_id,
-        users.school_info_id,
-        users.locale,
-        users.sign_in_count,
-        users.total_lines,     
+        -- keys 
+        user_id,
+        student_id,
+        teacher_id,
+        studio_person_id,
+        school_info_id,
         
-        users.is_urg,
-        users.gender,
-        users.birthday,
+        user_type,
+        locale,
+        is_urg,    
+        birthday,
+        age_years,
+        races,
+        race_group,
+        gender,
+        gender_group,
+
+        -- counts
+        sign_in_count,
+        total_lines,     
         
-        users_pii.teacher_email,
-        users_pii.races,
-        users_pii.race_group,
-        users_pii.gender_group,
-
-        ug.is_international,
-        ug.us_intl,
-        ug.country,
-
-        -- dates
-        users.current_sign_in_at,
-        users.last_sign_in_at,
-        users.created_at,
-        users.updated_at
-
-    from users 
-    left join users_pii 
-        on users.user_id = users_pii.user_id
-    left join user_geos as ug 
-        on users.user_id = ug.user_id
-)
+        -- sysdates
+        current_sign_in_at,
+        last_sign_in_at,
+        created_at,
+        updated_at,  
+        purged_at,
+        deleted_at
+    from combined )
 
 select *
 from final

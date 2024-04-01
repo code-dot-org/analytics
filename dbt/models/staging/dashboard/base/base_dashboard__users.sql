@@ -7,26 +7,27 @@ source as (
 renamed as (
     select
         id                          as user_id,
+        user_type,
         studio_person_id,
+        primary_contact_info_id
+        school_info_id,
         sign_in_count,
+        total_lines,
+        locale,
+        gender,
+        birthday,
+        races,
+
+        urm                         as is_urg,
+        active                      as is_active,
+        
         current_sign_in_at,
         last_sign_in_at,
         created_at,
         updated_at,
-        deleted_at,        
-        gender,
-        locale,
-        birthday,
-        user_type,
-        school_info_id,
-        total_lines,
-        active                      as is_active,
         purged_at,
-        urm                         as is_urg,
-        races,
-        primary_contact_info_id
-    from source
-)
+        deleted_at
+    from source )
 
 select * 
 from renamed

@@ -7,14 +7,20 @@ source as (
 
 renamed as (
     select
-        id                          as user_id,
+        id                  as user_id,
         user_type,
-        email,
-        gender,
+        
+        -- PII!
+        case 
+            when user_type = 'teacher' 
+                then email 
+            else null end   as email,
+        
         birthday,
-        active                      as is_active,
-        urm                         as is_urg,
+        gender,
         races,
+        active              as is_active,
+        urm                 as is_urg,
         created_at,
         updated_at,
         purged_at,
