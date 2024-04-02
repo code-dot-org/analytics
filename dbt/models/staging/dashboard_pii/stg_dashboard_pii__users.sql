@@ -27,8 +27,8 @@ final as (
         
         gender,
         birthday,
-        active                      as is_active,
-        urm                         as is_urg,
+        is_active,
+        is_urg,
         races,
         created_at,
         updated_at,
