@@ -59,7 +59,8 @@ script_names as (
 combined as (
     select 
         -- courses
-        ug.unit_group_id as course_id,
+        ug.unit_group_id    as course_id,
+        ug.unit_group_name  as course_name,
         cn.course_name_short,
         cn.course_name_long,
         sc.course_name_true,
@@ -166,6 +167,5 @@ combined as (
     left join parent_levels_child_levels as plcl 
         on plcl.parent_level_id = lsl.level_id )
 
-select count(*)
+select *
 from combined
-where is_assessment is null 

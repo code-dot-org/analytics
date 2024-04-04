@@ -2,9 +2,10 @@ with
 unit_groups as (
     select * 
     from {{ ref('base_dashboard__unit_groups')}}
-)
+),
 
-select 
+renamed as (
+    select 
         unit_group_id,
         unit_group_name,
         published_state,
@@ -25,4 +26,7 @@ select
         properties,
         created_at,
         updated_at
-from unit_groups
+    from unit_groups ) 
+
+select * 
+from renamed
