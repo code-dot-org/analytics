@@ -1,5 +1,10 @@
 with
 scripts as (
+    select * 
+    from {{ ref('base_dashboard__scripts') }}
+),
+
+renamed as (
     select
         script_id,
         script_name,
@@ -46,7 +51,7 @@ scripts as (
 
         created_at,
         updated_at
-    from {{ ref('base_dashboard__scripts') }})
+    from scripts )
     
 select * 
 from scripts
