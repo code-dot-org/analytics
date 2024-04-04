@@ -48,7 +48,7 @@ final as (
     inner join school_years 
         on teachers.created_at 
             between school_years.started_at 
-                and school_years.ended_at)
+                and school_years.ended_at )
 
 select * 
 from final
