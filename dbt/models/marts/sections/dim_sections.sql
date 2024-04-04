@@ -1,109 +1,3 @@
--- original dim_sections (v1)
-with 
-sections as (
-    select 
-        section_id,
-        section_name, 
-        teacher_id,
-        login_type,
-        grade,
-        created_at,
-        updated_at 
-    from {{ ref('stg_dashboard__sections') }}
-),
-
-active_sections as (
-    select 
-        section_id,
-        school_year,
-        course_name,
-        1 as is_active,
-        num_students as num_students_active
-    from {{ ref('int_active_sections') }}
-),
-
-section_mapping as (
-    select 
-        section_id, 
-        teacher_id,
-        is_section_owner,
-        school_id,
-        school_year,
-        count(distinct student_id) as num_students_added
-    from {{ ref('int_section_mapping') }}
-    {{ dbt_utils.group_by(5) }}
-),
-
-school_years as (
-    select * 
-    from {{ ref('int_school_years') }}
-),
-{# teacher_school_changes as ( --i'm not sure we need this here.  isn't it covered by section mapping?
-    select 
-        school_id,
-        teacher_id,
-        started_at,
-        ended_at
-    from {{ ref('int_teacher_schools_historical') }}
-), #}
-
-combined as (
-    select 
-        sec.*,
-        sy.school_year as school_year_created
-    from sections as sec 
-    join school_years as sy
-        on sec.created_at 
-            between sy.started_at and sy.ended_at
-            
-    {# join teacher_school_changes as tsc 
-        on sec.teacher_id = tsc.teacher_id
-        and sy.ended_at 
-            between tsc.started_at and tsc.ended_at #}
-),
-
-final as (
-    select 
-        -- section
-        comb.section_id,
-        comb.section_name,
-        comb.school_year_created, {# section_created_year? #}
-        
-        comb.teacher_id,
-        sm.is_section_owner,
-        case 
-            when comb.teacher_id = sm.teacher_id
-            then is_section_owner else 0 
-        end as is_section_owner,
-
-        comb.login_type, 
-        comb.grade,
-        
-        -- school 
-        sm.school_year,
-        sm.school_id,
-        
-        -- courses
-        act.course_name,
-        isnull(act.is_active, 0) as is_active,
-        act.num_students_active,
-        sm.num_students_added,
-        
-        comb.created_at,
-        comb.updated_at
-    
-    from combined as comb 
-    left join section_mapping as sm 
-        on comb.section_id = sm.section_id
-    left join active_sections as act
-        on sm.section_id = act.section_id
-        and sm.school_year = act.school_year
- )
-    
-select * 
-from final 
-
-
 {# 
 
 Re-write of dim_sections by Baker on 2.6.24
@@ -116,6 +10,8 @@ some of them for clarity -- noted in inline comments below.
 
 This model should have every distinct section_id that appears in stg__sections.  However, some sections 
 will show students added but no activity because the activity is excluded by int_active_sections.
+
+#}
 
 with school_years as (
     select * 
@@ -221,5 +117,3 @@ teacher_school_changes as (
 )
 select *
 from final
-
- #}
