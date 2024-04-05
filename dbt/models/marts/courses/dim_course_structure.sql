@@ -63,7 +63,6 @@ combined as (
         ug.unit_group_name  as course_name,
         cn.course_name_short,
         cn.course_name_long,
-        sc.course_name_true,
 
         -- scripts
         sl.script_id,
