@@ -54,4 +54,4 @@ renamed as (
     from scripts )
     
 select * 
-from scripts
+from renamed
