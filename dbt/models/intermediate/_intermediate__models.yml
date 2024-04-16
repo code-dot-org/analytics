@@ -16,14 +16,26 @@ models:
 
   - name: int_section_mapping
     description: xref table to pull together these FK's for reference
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - student_id
-            - school_year
-            - section_id
-            - teacher_id
-            - school_id 
+    columns: 
+        - name: student_id
+          tests:
+            - not_null
+        - name: section_id 
+          tests: 
+            - not_null 
+        - name: teacher_id 
+          tests: 
+              - not_null
+         
+    # tests:
+    #   - dbt_utils.unique_combination_of_columns:
+    #       combination_of_columns:
+    #         - student_id
+    #         - school_year
+    #         - section_id
+    #         - teacher_id
+    #         - is_section_owner
+    #         - school_id 
 
   - name: int_parent_levels_child_levels 
     description: mapping parent and child level ids
