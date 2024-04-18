@@ -1,5 +1,5 @@
 version: 2
 
 models:
-  - name: stg_ap_exam_results_school_level_2023_csp
+  - name: stg_ap_exam_results_school_level_2023
     description: loading 2023 school level AP exam results data from dashboard.analysis
