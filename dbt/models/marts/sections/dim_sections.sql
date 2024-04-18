@@ -1,4 +1,5 @@
 {# 
+
 Re-write of dim_sections by Baker on 2.6.24
 
 Table creates one record per section/teacher per school year REGARDLESS of activity in the section.
