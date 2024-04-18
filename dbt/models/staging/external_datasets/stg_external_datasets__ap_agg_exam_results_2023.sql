@@ -18,15 +18,16 @@
 */
 with unpivoted_data as (
     -- see macros/unpivot_dynamic
-    {{ unpivot_big_table('base_external_datasets__ap_agg_exam_results_2023', 2)}}
+    {{ unpivot_big_table('base_external_datasets__ap_agg_exam_results_2023', 3)}}
 )
 , normalized_values AS (
     SELECT
 
-        '2023' as exam_year,
-        NULL as pd_year,
+        --'2023'::text as exam_year,
+        exam_year::text as exam_year,
+        NULL::text as pd_year,
         {{ ap_norm_exam_group('exam_group') }} as exam_group, 
-        NULL as rp_id,
+        NULL::text as rp_id,
         {{ ap_norm_exam_subject('exam') }} as exam,
         orig_col_name,
         {{ ap_split_column('orig_col_name') }},                   -- splits e.g. 'black_1' into two cols demographic_group_raw = 'black' and score_category_raw=1
@@ -37,18 +38,18 @@ with unpivoted_data as (
     FROM unpivoted_data
 )
 SELECT
-    exam_year,
-    pd_year,
-    exam_group,
-    rp_id,
-    exam,
-    orig_col_name,
-    demographic_group_raw,
-    score_category_raw,
-    demographic_category,
-    demographic_group,
-    score_category,
-    score_of,
-    num_students
+    exam_year::text,
+    pd_year::text,
+    exam_group::text,
+    rp_id::text,
+    exam::text,
+    orig_col_name::varchar,
+    demographic_group_raw::text,
+    score_category_raw::text,
+    demographic_category::text,
+    demographic_group::text,
+    score_category::text,
+    score_of::text,
+    num_students::integer
 
 FROM normalized_values

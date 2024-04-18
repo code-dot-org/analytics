@@ -40,18 +40,18 @@ normalized_values AS (
     FROM unpivoted_data
 )
 SELECT
-    exam_year,
-    pd_year,
-    exam_group,
-    rp_id,
-    exam,
+    exam_year::text,
+    pd_year::text,
+    exam_group::text,
+    rp_id::text,
+    exam::text,
     orig_col_name,
     demographic_group_raw,
     score_category_raw,
-    demographic_category,
-    demographic_group,
-    score_category,
-    score_of,
-    num_students
+    demographic_category::text,
+    demographic_group::text,
+    score_category::text,
+    score_of::text,
+    num_students::integer
 
 FROM normalized_values

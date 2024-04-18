@@ -1,33 +1,32 @@
 /*
-    This intermediate table unions together all the school-level AP exam results.
-    It's designed to allow for different years of available data for CSP and CSA.
 
-    The macro: build_ap_school_level_data_union_query unions all of the staging data together
-    ASSUMING that staging data table names adhere to the established naming conventions.
-    See the code for that macro to learn the expected column names and order for AP school level data.
+    The purpose of this intermidate table is "simply" to represent the cleaned, normalized and
+    reshaped raw aggregate AP exam table.
 
-    In theory, if (1) the staging table for the exam + year exists and (2) it is properly formed with
-    the correct number and order of columns and (3) it is named according to the established naming convention, 
-    then all the analytics engineer needs to do is add the appropriate year to the list-of-years for the 
-    relavant exam (CSP or CSA) in the code below.
+    Note: computation of aggregates for groups: urg, non-urg, etc. is deferred to the mart model
+
+    This model does two things:
+    1. unions together all of the aggregated ap exam results
+    2. computes the 'cdo_audit' aggregate group from code.org school-level exam results
 
 */
 
 -- 1. Union together any/all existing agg reports data for every year availble.
---      note: 2017-2022 was imported a
+--      note: 2017-2022 was imported in bulk in mar. 2024 in order to maintain historic data that
+--      had previously been reported and before we started modeling in DBT.
 --------
 {% set years = ['2017_2022', '2023'] %}
 {% set columns = [
-    'exam_year', 
-    'pd_year',
-    'exam_group',
-    'rp_id',
-    'exam', 
-    'demographic_group', 
-    'demographic_category', 
-    'score_category', 
-    'score_of', 
-    'num_students'
+    'exam_year::integer', 
+    'pd_year::integer',
+    'exam_group::text',
+    'rp_id::integer',
+    'exam::text', 
+    'demographic_group::text', 
+    'demographic_category::text', 
+    'score_category::text', 
+    'score_of::text', 
+    'num_students::integer'
 ]%}
     
 {% for year in years %}
@@ -39,21 +38,21 @@ from {{ ref('stg_external_datasets__ap_agg_exam_results_' ~ year) }}
 {% if not loop.last %}union all{% endif %}
 {% endfor %}
 
--- compose agg reports from school_level_data
+union all
 
+-- 2. compose 'cdo_audit' agg reports from school_level_data
 -- the order of these fields MUST match the order listed above.
 select
-    exam_year, 
-    null as pd_year,
-    'cdo_audit' as exam_group, -- in theory this should be run through the macro that normalizes these values
-    null as rp_id,
-    exam, 
-    demographic_group, 
-    demographic_category, 
-    score_category, 
-    score_of, 
+    exam_year::integer, 
+    null::integer as pd_year,
+    'cdo_audit'::text as exam_group, -- in theory this should be run through the macro that normalizes these values
+    null::integer as rp_id,
+    exam::text, 
+    demographic_group::text, 
+    demographic_category::text, 
+    score_category::text, 
+    score_of::text, 
     sum(num_students)
 
 from {{ ref('int_ap_school_level_exam_results') }}
 {{ dbt_utils.group_by(9) }}
-

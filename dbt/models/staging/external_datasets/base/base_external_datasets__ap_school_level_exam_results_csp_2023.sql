@@ -6,6 +6,8 @@
 */ 
 
 with ap_data AS (
-    SELECT * FROM {{source('dashboard_analysis','stg_ap_exam_results_school_level_2023_csp')}}
+    select * 
+    from {{source('dashboard_analysis','stg_ap_exam_results_school_level_2023_csp')}}
 )
-SELECT * FROM ap_data
+select * 
+from ap_data

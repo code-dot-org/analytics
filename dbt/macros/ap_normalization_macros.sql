@@ -45,13 +45,14 @@ case
     when {{ demographic_group_raw }} in ('other', 'other_race_ethnicity','other_race') then 'other_race'
     when {{ demographic_group_raw }} in ('race_ethnicity_no_response','race_no_response') then 'race_no_response'
     when {{ demographic_group_raw }} in ('other_gender','gender_another') then 'other_gender'
+    when {{ demographic_group_raw }} in ('overall','total') then 'total'
     else {{ demographic_group_raw }} -- default: return the raw - if unrecognized this will fail loudly when processed by by next case-when
 end as demographic_group
 -- Finally, categorize into demographic_category
 , case
     when demographic_group in ('male', 'female', 'other_gender') then 'gender'
     when demographic_group in ('american_indian', 'asian', 'black', 'hispanic', 'hawaiian', 'two_or_more', 'white','other_race','race_no_response') then 'race'
-    when demographic_group in ('overall','total') then 'total'
+    when demographic_group in ('total') then 'total'
     when demographic_group in ('freshman', 'sophomore', 'senior', 'junior') then 'grade_level'
     else 'ERROR - unkown group: '''|| demographic_group || '''. SEE macro - ap_norm_demographic_group'
 end as demographic_category
@@ -125,7 +126,7 @@ end as demographic_category
 
 {% macro ap_extract_n_schools_from_aggregate(school_name)%}
 case 
-    when upper({{ school_name }}) like 'LESS THAN 10%N=%' then substring({{school_name}}, position('N=' IN upper({{school_name}}))+2)::integer
+    when upper({{ school_name }}) like '%LESS%THAN%10%N=%' then substring({{school_name}}, position('N=' IN upper({{school_name}}))+2)::integer
     else 1::integer
 end
 {% endmacro%}
@@ -152,6 +153,30 @@ end
         'score_category', 
         'score_of', 
         'num_schools', 
+        'num_students'
+    ]%}
+    
+    {% for year in years %}
+    select
+        {% for column in columns %}
+        {{ column }} {% if not loop.last %}, {% endif %}
+        {% endfor %}
+    from {{ ref('stg_external_datasets__ap_school_level_exam_results_' ~ exam_type ~ '_' ~ year) }}
+    {% if not loop.last %}union all{% endif %}
+    {% endfor %}
+{% endmacro %}
+
+{% macro build_ap_agg_data_union_query(exam_type, years) %}
+    {% set columns = [
+        'exam_year', 
+        'country', 
+        'state', 
+        'school_type', 
+        'exam', 
+        'demographic_group', 
+        'demographic_category', 
+        'score_category', 
+        'score_of', 
         'num_students'
     ]%}
     

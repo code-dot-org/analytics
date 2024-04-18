@@ -27,19 +27,19 @@
 
 -- This is effectively the template for school-level data
 {% set columns = [
-    'exam_year', 
+    'exam_year::integer', 
     'country', 
     'ai_code', 
     'high_school_name', 
     'state', 
     'school_type', 
-    'exam', 
-    'demographic_group', 
-    'demographic_category', 
-    'score_category', 
-    'score_of', 
-    'num_schools', 
-    'num_students'
+    'exam::text', 
+    'demographic_group::text', 
+    'demographic_category::text', 
+    'score_category::text', 
+    'score_of::text', 
+    'num_schools::integer', 
+    'num_students::integer'
 ] %}
 
 -- Handling CSP, add any new years to the array csp_years

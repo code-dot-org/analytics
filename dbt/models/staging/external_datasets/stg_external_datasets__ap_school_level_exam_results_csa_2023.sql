@@ -26,7 +26,7 @@
 with
     unpivoted_data as (
         -- see macros/unpivot_dynamic.sql
-        {{ unpivot_big_table("base_external_datasets__ap_school_level_exam_results_csp_2023", 7) }}
+        {{ unpivot_big_table("base_external_datasets__ap_school_level_exam_results_csa_2023", 7) }}
     )
     ,renamed_cols as (
         select
@@ -37,7 +37,7 @@ with
             state_abbrev as state,
             analysis_school_type as school_type,
 
-            'csp'::varchar as exam_subject, -- this dataset is entirely csp
+            'csa'::varchar as exam_subject, -- this dataset is entirely csa
             orig_col_name, --keep for sanity checking, remove from final output
 
             -- Macro call to split `orig_col_name` into two fields: demographic_group_raw, and score_group_raw
