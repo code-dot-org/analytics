@@ -22,17 +22,23 @@ school_years as (
 user_school_infos_sy as (
     select 
         usi.user_id,
-        sy.school_year as started_at_sy,
-        row_number() over (partition by usi.user_id, sy.school_year order by usi.started_at desc) as row_num,
+        
         usi.school_info_id,
         si.school_id,
+        
+        sy.school_year as started_at_sy,
         usi.started_at,
-        usi.ended_at
+        usi.ended_at,
+        
+        row_number() over (partition by usi.user_id, sy.school_year order by usi.started_at desc) as row_num
+
     from user_school_infos usi
     left join school_infos si 
         on usi.school_info_id = si.school_info_id
     join school_years sy 
-        on usi.started_at between sy.started_at and sy.ended_at
+        on usi.started_at 
+            between sy.started_at 
+                and sy.ended_at
 ),
 
 final as (
