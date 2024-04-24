@@ -1,12 +1,12 @@
 /* 
 Model: int_section_mapping
 Design:
+    - student_id
     - school_year
     - section_id
     - teacher_id
     - is_section_owner
     - school_id
-    - student_id
 
 Ref: DATAOPS-321, 548
 */
@@ -33,7 +33,7 @@ sections as (
     from {{ ref('stg_dashboard__sections') }}
 ),
 
-instructors as (
+section_instructors as (
     select *
     from {{ ref('stg_dashboard__section_instructors') }}
 ),
@@ -42,13 +42,13 @@ instructors as (
 teacher_sections as (
     select 
         section_id, 
-        instructor_id as teacher_id 
-    from instructors 
-    union -- all 
-    select 
-        section_id, 
         teacher_id 
     from sections
+    union all 
+    select 
+        section_id, 
+        instructor_id
+    from section_instructors 
 ),
 
 -- 2b. assign section owner
@@ -61,7 +61,7 @@ section_owners as (
         then 1 else 0 end as is_section_owner
 
     from teacher_sections   as ts
-    left join sections     as sec 
+    left join sections      as sec 
         on ts.section_id = sec.section_id 
 ),
 
@@ -81,7 +81,10 @@ teachers as (
 
 -- 3. prep student data 
 students as (
-    select * 
+    select 
+        student_id,
+        section_id,
+        school_year
     from (
         select 
             foll.student_id,
@@ -118,5 +121,3 @@ combined as (
 
 select *
 from combined 
-where section_id = 5181677
-order by 1,2,4 asc
