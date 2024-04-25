@@ -5,6 +5,22 @@ teachers as (
     where user_type = 'teacher'
 ),
 
+section_mapping as (
+    select * 
+    from {{ ref('int_section_mapping') }}
+    where teacher_id in 
+        (select user_id from teachers)
+),
+
+combined as (
+    select tea.user_id,
+        sem.section_id,
+        sem.is_section_owner 
+    from teachers               as tea 
+    left join section_mapping   as sem 
+        on tea.user_id = sem.teacher_id
+)
+
 user_school_infos as (
     select * 
     from {{ ref('stg_dashboard_pii__user_school_infos') }}
@@ -13,7 +29,7 @@ user_school_infos as (
 school_infos as (
     select * 
     from {{ ref('stg_dashboard__school_infos') }}
-    where school_id is not null
+    -- where school_id is not null
 ), 
 
 school_years as (
@@ -50,5 +66,5 @@ final as (
             between school_years.started_at 
                 and school_years.ended_at )
 
-select * 
+select 
 from final
