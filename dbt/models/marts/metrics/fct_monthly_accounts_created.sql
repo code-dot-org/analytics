@@ -39,3 +39,5 @@ final as (
 
 select *
 from final
+where country = 'united states'
+order by school_year 
