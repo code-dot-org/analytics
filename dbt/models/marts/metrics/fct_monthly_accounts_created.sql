@@ -1,11 +1,6 @@
 with 
 users as (
-    select
-        user_id,
-        created_at,
-        user_type,
-        us_intl,
-        country
+    select *
     from {{ ref('dim_users') }}
     where current_sign_in_at is not null -- exclude dummy accounts
 ),
@@ -20,16 +15,19 @@ final as (
         u.user_type,
         u.us_intl,
         u.country,
-        sy.school_year                  as school_year,
-        date_part(year, u.created_at)   as created_year,
-        date_part(month, u.created_at)  as created_month,
-        count(distinct u.user_id)       as num_users_created
-    from users as u
-    join school_years as sy
+        sy.school_year,
+        extract(year from u.created_at)         as created_year,
+        extract(month from u.created_at)        as created_month,
+        to_char(u.created_at::date, 'YYYY-MM')  as created_month_year,
+        count(distinct u.user_id)               as num_users_created
+
+    from users          as u
+    join school_years   as sy
         on u.created_at
-            between sy.started_at and sy.ended_at
-    {{ dbt_utils.group_by(6) }}
-)
+            between sy.started_at 
+                and sy.ended_at
+
+    {{ dbt_utils.group_by(7) }} )
 
 select *
 from final
