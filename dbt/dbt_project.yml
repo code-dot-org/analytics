@@ -1,10 +1,13 @@
-# last update: js 2024-01-11
-
 # ==================
 # Project Details
 # ==================
 name: 'cdo_analytics'
 version: '1.0.0'
+
+# dbt Cloud CLI 
+dbt-cloud:
+    project-id: 286339
+
 config-version: 2
 profile: 'cdo_redshift'
 require-dbt-version: [">=1.0.0", "<2.0.0"]
