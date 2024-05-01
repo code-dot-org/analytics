@@ -32,7 +32,6 @@ clean-targets:
 # Variable Configs
 # ==================
 vars:
-
   infinity_future: TO_DATE('9999-12-31', 'YYYY-MM-DD')
   infinity_past: TO_DATE('1970-01-01', 'YYYY-MM-DD')
   tomorrow: DATEADD('day',1,CURRENT_DATE())
