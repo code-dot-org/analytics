@@ -83,5 +83,3 @@ combined as (
 
 select *
 from combined
-where country = 'india'
-limit 5
