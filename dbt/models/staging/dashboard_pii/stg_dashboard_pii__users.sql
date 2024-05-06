@@ -6,6 +6,25 @@ users as (
         and user_type is not null 
 ),
 
+us_states as (
+    select * 
+    from {{ ref('seed_us_states') }}
+),
+
+combined as (
+    select *,
+        case 
+            when len(us_state) = 2 
+            then us_state
+            
+            when len(us_state) > 2
+            then 
+
+    from users as usr 
+    left join us_states as ust 
+        on usr.
+)
+
 renamed as (
     select
         user_id,
@@ -61,8 +80,9 @@ renamed as (
                         rtrim(us_state)
                 ) end as us_state 
         
-    from users
+    from users, us_states 
 )
 
-select *
+select distinct us_state
 from renamed
+where len(us_state) = 2

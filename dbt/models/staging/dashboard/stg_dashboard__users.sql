@@ -31,7 +31,7 @@ renamed as (
         gender,
         locale,
         birthday,
-        
+        json_extract_path_text(properties,'state') as user_state,
         sign_in_count,
         total_lines,     
         
