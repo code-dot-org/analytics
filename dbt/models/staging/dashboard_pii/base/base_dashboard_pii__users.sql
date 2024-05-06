@@ -2,7 +2,7 @@ with
 source as (
     select * 
     from {{ source('dashboard_pii', 'users') }}
-    where user_type is not null 
+    -- where user_type is not null 
 ),
 
 renamed as (
@@ -18,9 +18,11 @@ renamed as (
         created_at,
         updated_at,
         purged_at,
-        deleted_at
+        deleted_at,
+        json_extract_path_text(lower(properties), 'us_state',true) as us_state 
     from source
+    where lower(properties) like '%us_state%'
 )
 
-select * 
+select *
 from renamed

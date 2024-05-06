@@ -53,7 +53,14 @@ renamed as (
                 then 'not_collected'
                 
             else 'unexpected value: ' || gender
-        end as gender_group
+        end as gender_group,
+
+        case when len(us_state) = 2
+            then us_state
+                else ltrim(
+                        rtrim(us_state)
+                ) end as us_state 
+        
     from users
 )
 
