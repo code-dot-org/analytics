@@ -8,8 +8,6 @@ renamed as (
     select
         id as user_proficiency_id,
         user_id,
-        created_at,
-        updated_at,
         last_progress_at,
         sequencing_d1_count,
         sequencing_d2_count,
@@ -61,7 +59,9 @@ renamed as (
         conditionals_d3_count,
         conditionals_d4_count,
         conditionals_d5_count,
-        basic_proficiency_at
+        basic_proficiency_at,
+        created_at,
+        updated_at
     from source
 )
 
