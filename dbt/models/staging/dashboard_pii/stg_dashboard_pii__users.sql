@@ -6,24 +6,12 @@ users as (
         and user_type is not null 
 ),
 
-us_states as (
-    select * 
-    from {{ ref('seed_us_states') }}
+state_abbreviations as (
+    select 
+        lower(state_abbreviation) as us_state_abbr,
+        lower(state_name) as us_state_name
+    from {{ ref('seed_state_abbreviations') }}
 ),
-
-combined as (
-    select *,
-        case 
-            when len(us_state) = 2 
-            then us_state
-            
-            when len(us_state) > 2
-            then 
-
-    from users as usr 
-    left join us_states as ust 
-        on usr.
-)
 
 renamed as (
     select
@@ -73,16 +61,14 @@ renamed as (
                 
             else 'unexpected value: ' || gender
         end as gender_group,
+        sta.us_state_abbr as us_state
 
-        case when len(us_state) = 2
-            then us_state
-                else ltrim(
-                        rtrim(us_state)
-                ) end as us_state 
-        
-    from users, us_states 
+    from users                      as usr 
+    left join state_abbreviations   as sta
+        on usr.us_state = sta.us_state_name
+        or usr.us_state = sta.us_state_abbr 
 )
 
-select distinct us_state
+
+select *
 from renamed
-where len(us_state) = 2

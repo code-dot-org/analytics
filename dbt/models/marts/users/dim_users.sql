@@ -21,15 +21,15 @@ final as (
         users_pii.races,
         users_pii.race_group,
         users_pii.gender_group,
-        ug.is_international,
+        users_pii.us_state,
+        ug.country,
         ug.us_intl,
-        ug.country
+        ug.is_international
     from users 
     left join users_pii 
         on users.user_id = users_pii.user_id
     left join user_geos as ug 
-        on users.user_id = ug.user_id
-)
+        on users.user_id = ug.user_id )
 
 select *
 from final
