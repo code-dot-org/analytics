@@ -5,5 +5,14 @@ sources:
     database: dashboard 
     schema: analysis
     tables:
-      - name: stg_ap_exam_results_school_level_2023
+      - name: stg_ap_exam_results_school_level_2023_csp
+      - name: stg_ap_exam_results_school_level_2023_csa
       - name: stg_agg_ap_exam_results_raw_2023
+      - name: stg_ap_exam_results_school_level_2023
+      - name: stg_ap_exam_results_school_level_2022
+      - name: stg_ap_ledgers_raw_2022
+      - name: stg_ap_ledgers_raw_2023
+      - name: stg_ap_crosswalk_2023
+      - name: stg_ap_crosswalk_2016_2022
+      - name: stg_ap_ledgers_raw_2017_2021
+

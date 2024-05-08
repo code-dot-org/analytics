@@ -42,27 +42,14 @@
     'num_students::integer'
 ] %}
 
--- Handling CSP, add any new years to the array csp_years
-{% set csp_years = ['2022', '2023'] %}
-{% for year in csp_years %}
+-- Union together all years for which we have school-level data
+-- Add any new years to the array ap_years
+{% set ap_years = ['2022', '2023'] %}
+{% for year in ap_years %}
     select
         {% for column in columns %}
         {{ column }}{% if not loop.last %}, {% endif %}
         {% endfor %}
-    from {{ ref('stg_external_datasets__ap_school_level_exam_results_csp_' ~ year) }}
+    from {{ ref('stg_external_datasets__ap_school_level_exam_results_'~ year) }}
     {% if not loop.last %}union all{% endif %}
 {% endfor %}
-
-union all
-
--- Handling CSA, add any new years to the array csa_years
-{% set csa_years = ['2022', '2023'] %}
-{% for year in csa_years %}
-    select
-        {% for column in columns %}
-        {{ column }}{% if not loop.last %}, {% endif %}
-        {% endfor %}
-    from {{ ref('stg_external_datasets__ap_school_level_exam_results_csa_' ~ year) }}
-    {% if not loop.last %}union all{% endif %}
-{% endfor %}
-

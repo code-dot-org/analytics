@@ -43,7 +43,7 @@ case
     when {{ demographic_group_raw }} in ('hp','native_hawaiian_other_pacific_islander','pacific_islander','nhpi') then 'hawaiian'
     when {{ demographic_group_raw }} in ('tr','two_or_more_races','twomore') then 'two_or_more'
     when {{ demographic_group_raw }} in ('other', 'other_race_ethnicity','other_race') then 'other_race'
-    when {{ demographic_group_raw }} in ('race_ethnicity_no_response','race_no_response') then 'race_no_response'
+    when {{ demographic_group_raw }} in ('race_ethnicity_no_response','race_no_response','no_response') then 'race_no_response'
     when {{ demographic_group_raw }} in ('other_gender','gender_another') then 'other_gender'
     when {{ demographic_group_raw }} in ('overall','total') then 'total'
     else {{ demographic_group_raw }} -- default: return the raw - if unrecognized this will fail loudly when processed by by next case-when
@@ -54,7 +54,7 @@ end as demographic_group
     when demographic_group in ('american_indian', 'asian', 'black', 'hispanic', 'hawaiian', 'two_or_more', 'white','other_race','race_no_response') then 'race'
     when demographic_group in ('total') then 'total'
     when demographic_group in ('freshman', 'sophomore', 'senior', 'junior') then 'grade_level'
-    else 'ERROR - unkown group: '''|| demographic_group || '''. SEE macro - ap_norm_demographic_group'
+    else 'ERROR - unkown group: '''|| demographic_group || '''. SEE macro - ap_norm_demographic_group(...)'
 end as demographic_category
 {% endmacro %}
 
