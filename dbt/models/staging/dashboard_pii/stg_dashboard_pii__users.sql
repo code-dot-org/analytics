@@ -61,14 +61,19 @@ renamed as (
                 
             else 'unexpected value: ' || gender
         end as gender_group,
-        sta.us_state_abbr as us_state
+        
+        coalesce(
+            -- if the value is as desired, keep it
+            usr.us_state,
+            
+            -- if the value is a state name, refer to table for its abbreviation
+            sta.us_state_abbr)      as us_state
 
     from users                      as usr 
     left join state_abbreviations   as sta
-        on usr.us_state = sta.us_state_name
-        or usr.us_state = sta.us_state_abbr 
+        on usr.us_state = sta.us_state_abbr -- eg. 'oh' = 'oh'
+        or usr.us_state = sta.us_state_name -- eg. 'ohio' = 'ohio'
 )
-
 
 select *
 from renamed
