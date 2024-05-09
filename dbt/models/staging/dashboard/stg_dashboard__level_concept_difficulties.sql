@@ -6,7 +6,7 @@ level_concept_difficulties as (
 
 final as (
     select 
-        -- level_concept_difficulty_id,
+        level_concept_difficulty_id,
         level_id,
         
         sequencing,
