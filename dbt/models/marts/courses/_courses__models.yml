@@ -34,3 +34,15 @@ models:
         tests: 
           - unique
           - not_null
+
+  - name: dim_level_concept_difficulties
+    description: this table is full listing of EVERY level in course structure showing the mapping to any/all "concepts and difficulties" for use in the "coding proficiency" metric.  
+    columns: 
+      - name: level_id
+        description: id of the level being mapped
+        tests: 
+          - not_null
+      - name: has_lcd_mapping
+        description: yes|no does this level have a mapping for concept-difficulty
+      - name: course_family
+        description: the short name for which course this script/level combo belongs to e.g. csf, csd, csp, csa, hoc, etc.
