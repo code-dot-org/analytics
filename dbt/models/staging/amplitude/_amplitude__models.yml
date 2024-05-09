@@ -1,0 +1,30 @@
+version: 2
+
+models: 
+  - name: stg_amplitude__active_teacher_events
+    description: staging model for course_scripts source data
+    columns:
+    - name: amplitude_id
+      description: Amplitude's user id. If Amplitude learns that multiple amplitude_ids actually refer to single user IRL it merges them together, creates a new amplitude_id for the user and back-fills all the data with the new value. (See the table merged_ids_xxxxx for records related to this merging.)
+  
+    - name: cdo_user_id
+      description: Code.org user id. When Amplitude learns that a user has a code.org user id it logs all future events with that ID -- AND it back-fills the code.org user_id into all event records. (see the amplitude_id merge process referenced above)
+
+    - name: event_type
+      description: The name of the event as listed in Amplitude.  These have names like "Unit Overview Page Visited By Teacher"
+
+    - name: event_time
+      description: Timestamp for when the event actually occurred.
+
+    - name: country
+      description: Country that Amplitude thinks the user is from.  In metrics, if this user has a cdo_user_id we use the Code.org user_geo mapping for the user over the Amplitude one.
+
+  #     - name: course_id 
+  #       description: unique id for each course
+  #       tests: 
+  #         - not_null
+  #     - name: script_id 
+  #       description: unique id for each script
+  #       tests: 
+  #         - not_null
+  
