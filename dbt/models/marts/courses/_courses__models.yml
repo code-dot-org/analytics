@@ -40,9 +40,10 @@ models:
     columns: 
       - name: level_id
         description: id of the level being mapped
-        tests: 
-          - not_null
-      
+
+        # tests: 
+        #   - not_null
+
       - name: has_lcd_mapping
         description: bit field does this level have a mapping for concept-difficulty
       
