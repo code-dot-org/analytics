@@ -100,9 +100,6 @@ models:
       - name: birthday
         description: an inexact date of birth for the user, calcuated as the date of account creation X years prior based on user reporting that their age is X.
       
-      - name: age_in_years
-        description: a calculation based on `birthday` to be how many years old the user is today. note - max age is 22.
-
   - name: stg_dashboard__user_levels
     description: staging model for `user_levels` source data
     columns: 

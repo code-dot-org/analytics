@@ -24,6 +24,11 @@ select
     dma,
     city,
     region, --state, if US
-    country,
+    lower(country) as country,      -- lower to align with user_geos
+    case 
+        when lower(country) = 'united states' then 'us' 
+        when lower(country) <> 'united states' then 'intl'
+        else null
+    end us_intl,
     language
 from amp_events
