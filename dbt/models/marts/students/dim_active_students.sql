@@ -11,10 +11,10 @@
     I have used a cutoff date of anything after 2022-07-01, the start of the 22-23 school year.
 */
 
--- daily user_level activity summmary
 with cutoff_date as (
     select '2022-07-01'::date as cutoff_date -- use this as a cutoff date for all CTEs.
 )
+-- daily user_level activity summmary
 , ul_summary as (
     select
     
