@@ -77,8 +77,8 @@ data_set as (
 
         coalesce(sign_in_day, amp_event_day) as event_date_merged,
 
-        -- coalesce values for each user|day between cdo sign in and amplitude event 3 possible values.
-        -- Giving preference in the following order:
+        -- coalesce values for each user|day between cdo sign in and amplitude event 3 possible values
+        -- giving preference in the following order:
         -- 1. the cdo values from signin event
         -- 2. the cdo values from the amplitude event joined on amplitude's capture of cdo user_id
         -- 3. amplitude version of the value - id, user_type, us_intl (country)
@@ -92,7 +92,7 @@ data_set as (
         a.amp_cdo_user_id user_id_amp,
         a.amplitude_id,
 
-        -- segment: where is the user_id coming from? 
+        -- hunam readable shorthand - where is the user_id coming from? 
         case
             when si.user_id is not NULL then 'cdo'          -- cdo sign-in only
             when amp_cdo_user_id is not NULL then 'ampcdo'  -- amplitude's cdo user_id capture
@@ -103,7 +103,7 @@ data_set as (
 
         -- geographic info from vaious sources
         si.country as country,
-        a.cdo_country as country_amp_cdo
+        a.cdo_country as country_amp_cdo,
         a.amp_country as country_amp,
         
         si.us_intl,
