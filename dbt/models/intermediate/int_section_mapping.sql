@@ -28,7 +28,8 @@ followers as (
 
 teacher_school_changes as (
     select *
-    from {{ ref('int_teacher_schools_historical') }} -- this needs to be dimensionalized
+    from {{ ref('int_teacher_schools_historical') }} 
+    -- this needs to be dimensionalized
 ),
 
 sections as (
@@ -45,7 +46,7 @@ combined as (
         sections.teacher_id,
         sections.section_id         as section_id,
         tsc.school_id,
-        tsc.schol_info_id,
+        tsc.school_info_id,
         row_number() over(
             partition by 
                 followers.student_id, 

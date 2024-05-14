@@ -26,7 +26,7 @@ final as (
                 and sy.ended_at
     left join section_mapping as sm 
         on students.student_id = sm.student_id
-        and students.school_info_id = sm.school_info_id)
+        and students.school_info_id = sm.school_info_id )
 
 select * 
 from final 
