@@ -4,6 +4,7 @@
     student_id
     teacher_id
     section_id
+    school_id
 
 2. Definitions:
     this table provides mapping across these foreign keys, 
