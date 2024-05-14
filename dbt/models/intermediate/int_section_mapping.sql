@@ -5,6 +5,7 @@
     teacher_id
     section_id
     school_id
+    school_info_id
 
 2. Definitions:
     this table provides mapping across these foreign keys, 
@@ -27,7 +28,7 @@ followers as (
 
 teacher_school_changes as (
     select *
-    from {{ ref('int_teacher_schools_historical') }}
+    from {{ ref('int_teacher_schools_historical') }} -- this needs to be dimensionalized
 ),
 
 sections as (
@@ -44,6 +45,7 @@ combined as (
         sections.teacher_id,
         sections.section_id         as section_id,
         tsc.school_id,
+        tsc.schol_info_id,
         row_number() over(
             partition by 
                 followers.student_id, 
@@ -68,7 +70,8 @@ final as (
         school_year,
         section_id,
         teacher_id,
-        school_id
+        school_id,
+        school_info_id
     from combined
     where row_num = 1 
 )
