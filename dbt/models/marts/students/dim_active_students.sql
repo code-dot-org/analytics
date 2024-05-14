@@ -1,21 +1,20 @@
 /*
     This model represents the ** prototype of the active student metric ** presented by Baker to LT on May. 9, 2024
 
-    This model can get really big - but can be optimized further.
-
-    All 3 CTEs consult large tables (user_levels, projects, sign_ins)
-
-    1) each of these CTEs - which summarize daily activity per user - might be usefual in their own right as an (intermediate?) table.
+    This model can get really big -- all 3 CTEs consult large tables (user_levels, projects, sign_ins).
+    
+    It can also definitely be optimized later.
+    1) Each of these CTEs - which summarize daily activity per user - might be usefual in their own right as an (intermediate?) table.
     2) These might be able to leverage DBT's incremental modeling
 
     I have used a cutoff date of anything after 2022-07-01, the start of the 22-23 school year.
 */
 
 with cutoff_date as (
-    select '2022-07-01'::date as cutoff_date -- use this as a cutoff date for all CTEs.
+    select '2022-07-01'::date as cutoff_date -- use this as a cutoff date for all CTEs, modify if nec.
 )
--- daily user_level activity summmary
-, ul_summary as (
+
+, ul_summary as ( -- daily user_level activity summmary
     select
     
         ul.user_id,
@@ -82,14 +81,14 @@ select
     case when num_project_records IS NOT null then 'P' else '_' end ||
     case when num_sign_ins IS NOT NULL then 'S' else '_' END) as activity_type
 
-FROM projects_summary p
-FULL OUTER JOIN 
+from projects_summary p
+full outer join
     ul_summary ul 
-    ON p.user_id = ul.user_id AND p.activity_date = ul.activity_date
-FULL OUTER JOIN 
+    on p.user_id = ul.user_id AND p.activity_date = ul.activity_date
+full outer join
     sign_in_summary si 
-    ON coalesce(p.user_id, ul.user_id) = si.user_id 
-    AND coalesce(p.activity_date, ul.activity_date) = si.activity_date
-LEFT JOIN {{ ref('stg_dashboard__users') }} u ON u.user_id = coalesce(p.user_id, ul.user_id, si.user_id)
-LEFT JOIN {{ ref('stg_dashboard__user_geos') }} ug ON ug.user_id = coalesce(p.user_id, ul.user_id, si.user_id)
-LEFT JOIN {{ ref('int_school_years') }} sy on coalesce(p.activity_date, ul.activity_date, si.activity_date) between sy.started_at and sy.ended_at
+    on coalesce(p.user_id, ul.user_id) = si.user_id 
+    and coalesce(p.activity_date, ul.activity_date) = si.activity_date
+left join {{ ref('stg_dashboard__users') }} u ON u.user_id = coalesce(p.user_id, ul.user_id, si.user_id)
+left join {{ ref('stg_dashboard__user_geos') }} ug ON ug.user_id = coalesce(p.user_id, ul.user_id, si.user_id)
+left join{{ ref('int_school_years') }} sy on coalesce(p.activity_date, ul.activity_date, si.activity_date) between sy.started_at and sy.ended_at
