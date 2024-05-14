@@ -1,9 +1,9 @@
-{#-
+{#
 model: dim_course_structure (v2)
 auth: js, 2024-03-07
 notes:
     - updated to reflect updates to analysis.course_structure by NZM
--#}
+#}
 
 with 
 scripts as (
@@ -167,6 +167,5 @@ combined as (
     left join parent_levels_child_levels as plcl 
         on plcl.parent_level_id = lsl.level_id )
 
-select course_name_true, count(*)
-from combined
-group by 1 order by 2 desc 
+select * 
+from combined 
