@@ -11,84 +11,76 @@
 */
 
 with cutoff_date as (
-    select '2022-07-01'::date as cutoff_date -- use this as a cutoff date for all CTEs, modify if nec.
+    select '2020-07-01'::date as cutoff_date -- use this as a cutoff date for all CTEs, modify if nec.
 )
-
-, ul_summary as ( -- daily user_level activity summmary
+-- make CTEs for user_level, sign-in and project summaries to set fields for a union
+, ul_summary as ( 
     select
-    
-        ul.user_id,
-        ul.created_at::date activity_date,
-        --ul.updated_at::date       -- would be better if we could log updated_at for daily acitivity
-
-        max(ul.updated_at)::date most_recent_updated_at,
-        listagg(distinct cs.course_name_true) within group (order by cs.course_name_true) courses,
-
-        count(*) num_user_level_records
-    
-    from {{ ref('stg_dashboard__user_levels') }} ul
-    left join {{ ref('dim_course_structure') }} cs 
-        on cs.level_id = ul.level_id 
-        and cs.script_id = ul.script_id
-    where ul.created_at >= (select cutoff_date from cutoff_date limit 1) 
-    group by 1,2
+        'L'                     as event_type,
+        user_id::varchar, 
+        1                       as known_cdo_user,
+        activity_date, 
+        num_user_level_records  as num_records
+    from {{ref("int_daily_summary_user_level_activity")}} ul
+    where ul.activity_date >= (select cutoff_date from cutoff_date limit 1) 
 )
--- daily sign-ins summary
 , sign_in_summary as (
-    select
-        user_id,
-        sign_in_at::date activity_date,
-        count(*) num_sign_ins
-    from {{ ref('stg_dashboard__sign_ins') }}
-    where sign_in_at::date >= (select cutoff_date from cutoff_date limit 1) 
-    group by 1,2
+    select 
+        'S'                 as event_type,
+        user_id::varchar, 
+        1                   as known_cdo_user,
+        activity_date, 
+        -- 'sign-ins'       as event_info,
+        num_sign_ins        as num_records
+    from {{ref('int_daily_summary_sign_in')}}
+    where activity_date >= (select cutoff_date from cutoff_date limit 1)
 )
--- daily project summary
 , projects_summary as (
-    select
-        upsi.user_id,
-        created_at::date activity_date,
-        listagg(distinct project_type, ', ') within group (order by project_type) as project_types,
-        count(*) num_project_records
-        
-    from {{ ref('stg_dashboard_pii__projects') }} p
-    left join {{ ref('stg_dashboard__user_project_storage_ids') }} upsi on upsi.user_project_storage_id = p.storage_id
-    where created_at >= (select cutoff_date from cutoff_date limit 1) 
-    group by 1,2
+    select 
+        'P'                 as event_type,
+        user_id_merged      as "user_id",
+        known_cdo_user,      -- projects have anonymous users
+        activity_date, 
+        --project_types       as event_info,
+        num_project_records as num_records
+    from {{ ref('int_daily_summary_project_activity') }}
+    where activity_date >= (select cutoff_date from cutoff_date limit 1)
 )
--- Do a full outer join across user_levels, sign_ins, and projects
+, summary_metrics_union as (
+    select * from ul_summary
+    union all
+    select * from sign_in_summary
+    union all
+    select * from projects_summary
+
+)
+-- Aggregate all events by user_id | day
 select 
-    coalesce(p.activity_date, ul.activity_date, si.activity_date) AS activity_at_merged,
-    coalesce(p.user_id, ul.user_id, si.user_id) AS user_id_merged,
-    u.user_type,
-    ug.country,
-    ug.us_intl,
+    sm.user_id,
+    sm.activity_date,
+    u.country,
+    u.us_intl,
     sy.school_year,
-    p.num_project_records,
-    p.project_types,
-    --ul.num_user_level_records,
-    --ul.num_scripts,
-    ul.courses,
-    si.num_sign_ins,  
+    extract(year from activity_date) calendar_year,
 
-    -- some useful flags
-    case when si.user_id IS NOT NULL then 1 else 0 end has_sign_in_activity,
-    case when ul.user_id IS NOT NULL then 1 else 0 end has_user_level_activity,
-    case when p.user_id IS NOT NULL then 1 else 0 end has_project_activity,
+    case when sum(sm.known_cdo_user) >= 1 then max(u.user_type) else 'anon' end as user_type,
 
-    -- this can be used for a complete segmentation across all activity types.
-    (case when num_user_level_records IS NOT NULL then 'L' else '_' end ||
-    case when num_project_records IS NOT null then 'P' else '_' end ||
-    case when num_sign_ins IS NOT NULL then 'S' else '_' END) as activity_type
+    sum (case when sm.event_type = 'S' then num_records else 0 end)  as num_sign_in_records,
+    sum (case when sm.event_type = 'L' then num_records else 0 end)  as num_user_level_records,
+    sum (case when sm.event_type = 'P' then num_records else 0 end)  as num_project_records,
 
-from projects_summary p
-full outer join
-    ul_summary ul 
-    on p.user_id = ul.user_id AND p.activity_date = ul.activity_date
-full outer join
-    sign_in_summary si 
-    on coalesce(p.user_id, ul.user_id) = si.user_id 
-    and coalesce(p.activity_date, ul.activity_date) = si.activity_date
-left join {{ ref('stg_dashboard__users') }} u ON u.user_id = coalesce(p.user_id, ul.user_id, si.user_id)
-left join {{ ref('stg_dashboard__user_geos') }} ug ON ug.user_id = coalesce(p.user_id, ul.user_id, si.user_id)
-left join{{ ref('int_school_years') }} sy on coalesce(p.activity_date, ul.activity_date, si.activity_date) between sy.started_at and sy.ended_at
+    case when num_sign_in_records > 0    then 1 else 0 end  as has_sign_in_activity,
+    case when num_user_level_records > 0 then 1 else 0 end  as has_user_level_activity,
+    case when num_project_records > 0    then 1 else 0 end  as has_project_activity,
+
+    (  case when has_sign_in_activity = 1       then 'S' else '_' end 
+	|| case when has_user_level_activity = 1    then 'L' else '_' end 
+    || case when has_project_activity =1        then 'P' else '_' end
+    ) as activity_type
+
+from 
+    summary_metrics_union sm
+    left join {{ ref('dim_users') }} u on u.user_id = sm.user_id 
+    left join {{ ref("int_school_years") }} sy on sm.activity_date between sy.started_at and sy.ended_at
+
+{{ dbt_utils.group_by(6)}}
