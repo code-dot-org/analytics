@@ -14,5 +14,6 @@ left join {{ ref('dim_course_structure') }} cs
     on cs.level_id = ul.level_id 
     and cs.script_id = ul.script_id
 where
-    trunc(ul.created_at) between '2022-01-01' and sysdate --remove this filter before publish, make incremental?
+    trunc(ul.created_at) > '2022-01-01' --remove this filter before publish, make incremental?
+    and ul.created_at <= (select max(created_at) from {{ ref('dim_users')}}) -- don't pull records for which we don't have user_ids (this will all be records and accounts created within the last ~24 hours or so)
 group by 1,2

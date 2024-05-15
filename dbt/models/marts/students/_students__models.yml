@@ -1,29 +1,32 @@
 version: 2
 
-models: 
+models:
   - name: dim_active_students
     description: |
       This model serves as a **prototype** for the active student metric. (Please update this description as the metric is improved/modified.) 
-      
+
       The model aggregates student activities _per user, per day_ across**:
         - `user_levels`
         - `sign-ins` 
         - `projects`  
-      
+
       ** the timestamps used for `user_level` and `projects` are the created_at timestamps right now. A better approach (in theory) would be to
       use updated_at, but we would need to start logging those daily.
 
     columns:
-
       - name: activity_date
         description: "The date on which activity was recorded for the user, merged across all aggregated activity types."
+        tests:
+          - not_null 
         data_type: "date"
 
       - name: user_id
         description: "The Code.org user id for a user, consolidated from any activity across user levels, sign-ins, and projects data."
+        tests:
+          - not_null
         data_type: "varchar"
 
-      - name: user_type
+      - name: user_type_merged
         description: "The type of user (e.g., student, teacher), sourced from the Code.org user profile."
         data_type: "varchar"
 
@@ -38,7 +41,7 @@ models:
       - name: school_year
         description: "The school year during which the activity occurred, determined by matching the activity date with school year ranges. A school year is defined as the 365 days between July 1 in year 1, and June 30 in year 2."
         data_type: "varchar"
-      
+
       - name: calendar_year
         description: "The calendar year extracted from the activity date, used for additional temporal analysis."
         data_type: "integer"
@@ -72,44 +75,39 @@ models:
         data_type: "varchar"
 
     tests:
-          - not_null:
-              column_name: user_id
-          - not_null:
-              column_name: activity_date
-          - unique:
-              column_name:
-                - user_id
-                - activity_date
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - activity_date
 
   - name: dim_students
     description: This model contains all student accounts ever created + geographic info on the student
-    columns: 
-    - name: user_id
-      description: unique ID for individual student user
-      tests: 
-        - not_null
-        - unique
-        
-    # - name: user_type
-    #   description: always "student"- used for verification
-    #   tests: 
-    #     - not_null 
-        
-    - name: gender
-      description: the classified gender of a student based on their free-response input
-    
-    - name: is_urg
-      description: flag to determine whether a student selected at least one of the following races- black, hispanic, hawaiian/ pacific islander, native american
-    
-    - name: is_international 
-      description: 1 if last activity was outside the US, 0 otherwise
-    
-    - name: created_at_school_year
-      description: the school year in which the student account was created
+    columns:
+      - name: user_id
+        description: unique ID for individual student user
+        tests:
+          - not_null
+          - unique
 
+      # - name: user_type
+      #   description: always "student"- used for verification
+      #   tests:
+      #     - not_null
+
+      - name: gender
+        description: the classified gender of a student based on their free-response input
+
+      - name: is_urg
+        description: flag to determine whether a student selected at least one of the following races- black, hispanic, hawaiian/ pacific islander, native american
+
+      - name: is_international
+        description: 1 if last activity was outside the US, 0 otherwise
+
+      - name: created_at_school_year
+        description: the school year in which the student account was created
 # - name: dim_student_status
 #   description: This model categorizes students based on their activity status across different school years. It provides insights into user engagement by assigning a status that reflects their activity in the current, previous, and any earlier school years.
-#   columns: 
+#   columns:
 #   - name: student_id
 #     description: the unique ID associated with the activity
 #   - name: school_year

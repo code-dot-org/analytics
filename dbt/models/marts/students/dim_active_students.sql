@@ -18,9 +18,10 @@ with cutoff_date as (
     select
         'L'                     as event_type,
         user_id::varchar, 
-        1                       as known_cdo_user,
+        1                       as known_cdo_user, --all user_level records have a known user
         activity_date, 
         num_user_level_records  as num_records
+
     from {{ref("int_daily_summary_user_level_activity")}} ul
     where ul.activity_date >= (select cutoff_date from cutoff_date limit 1) 
 )
@@ -28,10 +29,10 @@ with cutoff_date as (
     select 
         'S'                 as event_type,
         user_id::varchar, 
-        1                   as known_cdo_user,
+        1                   as known_cdo_user, --all sign_in records have a known user
         activity_date, 
-        -- 'sign-ins'       as event_info,
         num_sign_ins        as num_records
+
     from {{ref('int_daily_summary_sign_in')}}
     where activity_date >= (select cutoff_date from cutoff_date limit 1)
 )
@@ -39,10 +40,10 @@ with cutoff_date as (
     select 
         'P'                 as event_type,
         user_id_merged      as "user_id",
-        known_cdo_user,      -- projects have anonymous users
+        known_cdo_user,      -- projects can have anonymous users
         activity_date, 
-        --project_types       as event_info,
         num_project_records as num_records
+
     from {{ ref('int_daily_summary_project_activity') }}
     where activity_date >= (select cutoff_date from cutoff_date limit 1)
 )
@@ -55,32 +56,37 @@ with cutoff_date as (
 
 )
 -- Aggregate all events by user_id | day
-select 
-    sm.user_id,
-    sm.activity_date,
-    u.country,
-    u.us_intl,
-    sy.school_year,
-    extract(year from activity_date) calendar_year,
+, final as (
+    select 
+        sm.user_id,
+        sm.activity_date,
+        u.country,
+        u.us_intl,
+        sy.school_year,
+        extract(year from activity_date) calendar_year,
 
-    case when sum(sm.known_cdo_user) >= 1 then max(u.user_type) else 'anon' end as user_type,
+        case when sum(sm.known_cdo_user) >= 1 then max(u.user_type) else 'anon' end as user_type_merged,
 
-    sum (case when sm.event_type = 'S' then num_records else 0 end)  as num_sign_in_records,
-    sum (case when sm.event_type = 'L' then num_records else 0 end)  as num_user_level_records,
-    sum (case when sm.event_type = 'P' then num_records else 0 end)  as num_project_records,
+        sum (case when sm.event_type = 'S' then num_records else 0 end)  as num_sign_in_records,
+        sum (case when sm.event_type = 'L' then num_records else 0 end)  as num_user_level_records,
+        sum (case when sm.event_type = 'P' then num_records else 0 end)  as num_project_records,
 
-    case when num_sign_in_records > 0    then 1 else 0 end  as has_sign_in_activity,
-    case when num_user_level_records > 0 then 1 else 0 end  as has_user_level_activity,
-    case when num_project_records > 0    then 1 else 0 end  as has_project_activity,
+        case when num_sign_in_records > 0    then 1 else 0 end  as has_sign_in_activity,
+        case when num_user_level_records > 0 then 1 else 0 end  as has_user_level_activity,
+        case when num_project_records > 0    then 1 else 0 end  as has_project_activity,
 
-    (  case when has_sign_in_activity = 1       then 'S' else '_' end 
-	|| case when has_user_level_activity = 1    then 'L' else '_' end 
-    || case when has_project_activity =1        then 'P' else '_' end
-    ) as activity_type
+        (  case when has_sign_in_activity = 1       then 'S' else '_' end 
+        || case when has_user_level_activity = 1    then 'L' else '_' end 
+        || case when has_project_activity = 1       then 'P' else '_' end
+        ) as activity_type
 
-from 
-    summary_metrics_union sm
-    left join {{ ref('dim_users') }} u on u.user_id = sm.user_id 
-    left join {{ ref("int_school_years") }} sy on sm.activity_date between sy.started_at and sy.ended_at
-
-{{ dbt_utils.group_by(6)}}
+    from 
+        summary_metrics_union sm
+        left join {{ ref('dim_users') }} u on u.user_id = sm.user_id 
+        left join {{ ref("int_school_years") }} sy on sm.activity_date between sy.started_at and sy.ended_at
+    {{ dbt_utils.group_by(6)}}
+)
+select *
+from final 
+where user_type_merged IS NOT NULL -- this can be null in cases when user creates account and does levels between the time when users table is replicated and user_levels table is replicated which is about ~12 hour window (i.e. they have valid user_level records and user_id, but it's not in our users table yet.  )
+and user_type_merged <> 'teacher' -- i.e. keep 'student' and 'anon'
