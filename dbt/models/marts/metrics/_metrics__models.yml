@@ -19,6 +19,7 @@ models:
           combination_of_columns:
             - date
             - country
+            - user_type_merged
 
   - name: fct_active_students_monthly
     description: "number of active students per month (Jan, Feb, Mar, etc.), segmented by country"
@@ -39,6 +40,7 @@ models:
           combination_of_columns:
             - month_year
             - country
+            - user_type_merged
 
   - name: fct_weekly_school_acquisition_metrics
     description: 
