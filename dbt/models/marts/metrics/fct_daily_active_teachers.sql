@@ -2,7 +2,7 @@ with active_teachers as (
     select * from {{ref('dim_active_teacher')}}
 )
 select
-    event_date_merged event_date,
+    event_date_merged as event_date,
     us_intl_merged us_intl,
     case when user_type_merged = 'teacher' then 'cdo teacher' 
          when user_type_merged = 'amp user' then 'anonymous' 
