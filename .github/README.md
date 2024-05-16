@@ -8,9 +8,9 @@ The following models and configurations are used to transform, load, and model d
 
 Our anticipated release schedule is as follows:
 
-### Release Name (Release Date)
-0. [Pre-Release] **Hydrone** v1.0.2023   [2023-12-15]
-1. [Release 1] **Hydrone** v1.1.2024     [2024-02-02] <-- today!
+### Release Log 🛳️                              Shipped:
+0. [Pre-Release]  **Hydrone** v1.0.2023     [2023-12-15]
+1. [Release 1]    **Hydrone** v1.1.2024     [2024-02-02]
 
 
 #### Using dbt
