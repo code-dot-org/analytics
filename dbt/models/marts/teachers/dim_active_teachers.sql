@@ -4,45 +4,18 @@ with all_teacher_sign_ins as (
         si.sign_in_at::date as sign_in_date,
         si.user_id::varchar,
         u.user_type,
-        ug.country,
-        ug.us_intl,
+        u.country,
+        u.us_intl,
         sum(si.sign_in_count) as num_sign_in_count,
         count(*) as num_records
 
     from {{ ref('stg_dashboard__sign_ins') }} as si
-    left join {{ ref('stg_dashboard__users') }} as u on si.user_id = u.user_id
-    left join {{ ref('stg_dashboard__user_geos') }} as ug on si.user_id = ug.user_id
+    left join {{ ref('dim_users') }} u on u.user_id = si.user_id
 
     -- start at school year 23-24 because amplitude didn't start until 1.1.24
-    where sign_in_at >= '2023-07-01' and u.user_type = 'teacher'
-    group by 1, 2, 3, 4, 5
+    where si.sign_in_at >= '2023-07-01' and u.user_type = 'teacher'
+    {{dbt_utils.group_by(5)}}
 ),
-
--- event_short_names as (
---     select
---         'Teacher Viewing Student Work' as event_type,
---         'View Work' as event_name_short
---     union all
---     select
---         'Section Progress Viewed',
---         'View Progress'
---     union all
---     select
---         'Teacher Login',
---         'Login Page'
---     union all
---     select
---         'Unit Overview Page Visited By Teacher',
---         'View Unit Page'
---     union all
---     select
---         'Lesson Overview Page Visited',
---         'View Lesson Plan'
---     union all
---     select
---         'Section Progress Unit Changed',
---         'Change unit'
--- ),
 
 all_teacher_amp_events as (
     select
@@ -74,7 +47,7 @@ all_teacher_amp_events as (
     {{dbt_utils.group_by(6)}}
 
 ),
-data_set as (
+final as (
     select
 
         coalesce(sign_in_date, amp_event_date) as event_date_merged,
@@ -139,7 +112,4 @@ data_set as (
 )
 
 select *
---user_id_merged, event_date_merged, country_amp, us_intl_amp, us_intl_merged
-from data_set
--- where user_id_merged = 106779864
--- and event_date_merged = '2024-03-12'
+from final
