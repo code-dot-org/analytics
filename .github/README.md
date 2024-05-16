@@ -8,19 +8,21 @@ The following models and configurations are used to transform, load, and model d
 
 Our anticipated release schedule is as follows:
 
-### Release Log 🛳️                              Shipped:
-0. [Pre-Release]  **Hydrone** v1.0.2023     [2023-12-15]
-1. [Release 1]    **Hydrone** v1.1.2024     [2024-02-02]
+### 🛳️ Release Log 
 
 
-#### Using dbt
-For starters, you should set-up a local dbt-core install or dbt Cloud environment.
+0. Pre-Release (v0)
 
-After you set up dbt, try running the following commands:
+* Hydrone v1.0.23 (Pre-Release)
 
-* `dbt clean && dbt deps`
-* `dbt debug`
-* `dbt run && dbt docs generate`
+* Hydrone v1.1.24
+
+### Upcoming Releases
+
+* Hydrone v1.2 (Q3)
+
+
+
 
 #### Resources:
 * Please refer to our `sql`/`dbt` [style guide](https://docs.getdbt.com/best-practices/how-we-style/1-how-we-style-our-dbt-models) for building models
