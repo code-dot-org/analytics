@@ -1,5 +1,5 @@
 with active_teachers as (
-    select * from {{ref('dim_active_teacher')}}
+    select * from {{ref('dim_active_teachers')}}
 )
 select
     event_date_merged event_date,
