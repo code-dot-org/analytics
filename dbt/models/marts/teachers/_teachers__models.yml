@@ -1,7 +1,7 @@
 version: 2
 
 models: 
-  - name: dim_active_teacher
+  - name: dim_active_teachers
     description: |
       This model is a comprehensive view of daily teacher activities that roll into the 'active teacher' metric. 
 
@@ -20,10 +20,14 @@ models:
       - name: event_date_merged
         description: "The date on which either a sign-in or an Amplitude event was recorded (or both). This field merges dates from sign-ins and Amplitude events to align activities across sources."
         data_type: "date"
+        tests:
+          - not_null
 
       - name: user_id_merged
         description: "A unified identifier for the user that merges user IDs from Code.org platform sign-ins and Amplitude events, ensuring consistent tracking across sources. This user_id will be the user's Code.org user_id if it is known or the amplitude_id if not."
         data_type: "varchar"
+        tests:
+          - not_null
 
 
       - name: user_type_merged
@@ -130,7 +134,13 @@ models:
       - name: has_cdo_sign_in
         description: "A boolean flag indicating the presence of a Code.org sign-in event for the user."
         data_type: "boolean"
-
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id_merged
+            - event_date_merged
+            - user_type_merged
+            - us_intl_merged
 
   - name: dim_teachers
     description: one row per teacher account ever created, with geographic information and current school association
