@@ -40,7 +40,6 @@ all_teacher_amp_events as (
         count(*)                     as num_amp_records
 
     from {{ ref('stg_amplitude__active_teacher_events') }} as a
-    --inner join event_short_names as e on a.event_type = e.event_type
     left join {{ ref('stg_dashboard_pii__users') }} as u on a.cdo_user_id = u.user_id
     left join {{ ref('stg_dashboard__user_geos') }} as ug on a.cdo_user_id = ug.user_id
     where event_time between '2024-01-01' and sysdate
