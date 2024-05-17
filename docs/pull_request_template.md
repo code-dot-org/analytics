@@ -34,7 +34,7 @@ If relevant, include a description, screenshots, etc. of new behavior/model/upda
 
 - [ ] The deployment run passed 
   
-      see CI/CD job in dbt Cloud or Validation Chekcs (Below)
+      see CI/CD job in dbt Cloud or Validation Checks (Below)
 
 - [ ] The model produces accessible data in the DW 
    
