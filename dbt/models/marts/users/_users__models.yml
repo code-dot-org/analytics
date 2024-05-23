@@ -77,6 +77,12 @@ models:
       tests: 
         - not_null 
     
+    - name: us_intl
+      description: label for us / intl 
+
+    - name: country
+      description: the country associated with the individual user's activity in a given school year
+    
     - name: first_activity_at
       description: timestamp of the student's first activity within the given course and school year- this field is later used to determine when a section/school first started teaching
     
