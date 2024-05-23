@@ -17,87 +17,59 @@ models:
       it together giving preference to the Code.org version of that data.
 
     columns:
-      - name: event_date_merged
+      - name: event_date
         description: "The date on which either a sign-in or an Amplitude event was recorded (or both). This field merges dates from sign-ins and Amplitude events to align activities across sources."
         data_type: "date"
         tests:
           - not_null
 
-      - name: user_id_merged
+      - name: merged_user_id
         description: "A unified identifier for the user that merges user IDs from Code.org platform sign-ins and Amplitude events, ensuring consistent tracking across sources. This user_id will be the user's Code.org user_id if it is known or the amplitude_id if not."
         data_type: "varchar"
         tests:
           - not_null
 
-
-      - name: user_type_merged
-        description: merges the Code.org user account type 'teacher' or 'student', or if anyonymous 'amp user'. The account type can be 'student' in cases where Amplitude is tracking activity of a user who has a code.org user id but is a student account.
+      - name: user_type
+        description: "The type of the user, which can be 'teacher', 'anon', or other user types from Code.org or Amplitude data. If the user is of type = 'teacher' then the user is a *known code.org teacher user* User_type can occasionally be null for brand new user accounts, when amplitude data has a user_id recorded, but it hasn't been migrated into dim_users yet."
         data_type: "varchar"
 
-      - name: country_merged
-        description: "Country information for the user, merges Code.org geolocation and Amplitude geoloation data. Preference is given to the Code.org data in the case of a conflict between sources."
+      - name: country
+        description: "Country information for the user, merges Code.org geolocation and Amplitude geolocation data. Preference is given to the Code.org data in the case of a conflict between sources."
         data_type: "varchar"
 
-      - name: us_intl_merged
-        description: "Values are `us` or `intl`. Indicates whether the user's country (see: country_merged) is in the US or non-us."
+      - name: us_intl
+        description: "Values are `us` or `intl`. Indicates whether the user's country (see: country) is in the US or non-us."
         data_type: "varchar"
 
-
-      - name: user_id
+      - name: cdo_user_id
         description: "The Code.org user ID from the sign-in data."
-        data_type: "varchar"
-
-      - name: user_id_amp
-        description: "The users Code.org user ID as recorded in Amplitude, used in tracking amplitude event data."
         data_type: "varchar"
 
       - name: amplitude_id
         description: "Amplitude's unique identifier for a user, used in tracking event data."
         data_type: "varchar"
 
-      - name: merged_user_id_source
-        description: |
-          Where the user_id in user_id_merged came from. Values are: 
-            - `cdo` - came from code.org sign-in data
-            - `ampcdo` - it's in both amplitude event data and and code.org sign-in data
-            - `anon` -  Amplitude_id means the user is anonymous
+      - name: num_cdo_records
+        description: "Count of sign-ins from Code.org data for the user."
+        data_type: "integer"
+
+      - name: num_amp_records
+        description: "The number of records from Amplitude for the user for this date."
+        data_type: "integer"
+
+      - name: num_records
+        description: "The total number of records from both Code.org sign-ins and Amplitude events for the user on this date."
+        data_type: "integer"
+
+      - name: event_sources
+        description: "Possible values: (`cdo`, 'amp,cdo`, `amp`). Comma-separated list indicating the sources of the events ('cdo' for Code.org and 'amp' for Amplitude)."
         data_type: "varchar"
 
-      - name: country
-        description: "The country as reported in the Code.org sign-in data."
-        data_type: "varchar"
-
-      - name: country_amp_cdo
-        description: "The country of the user from Code.org's geolocation data in the case this amplitude user has a code.org user id associated with them."
-        data_type: "varchar"
-
-      - name: country_amp
-        description: "The country as reported by Amplitude data."
-        data_type: "varchar"
-
-      - name: us_intl
-        description: "Indicator of whether the user's country (see: `country`) the U.S. or international from code.org sign-in data."
-        data_type: "varchar"
-
-      - name: us_intl_amp_cdo
-        description: "Indicator of whether the user's country (see: `country_amp_cdo`) is the U.S. or international from code.org geolocation data in the case this amplitude user has a code.org user id associated with them."
-        data_type: "varchar"
-
-      - name: us_intl_amp
-        description: "Amplitude data of the user's country (see: `country_amp`) is US or international."
-        data_type: "varchar"
-
-      - name: user_type
-        description: "The user type from the Code.org sign-in data, specifying the role of the user."
-        data_type: "varchar"
-
-      - name: user_type_amp_cdo
-        description: "The user type as captured from Amplitude when linked with Code.org user IDs."
-        data_type: "varchar"
-
-      - name: events_list_amp
-        description: |
-          This column contains a comma-separated list of Amplitude event names for activities teachers engaged in, that has been cleaned, and shortend for readability and analysis. The original event names from Amplitude are mapped to more concise versions as follows:
+      - name: events_list
+        description: | 
+          Comma-separated list of event names for activities teachers engaged in. This list aggregates events from both Code.org sign-ins and Amplitude data.
+          Code.org sign-in is listed as `cdo_sign_in`.
+          Amplitude events have had their names shortened according to the following
           - '[Amplitude event name]' --> '[shortened version]'
           - 'Teacher Viewing Student Work' --> 'View Work'
           - 'Section Progress Viewed' -->  'View Progress'
@@ -107,40 +79,13 @@ models:
           - 'Section Progress Unit Changed' --> 'Change unit'
         data_type: "text"
 
-      - name: events_list_merged
-        description: "The `events_list_amp` with 'sign-in` appended to the end if this user for this date also had a Code.org sign-in"
-        data_type: "text"
-
-      - name: cdo_sign_in_count
-        description: "Count of sign-ins from Code.org data for the user."
-        data_type: "integer"
-
-      - name: amp_num_records
-        description: "The number of records from Amplitude for the user for this date"
-        data_type: "integer"
-
-      - name: cdo_num_records
-        description: "The number of sign-in records from Code.org for this date"
-        data_type: "integer"
-
-      - name: known_cdo_user
-        description: "A boolean flag indicating if the user is recognized as a Code.org user, either through direct sign-ins or Amplitude's data."
-        data_type: "boolean"
-
-      - name: has_amp_event
-        description: "A boolean flag indicating the presence of an Amplitude event for the user."
-        data_type: "boolean"
-
-      - name: has_cdo_sign_in
-        description: "A boolean flag indicating the presence of a Code.org sign-in event for the user."
-        data_type: "boolean"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - user_id_merged
-            - event_date_merged
-            - user_type_merged
-            - us_intl_merged
+            - merged_user_id
+            - event_date
+            - user_type
+            - us_intl
 
   - name: dim_teachers
     description: one row per teacher account ever created, with geographic information and current school association

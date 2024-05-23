@@ -2,12 +2,12 @@ with all_teacher_sign_ins as (
 
     select
         si.sign_in_at::date as sign_in_date,
-        si.user_id::varchar,
+        si.user_id::varchar as cdo_user_id,
         u.user_type,
         u.country,
         u.us_intl,
-        sum(si.sign_in_count) as num_sign_in_count,
-        count(*) as num_records
+        'cdo_sign_in'   as event_type,
+        count(*)        as num_records
 
     from {{ ref('stg_dashboard__sign_ins') }} as si
     left join {{ ref('dim_users') }} u on u.user_id = si.user_id
@@ -22,12 +22,11 @@ all_teacher_amp_events as (
         --amplitude info
         a.event_time::date      as amp_event_date,
         a.amplitude_id,
-        a.cdo_user_id::varchar  as amp_cdo_user_id, -- Amplitude adds leading zeros to user_ids less than 5 chars long, strip them. (good find by natalia)
-
+        a.cdo_user_id::varchar  as amp_cdo_user_id,
 
         -- cdo info, if exists
-        ug.country      as cdo_country,
-        ug.us_intl      as cdo_us_intl,
+        u.country      as cdo_country,
+        u.us_intl      as cdo_us_intl,
         u.user_type     as cdo_user_type,
 
         -- concatenate distinct events list
@@ -40,75 +39,85 @@ all_teacher_amp_events as (
         count(*)                     as num_amp_records
 
     from {{ ref('stg_amplitude__active_teacher_events') }} as a
-    left join {{ ref('stg_dashboard_pii__users') }} as u on a.cdo_user_id = u.user_id
-    left join {{ ref('stg_dashboard__user_geos') }} as ug on a.cdo_user_id = ug.user_id
+    left join {{ ref('dim_users')}} u on u.user_id = a.cdo_user_id
     where event_time between '2024-01-01' and sysdate
     {{dbt_utils.group_by(6)}}
 
 ),
-final as (
+unioned_sets as (
+
     select
+        sign_in_date    as event_date,
+        'cdo'           as event_source,
+        cdo_user_id     as cdo_user_id,
+        null            as amplitude_id,
+        event_type      as events,
+        num_records     as num_records,
+        user_type       as user_type,
+        country         as country,
+        us_intl         as us_intl
 
-        coalesce(sign_in_date, amp_event_date) as event_date_merged,
+    from all_teacher_sign_ins
 
-        -- coalesce values for each user|day between cdo sign in and amplitude event 3 possible values
-        -- giving preference in the following order:
-        -- 1. the cdo values from signin event
-        -- 2. the cdo values from the amplitude event joined on amplitude's capture of cdo user_id
-        -- 3. amplitude version of the value - id, user_type, us_intl (country)
-        coalesce(si.user_id, amp_cdo_user_id, a.amplitude_id::varchar) as user_id_merged,
-        coalesce(si.us_intl, a.cdo_us_intl, a.amp_us_intl) as us_intl_merged,
-        coalesce(si.user_type, a.cdo_user_type, 'amp user') as user_type_merged,
-        coalesce(si.country, a.cdo_country, a.amp_country) as country_merged,
+    union all
 
-        -- user ids from various sources
-        si.user_id,
-        a.amp_cdo_user_id user_id_amp,
-        a.amplitude_id,
+    -- amplitude events with a known code.org user (using cdo geo info)
+    select
+        amp_event_date      as event_date,
+        'amp'               as event_source,
+        amp_cdo_user_id     as cdo_user_id,
+        amplitude_id        as amplitude_id,
+        events              as events,
+        num_amp_records     as num_records,
+        cdo_user_type       as user_type,
+        cdo_country         as country,
+        cdo_us_intl         as us_intl
+    from all_teacher_amp_events
+    where amp_cdo_user_id IS NOT NULL -- if there exists a cdo user_id then it's a known cdo user
 
-        -- hunam readable shorthand - where is the user_id coming from? 
-        case
-            when si.user_id is not NULL then 'cdo'          -- cdo sign-in only
-            when amp_cdo_user_id is not NULL then 'ampcdo'  -- amplitude's cdo user_id capture
-            when user_id_merged = amplitude_id then 'anon'  -- amplitude_id == anonymous
-            else 'Unexpected user_id source' -- fail loudly in the case of an exceptional event
-        end as merged_user_id_source,
+    union all
 
-
-        -- geographic info from vaious sources
-        si.country as country,
-        a.cdo_country as country_amp_cdo,
-        a.amp_country as country_amp,
-        
-        si.us_intl,
-        a.cdo_us_intl as us_intl_amp_cdo,
-        a.amp_us_intl as us_intl_amp,
-
-        -- user type info 
-        si.user_type,
-        a.cdo_user_type as user_type_amp_cdo,
-
-
-        -- info about the amplitude events and sign-ins
-        a.events as events_list_amp,
-        case when si.num_records is not NULL then
-            case when a.events is not NULL and a.events <> '' then a.events || ', cdo_sign_in' else 'cdo_sign_in' end
-        else a.events
-        end as events_list_merged,
-        si.num_sign_in_count as cdo_sign_in_count,
-        coalesce (a.num_amp_records, 0) as amp_num_records,
-        coalesce (si.num_records, 0) as cdo_num_records,
-
-        -- useful binary flags 
-        coalesce (si.user_id is not NULL or amp_cdo_user_id is not NULL, false) as known_cdo_user,
-        coalesce (a.num_amp_records is not NULL, false) as has_amp_event,
-        coalesce (si.num_records is not NULL, false) as has_cdo_sign_in
-
-    from all_teacher_sign_ins as si
-    full outer join
-        all_teacher_amp_events as a
-        on si.sign_in_date = a.amp_event_date and si.user_id = a.amp_cdo_user_id
+    -- amplitude events that are anonymous, use amplitude user_geo info
+    select
+        amp_event_date      as event_date,
+        'amp'               as event_source,
+        null                as cdo_user_id,
+        amplitude_id        as amplitude_id,
+        events              as events,
+        num_amp_records     as num_records,
+        'anon'              as user_type,
+        amp_country         as country,
+        amp_us_intl         as us_intl
+    from all_teacher_amp_events
+    where amp_cdo_user_id IS NULL -- if no cdo user id, it's anonymous
 )
+, final as (
 
-select *
+    select
+        event_date              as event_date,
+        case 
+            when cdo_user_id is not null then cdo_user_id::varchar 
+            else amplitude_id::varchar
+        end                     as merged_user_id,
+        max(cdo_user_id)        as cdo_user_id,
+        max(amplitude_id)       as amplitude_id,
+        max(user_type)          as user_type,  --this shouldn't conflict. i.e it should never be the case that this is chosing one of 'teacher' or 'anon'. They way we are aggregating it will be one or the other for this date/user combo. I have proved this experimentally.
+        max(country)            as country,
+        max(us_intl)            as us_intl,
+        sum(case when event_source = 'cdo' then num_records else 0 end) as num_cdo_records,
+        sum(case when event_source = 'amp' then num_records else 0 end) as num_amp_records,
+        sum(num_records)        as num_records,
+
+        listagg(distinct event_source::varchar, ', ') 
+        within group (order by event_source)        as event_sources,
+
+        listagg(distinct events::varchar, ', ') 
+        within group (order by event_source)        as events_list
+
+    from unioned_sets
+    group by 1,2
+)
+select * 
 from final
+-- choice: for now I'm excluding known student users from the model entirely even though the prototype included them
+where user_type <> 'student' 
