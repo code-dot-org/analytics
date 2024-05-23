@@ -26,7 +26,7 @@
 with
     unpivoted_data as (
         -- see macros/unpivot_dynamic.sql
-        {{ unpivot_big_table("base_external_datasets__ap_school_level_exam_results_csp_2023", 7) }}
+        {{ unpivot_big_table("base_external_datasets__ap_school_level_exam_results_csp_2023_DELETEME", 7) }}
     )
     ,renamed_cols as (
         select
