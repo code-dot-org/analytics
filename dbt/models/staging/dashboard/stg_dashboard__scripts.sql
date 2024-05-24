@@ -18,20 +18,18 @@ renamed as (
         instructor_audience,
         participant_audience,
 
-        case when lower(script_name) like 'devices-20__'            then 'csd'
-             when lower(script_name) like 'microbit%'               then 'csd'
-             when lower(script_name) like '%hello%'                 then 'hoc'
-             when lower(script_name) like 'csd-post-survey-20__'    then 'csd'
-             when lower(script_name) like 'csp-post-survey-20__'    then 'csp'
-             when json_extract_path_text(
+        -- json extraction fields 
+        case 
+            when json_extract_path_text(
                 properties, 
                 'curriculum_umbrella') = ''                         then 'other'
-            else lower(json_extract_path_text(
-                properties, 
-                'curriculum_umbrella'))
+            else lower(
+                json_extract_path_text(
+                    properties, 
+                    'curriculum_umbrella',
+                true))
         end as course_name_true,
         
-        -- json extraction fields 
         json_extract_path_text(
             properties, 
             'supported_locales')    as supported_locales,

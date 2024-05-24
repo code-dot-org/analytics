@@ -41,6 +41,11 @@ unit_groups as (
     from {{ ref('stg_dashboard__unit_groups') }}
 ),
 
+contained_levels as (
+    select * 
+    from {{ ref("stg_dashboard__contained_levels") }}
+),
+
 parent_levels_child_levels as (
     select *
     from {{ ref('int_parent_levels_child_levels') }}
@@ -112,6 +117,13 @@ combined as (
             when plcl.parent_level_id is not null 
             then 1 else 0 end   as is_parent_level,
 
+        -- contained levels 
+        case 
+            when col.level_group_level_id is not null 
+            then 1 else 0 
+        end                     as is_group_level,
+        col.contained_level_type as group_level_type,
+
         coalesce(
             ug.family_name,
             sc.family_name)     as family_name, 
@@ -165,7 +177,10 @@ combined as (
         on sn.versioned_script_id = sc.script_id
     
     left join parent_levels_child_levels as plcl 
-        on plcl.parent_level_id = lsl.level_id )
+        on plcl.parent_level_id = lsl.level_id 
+    
+    left join contained_levels as col 
+        on lsl.level_id = col.level_group_level_id )
 
 select * 
 from combined 
