@@ -26,9 +26,9 @@ with unpivoted_data as (
         --'2023'::text as exam_year,
         exam_year::text as exam_year,
         NULL::text as pd_year,
-        {{ ap_norm_exam_group('exam_group') }} as exam_group, 
+        {{ ap_norm_exam_group('exam_group') }},                    -- column name (reporting_group) contained in macro
         NULL::text as rp_id,
-        {{ ap_norm_exam_subject('exam') }} as exam,
+        {{ ap_norm_exam_subject('exam') }},                        -- column name (exam) contained in macro
         orig_col_name,
         {{ ap_split_column('orig_col_name') }},                   -- splits e.g. 'black_1' into two cols demographic_group_raw = 'black' and score_category_raw=1
         {{ ap_norm_demographic_group('demographic_group_raw') }}, -- produces two cols for e.g 'black' demographic_group='black', demographic_category='race'

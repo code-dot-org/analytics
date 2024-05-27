@@ -19,6 +19,8 @@
 */ 
 
 with ap_data AS (
-    select * from {{ source('dashboard_analysis','stg_agg_ap_exam_results_raw_2023') }}
+    select * from {{ source('dashboard_analysis','stg_ap_agg_exam_results_raw_2023') }}
 )
-select * from ap_data
+select 
+    * 
+from ap_data

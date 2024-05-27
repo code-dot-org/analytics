@@ -3,7 +3,7 @@
         when {{ exam_name }} in ('csa','Computer Sci A','COMSCA') then 'csa'
         when {{ exam_name }} in ('csp','Computer Sci Prin','COMSCP') then 'csp'
         when {{ exam_name }} in ('sum_csa_csp') then 'sum_csa_csp'
-        else 'ERROR unexpected exam_name: ''' || {{exam_name }} || '''. SEE macro - ap_norm_exam_subject'
+        else 'UNEXPECTED exam_name: ''' || {{exam_name }} || '''. SEE macro - ap_norm_exam_subject'
     end
 {% endmacro %}
 
@@ -54,7 +54,7 @@ end as demographic_group
     when demographic_group in ('american_indian', 'asian', 'black', 'hispanic', 'hawaiian', 'two_or_more', 'white','other_race','race_no_response') then 'race'
     when demographic_group in ('total') then 'total'
     when demographic_group in ('freshman', 'sophomore', 'senior', 'junior') then 'grade_level'
-    else 'ERROR - unkown group: '''|| demographic_group || '''. SEE macro - ap_norm_demographic_group(...)'
+    else 'UNEXPECTED group: '''|| demographic_group || '''. SEE macro - ap_norm_demographic_group(...)'
 end as demographic_category
 {% endmacro %}
 
@@ -73,19 +73,18 @@ end as demographic_category
                     then 'detail'
                 when {{ score_category_input }} in ('total','all')
                     then 'total'
-                else 'ERROR unexpected input: ''' || {{ score_category_input }} || '''. SEE macro - ap_norm_score_category'
+                else 'UNEXPECTED input: ''' || {{ score_category_input }} || '''. SEE macro - ap_norm_score_category'
             end score_category,
             case
                 when score_category = 'detail' then {{ score_category_input }}
                 when score_category = 'total' then NULL
-                else 'ERROR unknown category: ''' || score_category || '''. SEE macro - ap_norm_score_category'
+                else 'UNEXPECTED category: ''' || score_category || '''. SEE macro - ap_norm_score_category'
             end score_of
 {% endmacro %}
 
 /*
     This macro attempts to normalize the names of aggregated ap score reports, which can vary year to year.
-    In some cases the raw names need to be re-aliased, or there are different versions of the same report.
-    In other cases we're simply listing out the known/expected values and returning the same value.
+
     AN IMPORTANT FUNCTION of this macro is to flag UNKNOWN or NEW report names with the "ERROR--" catch-all
     in the else clause.  This can be used to quickly identify new values when new data is onboarded that 
     should be added to / acknowledged in this macro.
@@ -116,7 +115,7 @@ end as demographic_category
             'pd_2020',
             'rp per year',  -- regional partner reports (unsure how they work)
             'rp all time')                                              then {{ exam_group }}
-        else 'ERROR - unknown exam_group: '''|| {{exam_group}} || '''. SEE macro - ap_norm_exam_group'
+        else 'UNEXPECTED exam_group: '''|| {{exam_group}} || '''. SEE macro - ap_norm_exam_group'
     end
 
 {% endmacro%}
