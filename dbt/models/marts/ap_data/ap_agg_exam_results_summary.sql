@@ -43,10 +43,6 @@ with agg_exam_results as (
         'calc_urg' as demographic_category,
         'tr_urg' as demographic_group,
 
-        --cdo.cdo_multiplier,
-        -- SUM(CASE WHEN a.demographic_group = 'bhnapi' THEN num_taking ELSE 0 END) AS bhnapi_taking,
-        -- SUM(CASE WHEN a.demographic_group = 'two_or_more' THEN num_taking ELSE 0 END) AS two_or_more_taking,
-        -- SUM(CASE WHEN a.demographic_group in ('bhnapi', 'wh_as_other') THEN num_taking ELSE 0 END) AS single_race_taking,
         (
             (SUM(CASE WHEN a.demographic_group = 'bhnapi' THEN a.num_taking::float ELSE 0 END) *
             SUM(CASE WHEN a.demographic_group = 'two_or_more' THEN a.num_taking::float ELSE 0 END)) /
@@ -54,9 +50,6 @@ with agg_exam_results as (
         )
         * max(cdo.cdo_multiplier) AS num_taking_calc,
 
-        -- SUM(CASE WHEN a.demographic_group = 'bhnapi' THEN num_passing ELSE 0 END) AS bhnapi_passing,
-        -- SUM(CASE WHEN a.demographic_group = 'two_or_more' THEN num_passing ELSE 0 END) AS two_or_more_passing,
-        -- SUM(CASE WHEN a.demographic_group in ('bhnapi', 'wh_as_other') THEN num_passing ELSE 0 END) AS single_race_passing,
         (
             (SUM(CASE WHEN a.demographic_group = 'bhnapi' THEN a.num_passing::float ELSE 0 END) *
             SUM(CASE WHEN a.demographic_group = 'two_or_more' THEN a.num_passing::float ELSE 0 END)) /
@@ -156,4 +149,3 @@ with agg_exam_results as (
     select * from non_urg_final
 )
 select * from final
-where exam_year = '2023' and reporting_group = 'cdo_audit' and exam = 'csp'
