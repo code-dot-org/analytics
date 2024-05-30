@@ -3,15 +3,21 @@
 
     (1) reshape the base_ tables of aggregate exam results into 7 columns (see docs) and 
     (2) union them together
-    (3) normalize
+    (3) normalize the values (e.g. APCSA, AP Computer Science A, etc. --> 'csa')
+
+    ANNUAL TASK:
+    (1) add a new year to the years = [] array.
+    (2) build the model
+    (3) check all values derived from macros for 'UNEXPECTED' values -- these are values that the normalization macros weren't expecting
+    (4) adjust any macros to handle the new values.
+    (5) repeat from step 2 until there are no more UNEXPECTED values
 
 
 */
 with unpivoted_data as (
-    -- see macros/unpivot_dynamic
     -- NOTE: these should be unionable because we're pivoting around the same set of 5 columns. i.e. the width of the base tables shouldn't matter as long as the first 5 columns are the same.
     
-    {% set years = ['2017_2022', '2023'] %}
+    {% set years = ['2017_2022', '2023'] %} 
 
     {% for year in years %}
         {{ unpivot_big_table('base_external_datasets__ap_agg_exam_results_'~year, 5)}}

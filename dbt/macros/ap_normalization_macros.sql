@@ -121,14 +121,32 @@ end as demographic_category
 {% endmacro%}
 
 
-
-
-{% macro ap_extract_n_schools_from_aggregate(school_name)%}
+{% macro ap_extract_n_schools_from_aggregate_old_deleteme(school_name)%}
 case 
-    when upper({{ school_name }}) like '%LESS%THAN%10%N=%' then substring({{school_name}}, position('N=' IN upper({{school_name}}))+2)::integer
+    when upper({{ school_name }}) like '%LESS%THAN%10%AGG%' then substring({{school_name}}, position('=' IN upper({{school_name}}))+2)::integer
     else 1::integer
 end
 {% endmacro%}
+
+/*
+    For the record that is the aggregate of all schools with fewer than 10 students, extract the number of schools, which is given in the school_name.
+    For example: 
+        - "CODE.ORG LESS THAN 10 AGGREGATE - n of schools = 795" should return the integer 795
+        - "2023 CSA LESS THAN 10 AGGREGATE N=170" should return 170 
+
+    ASSUMPTIONS:
+    1. The school_name fits the pattern "%LESS%THAN%10%AGG%"
+    2. There is an '=' sign in the school_name
+    3. There is an integer somewhere after the '=' sign
+*/
+{% macro ap_extract_n_schools_from_aggregate(school_name) %}
+    case
+        when upper({{school_name}}) like '%LESS%THAN%10%AGG%' 
+        then regexp_replace( upper({{school_name}} ),'.*[=][^0-9]*', '')::integer  -- remove any/all characters found before the '=' sign, and any non-numeric characters after it
+        else 1::integer
+    end
+{% endmacro %}
+
 
 /*
     This is a helper function that accepts an exam_type = 'csp'|'csa' and an array of years e.g. ['2022','2023','2024',etc.]

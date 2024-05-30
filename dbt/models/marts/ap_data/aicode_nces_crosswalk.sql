@@ -1,9 +1,6 @@
 with all_crosswalks as (
     select *
-    from {{ ref('stg_external_datasets__ap_crosswalk_2023') }}
-union all
-    select *
-    from {{ ref('stg_external_datasets__ap_crosswalk_2016_2022') }}
+    from {{ ref('stg_external_datasets__ap_crosswalks') }}
 )
 , ranked_most_recent_record AS (
     SELECT

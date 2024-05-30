@@ -35,22 +35,27 @@
     {% set fixed_cols_str = (
         '"' ~ my_table_columns[:num_fixed_columns]
         | map(attribute="name")
-        | join('", "') ~ '"'
+        | join('",\n"') ~ '"'
     ) %}
 
     -- for the set of column to unpivot, construct a string of "comma", "separated", "lists", "of", "double-quoted","col", "names"
     {% set pivot_cols_str = (
         '"' ~ my_table_columns[num_fixed_columns:]
         | map(attribute="name")
-        | join('", "') ~ '"'
+        | join('",\n"') ~ '"'
     ) %}
 
     -- Construct the SELECT statament for the UNPIVOT
-    select {{ fixed_cols_str }}, orig_col_name, orig_value
-    from
-        (
-            select {{ fixed_cols_str }}, {{ pivot_cols_str }} from {{ ref(table_name_ref) }}
-        ) as sourcetable
-        unpivot (orig_value for orig_col_name in ({{ pivot_cols_str }}))
+    select 
+        {{ fixed_cols_str }}, 
+        orig_col_name, 
+        orig_value
+    from(
+        select 
+            {{ fixed_cols_str }}, 
+            {{ pivot_cols_str }} 
+        from {{ ref(table_name_ref) }}
+    ) as sourcetable
+    unpivot (orig_value for orig_col_name in ({{ pivot_cols_str }}))
 
 {% endmacro %}

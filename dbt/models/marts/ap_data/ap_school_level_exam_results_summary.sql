@@ -1,12 +1,16 @@
 with exam_results as (
-    select *
-    from {{ ref('int_ap_school_level_exam_results') }}
+    select 
+        sler.*,
+        cw.nces_id
+    from {{ ref('stg_external_datasets__ap_school_level_exam_results') }} sler
+    left join {{ ref('aicode_nces_crosswalk') }} cw on cw.ai_code = sler.ai_code
 )
 --select * from exam_results where score_of IS NOT NULL
 
 select 
     exam_year,
     ai_code,
+    nces_id,
     high_school_name,
     state,
     exam, 
@@ -19,12 +23,6 @@ select
     COALESCE(num_passing::float / NULLIF(num_taking::float, 0), 0) AS pct_passing --prevent division by 0
 from
     exam_results
-group by
-    exam_year,
-    ai_code,
-    high_school_name,
-    state,
-    exam, demographic_group,
-    demographic_category
+{{dbt_utils.group_by(8)}}
 order by
     exam_year, ai_code

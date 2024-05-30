@@ -8,5 +8,15 @@ with all_ledgers AS (
     select * 
     from {{source('dashboard_analysis','stg_ap_ledgers_raw_2022')}}
 )
-select * 
+select
+    exam_year,
+    school_year,
+    exam,
+    ledger_group,
+    ai_code,
+    school_name,
+    city,
+    state,
+    country,
+    provider_syllabus
 from all_ledgers
