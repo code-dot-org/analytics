@@ -3,7 +3,7 @@ with exam_results as (
         sler.*,
         cw.nces_id
     from {{ ref('stg_external_datasets__ap_school_level_exam_results') }} sler
-    left join {{ ref('aicode_nces_crosswalk') }} cw on cw.ai_code = sler.ai_code
+    left join {{ ref('ap_aicode_nces_crosswalk') }} cw on cw.ai_code = sler.ai_code
 )
 --select * from exam_results where score_of IS NOT NULL
 

@@ -3,7 +3,7 @@ with all_ledgers as (
         l.*,
         cw.nces_id
     from {{ ref('stg_external_datasets__ap_ledgers') }} l
-    left join {{ ref('aicode_nces_crosswalk') }} cw on cw.ai_code = l.ai_code
+    left join {{ ref('ap_aicode_nces_crosswalk') }} cw on cw.ai_code = l.ai_code
 )
 select
     exam_year,
