@@ -8,5 +8,13 @@ with all_ledgers AS (
     select * 
     from {{source('dashboard_analysis','stg_ap_crosswalk_2023')}}
 )
-select * 
+select
+    exam_year,
+    source,
+    nces_id,
+    ai_code,
+    name,
+    city,
+    state,
+    zip 
 from all_ledgers

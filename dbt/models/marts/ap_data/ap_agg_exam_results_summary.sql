@@ -156,3 +156,4 @@ with agg_exam_results as (
     select * from non_urg_final
 )
 select * from final
+where exam_year = '2023' and reporting_group = 'cdo_audit' and exam = 'csp'

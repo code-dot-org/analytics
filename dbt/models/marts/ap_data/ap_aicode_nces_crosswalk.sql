@@ -10,6 +10,7 @@ with all_crosswalks as (
         all_crosswalks
 )
 SELECT
+    rn,
     ai_code,
     nces_id,
     school_name,
@@ -21,4 +22,4 @@ SELECT
 FROM
     ranked_most_recent_record
 WHERE
-    rn = 1
+     rn = 1
