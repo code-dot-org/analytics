@@ -23,7 +23,7 @@ renamed as (
             'version_year',
             true) as version_year,
         
-        properties,
+        -- properties,
         created_at,
         updated_at
     from unit_groups ) 
