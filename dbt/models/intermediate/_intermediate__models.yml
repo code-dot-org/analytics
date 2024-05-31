@@ -2,7 +2,50 @@ version: 2
 
 models: 
   - name: int_ap_agg_exam_results
+    description: |
+      This intermediate model unions together:
+      
+      1. All of the aggregated AP exam results from `stg_ap_agg_exam_results`.
+      2. Computes the 'cdo_audit' aggregate group from Code.org school-level exam results from `stg_school_level_exam_results`.
+
+      For column descriptions please see upstream: `stg_ap_agg_exam_results` - the column descriptions are the same and the aggregation of school-level results is made to fit those descriptions.
+
+    columns:
+      - name: source
+        description: used in downstream models to identify the source of the demographic category and group.  Since these data are just straight from the college board the source is `college board`
+      - name: exam_year
+      - name: pd_year
+      - name: reporting_group
+      - name: rp_id
+      - name: exam
+      - name: demographic_category
+      - name: demographic_group
+      - name: score_category
+      - name: score_of
+      - name: num_students
+
+
+
   - name: int_ap_agg_exam_results_calculated_groups
+    description: |
+      This intermediate model builds more race/ethnic groupings of aggregated exam results data. Hierarchically, it is downstream from `int_ap_exam_results` and derives these groups from those data.
+      As of May, 2024 the groups are `bhnapi`, and `wh_as_other`.  These are needed both for reporting as well as for the URG calculation.
+
+      For column descriptions please see upstream: `stg_ap_agg_exam_results` - the column descriptions are the same and the aggregation of school-level results is made to fit those descriptions.
+      
+    columns:
+      - name: source
+        description: One of `college board` or `calculated`.  Used in downstream models to identify the source of the demographic category and group.  This model adds some `caclucated` to the existing `college board` group.
+      - name: exam_year
+      - name: pd_year
+      - name: reporting_group
+      - name: rp_id
+      - name: exam
+      - name: demographic_category
+      - name: demographic_group
+      - name: score_category
+      - name: score_of
+      - name: num_students
   - name: int_active_sections
     description: all sections passing the "active" threshold in a given school year (5+ students completing 1+ levels of same course)
     tests:

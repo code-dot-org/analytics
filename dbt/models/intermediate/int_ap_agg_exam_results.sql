@@ -44,5 +44,8 @@ with agg_exam_results as (
     from {{ ref('stg_external_datasets__ap_school_level_exam_results') }}
     {{ dbt_utils.group_by(9) }}
 )
-select * from agg_exam_results
+select 
+    'college board' as source,
+    * 
+from agg_exam_results
 

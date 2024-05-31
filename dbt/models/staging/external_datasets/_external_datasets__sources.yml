@@ -3,6 +3,29 @@ sources:
   - name: external_datasets
     database: dashboard 
     schema: analysis
+    description: |
+      The data sources in external data sets are largely red shift tables that are direct copies of CSV files stored in S3.
+      Code.org's primary external data sources are:
+
+        ## 1. AP Data (from the College Board) 
+
+        Table prefix: `ap_`
+        
+        AP data includes:
+        
+        - Aggregated Exam Results
+        - School-level Exam Results for Code.org Audit Schools
+        - AP Ledgers (lists of schools that are teaching AP CSA and/or AP CS Principles for a given year)
+        - AI/NCES Crosswalk (a mapping of College Board AI codes to NCES school ids)
+
+        ## 2. Access Report Data
+
+        Table prefix: `access_report_`
+        
+        Access report data is composed over a multi-month process.  The final results are loaded here.
+
+        ** NCES school data - as of 2024 this is uploaded as part of the Access Report process through the Engineering Team. It therefore comes in as a source via dashboard_production.  
+
     tables:
 
       # aggregate AP exam results
