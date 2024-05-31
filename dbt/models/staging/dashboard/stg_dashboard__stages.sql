@@ -3,7 +3,13 @@ stages as (
     select 
         stage_id,
         stage_name,
-        case when is_lockable = 1 then absolute_position else relative_position end as stage_number,
+        
+        case 
+            when is_lockable = 1 
+            then absolute_position 
+            else relative_position 
+        end as stage_number,
+
         absolute_position,
         script_id,
         created_at,

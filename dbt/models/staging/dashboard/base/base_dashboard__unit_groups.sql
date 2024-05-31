@@ -8,13 +8,13 @@ renamed as (
     select
         id as unit_group_id,
         name,
-        properties,
-        created_at,
-        updated_at,
         published_state,
         instruction_type,
         instructor_audience,
-        participant_audience
+        participant_audience,
+        {# properties, #}
+        created_at,
+        updated_at
     from source
 )
 
