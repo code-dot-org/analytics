@@ -19,7 +19,7 @@ combined as (
     from teachers               as tea 
     left join section_mapping   as sem 
         on tea.user_id = sem.teacher_id
-)
+),
 
 user_school_infos as (
     select * 

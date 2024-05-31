@@ -62,21 +62,18 @@ combined as (
         u.user_type,
         sy.school_year,
         cs.course_name_true as course_name,  
-        min(ul.created_at)  as first_activity_at,
-		max(ul.created_at)  as last_activity_at
         u.us_intl,
         u.country,
-        cs.course_name_true                     as course_name,  
         min(ul.created_at)                      as first_activity_at,
 		max(ul.created_at)                      as last_activity_at
 
-	from user_levels ul 
-    join users u
+	from user_levels as ul 
+    join users as u
         on ul.user_id = u.user_id
-	join course_structure cs
+	join course_structure as cs
 		on ul.script_id = cs.script_id 
         and ul.level_id = cs.level_id 
-	join school_years sy 
+	join school_years as sy 
 		on ul.created_at 
             between sy.started_at 
                 and sy.ended_at
