@@ -1,6 +1,8 @@
 version: 2
 
 models: 
+  - name: int_ap_agg_exam_results
+  - name: int_ap_agg_exam_results_calculated_groups
   - name: int_active_sections
     description: all sections passing the "active" threshold in a given school year (5+ students completing 1+ levels of same course)
     tests:

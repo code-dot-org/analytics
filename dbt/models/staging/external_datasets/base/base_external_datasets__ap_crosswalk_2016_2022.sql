@@ -6,14 +6,14 @@
 
 with all_ledgers AS (
     select * 
-    from {{source('dashboard_analysis','stg_ap_crosswalk_2016_2022')}}
+    from {{source('external_datasets','stg_ap_crosswalk_2016_2022')}}
 )
 select
     exam_year,
     source,
     nces_id,
     ai_code,
-    name,
+    name as school_name,
     city,
     state,
     zip 

@@ -11,7 +11,7 @@
 
 with ap_data AS (
     --SELECT * FROM public.stg_2017_2022_agg_ap_exam_results_raw
-    select * from {{ source('dashboard_analysis','stg_ap_agg_exam_results_raw_2017_2022') }}
+    select * from {{ source('external_datasets','stg_ap_agg_exam_results_raw_2017_2022') }}
 
 )
 SELECT * FROM ap_data

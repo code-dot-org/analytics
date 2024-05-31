@@ -5,8 +5,6 @@ with exam_results as (
     from {{ ref('stg_external_datasets__ap_school_level_exam_results') }} sler
     left join {{ ref('ap_aicode_nces_crosswalk') }} cw on cw.ai_code = sler.ai_code
 )
---select * from exam_results where score_of IS NOT NULL
-
 select 
     exam_year,
     ai_code,

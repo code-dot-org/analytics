@@ -39,7 +39,7 @@
 
 with ap_data AS (
     select * 
-    from {{source('dashboard_analysis','stg_ap_school_level_exam_results_raw_2023')}}
+    from {{source('external_datasets','stg_ap_school_level_exam_results_raw_2023')}}
 )
 select *
 

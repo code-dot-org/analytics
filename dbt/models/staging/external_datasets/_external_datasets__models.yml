@@ -1,11 +1,138 @@
 version: 2
 
 models:
-  - name: stg_ap_exam_results_school_level_2023_csp
-    description: loading 2023 school level AP exam results data from dashboard.analysis
 
-  - name: stg_ap_exam_results_school_level_2023
-    description: loading all 2023 school level AP exam results data from dashboard.analysis csp and csa
+  - name: stg_external_datasets__ap_agg_exam_results
+    description: |
+      The purpose of this staging table is to:
+      
+      1. Reshape the (~75-col wide) base tables of aggregate exam results for any/all years into 7 columns.
+      2. Union them together.
+      3. Normalize the values for e.g. exam, exam/reporting_group, demographic_category, demographic_group, score_category, etc.
+      
+    columns:
+      - name: exam_year
+        description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
+      - name: pd_year
+        description: "The `pd_year` is here for historical consistency.  If the school year is e.g. 2019-20, then the `pd_year` is 2019 and the `exam_year` is 2020"
+      - name: reporting_group
+        description: |
+          Historically known as **`exam_group`**, the name was changed to disambuguate from demographic groups. 
+          The field is the name of the aggregated report we get back from the college board derived from lists of schools we provide to the college board with "tags".  
+          The "tags" _are_ the reporting group, however we don't give and get them back with consistent names YoY.  So this field normalized reporting group into consisten YoY labels e.g. `cdo_audit`, `csp_users_and_audit` etc. 
+          As of 2024 the set of reporting groups (given by `select distinct reporting_group from stg_external_datasets__ap_agg_exam_results` ) is:
+          ```
+          2019_AFE
+          2019_and_2020_AFE
+          2020_AFE
+          cdo_audit
+          csa pd all time
+          csa_users
+          csa_users_afe
+          csa_users_and_audit
+          csp pd all time
+          csp pd per year
+          csp_users
+          csp_users_afe
+          csp_users_and_audit
+          national
+          pd_2016
+          pd_2017
+          pd_2018
+          pd_2019
+          pd_2020
+          rp all time
+          rp per year
+          ```
+      - name: rp_id
+        description: "The regional partner id. This is for years when we recieved sepearate aggregated reports for our regional partners, and is largely historical at this point. Regional partner reports would now need to be derived and calcuated from `school_level_exam_results` data in a different model."
+      - name: exam
+        description: "The specific AP exam for which the record applies. This is normalized to one of (`csp` or `csa`)."
+      - name: orig_col_name
+        description: "The original column name before normalization and transformation. For reference; not included in downstream models."
+      - name: demographic_group_raw
+        description: "The raw demographic group extracted from the original column name. For reference; not included in downstream models."
+      - name: score_category_raw
+        description: "The raw score category extracted from the original column name. For reference; not included in downstream models."
+      - name: demographic_category
+        description: |
+          The category to which the demographic group belongs, such as race or gender. At this staging level the only demographics categories are those we get directly from the college board:
+            ```
+            gender
+            race
+            total
+            ```
+          PLEASE NOTE: **additional demographic categories are added** in downstream models to handle other race/ethnic groupings such as BHNAPI, URG, etc.
 
-  - name: stg_ap_exam_results_school_level_2022
-    description: loading all 2022 school level AP exam results data from dashboard.analysis csp and csa
+      - name: demographic_group
+        description: |
+          The normalized demographic group e.g. 'black', 'hispanic', 'white', etc. As of May 2024 this set of groups is:
+          ```
+            american_indian
+            asian
+            black
+            female
+            hawaiian
+            hispanic
+            male
+            other_gender
+            race_no_response
+            total
+            two_or_more
+            white
+          ```
+      - name: score_category
+        description: "Either`total` or `detail`. 'total' means the number of total student associated with this demographic_group.  'detail' means use this combined with `score_of` tells you the number of students in this demographic_group who got a particular score."
+      - name: score_of
+        description: "One of: `null`, `1`,`2`,`3`,`4`, or`5`. 'null' means the number of students reported here is a total (see: score_category).  Otherwise it's the number of students with a specific exam score 1-5."
+      - name: num_students
+        description: "The number of students in this `demographic_group` earning a `score_of` in this `score category`."
+
+  
+  - name: stg_external_datasets__ap_crosswalks
+    description: "Staging model that consolidates (unions) AP crosswalk data from multiple years and ensures consistent formatting of school IDs and ZIP codes."
+    columns:
+      - name: exam_year
+        description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
+      - name: source
+        description: "The source of the AP crosswalk data. e.g. 'college board', 'by_hand_matching' etc.  "
+      - name: nces_id
+        description: "The National Center for Education Statistics (NCES) ID, padded to ensure consistent formatting."
+      - name: ai_code
+        description: "The College Board AI (Attending Institution) code, padded to ensure consistent formatting."
+      - name: school_name
+        description: "The name of the school _as given_ by the College Board - this might vary in spelling and/or capitalization with what you might find in our other NCES schools data."
+      - name: city
+        description: "The city where the school is located."
+      - name: state
+        description: "The state where the school is located."
+      - name: zip
+        description: "The ZIP code of the school's location, padded to ensure consistent formatting."
+
+  - name: stg_external_datasets__ap_ledgers
+    description: "Staging model that consolidates AP ledger data from multiple years, standardizing AI codes and including detailed information about exams, schools, and providers."
+    columns:
+      - name: exam_year
+        description: "The year in which the AP exam was taken."
+      - name: school_year
+        description: "The academic year in which the AP exam took place."
+      - name: exam
+        description: "The specific AP exam for which the record applies.  This is normalized to one of (`csp` or `csa`)"
+      - name: ledger_group
+        description: "The group or category of the ledger entry."
+      - name: ai_code
+        description: "The AI (Attending Institution) code, padded to ensure consistent formatting."
+      - name: school_name
+        description: "The name of the school where the AP exam was administered."
+      - name: city
+        description: "The city where the school is located."
+      - name: state
+        description: "The state where the school is located."
+      - name: country
+        description: "The country where the school is located."
+      - name: provider_syllabus
+        description: "The syllabus provided by the exam provider."
+
+  - name: stg_external_datasets_ap_school_level_exam_results
+    description: "Staging model for AP school-level exam results"
+

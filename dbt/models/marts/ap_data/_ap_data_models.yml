@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: ap_agg_exam_results_summary
+    description: ""
+  - name: ap_aicode_nces_crosswalk
+  - name: ap_school_level_exam_results
+  - name: ap_ledgers

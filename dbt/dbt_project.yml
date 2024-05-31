@@ -93,6 +93,12 @@ models:
             - "base"
           materialized: ephemeral
       
+      external_datasets:
+        base: 
+          tags:
+            - "base"
+          materialized: ephemeral
+      
       legacy_pii:
         tags:
           - "contains_pii"
@@ -104,3 +110,4 @@ models:
           tags:
             - "base"
           materialized: ephemeral
+      

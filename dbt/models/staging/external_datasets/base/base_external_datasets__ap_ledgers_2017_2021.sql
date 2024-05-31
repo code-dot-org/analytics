@@ -6,7 +6,7 @@
 
 with all_ledgers AS (
     select * 
-    from {{source('dashboard_analysis','stg_ap_ledgers_raw_2017_2021')}}
+    from {{source('external_datasets','stg_ap_ledgers_raw_2017_2021')}}
 )
 select
     exam_year,
