@@ -1,4 +1,6 @@
 with agg_exam_results as (
+    select * from {{ ref('int_ap_agg_exam_results') }}
+    union all
     select * from {{ ref('int_ap_agg_exam_results_calculated_groups') }}
 )
 , cdo_tr_multipliers as (
