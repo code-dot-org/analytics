@@ -10,25 +10,22 @@ renamed as (
         stage_name,
         
         case 
-            when is_lesson_lockable = 1 
+            when is_lockable = 1 
                 then absolute_position 
             else relative_position 
         end as stage_number,
+        
+        script_id,
+        lesson_group_id,
         
         absolute_position,
         relative_position,
         key,
 
-        script_id,
-        lesson_group_id,
-        is_lesson_lockable,
         has_lesson_plan,
-
-        -- json extraction fields 
-        json_extract_path_text(
-            properties, 
-            'unplugged')    as is_lesson_unplugged,
-
+        is_lockable,
+        is_unplugged,
+        
         created_at,
         updated_at
     from stages)

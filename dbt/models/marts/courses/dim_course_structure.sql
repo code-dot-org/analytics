@@ -84,7 +84,8 @@ combined as (
         st.stage_name,
         st.absolute_position as stage_number,
         st.relative_position,
-        st.is_lesson_lockable,
+        st.is_lockable,
+        st.is_unplugged,
 
         -- script_levels
         sl.is_assessment,
@@ -115,14 +116,14 @@ combined as (
         plcl.parent_level_kind,
         case 
             when plcl.parent_level_id is not null 
-            then 1 else 0 end   as is_parent_level,
+            then 1 else 0 end       as is_parent_level,
 
         -- contained levels 
         case 
             when col.level_group_level_id is not null 
             then 1 else 0 
-        end                     as is_group_level,
-        col.contained_level_type as group_level_type,
+        end                         as is_group_level,
+        col.contained_level_type    as group_level_type,
 
         coalesce(
             ug.family_name,

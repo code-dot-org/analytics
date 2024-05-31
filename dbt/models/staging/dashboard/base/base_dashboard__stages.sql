@@ -8,16 +8,21 @@ renamed as (
     select
         id                  as stage_id,
         name                as stage_name,
-        absolute_position,
         script_id,
-        created_at,
-        updated_at,
-        lockable            as is_lesson_lockable,
-        relative_position,
-        properties,
         lesson_group_id,
+        absolute_position,
+        relative_position,
+        lockable            as is_lockable,
+        has_lesson_plan,
         key,
-        has_lesson_plan
+        
+        json_extract_path_text(
+            properties, 
+            'unplugged', 
+            true)           as is_unplugged,
+        
+        created_at,
+        updated_at
     from source
 )
 
