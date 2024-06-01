@@ -17,6 +17,9 @@ models:
       #   tests: 
       #       - not_null
 
+      - name: us_state
+        description: user entered value extracted from json. values must be within contig. US else null 
+
       - name: student_id 
         description: UID for each student
       
