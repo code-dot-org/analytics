@@ -23,7 +23,13 @@ user_school_infos_sy as (
     select 
         usi.user_id,
         sy.school_year as started_at_sy,
-        row_number() over (partition by usi.user_id, sy.school_year order by usi.started_at desc) as row_num,
+        row_number() 
+            over (
+                partition by 
+                    usi.user_id, 
+                    sy.school_year 
+                order by 
+                    usi.started_at desc) as row_num,
         usi.school_info_id,
         si.school_id,
         usi.started_at,
