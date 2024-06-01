@@ -31,6 +31,7 @@ renamed as (
         gender,
         locale,
         birthday,
+        
         sign_in_count,
         total_lines,     
         
