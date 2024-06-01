@@ -32,4 +32,4 @@ final as (
         on users.user_id = ug.user_id )
 
 select *
-from final
+from final 
