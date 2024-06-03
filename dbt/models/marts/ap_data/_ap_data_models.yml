@@ -23,6 +23,9 @@ models:
     columns:
       - name: exam_year
         description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
+        tests:
+          - not_null
+          
 
       - name: ai_code
         description: "The College Board's AI (Attending Institution) code, padded to ensure consistent formatting."
@@ -51,6 +54,7 @@ models:
       - name: pct_passing_calc
         description: "The calculated percentage of students passing the AP exam (passrate) of this group. It is simply dividing `num_taking / num_passing` values you see in this record"
 
+   
 
 
   - name: ap_agg_exam_results_summary
@@ -69,6 +73,8 @@ models:
       
       - name: exam_year
         description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
+        tests:
+          - not_null
 
       - name: reporting_group
         description: |
@@ -99,12 +105,15 @@ models:
           rp all time
           rp per year
           ```
+        tests:
+          - not_null
       - name: rp_id
         description: "The regional partner id. This is for years when we recieved sepearate aggregated reports for our regional partners, and is largely historical at this point. Regional partner reports would now need to be derived and calcuated from `school_level_exam_results` data in a different model."
       
       - name: exam
         description: "The specific AP exam for which the record applies. This is normalized to one of (`csp` or `csa` or `sum_csa_csp`). `sum_csa_csp` **should be used with caution** -- it was reported in some older data before we had Code.org CSA exam - it represents the total number of AP exam takers at schools that audited as **Code.org CSP**. "
-     
+        tests:
+          - not_null
       - name: demographic_category
         description: |
           The category to which the demographic group belongs, such as race or gender. NOTE: see field: **demographic_group** to see which demographic groups go with each category.
@@ -123,7 +132,8 @@ models:
             5. calc_urg   - bhnapi, tr_urg, etc.
             6. urg_final  - urg, non_urg
             ```
-          
+        tests:
+          - not_null  
 
       - name: demographic_group
         description: |
@@ -152,17 +162,24 @@ models:
           |             | non_urg                                    | <- (wh_as_other + tr_non_urg)
           +-------------+--------------------------------------------+
           ```
-      
+        tests:
+          - not_null
+
       - name: num_taking
         description: "The calculated number of students taking the AP exam for this (exam_year | reporting_group | exam | demographic_group )"
-      
+        tests:
+          - not_null      
       - name: num_passing
         description: "The calculated number of students passing the AP exam for this (exam_year | reporting_group | exam | demographic_group )."
-      
-      - name: pct_passing_calc
+        tests:
+          - not_null      
+      - name: pct_passing
         description: "The calculated percentage of students passing the AP exam (passrate) of this group. It is simply dividing `num_taking / num_passing` values you see in this record"
-
-
+        tests:
+          - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['source', 'exam_year', 'reporting_group', 'rp_id', 'exam', 'demographic_category', 'demographic_group']
 
   - name: ap_aicode_nces_crosswalk
 

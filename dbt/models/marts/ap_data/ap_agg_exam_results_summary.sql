@@ -7,6 +7,10 @@ with agg_exam_results as (
     select
         *
     from {{ref('seed_ap_tr_urg_multiplier')}}
+    where 
+        dataset_name = 'ap_urg_calc_started'
+        --dataset_name = 'ap_urg_calc_completed'
+
 )
 , all_summary as (
     select
@@ -33,7 +37,7 @@ with agg_exam_results as (
         The forumla here is:
 
         tr_urg = [(bhnapi * tr_total) / sr_total ] * cdo_multiplier
-        note that sr_total = (bhnapi + wh_as_other)
+        where sr_total = (bhnapi + wh_as_other)
 
     */
     select
@@ -150,4 +154,15 @@ with agg_exam_results as (
     union all
     select * from non_urg_final
 )
-select * from final
+select
+    source,
+    exam_year,
+    reporting_group,
+    rp_id,
+    exam,
+    demographic_category,
+    demographic_group,
+    COALESCE(num_taking,0) as num_taking,
+    COALESCE(num_passing,0) as num_passing,
+    COALESCE(pct_passing,0) as pct_passing
+from final
