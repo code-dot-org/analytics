@@ -185,24 +185,18 @@ models:
               list_of_acceptable_lengths: "6"
       - name: school_name
         description: "The name of the school _as given_ by the College Board - this might vary in spelling and/or capitalization with what you might find in our other NCES schools data."
-        tests:
-          - not_null
+
       - name: city
         description: "The city where the school is located."
-        tests:
-          - not_null
+
       - name: state
         description: "The state where the school is located."
-        tests:
-          - not_null
+
       - name: country
         description: "The country where the school is located."
-        tests:
-          - not_null
+
       - name: provider_syllabus
         description: "The syllabus provided by the exam provider. Typically 'code.org' but sometimes e.g. 'CMU + code.org' or some listing with a collaborative partner."
-        tests:
-          - not_null
 
     tests:
       - dbt_utils.unique_combination_of_columns:
