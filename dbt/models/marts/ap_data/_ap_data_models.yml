@@ -182,6 +182,49 @@ models:
           combination_of_columns: ['source', 'exam_year', 'reporting_group', 'rp_id', 'exam', 'demographic_category', 'demographic_group']
 
   - name: ap_aicode_nces_crosswalk
+    description: "This model retrieves the most recent record for each distinct ai_code|nces_id pair from all the AI/NCES crosswalk datasets we've received from the college board. "
+    columns:
+      - name: ai_code
+        description: "The College Board AI (Attending Institution) code, padded to ensure consistent formatting."
+        tests:
+          - not_null
+          - test_string_length_in:
+              list_of_acceptable_lengths: "6"
+      - name: nces_id
+        description: "The National Center for Education Statistics (NCES) ID, padded to ensure consistent formatting."
+        tests:
+          - not_null
+          - test_string_length_in:
+              list_of_acceptable_lengths: "8, 12"
+
+      - name: exam_year
+        description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
+        tests:
+          - not_null
+      - name: source
+        description: "The source of the AP crosswalk data. e.g. 'college board', 'by_hand_matching' etc.  "
+        tests:
+          - not_null
+      - name: school_name
+        description: "The name of the school _as given_ by the College Board - this might vary in spelling and/or capitalization with what you might find in our other NCES schools data."
+        tests:
+          - not_null
+      - name: city
+        description: "The city where the school is located."
+        tests:
+          - not_null
+      - name: state
+        description: "The state where the school is located."
+        tests:
+          - not_null
+      - name: zip
+        description: "The ZIP code of the school's location, padded to ensure consistent formatting."
+        tests:
+          - not_null
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['exam_year', 'ai_code', 'nces_id']
 
   - name: ap_ledgers
     description: |

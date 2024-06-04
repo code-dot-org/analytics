@@ -10,7 +10,7 @@ with all_crosswalks as (
         all_crosswalks
 )
 SELECT
-    rn,
+    --rn,
     ai_code,
     nces_id,
     school_name,
