@@ -67,6 +67,8 @@ models:
       2. passing the exam (score of 3, 4, or 5)
       3. the pass rate percentage of that (passing/taking)
 
+      It also, importantly, follows the "External URG" formula to calculate the number of URG students taking and passing the exam.
+
     columns:
       - name: source
         description: "One of `college board` or `calculated` - tells you whether the demographic group came straight from the College Board data or whether we calculated it from that."
