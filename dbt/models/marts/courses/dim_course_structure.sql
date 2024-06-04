@@ -1,8 +1,13 @@
 {#
 model: dim_course_structure (v2)
-auth: js, 2024-03-07
+auth: nzm
 notes:
-    - updated to reflect updates to analysis.course_structure by NZM
+changelog:
+    - dataops-668: 
+        updated to reflect updates to analysis.course_structure by NZM
+    - dataops-...
+        updated to add distinct clause to final table*
+
 #}
 
 with 
@@ -62,7 +67,8 @@ script_names as (
 ),
 
 combined as (
-    select 
+    select distinct 
+    
         -- courses
         ug.unit_group_id    as course_id,
         ug.unit_group_name  as course_name,
@@ -119,6 +125,7 @@ combined as (
             then 1 else 0 end       as is_parent_level,
 
         -- contained levels 
+        col.level_group_level_id,
         case 
             when col.level_group_level_id is not null 
             then 1 else 0 
@@ -183,5 +190,17 @@ combined as (
     left join contained_levels as col 
         on lsl.level_id = col.level_group_level_id )
 
-select * 
+select *
 from combined 
+
+
+
+{#
+    notes [js,JUN03]
+    
+    current                 442,473
+    distinct                59,250 *
+    remove parent_levels    387,204
+
+#} 
+
