@@ -68,7 +68,6 @@ script_names as (
 
 combined as (
     select distinct 
-    
         -- courses
         ug.unit_group_id    as course_id,
         ug.unit_group_name  as course_name,
@@ -192,15 +191,3 @@ combined as (
 
 select *
 from combined 
-
-
-
-{#
-    notes [js,JUN03]
-    
-    current                 442,473
-    distinct                59,250 *
-    remove parent_levels    387,204
-
-#} 
-
