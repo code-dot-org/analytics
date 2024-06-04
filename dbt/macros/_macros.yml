@@ -30,9 +30,7 @@ macros:
     arguments:
       - name: exam_name
         description: The name of the exam to be normalized.
-    return:
-      description: |
-        Returns a normalized exam name (`csa`, `csp`, or `sum_csa_csp`).
+
 
   - name: ap_split_column
     description: |
@@ -40,9 +38,7 @@ macros:
     arguments:
       - name: orig_col_name
         description: The original column name containing demographic and score group data.
-    return:
-      description: |
-        Returns two new fields: `demographic_group_raw` and `score_category_raw`.
+
 
   - name: ap_norm_demographic_group
     description: |
@@ -79,9 +75,7 @@ macros:
     arguments:
       - name: demographic_group_raw
         description: The raw demographic group value.
-    return:
-      description: |
-        Returns two new columns: `demographic_group` and `demographic_category`.
+
 
   - name: ap_norm_score_category
     description: |
@@ -99,9 +93,7 @@ macros:
     arguments:
       - name: score_category_input
         description: The input score category.
-    return:
-      description: |
-        Returns two new columns: `score_category` and `score_of`.
+
 
   - name: ap_norm_exam_group
     description: |
@@ -128,9 +120,7 @@ macros:
     arguments:
       - name: exam_group
         description: The name of the exam group to be normalized.
-    return:
-      description: |
-        Returns a normalized exam group name or an error message for unexpected values.
+
 
   - name: ap_extract_n_schools_from_aggregate_old_deleteme
     description: |
@@ -138,9 +128,6 @@ macros:
     arguments:
       - name: school_name
         description: The name of the school containing the number of schools.
-    return:
-      description: |
-        Returns an integer representing the number of schools.
 
   - name: ap_extract_n_schools_from_aggregate
     description: |
@@ -153,9 +140,7 @@ macros:
     arguments:
       - name: school_name
         description: The name of the school containing the number of schools.
-    return:
-      description: |
-        Returns an integer representing the number of schools.
+
 
   - name: build_ap_school_level_data_union_query
     description: |
@@ -165,9 +150,7 @@ macros:
         description: The type of exam (`csp` or `csa`).
       - name: years
         description: An array of years (e.g., `['2022', '2023', '2024']`).
-    return:
-      description: |
-        Returns a SQL query string that unions the specified staging models.
+
 
   - name: build_ap_agg_data_union_query
     description: |
@@ -177,9 +160,6 @@ macros:
         description: The type of exam (`csp` or `csa`).
       - name: years
         description: An array of years (e.g., `['2022', '2023', '2024']`).
-    return:
-      description: |
-        Returns a SQL query string that unions the specified staging models.
 
   - name: unpivot_big_table
     description: |
@@ -191,6 +171,7 @@ macros:
 
       **Example:**
       Given the table:
+
       | exam_year | exam_group | exam  | total_1 | total_2 | total_3 | total_4 | total_5 | total_all |
       |-----------|-------------|-------|---------|---------|---------|---------|---------|-----------|
       | 2023      | national    | COMSCA| 19667   | 8202    | 15751   | 18919   | 22086   | 84625     |
@@ -198,10 +179,11 @@ macros:
 
       Calling the macro with 3 fixed columns:
       ```sql
-      {{ unpivot_big_table('your_table_name', 3) }}
+       unpivot_big_table('your_table_name', 3)
       ```
 
       Transforms it into:
+
       | exam_year | exam_group | exam  | orig_col_name | orig_value |
       |-----------|-------------|-------|---------------|------------|
       | 2023      | national    | COMSCA| total_1       | 19667      |
@@ -216,11 +198,9 @@ macros:
       | 2023      | national    | COMSCP| total_4       | 32411      |
       | 2023      | national    | COMSCP| total_5       | 17802      |
       | 2023      | national    | COMSCP| total_all     | 158555     |
+    
     arguments:
       - name: table_name_ref
         description: A string reference to the table to be unpivoted. The macro uses DBT's ref function to reference the table.
       - name: num_fixed_columns
         description: An integer representing the number of left-most columns in the table that should remain fixed while the remaining columns are unpivoted into key-value pairs with column names 'orig_col_name' and 'orig_value'.
-    return:
-      description: |
-        Returns an SQL SELECT statement that unpivots the data from the specified table, keeping the specified number of left-most columns fixed and turning the remaining columns into key-value pairs of 'orig_col_name' and 'orig_value'.

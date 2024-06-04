@@ -121,13 +121,6 @@ end as demographic_category
 {% endmacro%}
 
 
-{% macro ap_extract_n_schools_from_aggregate_old_deleteme(school_name)%}
-case 
-    when upper({{ school_name }}) like '%LESS%THAN%10%AGG%' then substring({{school_name}}, position('=' IN upper({{school_name}}))+2)::integer
-    else 1::integer
-end
-{% endmacro%}
-
 /*
     For the record that is the aggregate of all schools with fewer than 10 students, extract the number of schools, which is given in the school_name.
     For example: 
@@ -206,5 +199,3 @@ end
     {% if not loop.last %}union all{% endif %}
     {% endfor %}
 {% endmacro %}
-
-
