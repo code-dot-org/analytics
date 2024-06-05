@@ -199,8 +199,8 @@ models:
           - test_string_length_in:
               list_of_acceptable_lengths: "8, 12"
 
-      - name: exam_year
-        description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
+      - name: most_recent_update_year
+        description: "This will show the exam year of the most recent for which we received crosswalk data. i.e. exam_year 2023 means the 2022-23 school year."
         tests:
           - not_null
       - name: source
@@ -226,7 +226,7 @@ models:
 
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['exam_year', 'ai_code', 'nces_id']
+          combination_of_columns: ['most_recent_update_year', 'ai_code', 'nces_id']
 
   - name: ap_ledgers
     description: |

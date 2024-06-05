@@ -1,3 +1,6 @@
+/*
+    All YoY AP ledger data joined with crosswalk to attach an NCES id.
+*/
 with all_ledgers as (
     select 
         l.*,

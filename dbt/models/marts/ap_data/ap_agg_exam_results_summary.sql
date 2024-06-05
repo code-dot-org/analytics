@@ -1,3 +1,8 @@
+/*
+    This model summarizes all aggregate AP exam results data into num_taking and num_passing
+    AND performs the "external URG" calculations necessary to extrapolate the number of URG taking and passing the exam.
+    
+*/
 with agg_exam_results as (
     select * from {{ ref('int_ap_agg_exam_results') }}
     union all
@@ -8,7 +13,7 @@ with agg_exam_results as (
         *
     from {{ref('seed_ap_tr_urg_multiplier')}}
     where 
-        dataset_name = 'ap_urg_calc_started'
+        dataset_name = 'ap_urg_calc_started' -- this set produced values closest to what we reported in the past
         --dataset_name = 'ap_urg_calc_completed'
 
 )
@@ -67,7 +72,7 @@ with agg_exam_results as (
 
     from all_summary a
     left join cdo_tr_multipliers cdo on a.exam_year = cdo.exam_year
-    where a.demographic_group in ('bhnapi','two_or_more','wh_as_other') -- not sure if this adds efficiency or not
+    where a.demographic_group in ('bhnapi','two_or_more','wh_as_other') 
     {{ dbt_utils.group_by(7) }}  
 )
 , tr_non_urg as ( --tr_non_urg = two_or_more minus tr_urg
@@ -115,7 +120,7 @@ with agg_exam_results as (
         COALESCE(num_passing_calc::float / NULLIF(num_taking_calc::float, 0), 0) AS pct_passing_calc
 
     from (
-        select * from all_summary where demographic_group in ('bhnapi') -- not sure if this adds efficiency or not
+        select * from all_summary where demographic_group in ('bhnapi') 
         union all 
         select * from tr_urg
     ) as a
@@ -137,7 +142,7 @@ with agg_exam_results as (
         COALESCE(num_passing_calc::float / NULLIF(num_taking_calc::float, 0), 0) AS pct_passing_calc
 
     from (
-        select * from all_summary where demographic_group in ('wh_as_other') -- not sure if this adds efficiency or not
+        select * from all_summary where demographic_group in ('wh_as_other') 
         union all 
         select * from tr_non_urg
     ) as a 

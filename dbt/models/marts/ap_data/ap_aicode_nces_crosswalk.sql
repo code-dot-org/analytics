@@ -1,3 +1,7 @@
+/*
+    Produces the most recent aicode/nces mappings we have.
+*/
+
 with all_crosswalks as (
     select *
     from {{ ref('stg_external_datasets__ap_crosswalks') }}
@@ -17,7 +21,7 @@ SELECT
     city,
     state,
     zip,
-    exam_year,
+    exam_year as most_recent_update_year,
     source
 FROM
     ranked_most_recent_record

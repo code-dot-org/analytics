@@ -1,3 +1,8 @@
+/*
+    Summarizes exam results per school into num_taking, num_passing in order to be apples to apples with the tradational aggregated exam results reports
+
+    NOTE: the URG calculation is NOT applied to these data at this time.
+*/
 with exam_results as (
     select 
         sler.*,

@@ -5,10 +5,6 @@ macros:
     description: >
       This macro is an attempt to engage in some DRY practice - to remove repeticious hard-coded labels for school, teacher, etc. activity. We have a method for determining whether a school, teacher, section is "active" (see: dim_school_status.) The method produces a 3-digit binary code. The key is below. This method is used in several locations where a label e.g. "active new" is applided. These 3 values can be combined into an ordered 3-char string representing the concatenated true/false combinations for Active|Prev|Ever. (e.g. "101" means the schools is 1. Active, 2. Was not active last year) therefore, we label it as "Active - Reacquired."
 
-  - name: pad_school_id
-    description: >
-      This macro adjusts for known data quality issue where a `school_id` can be 11 or 12 characters in length.
-
   - name: us_intl_label
     description: Quick and handy way to convert is_international to a reporting label.
 
@@ -27,18 +23,20 @@ macros:
       - 'sum_csa_csp'
 
       If an input value isn't recognized, it returns a string with the format: 'UNEXPECTED exam_name: <input_value>. SEE macro - ap_norm_exam_subject'.
+
+      **Return**: Returns a normalized exam name (`csa`, `csp`, or `sum_csa_csp`).
     arguments:
       - name: exam_name
         description: The name of the exam to be normalized.
 
-
   - name: ap_split_column
     description: |
       Splits a demographic score group column into two fields: `demographic_group_raw` and `score_category_raw`.
+
+      **Return**: Returns two new fields: `demographic_group_raw` and `score_category_raw`.
     arguments:
       - name: orig_col_name
         description: The original column name containing demographic and score group data.
-
 
   - name: ap_norm_demographic_group
     description: |
@@ -72,10 +70,10 @@ macros:
 
       If an input value isn't recognized, it returns the raw input value and fails loudly when processed by the next case-when statement.
 
+      **Return**: Returns two new columns: `demographic_group` and `demographic_category`.
     arguments:
       - name: demographic_group_raw
         description: The raw demographic group value.
-
 
   - name: ap_norm_score_category
     description: |
@@ -90,10 +88,11 @@ macros:
       - 'total'
 
       If an input value isn't recognized, it returns a string with the format: 'UNEXPECTED input: <input_value>. SEE macro - ap_norm_score_category'. If an unrecognized category is encountered, it returns: 'UNEXPECTED category: <category_value>. SEE macro - ap_norm_score_category'.
+
+      **Return**: Returns two new columns: `score_category` and `score_of`.
     arguments:
       - name: score_category_input
         description: The input score category.
-
 
   - name: ap_norm_exam_group
     description: |
@@ -117,17 +116,11 @@ macros:
       - The corresponding normalized exam group names
 
       If an input value isn't recognized, it returns a string with the format: 'UNEXPECTED exam_group: <input_value>. SEE macro - ap_norm_exam_group'.
+
+      **Return**: Returns a normalized exam group name or an error message for unexpected values.
     arguments:
       - name: exam_group
         description: The name of the exam group to be normalized.
-
-
-  - name: ap_extract_n_schools_from_aggregate_old_deleteme
-    description: |
-      Extracts the number of schools from the aggregate school name.
-    arguments:
-      - name: school_name
-        description: The name of the school containing the number of schools.
 
   - name: ap_extract_n_schools_from_aggregate
     description: |
@@ -137,39 +130,21 @@ macros:
       1. The school_name fits the pattern "%LESS%THAN%10%AGG%"
       2. There is an '=' sign in the school_name
       3. There is an integer somewhere after the '=' sign
+
+      **Return**: Returns an integer representing the number of schools.
     arguments:
       - name: school_name
         description: The name of the school containing the number of schools.
 
-
-  - name: build_ap_school_level_data_union_query
-    description: |
-      Unions staging models together for AP school-level exam results based on the given exam type and years.
-    arguments:
-      - name: exam_type
-        description: The type of exam (`csp` or `csa`).
-      - name: years
-        description: An array of years (e.g., `['2022', '2023', '2024']`).
-
-
-  - name: build_ap_agg_data_union_query
-    description: |
-      Unions staging models together for aggregated AP data based on the given exam type and years.
-    arguments:
-      - name: exam_type
-        description: The type of exam (`csp` or `csa`).
-      - name: years
-        description: An array of years (e.g., `['2022', '2023', '2024']`).
-
   - name: unpivot_big_table
     description: |
-      This macro dynamically generates SQL for a Redshift UNPIVOT command. It is especially useful for reshaping a very wide table (e.g., AP exam results with 89 columns) from wide to long format. Redshift's UNPIVOT command requires listing all columns by name, which can be tedious. This macro lists all column names as strings dynamically for you.
-
-      A previous version used Jinja to reshape the table with nested loops, creating short little tables into a giant UNION operation. Here, we use Redshift's UNPIVOT with the assumption that it will be more performant and easier to read.
+      This macro dynamically generates SQL for a Redshift UNPIVOT command. It is especially useful for reshaping a very wide table (e.g., AP exam results with 89 columns) from wide to long format. 
+      Redshift's UNPIVOT command requires listing all columns by name, which can be tedious. This macro lists all column names as strings dynamically for you.
 
       The macro returns an SQL SELECT statement to UNPIVOT data from a specified table with a specified number of fixed columns. The result of running the SQL will turn all columns from the UNPIVOT into pairs of 'orig_col_name' and 'orig_value'.
 
       **Example:**
+
       Given the table:
 
       | exam_year | exam_group | exam  | total_1 | total_2 | total_3 | total_4 | total_5 | total_all |
@@ -179,7 +154,7 @@ macros:
 
       Calling the macro with 3 fixed columns:
       ```sql
-       unpivot_big_table('your_table_name', 3)
+      unpivot_big_table('your_table_name', 3)
       ```
 
       Transforms it into:
@@ -198,9 +173,78 @@ macros:
       | 2023      | national    | COMSCP| total_4       | 32411      |
       | 2023      | national    | COMSCP| total_5       | 17802      |
       | 2023      | national    | COMSCP| total_all     | 158555     |
-    
+
+      **Return**: Returns an SQL SELECT statement that unpivots the data from the specified table, keeping the specified number of left-most columns fixed and turning the remaining columns into key-value pairs of 'orig_col_name' and 'orig_value'.  For the example above here is what it generates.
+      ```sql
+      select 
+          "exam_year", 
+          "exam_group", 
+          "exam", 
+          orig_col_name, 
+          orig_value
+      from(
+          select 
+              "exam_year", 
+              "exam_group", 
+              "exam", 
+              "total_1",
+              "total_2",
+              "total_3",
+              "total_4",
+              "total_5",
+              "total_all"
+          from  ref('your_table_name') 
+      ) as sourcetable
+      unpivot (orig_value for orig_col_name in ("total_1", "total_2", "total_3", "total_4", "total_5", "total_all"))
+      ```
+
     arguments:
       - name: table_name_ref
         description: A string reference to the table to be unpivoted. The macro uses DBT's ref function to reference the table.
       - name: num_fixed_columns
         description: An integer representing the number of left-most columns in the table that should remain fixed while the remaining columns are unpivoted into key-value pairs with column names 'orig_col_name' and 'orig_value'.
+
+  - name: pad_school_id
+    description: |
+      This macro adjusts for known data quality issues where a `school_id` can be either 11 or 12 characters in length. If the `school_id` is 11 characters long, it pads the ID to 12 characters by adding a leading zero.
+
+      **Inputs:**
+      - `school_id` with length 11 or 12 characters
+
+      **Outputs:**
+      - A `school_id` padded to 12 characters if it was originally 11 characters long. Otherwise, it returns the original `school_id`.
+
+      **Return**: Returns a padded `school_id` if the length is 11, otherwise returns the original `school_id`.
+    arguments:
+      - name: school_id
+        description: The school ID to be padded.
+
+  - name: pad_ai_code
+    description: |
+      This macro adjusts for known data quality issues where an `ai_code` can be less than 6 characters in length. If the `ai_code` is less than 6 characters long, it pads the code to 6 characters by adding leading zeros.
+
+      **Inputs:**
+      - `ai_code` with length less than 6 or 6 characters
+
+      **Outputs:**
+      - An `ai_code` padded to 6 characters if it was originally less than 6 characters long. Otherwise, it returns the original `ai_code`.
+
+      **Return**: Returns a padded `ai_code` if the length is less than 6, otherwise returns the original `ai_code`.
+    arguments:
+      - name: ai_code
+        description: The AI code to be padded.
+
+  - name: pad_zipcode
+    description: |
+      This macro adjusts for known data quality issues where a `zip` code can be less than 5 characters in length. If the `zip` code is less than 5 characters long, it pads the code to 5 characters by adding leading zeros.
+
+      **Inputs:**
+      - `zip` code with length less than 5 or 5 characters
+
+      **Outputs:**
+      - A `zip` code padded to 5 characters if it was originally less than 5 characters long. Otherwise, it returns the original `zip` code.
+
+      **Return**: Returns a padded `zip` code if the length is less than 5, otherwise returns the original `zip` code.
+    arguments:
+      - name: zip
+        description: The ZIP code to be padded.
