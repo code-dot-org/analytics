@@ -35,6 +35,8 @@
     ...
 
     The number and order of these ^^^ columns does not matter. 
+
+    DUPLICATE THIS FILE each year, replace the source, ensure correct columns are being reported.
 */ 
 
 with ap_data AS (

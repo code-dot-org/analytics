@@ -5,6 +5,8 @@
 
     The raw data frequently has a duplicate or two slipped in there.  some lightweight de-duping is done here at the base.
 
+    DUPLICATE THIS FILE each year, replace the source, ensure correct columns are being reported.
+
 */ 
 
 with all_ledgers AS (
