@@ -2,7 +2,7 @@
 
     This model unions together: 
     1. all of the aggregated ap exam results 
-    2. computes the 'cdo_audit' aggregate group from code.org school-level exam results
+    2. the computation of the 'cdo_audit' aggregate group from school-level exam results
 
 */
 with agg_exam_results as (
