@@ -3,6 +3,7 @@
     of any/all data files containing ledger data for 2023 (=2022-23 school year)
     see: ap_ledger_ingest code.
 
+    ANNUAL TASK:
     DUPLICATE THIS FILE each year, replace the source, ensure correct columns are being reported.
 */ 
 

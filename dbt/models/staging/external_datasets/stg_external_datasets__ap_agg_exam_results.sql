@@ -6,11 +6,12 @@
     (3) normalize the values (e.g. APCSA, AP Computer Science A, etc. --> 'csa')
 
     ANNUAL TASK:
-    (1) add a new year to the years = [] array.
+    (0) (Assumption) you have created a new base table called base_external_datasets__ap_agg_exam_results_'~year for the year in question.
+    (1) add a new exam year to the years [] array.
     (2) build the model
     (3) check all values derived from macros for 'UNEXPECTED' values -- these are values that the normalization macros weren't expecting
     (4) adjust any macros to handle the new values.
-    (5) repeat from step 2 until there are no more UNEXPECTED values
+    (5) repeat from step 2 until there are no more UNEXPECTED values and all tests pass
 
 
 */

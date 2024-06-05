@@ -1,9 +1,14 @@
 /*
+    This table unions together all YoY ledger data from the base tables.
+
+    ANNUAL TASK
+    
     To onboard new ledgers.
-    1. add source and base table (see instructions in: base_external_datasets__ap_ledgers_20XX.sql )
-    2. add the new year to the array of years[] below.  
-    3. Build and debug.
-   
+    (0) (Assumption) you have created a new base table called base_external_datasets__ap_ledgers_'~year for the year in question.
+    (1) add the new year to the array of years[] below.  
+    (2) Build and debug.
+    (3) repeat until you get a clean build passing all tests
+
 */
 with all_data as (
 

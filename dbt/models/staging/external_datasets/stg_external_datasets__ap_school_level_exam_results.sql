@@ -1,19 +1,19 @@
 /*
     AP school level exam results staging. This does the following:
 
-    1. unpivot the wide raw school-level exam results table into a long table - fixing the first 8 columns, and all subsequent columns pivoted into key-value pairs: orig_col_name | orig_value
-    2. union any/all of these ^^^ together
-    3. rename columns and normalize the values
+    (1) reshape the base_ tables of aggregate exam results into 10 columns (see docs) and 
+    (2) union them together
+    (3) normalize the values (e.g. APCSA, AP Computer Science A, etc. --> 'csa')
 
-    Testing and Clean up: 
-    a. Look for values with 'UNEXPECTED' - these are new values or encodings in the college board data - we should add them to the macros that normalize these values
-       
-    b. MAKE SURE you identify the the "less-than-10-aggregate" school record to see how many schools are included in that aggregate 
-       AND check that in your resulting data there are records where num_schools equals that number.
-       
-       There is a macro that produces the num_schools field, which looks for a school_name like '%LESS THAN 10%N=%' 
-       and extracts the n value from the string, every other school is num_schools=1.  If the school name DOES NOT conform to that pattern (CB has a history of changing things)
-       the preferred method would be update the macro to handle the new pattern.
+    ANNUAL TASK:
+    (0) (Assumption) you have created a new base table called bbase_external_datasets__ap_school_level_exam_results_'~year for the year in question.
+    (1) add a new exam year to the years [] array.
+    (2) build the model
+    (3) check all values derived from macros for 'UNEXPECTED' values -- these are values that the normalization macros weren't expecting
+    (4) adjust any macros to handle the new values.
+    (5) repeat from step 2 until there are no more UNEXPECTED values and all tests pass
+
+
 */
 with unpivoted_data as (
 

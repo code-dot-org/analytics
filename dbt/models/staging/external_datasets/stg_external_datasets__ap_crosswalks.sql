@@ -1,5 +1,12 @@
 /*
-   
+   Union together all of the ai/nece crossswalk  base tables.
+
+   ANNUAL TASK:
+   0. (Assumption) you have created a new base table named base_external_datasets__ap_crosswalk_'~year  for the year in question.
+   1. add a new year to the years[] arary 
+   2. Build the model
+   3. Investigate data, ensure it passes tests 
+   4. repeat until done.
 */
 with all_data as (
 

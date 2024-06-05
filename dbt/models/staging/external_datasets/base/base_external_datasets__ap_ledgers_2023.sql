@@ -5,6 +5,7 @@
 
     The raw data frequently has a duplicate or two slipped in there.  some lightweight de-duping is done here at the base.
 
+    ANNUAL TASK:
     DUPLICATE THIS FILE each year, replace the source, ensure correct columns are being reported.
 
 */ 
