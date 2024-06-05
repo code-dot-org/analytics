@@ -46,8 +46,6 @@ sources:
       - name: stg_ap_school_level_exam_results_raw_2022
         description: "AP school-level exam results for 2022"
 
-
-
       - name: stg_ap_school_level_exam_results_raw_2023
         description: "AP school-level exam results for 2023"
 
