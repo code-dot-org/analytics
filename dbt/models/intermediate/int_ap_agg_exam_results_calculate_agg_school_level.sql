@@ -5,8 +5,10 @@
     2. the computation of the 'cdo_audit' aggregate group from school-level exam results
 
 */
-with agg_exam_results as (
+with 
+agg_exam_results as (
     select
+        'college board' as source,
         exam_year,
         pd_year,
         reporting_group,
@@ -22,13 +24,11 @@ with agg_exam_results as (
         num_students
 
     from {{ref('stg_external_datasets__ap_agg_exam_results')}}
+)
+, cdo_audit_group_from_school_level_results as (
 
-    union all
-
-
-    -- 2. compose 'cdo_audit' agg reports from school_level_data
-    -- the order of these fields MUST match the order listed above.
     select
+        'college board' as source,
         exam_year, 
         null                as pd_year,
         'cdo_audit'         as reporting_group, -- in theory this should be run through the macro that normalizes these values
@@ -42,13 +42,12 @@ with agg_exam_results as (
         sum(num_students)   as num_students
 
     from {{ ref('stg_external_datasets__ap_school_level_exam_results') }}
-    {{ dbt_utils.group_by(9) }}
+    {{ dbt_utils.group_by(10) }}
 )
 , final as (
-    select 
-        'college board' as source,
-        * 
-    from agg_exam_results
+    select * from agg_exam_results
+    union all
+    select * from cdo_audit_group_from_school_level_results
 ) 
 select * 
 from final

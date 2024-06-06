@@ -4,9 +4,9 @@
     
 */
 with agg_exam_results as (
-    select * from {{ ref('int_ap_agg_exam_results') }}
+    select * from {{ ref('int_ap_agg_exam_results_calculate_race_no_response') }}
     union all
-    select * from {{ ref('int_ap_agg_exam_results_calculated_groups') }}
+    select * from {{ ref('int_ap_agg_exam_results_calculate_agg_race_groups') }}
 )
 , cdo_tr_multipliers as (
     select
@@ -37,6 +37,8 @@ with agg_exam_results as (
         demographic_category,
         demographic_group
 )
+
+
 , tr_urg as (
     /*
         The forumla here is:
@@ -148,6 +150,21 @@ with agg_exam_results as (
     ) as a 
     {{dbt_utils.group_by(7)}}
 )
+, urg_final_race_no_response as ( --make a copy of race_no_response to stick into the urg_final category so the category sums up properly
+    select 
+        source,
+        exam_year,
+        reporting_group,
+        rp_id,
+        exam,
+        'urg_final' as demographic_category,
+        demographic_group,
+        num_taking,
+        num_passing,
+        pct_passing  
+    from all_summary
+    where demographic_category = 'race' and demographic_group = 'race_no_response'
+)
 , final as (
     select * from all_summary
     union all
@@ -158,6 +175,8 @@ with agg_exam_results as (
     select * from urg_final
     union all
     select * from non_urg_final
+    union all
+    select * from urg_final_race_no_response
 )
 select
     source,
