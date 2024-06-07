@@ -62,10 +62,9 @@ models:
         tests:
           - not_null
 
-  - name: int_ap_agg_exam_results_calculated_groups
+  - name: int_ap_agg_exam_results_calculate_agg_race_groups
     description: |
-      This intermediate model builds more race/ethnic groupings of aggregated exam results data. Hierarchically, it is downstream from `int_ap_exam_results` and derives these groups from those data.
-      As of May, 2024 the groups are `bhnapi`, and `wh_as_other`.  These are needed both for reporting as well as for the URG calculation.
+      This intermediate model builds aggregated race/ethnic groupings (bhnapi and wh_as_other). These are needed both for reporting as well as for the URG calculation.
 
       For column descriptions please see upstream: `stg_ap_agg_exam_results` - the column descriptions are the same and the aggregation of school-level results is made to fit those descriptions.
       

@@ -5,6 +5,8 @@
     (2) union them together
     (3) normalize the values (e.g. APCSA, AP Computer Science A, etc. --> 'csa')
 
+    Note: the unpivot macro assumes that the first 8 columns are fixed.  See documentation for base tables that describe what those are and in what order.
+
     ANNUAL TASK:
     (0) (Assumption) you have created a new base table called base_external_datasets__ap_agg_exam_results_'~year for the year in question.
     (1) add a new exam year to the years [] array.
@@ -27,9 +29,6 @@ with unpivoted_data as (
         {% endif %}
     {% endfor %}
 
-    
-
-    
 )
 , normalized_values AS (
     SELECT

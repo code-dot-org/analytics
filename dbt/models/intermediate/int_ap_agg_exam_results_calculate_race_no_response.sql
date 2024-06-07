@@ -111,8 +111,6 @@ with all_agg_exam_results as (
             'race_no_response' as demographic_group,    -- ibid.
             t.score_category,
             t.score_of,
-            --t.num_students as total_num_students,
-            --r.num_students as sum_of_races_students,
             (t.num_students - coalesce(r.num_students,0)) as num_students_diff_tot_and_sum
         from sum_of_all_races r
         left join   totals_only t --should this just be a join?

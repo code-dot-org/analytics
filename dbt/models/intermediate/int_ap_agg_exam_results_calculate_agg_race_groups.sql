@@ -1,10 +1,10 @@
 /*
-    This model computes some different race/ethnic groups necessary for both reporting and for computing the URG numbers for the final summary report.
-    Hierarchically it is downstream from `int_ap_agg_exam_results` and builds on those data.
+    This model computes some different race/ethnic groups (bhnapi and wh_as_other) that are necessary 
+    for both reporting in general, and specifically for computing the URG numbers for the final summary report.
+
     
 
-    NOTE: this model could theoretically be part of int_agg_exam_results itself, but is a separate model right now because building int_agg_exam_results
-    with these additional CTEs performed horribly.  It built 20x faster as two separate models unioned together.
+    NOTE: this model computes ONLY these separate groups (as opposed to a union of these groups onto the existing agg reports)
 */
 
 with agg_exam_results as (
