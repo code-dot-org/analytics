@@ -1,7 +1,7 @@
 version: 2
 
 models: 
-  - name: int_ap_agg_exam_results_union_agg_school_level.sql
+  - name: int_ap_agg_exam_results_union_agg_school_level
     description: |
       This intermediate model unions together:
       
