@@ -27,8 +27,5 @@ final as (
     left join school_infos as sch
         on students.school_info_id = sch.school_info_id )
 
-select student_id, count(distinct school_id)
+select * 
 from final 
-group by 1 
-having count(distinct school_id)>1
-order by 2 desc

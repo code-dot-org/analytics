@@ -8,6 +8,7 @@ Design:
     - is_section_owner
     - school_id
 
+
 Ref: DATAOPS-321, 548
 */
 
@@ -74,6 +75,14 @@ teachers as (
         tsc.school_id,
         tsc.started_at_sy as school_year 
 
+        tsc.school_info_id,
+        row_number() over(
+            partition by 
+                followers.student_id, 
+                sy.school_year
+                order by 
+                    followers.created_at
+        ) as row_num
     from section_owners         as seco
     left join teacher_school_changes as tsc 
         on seco.teacher_id = tsc.teacher_id

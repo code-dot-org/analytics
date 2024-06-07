@@ -56,7 +56,7 @@ models:
           - not_null
           - unique
 
-      - name: most_recent_survey_school_year # fka: school_year
+      - name: last_survey_year 
         description: the school year associated with the most recent information about this school from NCES
       
       - name: is_stage_el
