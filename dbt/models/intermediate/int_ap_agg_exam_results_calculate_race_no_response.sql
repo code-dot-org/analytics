@@ -1,20 +1,32 @@
 /*
----------------------------------------------------------- 
--- several CTEs to compute race_no_response
--- 1. compute sum of all races for each score 1-5 
--- 2. find total num students for each score 1-5 
--- 3. find existing dataset with a `race_no_response` field already
--- 4. compute race_no_response =  total-sum_of_all_races, and report out if a 'race_no_response' doesn't already exist
+    This model computes the number of students in each data set who did not self-identify their race or ethnicity i.e. the "race_no_response" group.
+
+    The TRICKY part is that sometimes the College Board includes the "race_no_response" group and sometimes they don't - we need keep the data
+    if they provide it, or compute it if they don't.
+
+    This model goes through some pains to preserve the orginal "race_no_response" value IF IT EXISTS and otherwise
+    substitute a calculated version. If the original is preserved then source = 'college board', otherwise source='computed' 
+    
+    The ultimate goal: we want to ensure that every year|reporting|group|exam 
+    has a value for demographic_group='race_no_response' under the demographic_category='race'
+    such that the sum of all values under demographic_category='race' is equal to to the total.
+
+    The code below executes the following steps (more or less):
+
+    1. identify every possible year|exam|group|score that DOES NOT have "race_no_response" demographic group already
+    2. compute SUM-OF-ALL-RACES for those ^^^ group (ie. sum(num_taking) where demographic_category='race') 
+    3. find TOTAL num students for those ^^^ groups (i.e. where demographic_category = 'total')
+    4. compute "race_no_response" as: (TOTAL - SUM-OF-ALL-RACES) and union it to the records.
+    5. Output: all agg exam results UNION all "race_no_response" values for records that didn't have it
 ----------------------------------------------------------
 */
 
 with all_agg_exam_results as (
-
     select * 
-    from {{ ref('int_ap_agg_exam_results_calculate_agg_school_level') }}
-    
+    from {{ ref('int_ap_agg_exam_results_union_agg_school_level') }}
 )
-, agg_results_that_have_race_no_response_field as (
+-- Step 1: identify every possible year|exam|group|score that DOES NOT have "race_no_response" demographic group already
+, agg_results_that_have_race_no_response_field as ( 
     select
         distinct
         source,
@@ -25,12 +37,14 @@ with all_agg_exam_results as (
         exam,
         score_category
     from all_agg_exam_results
-    where demographic_category = 'race' and demographic_group = 'race_no_response'
+    where 
+        demographic_category = 'race' 
+        and demographic_group = 'race_no_response'
 )
 , agg_results_missing_race_no_response_field as (
     select rco.*
     from all_agg_exam_results rco
-    left join agg_results_that_have_race_no_response_field grnr -- could be inner select?
+    left join agg_results_that_have_race_no_response_field grnr -- could be inner select, rather than using a CTE?
         on rco.source = grnr.source
         and rco.exam_year = grnr.exam_year
         and (rco.pd_year = grnr.pd_year or (rco.pd_year is null and grnr.pd_year is null))
@@ -38,8 +52,12 @@ with all_agg_exam_results as (
         and (rco.rp_id = grnr.rp_id or (rco.rp_id is null and grnr.rp_id is null))
         and rco.exam = grnr.exam
         and rco.score_category = grnr.score_category
-    where grnr.source is null
+    where 
+        grnr.source is null  --could be grnr.anything is null 
+         and rco.demographic_category='race' 
+         and rco.demographic_group <> 'race_no_response' 
 )
+-- Step 2: compute SUM-OF-ALL-RACES for the agg_results_missing_race_no_response_field set
 , sum_of_all_races as ( -- 1. compute sum of all races for each score 1-5 
     select 
         source,
@@ -48,18 +66,19 @@ with all_agg_exam_results as (
         reporting_group,
         rp_id,
         exam,
-       --demographic_category,
-       --'sum-of-all-races' as demographic_group,
+       --demographic_category,        -- leaving these two lines commented out to prove intention to do so
+       --demographic_group,           -- this is a stepping stone/input to the final calc with will be hard-coded for demographic_category and _group
         score_category,
         score_of,
         sum(num_students) as num_students
     from agg_results_missing_race_no_response_field
-    where 
-        demographic_category='race' 
-        --and demographic_group <> 'race_no_response' --we want to compute the sum of all reported races; some data sets have 'race_no_response' already. even though we compute it here, we will exclude it later if already existed.
+    -- where 
+    --     demographic_category='race' 
+    --     and demographic_group <> 'race_no_response' 
     {{dbt_utils.group_by(8)}}
 )
-, totals_only as ( -- 2. find total num students for each score 1-5 
+-- Step 3: find TOTAL num students for every possible year|exam|group|score
+, totals_only as ( 
     select 
         t.source,
         t.exam_year,
@@ -67,8 +86,8 @@ with all_agg_exam_results as (
         t.reporting_group,
         t.rp_id,
         t.exam,
-        --t.demographic_category,
-        --'totals only' as demographic_group,
+        --t.demographic_category,        -- leaving these two lines commented out to prove intention to do so
+        --t.demographic_group,           -- this is a stepping stone/input to the final calc with will be hard-coded for demographic_category and _group
         t.score_category,
         score_of,
         sum(num_students) as num_students
@@ -76,7 +95,9 @@ with all_agg_exam_results as (
     where demographic_category='total'
     {{dbt_utils.group_by(8)}}
 )
-, race_no_response_calc as ( -- 4. compute race_no_response as diff between total and sum_of_all_races. Only use the computed result if the original dataset doesn't have an existing race_no_response field.
+-- Step 4: compute "race_no_response" as: (TOTAL - SUM-OF-ALL-RACES) and union it to the records
+-- giving it demographic_cateogry='race' and demographic_group = 'race_no_response'
+, race_no_response_calc as ( 
     select * 
     from ( 
         select 
@@ -86,8 +107,8 @@ with all_agg_exam_results as (
             t.reporting_group,
             t.rp_id,
             t.exam,
-            'race' as demographic_category,
-            'race_no_response' as demographic_group, 
+            'race' as demographic_category,             -- in theory this should be run through the normalization macro
+            'race_no_response' as demographic_group,    -- ibid.
             t.score_category,
             t.score_of,
             --t.num_students as total_num_students,
@@ -105,6 +126,7 @@ with all_agg_exam_results as (
             and (t.score_of = r.score_of OR (t.score_of is null and r.score_of is null))
     )
 )
+-- Step 5
 , final as (
     select * from all_agg_exam_results
     union all

@@ -1,7 +1,7 @@
 version: 2
 
 models: 
-  - name: int_ap_agg_exam_results
+  - name: int_ap_agg_exam_results_union_agg_school_level.sql
     description: |
       This intermediate model unions together:
       
@@ -12,7 +12,7 @@ models:
 
     columns:
       - name: source
-        description: used in downstream models to identify the source of the demographic category and group.  Since these data are just straight from the college board the source is `college board`
+        description: used in downstream models to identify the source of the data.  Since these data are just straight from the college board the source is `college board`. Downstream groups derived from this will be source = 'calculated'
       - name: exam_year
       - name: pd_year
       - name: reporting_group
@@ -24,7 +24,43 @@ models:
       - name: score_of
       - name: num_students
 
-
+  - name: int_ap_agg_exam_results_calculate_race_no_response 
+    description: >
+      This model computes the number of students in each dataset who are not associated with a race demographic_group
+      i.e., the "race_no_response" group. The model ensures every year|reporting|group|exam has a value for 
+      demographic_group='race_no_response' under demographic_category='race' such that the sum of all values under 
+      demographic_category='race' is equal to the total.
+    columns:
+      - name: source
+        description: "Indicates whether the data source is 'college board' or 'calculated'."
+      - name: exam_year
+        description: "The year the exam was taken."
+        tests:
+          - not_null
+      - name: pd_year
+        description: "The program year of the exam data."
+      - name: reporting_group
+        description: "The group for which the report is generated."
+        tests:
+          - not null
+      - name: rp_id
+        description: "Unique identifier for the reporting program."
+      - name: exam
+        description: "The name of the exam."
+        tests:
+          - not_null
+      - name: demographic_category
+        description: "Category of the demographic data, such as 'race' or 'total'."
+      - name: demographic_group
+        description: "Specific group within the demographic category, e.g., 'race_no_response'."
+      - name: score_category
+        description: "'total' or 'detail' - if 'detail' then there will be a score_of 1,2,3,4 or 5"
+      - name: score_of
+        description: "The specific score achieved 1,2,3,4 or 5"
+      - name: num_students
+        description: "Number of students in the demographic group for the specific score category."
+        tests:
+          - not_null
 
   - name: int_ap_agg_exam_results_calculated_groups
     description: |

@@ -4,6 +4,9 @@
     1. all of the aggregated ap exam results 
     2. the computation of the 'cdo_audit' aggregate group from school-level exam results
 
+    This makes almost the complete "classic" aggregrated exam results from College Board data.
+    There is more downstream work to do, to compute the race_no_response group and URGs.
+
 */
 with 
 agg_exam_results as (
@@ -14,9 +17,6 @@ agg_exam_results as (
         reporting_group,
         rp_id,
         exam,
-        --orig_col_name,
-        --demographic_group_raw,
-        --score_category_raw,
         demographic_category,
         demographic_group,
         score_category,
