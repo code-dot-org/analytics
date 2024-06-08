@@ -5,6 +5,11 @@ teachers as (
     where user_type = 'teacher'
 ),
 
+section_instructors as (
+    select * 
+    from {{ ref('stg_dashboard__section_instructors')}}
+),
+
 user_school_infos as (
     select * 
     from {{ ref('stg_dashboard_pii__user_school_infos') }}
@@ -38,15 +43,19 @@ teacher_schools as (
 
 final as (
     select 
-        teachers.*, 
+        tea.*, 
+        sei.is_section_owner,
         ts.school_id,
         school_years.school_year as created_at_school_year
-    from teachers 
+    from teachers as tea
+    left join section_instructors as sei 
+        on tea.teacher_id = sei.teacher_id 
+        and tea.section_id = sei.section_id 
     inner join teacher_schools as ts 
-        on teachers.user_id = ts.user_id
+        on tea.user_id = ts.user_id
         and ts.rnk = 1
     inner join school_years 
-        on teachers.created_at 
+        on tea.created_at 
             between school_years.started_at 
                 and school_years.ended_at)
 
