@@ -42,7 +42,7 @@ models:
       - name: reporting_group
         description: "The group for which the report is generated."
         tests:
-          - not null
+          - not_null
       - name: rp_id
         description: "Unique identifier for the reporting program."
       - name: exam
