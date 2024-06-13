@@ -21,6 +21,7 @@ with all_data as (
         {% endif %}
     {% endfor %}
 )
+
 select 
     exam_year,
     school_year,

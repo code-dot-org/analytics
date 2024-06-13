@@ -310,7 +310,6 @@ models:
         description: "`1` or `[some large number]` -- The number of schools represented in the aggregate record. This `1` in the case of results for a single school or some larger value (e.g. `650`) when this is the the 'LESS THAN 10 AGGREGATE' set of results"
         tests:
           - not_null
-
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['exam_year', 'ai_code', 'exam', 'demographic_group', 'score_of']
