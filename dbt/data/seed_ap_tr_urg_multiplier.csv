@@ -1,0 +1,15 @@
+dataset_name,exam_year,school_year,bhnapi_students,single_race_students,tr_urg_students,tr_tot_students,cdo_multiplier,notes,pulled_at
+ap_urg_calc_started,2017,2016-17,19680,47520,2371,3521,1.6259862428218148,using analysis.csp_csd_started per year,2024-05-15
+ap_urg_calc_started,2018,2017-18,66263,155565,8863,12459,1.6700841812924914,using analysis.csp_csd_started per year,2024-05-15
+ap_urg_calc_started,2019,2018-19,110593,259851,14643,20552,1.6740665722414652,using analysis.csp_csd_started per year,2024-05-15
+ap_urg_calc_started,2020,2019-20,131551,296682,16624,23257,1.6120513869786437,using analysis.csp_csd_started per year,2024-06-05
+ap_urg_calc_started,2021,2020-21,127833,285961,14222,20502,1.5517732858899902,using analysis.csp_csd_started per year,2024-06-05
+ap_urg_calc_started,2022,2021-22,143698,303219,15733,22246,1.4923314695692345,using analysis.csp_csd_started per year,2024-06-05
+ap_urg_calc_started,2023,2022-23,135752,281128,14838,21217,1.4482690730035557,using analysis.csp_csd_started per year,2024-06-05
+ap_urg_calc_completed,2017,2016-17,4418,12430,531,885,1.6880941602535084,analysis.csp_csd_completed per year,2024-05-15
+ap_urg_calc_completed,2018,2017-18,10446,28885,1361,2093,1.7980892610041277,analysis.csp_csd_completed per year,2024-05-15
+ap_urg_calc_completed,2019,2018-19,15856,44487,2135,3301,1.8146456742918928,analysis.csp_csd_completed per year,2024-05-15
+ap_urg_calc_completed,2020,2019-20,15143,43875,1955,3162,1.791389825598115,analysis.csp_csd_completed per year,2024-05-15
+ap_urg_calc_completed,2021,2020-21,16400,48929,1746,3084,1.6890883315934326,analysis.csp_csd_completed per year,2024-05-15
+ap_urg_calc_completed,2022,2021-22,18293,48837,1965,3329,1.5758424781275957,analysis.csp_csd_completed per year,2024-05-15
+ap_urg_calc_completed,2023,2022-23,19648,52648,2066,3590,1.5420533421647171,analysis.csp_csd_completed per year,2024-05-15
