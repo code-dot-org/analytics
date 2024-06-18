@@ -33,6 +33,8 @@ combined as (
 
         -- courses data 
         cs.course_name,
+        cs.course_name_true,
+
         
         -- dates
         usl.created_at
@@ -42,8 +44,8 @@ combined as (
         on usl.user_id = usr.user_id
     
     join course_structure as cs 
-        on usl.script_id = cs.script_id
-        on usl.level_id = cs.level_id )
+        on usl.script_id    = cs.script_id
+        and usl.level_id    = cs.level_id )
 
-select * 
+select *
 from combined
