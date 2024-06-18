@@ -3,6 +3,7 @@ target/
 dbt_packages/
 logs/
 venv/
+/archive/
 /.vscode/
 /.DS_Store
 requirements.txt
