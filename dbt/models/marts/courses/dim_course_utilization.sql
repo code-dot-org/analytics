@@ -10,7 +10,7 @@ course_structure as (
 
 user_levels as (
     select *
-    from {{ ref('stg_dashboard__user_levels') }}
+    from {{ ref('dim_user_levels') }}
     where user_id = 55870217 --testing 
 
 ),
@@ -31,11 +31,16 @@ teachers as (
     from {{ ref('dim_teacher_status') }}
 ),
 
-sections as (
-    select *
-    from {{ ref('dim_sections') }}
+active_sections as (
+    select * 
+    from {{ ref('int_active_sections')}}
 ),
 
+sections as (
+    select *
+    from {{ ref('int_section_mapping') }}
+
+),
 
 combined as (
     select 
@@ -47,11 +52,12 @@ combined as (
         cs.unit as unit_name,
 
         -- sections 
+        sec.section_id,
+        sec.teacher_id,
+        sec.student_id,
+        sec.school_id,
         sec.school_year,
-        sec.num_students_added,
-        sec.num_students_active,
-        count(distinct sec.section_id)      as num_sections,
-
+        
         -- teachers 
         tst.teacher_status,
         count(distinct tst.teacher_id) as num_teachers,
@@ -59,8 +65,6 @@ combined as (
         -- schools
         sst.school_status, 
         count(distinct sst.school_id) as num_schools,
-
-
         
         -- user levels 
         sum(attempts) as num_attempts,
@@ -70,15 +74,15 @@ combined as (
     left join user_levels   as ul 
         on ul.script_id = cs.script_id
         and ul.level_id = cs.level_id 
+
+    left join section_mapping as sec 
+        on ???
     
-    left join sections as sec
-        on sec.course_name = cs.course_name
-    
-    teacher_status as tst
+    left join teacher_status as tst
         on tst.teacher_id = sec.teacher_id 
         and tst.school_year = sec.school_year
     
-    school_status as sst 
+    left join school_status as sst 
         on sst.school_id = sec.school_id
         and sst.school_year = sec.school_year
 
