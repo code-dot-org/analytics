@@ -10,7 +10,9 @@ course_structure as (
 
 user_levels as (
     select *
-    from {{ ref('dim_user_levels') }}
+    from {{ ref('stg_dashboard__user_levels') }}
+    where user_id = 55870217 --testing 
+
 ),
 
 schools as (
@@ -44,8 +46,6 @@ combined as (
         cs.stage_name,
         cs.unit as unit_name,
 
-        
-        
         -- sections 
         sec.school_year,
         sec.num_students_added,
