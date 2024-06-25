@@ -1,21 +1,34 @@
 with 
 stages as (
+    select *     
+    from {{ ref('base_dashboard__stages') }}
+),
+
+renamed as (
     select 
         stage_id,
         stage_name,
-        case when is_lockable = 1 then absolute_position else relative_position end as stage_number,
-        absolute_position,
+        
+        case 
+            when is_lockable = 1 
+                then absolute_position 
+            else relative_position 
+        end as stage_number,
+        
         script_id,
-        created_at,
-        updated_at,
-        is_lockable,
-        relative_position,
-        -- properties,
         lesson_group_id,
+        
+        absolute_position,
+        relative_position,
         key,
-        has_lesson_plan        
-    from {{ ref('base_dashboard__stages') }}
-)
+
+        has_lesson_plan,
+        is_lockable,
+        is_unplugged,
+        
+        created_at,
+        updated_at
+    from stages)
 
 select * 
-from stages
+from renamed   

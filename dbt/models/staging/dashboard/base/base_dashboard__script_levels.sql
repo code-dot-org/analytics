@@ -9,17 +9,20 @@ renamed as (
         id                          as script_level_id,
         script_id,
         chapter,
-        created_at,
-        updated_at,
         stage_id,
         position,
+        seed_key,
+        activity_section_id,
+        activity_section_position,
+        
         assessment                  as is_assessment,
-        properties,
         named_level                 as is_named_level,
         bonus                       as is_bonus,
-        activity_section_id,
-        seed_key,
-        activity_section_position
+        
+        properties,
+        
+        created_at,
+        updated_at
     from source
 )
 
