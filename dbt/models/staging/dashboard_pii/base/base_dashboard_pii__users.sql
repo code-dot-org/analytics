@@ -18,9 +18,13 @@ renamed as (
         created_at,
         updated_at,
         purged_at,
-        deleted_at
-    from source
-)
+        deleted_at,
+        nullif(
+            json_extract_path_text(
+            lower(properties), 
+            'us_state',    
+             true),'')          as us_state 
+    from source )
 
-select * 
+select *
 from renamed

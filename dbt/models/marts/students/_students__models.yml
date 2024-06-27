@@ -82,12 +82,41 @@ models:
 
   - name: dim_students
     description: This model contains all student accounts ever created + geographic info on the student
+<<<<<<< HEAD
     columns:
       - name: user_id
         description: unique ID for individual student user
         tests:
           - not_null
           - unique
+=======
+    columns: 
+    - name: user_id
+      description: unique ID for individual student user
+      tests: 
+        - not_null
+        - unique
+        
+    # - name: user_type
+    #   description: always "student"- used for verification
+    #   tests: 
+    #     - not_null 
+    
+    - name: created_at_school_year
+      description: the school year in which the student account was created
+        
+    - name: gender
+      description: the classified gender of a student based on their free-response input
+    
+    - name: is_urg
+      description: flag to determine whether a student selected at least one of the following races- black, hispanic, hawaiian/ pacific islander, native american
+    
+    - name: is_international 
+      description: 1 if last activity was outside the US, 0 otherwise
+
+    - name: school_id
+      description: school association of student 
+>>>>>>> cdd5eb4ef40375351910c2dcd5120d43272cc9f8
 
       # - name: user_type
       #   description: always "student"- used for verification

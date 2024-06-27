@@ -29,7 +29,7 @@ combined as (
         schools.state,
         schools.zip,
 
-        school_stats_by_years.school_year   as most_recent_survey_school_year,
+        school_stats_by_years.school_year   as last_survey_year,
         school_stats_by_years.is_stage_el,
         school_stats_by_years.is_stage_mi,
         school_stats_by_years.is_stage_hi,
