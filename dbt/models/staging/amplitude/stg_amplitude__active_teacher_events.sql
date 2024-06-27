@@ -13,11 +13,13 @@ with amp_events as (
 
         case
             when event_type = 'Teacher Viewing Student Work' then 'View Work'
-            when event_type = 'Section Progress Viewed' then  'View Progress'
+            when event_type = 'Section Progress Viewed' then  'View Progress' --this version is undercounting, updated by platform to version below
+            when event_type = 'Accurate V1 Section Progress Viewed' then 'View Progress'
             when event_type = 'Teacher Login' then 'Login Page'
             when event_type = 'Unit Overview Page Visited By Teacher' then 'View Unit Page'
             when event_type = 'Lesson Overview Page Visited' then 'View Lesson Plan'
-            when event_type = 'Section Progress Unit Changed' then 'Change unit'
+            when event_type = 'Section Progress Unit Changed' then 'Toggle Unit'  --Better captures what's happening, per platform
+            when event_type = 'Section Curriculum Assigned' then 'Assign Unit'
             else event_type     
         end as event_type_short_name,
             
