@@ -1,0 +1,461 @@
+version: 2
+
+models:
+  - name: stg_external_datasets__access_report_megatable
+    description: |
+      Union of all Access Report 'megatables' detailing information about each school's computer science offerings per year, and various metadata related to the sources of data that provided Y/N information about whether the school offered CS.
+      The so-called 'megatable' is a long, one-row-per-datasource-per-year, raw ingest of data from files stored in S3.  
+      For example, if school 1234567 has data from three different data sources in 2023, then this table with will have three records for school `1234567`, and year `2023`
+      The megatable is produced by a procedure that reads all the data in all the files in s3 for all known data sources and essentially unions it together.
+      These data are reshaped and aggregated at the one-row-per-school level in the `access_report_review_table`
+    columns:
+      - name: access_report_year
+        description: "The 'Access Report Year' for which the data are applicable.  i.e. access_report_year = 2023 means the data is for the access report we released in 2023"
+        tests:
+          - not_null
+      - name: school_name
+        description: "The name of the school."
+        tests:
+          - not_null
+      - name: nces_school_id
+        description: "The unique identifier for the school as provided by the National Center for Education Statistics (NCES)."
+        tests:
+          - not_null
+
+      - name: teaches_cs
+        description: |
+          Indicates whether the school teaches computer science. Possible values are:
+            - 'Y' for Yes
+            - 'N' for No
+            - 'E' for Exclude
+            - 'HY' for _Historical Yes_ (meaning, the school was a 'yes' in a recent prior year, but we did not get any info about it this year. Typically this means we assume it's a 'yes')
+            - 'HN' for _Historical No_ (same concept as 'Historical Yes', only replace 'yes' with 'no')
+            - 'unknown' for...well, unknown.
+            - '' some items slip through with empty string as teaches_cs. Usually okay because another data source overrides it. Okay here, but not okay in the review table
+        tests:
+          - accepted_values:
+              values: ['Y', 'N', 'E', 'HY', 'HN', 'unknown','']
+          - not_null
+
+      - name: source
+        description: |
+          The source of the data telling us whether the school offers CS (yes) or not (no). Possible values include:
+            - 'doe' - a state dept. of Ed.  This is the preferred source.
+            - 'survey' - a proponderance of results from a survey on our website suggests this school has CS
+            - 'override' - we know better.  This source is generate by a us, code.org, when we know whether a school offers CS or not, and we want that to override any/all other possible sources.
+            - 'staff_entry' - a handful of schools that our staff entered by hand.
+
+            - 'bootup' - a CS provider telling us which schools teach CS
+            - 'ap' - ibid.
+            - 'last_year' - ibid.
+            - 'ib' - ibid.
+            - 'cambridge' - ibid.
+            - 'teals' - ibid.
+
+            - 'nces_data' - unsure if this means anything beyond we got the school_id from nces_data. teaches_cs is `unknown` for all records where this is the only source.
+        tests:
+          - accepted_values:
+              values: ['override', 'staff_entry', 'bootup', 'ap', 'last_year', 'ib', 'cambridge', 'doe', 'survey', 'nces_data', 'teals']
+          - not_null
+      - name: filename
+        description: "The name of the file from which the data was sourced.  You should be able to locate this file in S3."
+        tests:
+          - not_null
+      - name: notes
+        description: "Additional notes or comments regarding the data entry."
+
+  - name: stg_external_datasets__access_report_review_table
+    description: |
+      This table is an aggregation of `stg_external_datasets__access_report_megatable` at the level of one-record-per-school_id-per-access_report_year.
+      If you want to know the story of how a school was marked 'Y' or 'N' for the access report for a given year, use this table.
+      
+    columns:
+      - name: access_report_year
+        description: "The 'Access Report Year' for which the data are applicable.  i.e. access_report_year = 2023 means the data is for the access report we released in 2023"
+        tests:
+          - not_null
+
+      - name: nces_school_id
+        description: "The unique identifier for the school as provided by the National Center for Education Statistics (NCES)."
+        tests:
+          - not_null
+
+      - name: state
+        description: "The state where the school is located."
+
+      - name: school_name
+        description: "The name of the school."
+
+      - name: grade_levels
+        description: "The grade levels offered by the school in human readable format, two chars per level: `elmihi`.  For example, if a school offers elemetary-only that will be `el____`.  If a school offers grades 6-12 that will be `__mihi`"
+        tests:
+          - accepted_values:
+              values: ['el____', 'elmi__', 'el__hi','elmihi','__mi__','__mihi','____hi','______']
+
+      - name: school_type
+        description: "The type of school. Possible values are 'public' and 'charter'."
+
+      - name: doe
+        description: "Indicates if the Department of Education provides data. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: provider_ib
+        description: "Indicates if the school offers International Baccalaureate programs. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: provider_ap
+        description: "Indicates if the school offers Advanced Placement programs. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: provider_teals
+        description: "Indicates if the school offers TEALS programs. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: provider_bootup
+        description: "Indicates if the school offers BootUp programs. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: provider_cambridge
+        description: "Indicates if the school offers Cambridge programs. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: provider_cyber
+        description: "Indicates if the school offers Cyber programs. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: all_providers
+        description: "Indicates if the school offers all listed providers. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: survey
+        description: "Indicates if data is provided by a survey. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: staff_entry
+        description: "Indicates if data is provided by staff entry. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: last_year
+        description: "Indicates if data is from last year. Possible values are 'Y' for Yes, 'N' for No, 'E' for Exclude, 'HN' for Hybrid No, 'HY' for Hybrid Yes."
+        tests:
+          - accepted_values:
+              values: ['Y', 'N', 'E', 'HN', 'HY']
+      - name: override
+        description: "Indicates if data is an override. Possible values are 'Y' for Yes, 'N' for No, 'E' for Exclude, 'HN' for Hybrid No, 'HY' for Hybrid Yes."
+        tests:
+          - accepted_values:
+              values: ['Y', 'N', 'E', 'HN', 'HY']
+
+      - name: teaches_cs_final
+        description: "Indicates the final decision on whether the school teaches computer science. Possible values are 'Y' for Yes, 'N' for No, 'flag', 'unknown'."
+        tests:
+          - accepted_values:
+              values: ['Y', 'N', 'HY', 'HN', 'E','flag', 'unknown']
+      - name: filenames
+        description: "The name of the file from which the data was sourced."
+      - name: notes
+        description: "Additional notes or comments regarding the data entry."
+
+
+  - name: stg_external_datasets__ap_agg_exam_results
+    description: |
+      The purpose of this staging table is to:
+      
+      1. Reshape the (~75-col wide) base tables of aggregate exam results for any/all years into 7 columns that form the grain of the table.
+      2. Union them together.
+      3. Normalize the values for e.g. exam, exam/reporting_group, demographic_category, demographic_group, score_category, etc. (see macros/ap_normalization_macros.sql)
+      
+    columns:
+      - name: exam_year
+        description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
+        tests:
+          - not_null
+      - name: pd_year
+        description: "The `pd_year` is here for historical consistency.  If the school year is e.g. 2019-20, then the `pd_year` is 2019 and the `exam_year` is 2020"
+      - name: reporting_group
+        description: |
+          Historically known as **`exam_group`**, the name was changed to disambuguate from demographic groups. 
+          The field is the name of the aggregated report we get back from the college board derived from lists of schools we provide to the college board with "tags".  
+          The "tags" _are_ the reporting group, however we don't give and get them back with consistent names YoY.  So this field normalized reporting group into consisten YoY labels e.g. `cdo_audit`, `csp_users_and_audit` etc. 
+          As of 2024 the set of reporting groups (given by `select distinct reporting_group from stg_external_datasets__ap_agg_exam_results` ) is:
+          ```
+          2019_AFE
+          2019_and_2020_AFE
+          2020_AFE
+          cdo_audit
+          csa pd all time
+          csa_users
+          csa_users_afe
+          csa_users_and_audit
+          csp pd all time
+          csp pd per year
+          csp_users
+          csp_users_afe
+          csp_users_and_audit
+          national
+          pd_2016
+          pd_2017
+          pd_2018
+          pd_2019
+          pd_2020
+          rp all time
+          rp per year
+          ```
+        tests:
+          - not_null
+      - name: rp_id
+        description: "The regional partner id. This is for years when we recieved sepearate aggregated reports for our regional partners, and is largely historical at this point. Regional partner reports would now need to be derived and calcuated from `school_level_exam_results` data in a different model."
+      - name: exam
+        description: "The specific AP exam for which the record applies. This is normalized to one of (`csp`, `csa`, `sum_csa_csp`)."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['csp', 'csa', 'sum_csa_csp']
+      - name: orig_col_name
+        description: "The original column name before normalization and transformation. For reference; not included in downstream models."
+      - name: demographic_group_raw
+        description: "The raw demographic group extracted from the original column name. For reference; not included in downstream models."
+      - name: score_category_raw
+        description: "The raw score category extracted from the original column name. For reference; not included in downstream models."
+      - name: demographic_category
+        description: |
+          The category to which the demographic group belongs, such as race or gender. At this staging level the only demographics categories are those we get directly from the college board:
+            ```
+            gender
+            race
+            total
+            ```
+          PLEASE NOTE: **additional demographic categories are added** in downstream models to handle other race/ethnic groupings such as BHNAPI, URG, etc.
+        tests:
+          - not_null
+      - name: demographic_group
+        description: |
+          The normalized demographic group e.g. 'black', 'hispanic', 'white', etc. As of May 2024 this set of groups is:
+          ```
+            american_indian
+            asian
+            black
+            female
+            hawaiian
+            hispanic
+            male
+            other_gender
+            race_no_response
+            total
+            two_or_more
+            white
+          ```
+        tests:
+          - not_null
+      - name: score_category
+        description: "Either `total` or `detail`. 'total' means the number of total student associated with this demographic_group. 'detail' means use this combined with `score_of` tells you the number of students in this demographic_group who got a particular score."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['total', 'detail']
+      - name: score_of
+        description: "One of: `null`, `1`,`2`,`3`,`4`, or`5`. 'null' means the number of students reported here is a total (see: score_category). Otherwise it's the number of students with a specific exam score 1-5."
+        tests:
+          - accepted_values:
+              values: [null, '1', '2', '3', '4', '5']
+      - name: num_students
+        description: "The number of students in this `demographic_group` earning a `score_of` in this `score category`."
+        tests:
+          - not_null
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['exam_year', 'reporting_group', 'pd_year', 'rp_id', 'exam', 'demographic_group', 'score_of']
+
+  - name: stg_external_datasets__ap_crosswalks
+    description: "Staging model that consolidates (unions) AP crosswalk data from multiple years and ensures consistent formatting of school IDs and ZIP codes."
+    columns:
+      - name: exam_year
+        description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
+        tests:
+          - not_null
+      - name: source
+        description: "The source of the AP crosswalk data. e.g. 'college board', 'by_hand_matching' etc.  "
+        tests:
+          - not_null
+      - name: nces_id
+        description: "The National Center for Education Statistics (NCES) ID, padded to ensure consistent formatting."
+        tests:
+          - not_null
+          - test_string_length_in:
+              list_of_acceptable_lengths: "8, 12"
+      - name: ai_code
+        description: "The College Board AI (Attending Institution) code, padded to ensure consistent formatting."
+        tests:
+          - not_null
+          - test_string_length_in:
+              list_of_acceptable_lengths: "6"
+
+      - name: school_name
+        description: "The name of the school _as given_ by the College Board - this might vary in spelling and/or capitalization with what you might find in our other NCES schools data."
+        tests:
+          - not_null
+      - name: city
+        description: "The city where the school is located."
+        tests:
+          - not_null
+      - name: state
+        description: "The state where the school is located."
+        tests:
+          - not_null
+      - name: zip
+        description: "The ZIP code of the school's location, padded to ensure consistent formatting."
+        tests:
+          - not_null
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['exam_year', 'ai_code', 'nces_id']
+
+  - name: stg_external_datasets__ap_ledgers
+    description: "Staging model that consolidates AP ledger data from multiple years, standardizing AI codes and including detailed information about exams, schools, and providers."
+    columns:
+      - name: exam_year
+        description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
+        tests:
+          - not_null
+      - name: school_year
+        description: "The academic year in which the AP exam took place. i.e. exam_year 2023 means the 2022-23 school year."
+        tests:
+          - not_null
+      - name: exam
+        description: "The specific AP exam for which the record applies.  This is normalized to one of (`csp` or `csa`)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['csp', 'csa']
+      - name: ledger_group
+        description: "The group or category of the ledger entry."
+        tests:
+          - not_null
+      - name: ai_code
+        description: "The AI (Attending Institution) code, padded to ensure consistent formatting."
+        tests:
+          - not_null
+          - test_string_length_in:
+              list_of_acceptable_lengths: "6"
+      - name: school_name
+        description: "The name of the school _as given_ by the College Board - this might vary in spelling and/or capitalization with what you might find in our other NCES schools data."
+
+      - name: city
+        description: "The city where the school is located."
+
+      - name: state
+        description: "The state where the school is located."
+
+      - name: country
+        description: "The country where the school is located."
+
+      - name: provider_syllabus
+        description: "The syllabus provided by the exam provider. Typically 'code.org' but sometimes e.g. 'CMU + code.org' or some listing with a collaborative partner."
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['exam_year', 'exam', 'ai_code', 'ledger_group']
+
+  - name: stg_external_datasets__ap_school_level_exam_results
+    description: |
+      AP school-level exam results staging. This model is VERY similar to `stg_agg_exam_results` except the AP exam score aggregation is happening 
+      as the single school-level, rather than groups of schools. 
+
+      The College Board gives us results aggregated at the school level **if the number of students taking the exam at that school is ≥ 10**. 
+      
+      For all schools with **fewer than 10 students** an aggregate report is created with a **`school_name` like 'LESS THAN 10 AGGREGATE'**.
+
+      The model does the following:
+      
+      1. Reshapes the (~75 column wide) raw school-level exam results table into a long table, fixing the first 8 columns and pivoting all subsequent columns into key-value pairs: orig_col_name | orig_value.
+      2. Unions multiple years of data together.
+      3. Renames columns and normalizes the values (see macros/ap_normalization_macros.sql)
+
+      **WHEN onobarding new data please do testing and clean up:**
+
+      a. Look for values with 'UNEXPECTED' – these are new values or encodings in the college board data that should be added to the macros that normalize these values.
+      b. Ensure you identify the "less-than-10-aggregate" school record to see how many schools are included in that aggregate. Check that in your resulting data there are records where num_schools equals that number.
+
+      NOTE: The `num_schools` field is produced by a macro that looks for a `school_name like '%LESS THAN 10%=%'` and extracts the number value from the string that appears after the `=` sign. 
+      Every other school is assigned `num_schools=1`. If the school name does not conform to that pattern, update the macro to handle the new pattern.
+
+    columns:
+      - name: exam_year
+        description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
+        tests:
+          - not_null
+      - name: country
+        description: "The country where the school is located."
+        tests:
+          - not_null
+      - name: ai_code
+        description: "The AI (Attending Institution) code, padded to ensure consistent formatting."
+        tests:
+          - not_null
+          - test_string_length_in:
+              list_of_acceptable_lengths: "6"
+
+      - name: high_school_name
+        description: "The name of the high school."
+
+      - name: state
+        description: "The state where the high school is located."
+
+      - name: ap_school_type
+        description: "The type of AP school."
+
+      - name: analysis_school_type
+        description: "The type of school used for analysis purposes."
+
+      - name: exam
+        description: "The specific AP exam for which the record applies. This is normalized to one of (`csp` or `csa`)."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['csp', 'csa']
+      - name: orig_col_name
+        description: "The original column name before normalization and transformation. For reference; not included in downstream models."
+      - name: demographic_group_raw
+        description: "The raw demographic group extracted from the original column name. For reference; not included in downstream models."
+      - name: score_category_raw
+        description: "The raw score category extracted from the original column name. For reference; not included in downstream models."
+      - name: demographic_category
+        description: |
+          The category to which the demographic group belongs, such as race or gender. At this staging level the only demographics categories are those we get directly from the college board:
+            ```
+            gender
+            race
+            total
+            ```
+          PLEASE NOTE: **additional demographic categories are added** in downstream models to handle other race/ethnic groupings such as BHNAPI, URG, etc.
+        tests:
+          - not_null
+      - name: demographic_group
+        description: |
+          The normalized demographic group e.g. 'black', 'hispanic', 'white', etc. As of May 2024 this set of groups is:
+          ```
+            american_indian
+            asian
+            black
+            female
+            hawaiian
+            hispanic
+            male
+            other_gender
+            race_no_response
+            total
+            two_or_more
+            white
+          ```
+        tests:
+          - not_null
+      - name: score_category
+        description: "Either `total` or `detail`. 'total' means the number of total student associated with this demographic_group. 'detail' means use this combined with `score_of` tells you the number of students in this demographic_group who got a particular score."
+      - name: score_of
+        description: "One of: `null`, `1`,`2`,`3`,`4`, or`5`. 'null' means the number of students reported here is a total (see: score_category). Otherwise it's the number of students with a specific exam score 1-5."
+        tests:
+          - accepted_values:
+              values: [null, '1', '2', '3', '4', '5']
+      - name: num_students
+        description: "The number of students in this `demographic_group` earning a `score_of` in this `score category`."
+        tests:
+          - not_null
+      - name: num_schools
+        description: "`1` or `[some large number]` -- The number of schools represented in the aggregate record. This `1` in the case of results for a single school or some larger value (e.g. `650`) when this is the the 'LESS THAN 10 AGGREGATE' set of results"
+        tests:
+          - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['exam_year', 'ai_code', 'exam', 'demographic_group', 'score_of']
