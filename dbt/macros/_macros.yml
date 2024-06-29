@@ -12,6 +12,9 @@ macros:
   - name: us_intl_label
     description: Quick and handy way to convert is_international to a reporting label.
 
+  - name: run_rosetta
+    description: kick off rosetta each week on mondays
+
 
 # template from chatgpt
 
