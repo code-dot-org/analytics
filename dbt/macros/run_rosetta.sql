@@ -7,4 +7,5 @@
 
 {% macro run_rosetta() %}
     CALL analysis.run_rosetta();
+    
 {% endmacro %}
