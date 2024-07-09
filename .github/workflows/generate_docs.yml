@@ -1,0 +1,29 @@
+name: Generate DBT Docs
+
+on:
+  push:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+          with:
+            python-version: '3.10' 
+
+      - name: Install dbt
+        run: python -m pip install dbt-core dbt-redshift
+
+      - name: Run a one-line script
+        run: dbt --version
+
+      # Runs a set of commands using the runners shell
+      # - name: Run a multi-line script
+        # run: |
+          # echo Add other actions to build,
+          # echo test, and deploy your project.
