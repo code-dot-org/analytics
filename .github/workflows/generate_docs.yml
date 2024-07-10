@@ -40,10 +40,6 @@ jobs:
                 ra3_node: true # see https://github.com/dbt-labs/dbt-redshift/issues/281#issuecomment-1407131697
           " > ~/.dbt/profiles.yml
 
-      # for debugging purposes
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Install dbt dependencies
         working-directory: ./dbt
         run: dbt deps
@@ -51,3 +47,7 @@ jobs:
       - name: Generate dbt docs
         working-directory: ./dbt
         run: dbt docs generate
+
+      # for debugging purposes
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
