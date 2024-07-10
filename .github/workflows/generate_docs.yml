@@ -40,7 +40,9 @@ jobs:
           " > ~/.dbt/profiles.yml
 
       - name: Install dbt dependencies
+        working-directory: ./dbt
         run: dbt deps
 
       - name: Generate dbt docs
+        working-directory: ./dbt
         run: dbt docs generate
