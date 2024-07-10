@@ -10,7 +10,6 @@ on:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    environment: github-pages
 
     steps:
       - uses: actions/checkout@v4
@@ -22,8 +21,6 @@ jobs:
         run: python -m pip install dbt-core dbt-redshift
 
       - name: Set up dbt profile
-        env:
-          DBT_HOST: ${{ secrets.DBT_HOST }}
         run: |
           mkdir -p ~/.dbt
           echo "
@@ -32,12 +29,12 @@ jobs:
             outputs:
               dev:
                 type: redshift
-                host: \"$DBT_HOST\"
+                host: \"${{ secrets.DBT_HOST_TEST }}\"
                 user: \"${{ secrets.DBT_USER_TEST }}\"
-                password: \"${{ secrets.DBT_PASSWORD }}\"
+                password: \"${{ secrets.DBT_PASSWORD_TEST }}\"
                 port: 5439
                 dbname: dev
-                schema: \"${{ secrets.DBT_DB_SCHEMA }}\"
+                schema: \"${{ secrets.DBT_DB_SCHEMA_TEST }}\"
                 sslmode: disable
                 threads: 16
           " > ~/.dbt/profiles.yml
