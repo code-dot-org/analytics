@@ -32,7 +32,7 @@ jobs:
               dev:
                 type: redshift
                 host: \"$DBT_HOST\"
-                user: \"${{ secrets.DBT_USER }}\"
+                user: \"${{ secrets.DBT_USER_TEST }}\"
                 password: \"${{ secrets.DBT_PASSWORD }}\"
                 port: 5439
                 dbname: dev
