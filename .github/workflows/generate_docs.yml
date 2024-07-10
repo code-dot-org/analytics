@@ -25,16 +25,16 @@ jobs:
           mkdir -p ~/.dbt
           echo "
           cdo_redshift:
-            target: \"dev\"
+            target: dev
             outputs:
               dev:
                 type: redshift
-                host: ${{ secrets.DBT_HOST }}
-                user: ${{ secrets.DBT_USER }}
-                password: ${{ secrets.DBT_PASSWORD }}
+                host: \"${{ secrets.DBT_HOST }}\"
+                user: \"${{ secrets.DBT_USER }}\"
+                password: \"${{ secrets.DBT_PASSWORD }}\"
                 port: 5439
                 dbname: dev
-                schema: ${{ secrets.DBT_DB_SCHEMA }}
+                schema: \"${{ secrets.DBT_DB_SCHEMA }}\"
                 sslmode: disable
                 threads: 16
           " > ~/.dbt/profiles.yml
