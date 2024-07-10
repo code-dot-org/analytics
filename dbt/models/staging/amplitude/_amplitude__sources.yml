@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: amplitude
+    database: dev 
+    schema: amplitude
+    tables:
+      - name: events_423027
