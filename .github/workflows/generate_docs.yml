@@ -25,7 +25,7 @@ jobs:
           mkdir -p ~/.dbt
           echo "
           cdo_redshift:
-            target: dev
+            target: \"dev\"
             outputs:
               dev:
                 type: redshift
