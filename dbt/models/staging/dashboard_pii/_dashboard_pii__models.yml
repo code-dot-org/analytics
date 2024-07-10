@@ -1,6 +1,9 @@
 version: 2
 
 models:
+  - name: stg_dashboard_pii__projects
+    description: records of all user's projects 
+
   - name: stg_dashboard_pii__level_sources
     description: bringing in these data for level source mapping
     

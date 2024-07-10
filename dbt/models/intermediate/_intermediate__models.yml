@@ -1,6 +1,80 @@
 version: 2
 
 models: 
+  - name: int_daily_summary_user_level_activity
+    description: "This model summarizes user-level activity per user per day.  Specifically, this summarizes the number of first-time interactions a user had with levels on a given day. It does not count re-visits to levels."
+    columns:
+      - name: user_id
+        description: "The Code.org user id for this user."
+        tests:
+          - not_null
+      - name: activity_date
+        description: "The date (day) of the user's activity. Extracted and cast from the user_level record `created_at` timestamp. Multiple records per day are aggregated and summarized for each day."
+        tests:
+          - not_null
+      - name: course_list
+        description: "A concatenated list of unique course names that the user has interacted with on a particular day, ordered alphabetically."
+      - name: num_user_level_records
+        description: "The count of user-level records created in the database for the user on the specified activity date. This indicates the number of levels a user interacted with for the first time on this day."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - activity_date
+
+
+  - name: int_daily_summary_sign_ins
+    description: "This model summarizes the number of sign-ins per user per day. It tracks the number of times a user logs in per day."
+    columns:
+      - name: user_id
+        description: "The Code.org user id for this user."
+        tests:
+          - not_null
+      - name: activity_date
+        description: "The date (day) of the user's sign-in. Extracted and cast from the `sign_in_at` timestamp. The model aggregates multiple sign-ins per day to summarize the first sign-in of the day."
+        tests:
+          - not_null
+      - name: num_records
+        description: "The count of sign-in records for the user on the specified activity date. Represents the number of times the user generated a new session / sign-in record on this day."
+    
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - activity_date
+
+  - name: int_daily_summary_project_activity
+    description: |
+      This model aggregates and summarizes the number and types of **new projects** each user created per day. 
+      It lists unique project types engaged per day and counts the total project records created on that day.
+
+      _(A future modification of this model could include updates to projects, rather that just new project creations, but we would need to start logging that. As of 5.15.24 that data is not being collected)_
+    columns:
+      - name: cdo_user_id
+        description: "The Code.org user_id (via their project_storage_id)"
+
+      - name: project_id
+        description: "The project id associated with the creator of the project (use this when cdo_user_id is null for anonymous projects )"
+      - name: user_id_merged
+        description: The `cdo_user_id` if a known code.org user id exists, otherwise value is `'project_id_' || project_id`.  This 'merged' user id serves as a unique identifer accross all projects for known code.org users, and anonymous.
+
+      - name: activity_date
+        description: "The date (day) when the project record was created, derived from the `created_at` timestamp."
+        tests:
+          - not_null
+      - name: project_types
+        description: "A comma-separated list of distinct project types (applab, gamelab, etc.) the user engaged with on a particular day, ordered alphabetically."
+      - name: num_project_records
+        description: "The count of projects created associated with the user on the specified activity date."
+    
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id_merged
+            - activity_date
+
+
+
   - name: int_active_sections
     description: all sections passing the "active" threshold in a given school year (5+ students completing 1+ levels of same course)
     tests:

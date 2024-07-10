@@ -104,3 +104,9 @@ models:
           tags:
             - "base"
           materialized: ephemeral
+
+      amplitude:
+        base: 
+          tags:
+            - "base"
+          materialized: ephemeral
