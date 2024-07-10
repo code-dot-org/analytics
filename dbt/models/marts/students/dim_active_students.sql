@@ -33,7 +33,7 @@ with cutoff_date as (
         activity_date, 
         num_sign_ins        as num_records
 
-    from {{ref('int_daily_summary_sign_in')}}
+    from {{ref('int_daily_summary_sign_ins')}}
     where activity_date >= (select cutoff_date from cutoff_date limit 1)
 )
 , projects_summary as (
