@@ -39,6 +39,7 @@ jobs:
                 threads: 16
           " > ~/.dbt/profiles.yml
 
+      # for debugging purposes
       # - name: Setup tmate session
       #   uses: mxschmitt/action-tmate@v3
 
