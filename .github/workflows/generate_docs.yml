@@ -24,6 +24,8 @@ jobs:
         uses: mxschmitt/action-tmate@v3
 
       - name: Set up dbt profile
+        env:
+          DBT_HOST: ${{ secrets.DBT_HOST }}
         run: |
           mkdir -p ~/.dbt
           echo "
@@ -32,7 +34,7 @@ jobs:
             outputs:
               dev:
                 type: redshift
-                host: \"${{ secrets.DBT_HOST }}\"
+                host: \"$DBT_HOST\"
                 user: \"${{ secrets.DBT_USER }}\"
                 password: \"${{ secrets.DBT_PASSWORD }}\"
                 port: 5439
