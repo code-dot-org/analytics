@@ -37,6 +37,7 @@ jobs:
                 schema: \"${{ secrets.DBT_DB_SCHEMA_TEST }}\"
                 sslmode: disable
                 threads: 16
+                ra3_node: true # see https://github.com/dbt-labs/dbt-redshift/issues/281#issuecomment-1407131697
           " > ~/.dbt/profiles.yml
 
       # for debugging purposes
