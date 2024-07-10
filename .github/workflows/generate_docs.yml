@@ -1,7 +1,6 @@
 name: Generate DBT Docs
 
 on:
-  pull_request:
   push:
     branches: [ "main" ]
   # allows manual running
