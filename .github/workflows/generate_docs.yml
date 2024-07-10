@@ -1,6 +1,7 @@
 name: Generate DBT Docs
 
 on:
+  pull_request:
   push:
     branches: [ "main" ]
   # allows manual running
@@ -28,12 +29,12 @@ jobs:
             outputs:
               dev:
                 type: redshift
-                host: \"${{ secrets.DBT_HOST_TEST }}\"
-                user: \"${{ secrets.DBT_USER_TEST }}\"
-                password: \"${{ secrets.DBT_PASSWORD_TEST }}\"
+                host: \"${{ secrets.DBT_HOST }}\"
+                user: \"${{ secrets.DBT_USER }}\"
+                password: \"${{ secrets.DBT_PASSWORD }}\"
                 port: 5439
                 dbname: dev
-                schema: \"${{ secrets.DBT_DB_SCHEMA_TEST }}\"
+                schema: \"${{ secrets.DBT_DB_SCHEMA }}\"
                 sslmode: disable
                 threads: 16
                 ra3_node: true # see https://github.com/dbt-labs/dbt-redshift/issues/281#issuecomment-1407131697
