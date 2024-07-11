@@ -32,14 +32,13 @@ teachers as (
 ),
 
 active_sections as (
-    select * 
+    select *, 1 as is_active
     from {{ ref('int_active_sections')}}
 ),
 
 sections as (
     select *
-    from {{ ref('int_section_mapping') }}
-
+    from {{ ref('dim_sections') }}
 ),
 
 combined as (

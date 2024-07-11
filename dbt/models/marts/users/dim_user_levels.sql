@@ -41,6 +41,7 @@ combined as (
             usl.created_date,
             usl.updated_date) as activity_date,
         
+        usl.unlocked_at,
         usl.level_id,
         usl.script_id,
         usr.us_state,
@@ -61,6 +62,7 @@ combined as (
         on usl.created_date
             between sy.start_date
                 and sy.end_date
+
     where sy.school_year = '2023-24'
 
     {{ dbt_utils.group_by(10) }}
