@@ -1,0 +1,130 @@
+sources:
+  - name: external_datasets
+    database: dashboard 
+    schema: analysis
+    description: |
+      The data sources in external data sets are largely red shift tables that are direct copies of CSV files stored in S3.
+      Code.org's primary external data sources are:
+
+        ## 1. AP Data (from the College Board) 
+
+        Table prefix: `ap_`
+        
+        AP data includes:
+        
+        - Aggregated Exam Results
+        - School-level Exam Results for Code.org Audit Schools
+        - AP Ledgers (lists of schools that are teaching AP CSA and/or AP CS Principles for a given year)
+        - AI/NCES Crosswalk (a mapping of College Board AI codes to NCES school ids)
+
+        ## 2. Access Report Data
+
+        Table prefix: `access_report_`
+        
+        Access report data is composed over a multi-month process.  The final results are loaded here.
+
+        ** NCES school data - as of 2024 this is uploaded as part of the Access Report process through the Engineering Team. It therefore comes in as a source via dashboard_production.  
+
+    tables:
+
+      # access report
+      - name: access_report_megatable_2023
+        description: "Final megatable from 2023"
+
+      - name: access_report_megatable_2024
+        description: "Final megatable from 2024"
+
+      - name: access_report_review_table_2023
+        description: "Final locked version of the review table that was used in 2023"
+
+      - name: access_report_review_table_2024
+        description: "Final locked version of the review table that was used in 2024"
+
+      # aggregate AP exam results
+      - name: stg_ap_agg_exam_results_raw_2023
+        description: "Raw aggregated exam results from 2023. This is more or less a direct copy of data .csv provided by the college board.  See S3 ap_data bucket."
+
+      - name: stg_ap_agg_exam_results_raw_2017_2022
+        description: |
+          AP aggregated exam results from 2017 to 2022. This is a copy of the existing/old ledger data from the VIEW `dashboard_production.analysis.ap_exam_results_raw` which was dumped into a .csv in S3 ap_data in order to be sourced and loaded consistently with future data. 
+          The individual raw files exist in spreadsheets (see College Board Data README), but not in S3.
+          Apologies that I don't have the code I used to generate the data, but I'm pretty sure it was just:
+          ```sql
+          select *
+          from analysis.ap_exam_results_raw
+          ```
+
+      # school level AP exam results
+      - name: stg_ap_school_level_exam_results_raw_2022
+        description: "AP school-level exam results for 2022"
+
+      - name: stg_ap_school_level_exam_results_raw_2023
+        description: "AP school-level exam results for 2023"
+
+      # ap ledgers
+      - name: stg_ap_ledgers_raw_2017_2021
+        description: |
+          AP ledgers from 2017 to 2021. This is a copy of the existing/old ledger data from the VIEW `dashboard_production.analysis.ap_exam_results` which was reshaped and filtered slightly and put into a .csv in S3 before being loaded into this table.  
+          The raw files exist in spreadsheets, but not in S3."
+          Here is the code used to generate it in May, 2024:
+          ```sql
+          CREATE TABLE analysis.stg_ap_ledgers_raw_2017_2021 as (
+            SELECT
+              exam_year::varchar,
+              (exam_year::integer)-1 || '-' || right(exam_year,2) school_year,
+              exam,
+              ledger_group,
+              ai_code,
+              name as school_name,
+              city,
+              state,
+              country,
+              NULL as provider_syllabus
+              
+            FROM analysis.ap_ledger_raw
+            WHERE exam_year IN (2017,2018,2019,2020,2021)
+          );```
+      - name: stg_ap_ledgers_raw_2022
+        description: "AP ledgers for 2022"
+
+      - name: stg_ap_ledgers_raw_2023
+        description: "AP ledgers for 2023"
+
+     # AP crosswalks
+      - name: stg_ap_crosswalk_2016_2022
+        description: |
+          AP crosswalk data from 2017 to 2021 with some normalizing and reshaping from the old dashboard_production.analysis.ap_crosswalk_us table.
+          Here is the code that generated it:
+          ```sql
+          CREATE TABLE analysis.stg_ap_crosswalk_2016_2022 AS (
+          SELECT
+            CASE WHEN left(sch_yr,4) LIKE '20__' THEN left(sch_yr,4) 
+            when sch_yr='handmatch' then '2020'
+            else '???' end exam_year,
+            
+            case 
+              when substring(sch_yr from 6) = '' then 'CB file'
+              when sch_yr='handmatch' then sch_yr
+              else substring(sch_yr from 6)
+            end as source,
+            --sch_yr,
+            nces_id,
+            ai_code,
+            name,
+            city,
+            state,
+            zip 
+          FROM analysis.ap_crosswalk_us
+          ```
+          This data which has been reported out in the past. The raw files exist in spreadsheets, but not in S3."
+
+      - name: stg_ap_crosswalk_2023
+        description: "AP crosswalk data for 2023. This is more or less a direct copy of data .csv provided by the college board.  See S3 ap_data bucket."
+
+
+
+
+
+
+
+
