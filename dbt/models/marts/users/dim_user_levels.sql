@@ -3,7 +3,9 @@
 
 with 
 user_levels as (
-    select * 
+    select *, 
+        cast(created_at as date) as created_dt,
+        cast(updated_at as date) as updated_dt 
     from {{ ref('stg_dashboard__user_levels') }}
     where attempts > 0
 ),
@@ -24,20 +26,23 @@ combined as (
         usl.user_id,
         usl.level_id,
         usl.script_id,
+        usl.time_spent,
+        usl.attempts,
+        usl.best_result,
         
         -- user data
-        usr.us_state,
+        usr.us_state as self_reported_state,
         usr.country,
         usr.us_intl,
         usr.is_international,
 
         -- courses data 
         cs.course_name,
-        cs.course_name_true,
-
         
         -- dates
-        usl.created_at
+        coalesce(
+            usl.updated_dt,
+            usl.created_dt) as last_activity_at 
 
     from user_levels    as usl 
     join users          as usr 
