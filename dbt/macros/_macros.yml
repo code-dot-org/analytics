@@ -13,7 +13,7 @@ macros:
     description: Quick and handy way to convert is_international to a reporting label.
 
   - name: run_rosetta
-    description: kick off rosetta each week on mondays
+    description: kick off rosetta each week on monday
 
 
 # template from chatgpt
