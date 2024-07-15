@@ -21,7 +21,7 @@ final as (
         users_pii.races,
         users_pii.race_group,
         users_pii.gender_group,
-        users_pii.us_state,
+        users_pii.self_reported_state,
         ug.country,
         ug.us_intl,
         ug.is_international
