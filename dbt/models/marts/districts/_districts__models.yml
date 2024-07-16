@@ -2,7 +2,7 @@ version: 2
 
 models: 
   - name: dim_districts
-    description: 1 row per school_district_id with dimensions and school related aggregations
+    description: 1 row per NCES school_district_id with dimensions and school related aggregations. Includes all NCES school districts in the US, regardless of whether they are active on Code.org. 
     columns:
       - name: school_district_id
         tests:
@@ -46,19 +46,13 @@ models:
 
   - name: dim_district_status
     description: |
-      1 row per district, per school_year, with "active" defined by having at least one "active" school (has a teacher with a section of 5+ students completing 1+ levels of the same course). The district's status can thus be defined by one of the following in a given school year--
-      ### active new 
-      * has never before been "active" until this school year
-      ### active retained 
-      * was "active" the previous school year and this school year
-      ### active reacquired 
-      * was "inactive churn" last school year and now "active" this school year.  
-      ### inactive this year 
-      * was "active" last school year, but not so far this school year. 
-      ### inactive churn 
-      * was "inactive" last school year and so far this school year. 
-      ### market 
-      * has never had a school considered "active" on code.org 
+      1 row per district, per school_year, with "active" defined by having at least one "active" school (has a teacher with a section of 5+ students completing 1+ levels of the same course). The district's status can thus be defined by one of the following in a given school year:   
+      **active new**: has never before been "active" until this school year   
+      **active retained**: was "active" the previous school year and this school year   
+      **active reacquired**: was "inactive churn" last school year and now "active" this school year     
+      **inactive this year**: was "active" last school year, but not so far this school year   
+      **inactive churn**: was "inactive" last school year and so far this school year    
+      **market**: has never had a school considered "active" on code.org
     
     # tests:
       # - dbt_utils.unique_combination_of_columns:

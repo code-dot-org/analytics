@@ -43,9 +43,10 @@ models:
             - user_type_merged
 
   - name: fct_weekly_school_acquisition_metrics
-    description: 
-      Weekly counts of school acquisitions by status (new, retained, reacquired, inactive, churn, market).  
-      These are the top line metrics we use to measure against our goals of active schools.
+    description: |
+      Weekly counts of school acquisitions by status (new, retained, reacquired, inactive, churn, market). These are the top line metrics we use to measure against our goals of active schools.   
+         
+      **Note**: aggregating across weeks may result in inaccurate counts, as a single school can be considered "retained" multiple weeks in a row, for example, and thus would be double-counted.
     columns:
       - name: school_level
         description: elementary, middle, or high school- note that a given school may be counted in multiple school level aggregations (e.g. K-8)
