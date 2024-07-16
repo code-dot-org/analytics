@@ -16,7 +16,10 @@ users as (
 ),
 
 course_structure as (
-    select *
+    select 
+        course_name,
+        script_id,
+        level_id 
     from {{ ref('dim_course_structure') }}
 ),
 
@@ -26,18 +29,19 @@ combined as (
         usl.user_id,
         usl.level_id,
         usl.script_id,
-        usl.time_spent,
-        usl.attempts,
-        usl.best_result,
-        
         -- user data
-        usr.us_state as self_reported_state,
+        usr.self_reported_state,
         usr.country,
         usr.us_intl,
         usr.is_international,
 
         -- courses data 
         cs.course_name,
+
+        -- agg's
+        usl.time_spent,
+        usl.attempts,
+        usl.best_result,
         
         -- dates
         coalesce(
