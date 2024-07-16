@@ -39,3 +39,6 @@ models:
 
   - name: stg_dashboard_pii__users 
     description: staging user pii data 
+    columns:
+        - name: self_reported_state
+          description: user-entered state value, normalized 
