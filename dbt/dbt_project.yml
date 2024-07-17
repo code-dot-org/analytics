@@ -80,6 +80,8 @@ models:
       tags:
         - "staging"
       +materialized: view
+      +docs:
+        show: false
       
       dashboard:
         base: 
