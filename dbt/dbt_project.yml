@@ -106,6 +106,8 @@ models:
           tags:
             - "base"
           materialized: ephemeral
+        +docs:
+          show: false
 
       amplitude:
         base: 
