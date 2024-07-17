@@ -45,7 +45,7 @@ jobs:
 
       - name: Generate dbt docs
         working-directory: ./dbt
-        run: dbt docs generate --select tag:mart
+        run: dbt docs generate --select "tag:mart"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
