@@ -2,7 +2,10 @@ version: 2
 
 models: 
   - name: dim_school_stats_by_years
-    description: historical record of all NCES school stats and associated calculations
+    description: |
+      **released**
+         
+      historical record of all NCES school stats and associated calculations
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -11,6 +14,8 @@ models:
 
   - name: dim_school_status
     description: |
+      **released**
+         
       1 row per school, per school_year, with "active" defined by having a techer with a section of 5+ students completing 1+ levels of the same course. The school's status can thus be defined by one of the following in a given school year:   
            
       **active new**: has never before been "active" until this school year   
@@ -43,7 +48,10 @@ models:
         description: comma separated list of courses associated with active sections at this school in this school year
 
   - name: dim_schools
-    description: NCES school-level information for the most recent school year it is updated for
+    description: |
+      **released**
+         
+      NCES school-level information for the most recent school year it is updated for
     columns: 
       - name: school_id
         description: the NCES id associated with a school 

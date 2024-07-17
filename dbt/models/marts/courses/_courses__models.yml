@@ -2,23 +2,29 @@ version: 2
 
 models: 
   - name: dim_course_names
-    description: distinct list of course names sourced via seed file 
+    description: |
+      **data team internal**
+         
+      distinct list of course names sourced via seed file 
 
   - name: dim_course_structure
-    description: dim table for courses data
+    description: |
+      **released**
+          
+      dim table for courses data
     columns: 
       - name: level_id
         description: |
           This field includes a hard coded error correction, 
           level_script_levels defines the first level of this script as 
           id '14633' when user_levels defines this level as '1'...
-    #     tests:
-    #       - unique
-    #       - not_null
 
 
   - name: dim_levels
-    description: dimensional table to provide attrtibution to levels data
+    description: |
+      **data team internal**
+         
+      dimensional table to provide attrtibution to levels data
     columns: 
       - name: level_id
         description: uid for this model, 1 row per level_id
@@ -27,7 +33,10 @@ models:
           - not_null
 
   - name: dim_script_names
-    description: distinct list of script names provided via seed file
+    description: |
+      **data team internal**
+         
+      distinct list of script names provided via seed file
     columns: 
       - name: versioned_script_id
         description: uid for script by school year
@@ -36,13 +45,13 @@ models:
           - not_null
 
   - name: dim_level_concept_difficulties
-    description: this table is full listing of EVERY level in course structure showing the mapping to any/all "concepts and difficulties" for use in the "coding proficiency" metric.  
+    description: |
+      **released**
+         
+      this table is full listing of every level in course structure showing the mapping to any/all "concepts and difficulties" for use in the "coding proficiency" metric.  
     columns: 
       - name: level_id
         description: id of the level being mapped
-
-        # tests: 
-        #   - not_null
 
       - name: has_lcd_mapping
         description: bit field does this level have a mapping for concept-difficulty

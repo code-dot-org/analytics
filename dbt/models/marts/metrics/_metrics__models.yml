@@ -3,7 +3,7 @@ version: 2
 models:
   - name: fct_active_students_daily
     description: |
-      **not yet released**
+      **beta**
     columns:
     - name: date
       description: "the date (day) of activity"
@@ -24,7 +24,7 @@ models:
 
   - name: fct_active_students_monthly
     description: |
-      **not yet released**
+      **beta**
 
     columns:
     - name: month_year
@@ -46,6 +46,8 @@ models:
 
   - name: fct_weekly_school_acquisition_metrics
     description: |
+      **released**   
+         
       Weekly counts of school acquisitions by status (new, retained, reacquired, inactive, churn, market). These are the top line metrics we use to measure against our goals of active schools.   
          
       **Note**: aggregating across weeks may result in inaccurate counts, as a single school can be considered "retained" multiple weeks in a row, for example, and thus would be double-counted.
@@ -79,6 +81,8 @@ models:
   # Monthly Accounts Created
   - name: fct_monthly_accounts_created
     description: |
+      **released**   
+          
       Monthly count of total accounts created, segmented by country and user type (teacher and student).   
       
       **Note**: This only includes accounts that have been signed into at least once (there are cases where teachers can create accounts to pre-populate a section, but no student ever signs in with it).
@@ -118,6 +122,8 @@ models:
   # Monthly Signed-In Users
   - name: fct_monthly_signed_in_users
     description: |
+      **released**   
+         
       Monthly count of users who signed in, segmented by user type and us/intl   
 
       **Note**: aggregating monthly counts may result in inaccuracies, since the same user may be double counted if they signed in within multiple months. 
@@ -136,6 +142,8 @@ models:
   ## Yearly Signed In Users (will refactor later)
   - name: fct_yearly_signed_in_users 
     description: |
+      **released**   
+         
       Yearly count of users who signed in, segmented by user type and us/intl   
 
       **Note**: aggregating yearly counts may result in inaccuracies, since the same user may be double counted if they signed in within multiple years.
