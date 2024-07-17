@@ -3,87 +3,58 @@
 
 with 
 user_levels as (
-    select 
-        user_id,
-        level_id,
-        script_id,
-        level_source_id,
-        is_submitted,
-        
-        to_date(unlocked_at,'yyyymmdd') as unlocked_date,
-        to_date(created_at, 'yyyymmdd') as created_date,
-        to_date(updated_at, 'yyyymmdd') as updated_date,
-        
-        sum(attempts)       as num_attempts,
-        max(best_result)    as best_result,
-        sum(time_spent)     as time_spent    
-
+    select *, 
+        cast(created_at as date) as created_dt,
+        cast(updated_at as date) as updated_dt 
     from {{ ref('stg_dashboard__user_levels') }}
-    {{ dbt_utils.group_by(8) }}
-)
-
-select * from user_levels 
+    where attempts > 0
+),
 
 users as (
     select *
     from {{ ref('dim_users') }}
 ),
 
-school_years as (
-    select * 
-    from {{ ref('int_school_years')}}
+course_structure as (
+    select 
+        course_name,
+        script_id,
+        level_id 
+    from {{ ref('dim_course_structure') }}
 ),
-
 
 combined as (
     select 
-        coalesce(
-            usl.created_date,
-            usl.updated_date) as activity_date,
-        
-        usl.unlocked_at,
+        -- user level id's 
+        usl.user_id,
         usl.level_id,
         usl.script_id,
-        usr.us_state,
+        -- user data
+        usr.user_type,
+        usr.self_reported_state,
         usr.country,
         usr.us_intl,
         usr.is_international,
-        usl.num_attempts,
-        usl.best_result,
-        usl.time_spent,
 
-        count(distinct usl.user_id) as num_users
+        -- courses data 
+        cs.course_name,
+
+        -- agg's
+        usl.time_spent,
+        usl.attempts,
+        usl.best_result,
+        
+        -- dates
+        usl.created_dt,
+        usl.updated_dt 
 
     from user_levels    as usl 
-    join users          as usr
+    join users          as usr 
         on usl.user_id = usr.user_id
     
-    join school_years   as sy 
-        on usl.created_date
-            between sy.start_date
-                and sy.end_date
+    join course_structure as cs 
+        on usl.script_id    = cs.script_id
+        and usl.level_id    = cs.level_id )
 
-    where sy.school_year = '2023-24'
-
-    {{ dbt_utils.group_by(10) }}
-)
-
-select * 
-from combined 
-
-final as (
-    select 
-        activity_date,
-        level_id,
-        script_id,
-        us_state,
-        country,
-        us_intl,
-        num_attempts,
-        best_result,
-        time_spent,
-        num_users
-    from combined )
-
-select * 
-from final
+select *
+from combined
