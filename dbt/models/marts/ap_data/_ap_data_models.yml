@@ -15,9 +15,9 @@ models:
         2. it does not calculate the additional demographic groups (eg. bhnapi, tr_urg, urg, etc.) that is done for the agg_exam_results.
         3. it excludes several fields of school-level data (see: `stg_ap_school_level_exam_results`) in order to conform to a similar structure as the other ap_agg_exam_results table.
 
-      ** **IMPORTANT NOTE** - Schools with fewer than 10 students
+      **Note**: For schools with fewer than 10 students:   
       - The College Board gives us results aggregated at the school level **if the number of students taking the exam at that school is ≥ 10**. 
-      - For all schools with **fewer than 10 students** an aggregate report is created with a **`school_name` like "LESS THAN 10 AGGREGATE**.
+      - For all schools with **fewer than 10 students** an aggregate report is created with a `school_name` = "less than 10 aggregate".
 
 
     columns:
@@ -31,7 +31,7 @@ models:
         description: "The College Board's AI (Attending Institution) code, padded to ensure consistent formatting."
 
       - name: nces_id
-        description: "This is NOT from the orginaal data set. It is here as a convience, simply using the `ap_aicode_nces_crosswalk` to map an nces_id to this ai_code **if it exists**.  If the crosswalk is improved this field will come along for the ride."
+        description: "This is NOT from the orginal data set. It is here as a convience, simply using the `ap_aicode_nces_crosswalk` to map an nces_id to this ai_code **if it exists**.  If the crosswalk is improved this field will come along for the ride."
 
       - name: high_school_name
         description: "The name of the school _as given_ by the College Board - this might vary in spelling and/or capitalization with what you might find in our other NCES schools data."
@@ -59,14 +59,14 @@ models:
 
   - name: ap_agg_exam_results_summary
     description: |
-      This model generates a summary of aggregated AP exam results. 
+      This model generates a summary of aggregated AP exam results.   
 
-      Specifically, it calculates **for each** grouping of: (exam_year | reporting_group | exam | demographic_category | demographic_group ) the number of students:
+      Specifically, it calculates **for each** grouping of: (exam_year | reporting_group | exam | demographic_category | demographic_group ) the number of students:   
 
-      1. taking the exam
-      2. passing the exam (score of 3, 4, or 5)
-      3. the pass rate percentage of that (passing/taking)
-
+      1. taking the exam   
+      2. passing the exam (score of 3, 4, or 5)   
+      3. the pass rate percentage of that (passing/taking)   
+          
       It also, importantly, follows the "External URG" formula to calculate the number of URG students taking and passing the exam.
 
     columns:
@@ -80,7 +80,7 @@ models:
 
       - name: reporting_group
         description: |
-          Historically known as **`exam_group`**, the name was changed to disambuguate from demographic groups. 
+          Historically known as **`exam_group`**, the name was changed to disambuguate from demographic groups.    
           The field is the name of the aggregated report we get back from the college board derived from lists of schools we provide to the college board with "tags".  
           The "tags" _are_ the reporting group, however we don't give and get them back with consistent names YoY.  So this field normalized reporting group into consisten YoY labels e.g. `cdo_audit`, `csp_users_and_audit` etc. 
           As of 2024 the set of reporting groups (given by `select distinct reporting_group from stg_external_datasets__ap_agg_exam_results` ) is:
@@ -118,22 +118,22 @@ models:
           - not_null
       - name: demographic_category
         description: |
-          The category to which the demographic group belongs, such as race or gender. NOTE: see field: **demographic_group** to see which demographic groups go with each category.
-          
-          In this summary view there are 6 categories:
-
-            Four straight from the college board:
+          The category to which the demographic group belongs, such as race or gender. NOTE: see field: **demographic_group** to see which demographic groups go with each category.   
+             
+          In this summary view there are 6 categories:   
+             
+            Four straight from the college board:   
             ```
-            1. gender      - male, female, etc.
-            2. race        - black, white, hispanic, etc.
-            3. grade_level - freshman, sophomore, etc.
-            4. total
+            1. gender      - male, female, etc.   
+            2. race        - black, white, hispanic, etc.   
+            3. grade_level - freshman, sophomore, etc.   
+            4. total   
+            ```   
+            Two necessary for computing and reporting out the external URG calculation:    
             ```
-            Two necessary for computing and reporting out the external URG calculation:
-            ```
-            5. calc_urg   - bhnapi, tr_urg, etc.
-            6. urg_final  - urg, non_urg
-            ```
+            5. calc_urg   - bhnapi, tr_urg, etc.   
+            6. urg_final  - urg, non_urg   
+            ```   
         tests:
           - not_null  
 
