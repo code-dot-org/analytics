@@ -2,7 +2,9 @@ version: 2
 
 models: 
   - name: int_daily_summary_user_level_activity
-    description: "This model summarizes user-level activity per user per day.  Specifically, this summarizes the number of first-time interactions a user had with levels on a given day. It does not count re-visits to levels."
+    description: |
+      **Not released**   
+      This model summarizes user-level activity per user per day.  Specifically, this summarizes the number of first-time interactions a user had with levels on a given day. It does not count re-visits to levels."
     columns:
       - name: user_id
         description: "The Code.org user id for this user."
@@ -24,7 +26,9 @@ models:
 
 
   - name: int_daily_summary_sign_ins
-    description: "This model summarizes the number of sign-ins per user per day. It tracks the number of times a user logs in per day."
+    description: |
+      **Not released**   
+      This model summarizes the number of sign-ins per user per day. It tracks the number of times a user logs in per day."
     columns:
       - name: user_id
         description: "The Code.org user id for this user."
@@ -45,6 +49,7 @@ models:
 
   - name: int_daily_summary_project_activity
     description: |
+      **Not released**   
       This model aggregates and summarizes the number and types of **new projects** each user created per day. 
       It lists unique project types engaged per day and counts the total project records created on that day.
 
@@ -76,7 +81,9 @@ models:
 
 
   - name: int_active_sections
-    description: all sections passing the "active" threshold in a given school year (5+ students completing 1+ levels of same course)
+    description: |
+      **Not released**   
+      All sections passing the "active" threshold in a given school year (5+ students completing 1+ levels of same course)
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -86,10 +93,14 @@ models:
             - section_id
 
   - name: int_school_years
-    description: 1 row per school year in different formats
+    description: |
+      **Not released**   
+      1 row per school year in different formats
 
   - name: int_section_mapping
-    description: xref table to pull together these FK's for reference
+    description: |
+      **Not released**   
+      xref table to pull together these FK's for reference
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -100,18 +111,27 @@ models:
             - school_id 
 
   - name: int_parent_levels_child_levels 
-    description: mapping parent and child level ids
+    description: |
+      **Not released**   
+      mapping parent and child level ids
 
   - name: int_teacher_schools_historical
-    description: all historical school associations made by teachers-- for a given school year, it takes their most recent school selection
+    description: |
+      **Not released**   
+      all historical school associations made by teachers-- for a given school year, it takes their most recent school selection
             
   - name: int_school_weeks
-    description: This model allows us to report metrics on a weekly basis based on timestamps.  We want to do this using ISO weeks to the greatest extent possible because our school year is defined to start on July 1 and end June 30. This means that the start of the school year can start either in ISO week 26 or 27 depending on the year. Some years have 52 weeks and some bleed into a 53rd week. This table numbers the "school year weeks" with week 1 possibly being a fragment (less than 7 days) of a week that starts with July 1, and stops at the first ISO week boundary that comes after july 1. Weeks 2 through 51 fall on standard ISO week boundaries. Week 52 (or 53, depending on the year) is another possible fragment of a week running from the ISO week boundary that is closest to June 30, and running up through and including June 30. As a result, for example, the end of one school year (june 30) and the start of another (july 1) may fall entirely within ISO week 27, but in this table you might see ISO week 27 split between "school year week" 52 (being 4 days) and school year week 1 of the next year being 3 days.
+    description: |
+      **Not released**   
+      This model allows us to report metrics on a weekly basis based on timestamps.  We want to do this using ISO weeks to the greatest extent possible because our school year is defined to start on July 1 and end June 30. This means that the start of the school year can start either in ISO week 26 or 27 depending on the year. Some years have 52 weeks and some bleed into a 53rd week. This table numbers the "school year weeks" with week 1 possibly being a fragment (less than 7 days) of a week that starts with July 1, and stops at the first ISO week boundary that comes after july 1. Weeks 2 through 51 fall on standard ISO week boundaries. Week 52 (or 53, depending on the year) is another possible fragment of a week running from the ISO week boundary that is closest to June 30, and running up through and including June 30. As a result, for example, the end of one school year (june 30) and the start of another (july 1) may fall entirely within ISO week 27, but in this table you might see ISO week 27 split between "school year week" 52 (being 4 days) and school year week 1 of the next year being 3 days.
     tests: 
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - school_year
             - iso_week
             - school_year_week
+  - name: int_daily_summary_sign_in
+    description: |
+      **Not released**   
 
 

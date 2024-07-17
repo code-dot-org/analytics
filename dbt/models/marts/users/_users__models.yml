@@ -57,7 +57,9 @@ models:
   #         - not_null
 
   - name: dim_user_levels 
-    description: replaces int_user_levels with a few more columns
+    description: |
+      **Not released**   
+      replaces int_user_levels with a few more columns
     columns:
     - name: user_id
       description: the unique user ID associated with the activity
@@ -65,8 +67,15 @@ models:
         - not_null
     
   - name: dim_user_course_activity
-    description: This model is a log of all student- and teacher-course activity within a school year.
+    description: | 
+
+      This model is a log of all student- and teacher-course activity within a school year.   
+
+      Grain: user_id, school_year, course_name
     columns:
+    - name: user_id
+      description: unique ID for teacher or student
+
     - name: user_type
       description: student or teacher
     

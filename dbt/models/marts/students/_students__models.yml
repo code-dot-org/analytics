@@ -3,6 +3,8 @@ version: 2
 models:
   - name: dim_active_students
     description: |
+      **Not yet released**   
+      
       This model serves as a **prototype** for the active student metric. (Please update this description as the metric is improved/modified.) 
 
       The model aggregates student activities _per user, per day_ across**:
