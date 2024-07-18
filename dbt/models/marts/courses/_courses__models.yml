@@ -3,13 +3,13 @@ version: 2
 models: 
   - name: dim_course_names
     description: |
-      **data team internal**
+      **Data Team Internal**
          
       distinct list of course names sourced via seed file 
 
   - name: dim_course_structure
     description: |
-      **released**
+      **Released**
           
       dim table for courses data
     columns: 
@@ -22,7 +22,7 @@ models:
 
   - name: dim_levels
     description: |
-      **data team internal**
+      **Data Team Internal**
          
       dimensional table to provide attrtibution to levels data
     columns: 
@@ -34,7 +34,7 @@ models:
 
   - name: dim_script_names
     description: |
-      **data team internal**
+      **Data Team Internal**
          
       distinct list of script names provided via seed file
     columns: 
@@ -46,7 +46,7 @@ models:
 
   - name: dim_level_concept_difficulties
     description: |
-      **released**
+      **Released**
          
       this table is full listing of every level in course structure showing the mapping to any/all "concepts and difficulties" for use in the "coding proficiency" metric.  
     columns: 

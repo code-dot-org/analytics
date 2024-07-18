@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dim_active_students
     description: |
-      **Not yet released**   
+      **Beta**   
       
       This model serves as a **prototype** for the active student metric. (Please update this description as the metric is improved/modified.) 
 
@@ -83,7 +83,10 @@ models:
             - activity_date
 
   - name: dim_students
-    description: This model contains all student accounts ever created + geographic info on the student
+    description: |
+      **Released**   
+         
+      This model contains all student accounts ever created + geographic info on the student
 
     columns:
       - name: user_id

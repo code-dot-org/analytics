@@ -2,7 +2,10 @@ version: 2
 
 models: 
   - name: dim_users 
-    description: 1 row per user + user_geos + user pii
+    description: |
+      **Released**   
+         
+      1 row per user + user_geos + user pii
 
     columns: 
       - name: user_id
@@ -58,7 +61,7 @@ models:
 
   - name: dim_user_levels 
     description: |
-      **Not released**   
+      **Data Team Internal**   
       replaces int_user_levels with a few more columns
     columns:
     - name: user_id
@@ -67,8 +70,9 @@ models:
         - not_null
     
   - name: dim_user_course_activity
-    description: | 
-
+    description: |
+      **Released**   
+         
       This model is a log of all student- and teacher-course activity within a school year.   
 
       Grain: user_id, school_year, course_name

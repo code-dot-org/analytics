@@ -19,7 +19,10 @@ models:
   #         - not_null
         
   - name: stg_dashboard__followers
-    description: staging model for followers source data
+    description: |
+      **Data Team Internal**   
+         
+      staging model for followers source data
     columns: 
       - name: follower_id
         description: unique id for table
@@ -39,11 +42,17 @@ models:
     description: staging model for ""
 
   - name: stg_dashboard__user_proficiencies
-    description: staging model for ""
+    description: |
+      **Data Team Internal**   
+         
+      staging model for ""
 
 
   - name: stg_dashboard__sections
-    description: staging model for `sections` source data
+    description: |
+      **Data Team Internal**   
+        
+      staging model for `sections` source data
     columns: 
       - name: section_id 
         description: unique id for each section
@@ -52,7 +61,10 @@ models:
           - unique
           
   - name: stg_dashboard__section_instructors
-    description: coteacher data 
+    description: |
+      **Data Team Internal**   
+         
+      coteacher data 
     columns: 
       - name: instructor_id
         description: coteacher id
@@ -64,7 +76,10 @@ models:
           - not_null
 
   - name: stg_dashboard__schools 
-    description: staging model for core school data, where len(school_id)=11 we are applying a LPAD to maintain school length convention
+    description: |
+      **Data Team Internal**   
+         
+      staging model for core school data, where len(school_id)=11 we are applying a LPAD to maintain school length convention
     columns:
       - name: school_id 
         tests: 
@@ -72,7 +87,10 @@ models:
           - not_null        
 
   - name: stg_dashboard__school_stats_by_years
-    description: staging model for `school_stats_by_years` source data
+    description: |
+      **Data Team Internal**   
+         
+      staging model for `school_stats_by_years` source data
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -84,7 +102,10 @@ models:
           - not_null
 
   - name: stg_dashboard__users
-    description: staging model for `users` table from scource data
+    description: |
+      **Data Team Internal**   
+         
+      staging model for `users` table from scource data
     columns: 
       - name: user_type
         description: the type of acount the user created. value is either 'student' or 'teacher'
@@ -101,7 +122,10 @@ models:
         description: an inexact date of birth for the user, calcuated as the date of account creation X years prior based on user reporting that their age is X.
       
   - name: stg_dashboard__user_levels
-    description: staging model for `user_levels` source data
+    description: |
+      **Data Team Internal**   
+         
+      staging model for `user_levels` source data
     columns: 
       - name: user_level_id
         description: unique id for for each user at each level

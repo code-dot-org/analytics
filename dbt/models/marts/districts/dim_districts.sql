@@ -1,5 +1,8 @@
 -- Model: dim_schools
 -- Scope: all dimensions we have/need for schools; one row per school + school_year
+
+{{ config(tags = ['released']) }}
+
 with
 dim_schools as (
     select *

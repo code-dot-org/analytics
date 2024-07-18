@@ -3,7 +3,7 @@ version: 2
 models:
   - name: fct_active_students_daily
     description: |
-      **beta**
+      **Beta**
     columns:
     - name: date
       description: "the date (day) of activity"
@@ -24,7 +24,7 @@ models:
 
   - name: fct_active_students_monthly
     description: |
-      **beta**
+      **Beta**
 
     columns:
     - name: month_year
@@ -46,7 +46,7 @@ models:
 
   - name: fct_weekly_school_acquisition_metrics
     description: |
-      **released**   
+      **Released**   
          
       Weekly counts of school acquisitions by status (new, retained, reacquired, inactive, churn, market). These are the top line metrics we use to measure against our goals of active schools.   
          
@@ -81,7 +81,7 @@ models:
   # Monthly Accounts Created
   - name: fct_monthly_accounts_created
     description: |
-      **released**   
+      **Released**   
           
       Monthly count of total accounts created, segmented by country and user type (teacher and student).   
       
@@ -122,7 +122,7 @@ models:
   # Monthly Signed-In Users
   - name: fct_monthly_signed_in_users
     description: |
-      **released**   
+      **Released**   
          
       Monthly count of users who signed in, segmented by user type and us/intl   
 
@@ -142,7 +142,7 @@ models:
   ## Yearly Signed In Users (will refactor later)
   - name: fct_yearly_signed_in_users 
     description: |
-      **released**   
+      **Released**   
          
       Yearly count of users who signed in, segmented by user type and us/intl   
 

@@ -3,7 +3,7 @@ version: 2
 models: 
   - name: dim_school_stats_by_years
     description: |
-      **released**
+      **Released**
          
       historical record of all NCES school stats and associated calculations
     tests:
@@ -14,7 +14,7 @@ models:
 
   - name: dim_school_status
     description: |
-      **released**
+      **Released**
          
       1 row per school, per school_year, with "active" defined by having a techer with a section of 5+ students completing 1+ levels of the same course. The school's status can thus be defined by one of the following in a given school year:   
            
@@ -49,7 +49,7 @@ models:
 
   - name: dim_schools
     description: |
-      **released**
+      **Released**
          
       NCES school-level information for the most recent school year it is updated for
     columns: 

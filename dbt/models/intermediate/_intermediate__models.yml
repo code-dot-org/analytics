@@ -3,7 +3,8 @@ version: 2
 models: 
   - name: int_daily_summary_user_level_activity
     description: |
-      **Not released**   
+      **Data Team Internal**  
+          
       This model summarizes user-level activity per user per day.  Specifically, this summarizes the number of first-time interactions a user had with levels on a given day. It does not count re-visits to levels."
     columns:
       - name: user_id
@@ -27,7 +28,8 @@ models:
 
   - name: int_daily_summary_sign_ins
     description: |
-      **Not released**   
+      **Data Team Internal**   
+         
       This model summarizes the number of sign-ins per user per day. It tracks the number of times a user logs in per day."
     columns:
       - name: user_id
@@ -49,7 +51,8 @@ models:
 
   - name: int_daily_summary_project_activity
     description: |
-      **Not released**   
+      **Data Team Internal**  
+          
       This model aggregates and summarizes the number and types of **new projects** each user created per day. 
       It lists unique project types engaged per day and counts the total project records created on that day.
 
@@ -82,7 +85,8 @@ models:
 
   - name: int_active_sections
     description: |
-      **Not released**   
+      **Data Team Internal** 
+           
       All sections passing the "active" threshold in a given school year (5+ students completing 1+ levels of same course)
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -94,12 +98,13 @@ models:
 
   - name: int_school_years
     description: |
-      **Not released**   
+      **Data Team Internal**   
+         
       1 row per school year in different formats
 
   - name: int_section_mapping
     description: |
-      **Not released**   
+      **Released**   
       xref table to pull together these FK's for reference
     tests:
       - dbt_utils.unique_combination_of_columns:

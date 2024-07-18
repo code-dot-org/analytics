@@ -3,7 +3,8 @@ version: 2
 models: 
   - name: dim_teacher_schools
     description: |
-
+      **Data Team Internal**   
+         
       A historical record of all teacher-school associations by school year.   
       
       If the teacher changed schools mid-year, this model takes their school from the end of the year. If there is a date entered for "ended_at", that particular teacher changed schools.   
@@ -31,7 +32,7 @@ models:
        
   - name: dim_active_teachers
     description: |
-      **Not yet released**   
+      **Beta**   
 
       This model is a comprehensive view of daily teacher activities that roll into the 'active teacher' metric. 
 
@@ -118,7 +119,10 @@ models:
             - us_intl
 
   - name: dim_teachers
-    description: one row per teacher account ever created, with geographic information and current school association
+    description: |
+      **Released**   
+         
+      one row per teacher account ever created, with geographic information and current school association
       
     columns: 
       - name: user_id
@@ -147,6 +151,8 @@ models:
 
   - name: dim_teacher_status
     description: |
+      **Released**   
+         
       1 row per teacher, per school_year, with "active" defined by having a section of 5+ students completing 1+ levels of the same course. The teacher's status can thus be defined by one of the following in a given school year:   
       
       **active new**: has never before been "active" until this school year   
