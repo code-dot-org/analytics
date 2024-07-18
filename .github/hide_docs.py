@@ -13,7 +13,8 @@ for node in data['nodes']:
     data['nodes'][node]['docs']['show'] = False
 
   if 'model.cdo_analytics' in node:
-    if 'released' not in data['nodes'][node]['tags']:
+    config = data['nodes'][node]['config']
+    if not config or 'released' not in config['tags']:
       data['nodes'][node]['docs']['show'] = False
 
 with open('dbt/target/manifest.json', 'w') as f:
