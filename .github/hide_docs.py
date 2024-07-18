@@ -12,5 +12,9 @@ for node in data['nodes']:
   if 'model.redshift' in node:
     data['nodes'][node]['docs']['show'] = False
 
+  if 'model.cdo_analytics' in node:
+    if 'released' not in data['nodes'][node]['tags']:
+      data['nodes'][node]['docs']['show'] = False
+
 with open('dbt/target/manifest.json', 'w') as f:
   json.dump(data, f)
