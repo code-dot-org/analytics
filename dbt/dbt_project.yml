@@ -116,7 +116,3 @@ models:
           tags:
             - "base"
           materialized: ephemeral
-
-seeds:
-  +docs:
-    show: false
