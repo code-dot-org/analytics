@@ -68,6 +68,8 @@ models:
       tags:
         - "int"
       +materialized: table
+      +docs:
+        show: false
 
     marts: 
       tags:
@@ -78,6 +80,8 @@ models:
       tags:
         - "staging"
       +materialized: view
+      +docs:
+        show: false
       
       dashboard:
         base: 
@@ -104,9 +108,16 @@ models:
           tags:
             - "base"
           materialized: ephemeral
+        +docs:
+          show: false
 
       amplitude:
         base: 
           tags:
             - "base"
           materialized: ephemeral
+
+seeds:
+  +docs:
+    show: false
+
