@@ -26,7 +26,8 @@ schools as (
     select *
     from {{ ref('dim_schools') }}
     where school_id in (
-        select school_id from school_status )
+        select school_id 
+        from school_status )
 ),
 
 teachers as (
@@ -79,7 +80,7 @@ combined as (
         tea.teacher_status,
 
         -- dates
-        ul.created_dt          as activity_date
+        ul.created_dt          as activity_date,
 
 
         -- aggregations 
@@ -110,5 +111,6 @@ combined as (
 
     {{ dbt_utils.group_by(19) }} )
 
-select * 
+select course_name, section_id, teacher_id
 from combined
+limit 5
