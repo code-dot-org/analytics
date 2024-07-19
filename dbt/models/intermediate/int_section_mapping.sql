@@ -44,11 +44,17 @@ combined as (
         sy.school_year, 
         followers.student_id,
         sections.teacher_id,
-        sections.section_id                                         as section_id,
+        sections.section_id                                                 as section_id,
         tsc.school_id,
         tsc.school_info_id,
         student_added_at,
-        coalesce(followers.deleted_at, school_years.ended_at)       as student_removed_at
+        case 
+            when 
+                followers.student_removed_at is null 
+                or followers.student_removed_at > sy.ended_at 
+            then sy.ended_at
+            else followers.student_removed_at
+        end                                                                 as student_removed_at,
         row_number() over(
             partition by 
                 followers.student_id, 
@@ -75,7 +81,8 @@ final as (
         teacher_id,
         school_id,
         school_info_id,
-        student_added_at
+        student_added_at,
+        student_removed_at
     from combined
     where row_num = 1 
 )
