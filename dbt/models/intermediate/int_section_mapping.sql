@@ -58,7 +58,8 @@ combined as (
         row_number() over(
             partition by 
                 followers.student_id, 
-                sy.school_year
+                sy.school_year,
+                sections.section_id
                 order by 
                     followers.student_added_at
         ) as row_num
