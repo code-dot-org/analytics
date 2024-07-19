@@ -47,6 +47,9 @@ jobs:
         working-directory: ./dbt
         run: dbt docs generate
 
+      - name: Hide unnecessary parts of docs
+        run: python .github/hide_docs.py
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
