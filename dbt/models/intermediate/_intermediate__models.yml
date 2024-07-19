@@ -89,7 +89,7 @@ models:
     description: 1 row per school year in different formats
 
   - name: int_section_mapping
-    description: xref table to pull together these FK's for reference
+    description: xref table to pull together these FK's for reference, uses historical values for a teacher's school association** for the given school year. 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -113,5 +113,6 @@ models:
             - school_year
             - iso_week
             - school_year_week
+            
 
 
