@@ -3,7 +3,7 @@ version: 2
 macros:
   - name: active_status_label
     description: >
-      This macro is an attempt to engage in some DRY practice - to remove repeticious hard-coded labels for school, teacher, etc. activity. We have a method for determining whether a school, teacher, section is "active" (see: dim_school_status.) The method produces a 3-digit binary code. The key is below. This method is used in several locations where a label e.g. "active new" is applided. These 3 values can be combined into an ordered 3-char string representing the concatenated true/false combinations for Active|Prev|Ever. (e.g. "101" means the schools is 1. Active, 2. Was not active last year) therefore, we label it as "Active - Reacquired."
+      This macro is an attempt to engage in some DRY practice - to remove repetitious hard-coded labels for school, teacher, etc. activity. We have a method for determining whether a school, teacher, section is "active" (see: dim_school_status.) The method produces a 3-digit binary code. The key is below. This method is used in several locations where a label e.g. "active new" is applided. These 3 values can be combined into an ordered 3-char string representing the concatenated true/false combinations for Active|Prev|Ever. (e.g. "101" means the schools is 1. Active, 2. Was not active last year) therefore, we label it as "Active - Reacquired."
 
   - name: us_intl_label
     description: Quick and handy way to convert is_international to a reporting label.
