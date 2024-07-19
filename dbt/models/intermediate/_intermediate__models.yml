@@ -70,7 +70,7 @@ models:
       
     columns:
       - name: source
-        description: One of `college board` or `calculated`.  Used in downstream models to identify the source of the demographic category and group.  This model adds some `caclucated` to the existing `college board` group.
+        description: One of `college board` or `calculated`.  Used in downstream models to identify the source of the demographic category and group.  This model adds some `calculated` to the existing `college board` group.
       - name: exam_year
       - name: pd_year
       - name: reporting_group

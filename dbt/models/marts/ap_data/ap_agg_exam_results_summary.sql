@@ -48,7 +48,7 @@ with agg_exam_results as (
 
     */
     select
-        'caclulated' as source,
+        'calculated' as source,
         a.exam_year,
         reporting_group,
         rp_id,
@@ -79,7 +79,7 @@ with agg_exam_results as (
 )
 , tr_non_urg as ( --tr_non_urg = two_or_more minus tr_urg
     select
-        'caclulated' as source,
+        'calculated' as source,
         a.exam_year,
         reporting_group,
         rp_id,
@@ -108,7 +108,7 @@ with agg_exam_results as (
 )
 , urg_final as ( -- urg = bhnapi + tr_urg
     select
-        'caclulated' as source,
+        'calculated' as source,
         a.exam_year,
         reporting_group,
         rp_id,
@@ -130,7 +130,7 @@ with agg_exam_results as (
 )
 , non_urg_final as ( -- non_urg = wh_as_other + tr_non_urg
     select
-        'caclulated' as source,
+        'calculated' as source,
         a.exam_year,
         reporting_group,
         rp_id,
