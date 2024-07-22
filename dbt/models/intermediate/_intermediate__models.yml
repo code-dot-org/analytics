@@ -3,8 +3,6 @@ version: 2
 models: 
   - name: int_daily_summary_user_level_activity
     description: |
-      **Data Team Internal**  
-          
       This model summarizes user-level activity per user per day.  Specifically, this summarizes the number of first-time interactions a user had with levels on a given day. It does not count re-visits to levels."
     columns:
       - name: user_id
@@ -28,8 +26,6 @@ models:
 
   - name: int_daily_summary_sign_ins
     description: |
-      **Data Team Internal**   
-         
       This model summarizes the number of sign-ins per user per day. It tracks the number of times a user logs in per day."
     columns:
       - name: user_id
@@ -51,8 +47,6 @@ models:
 
   - name: int_daily_summary_project_activity
     description: |
-      **Data Team Internal**  
-          
       This model aggregates and summarizes the number and types of **new projects** each user created per day. 
       It lists unique project types engaged per day and counts the total project records created on that day.
 
@@ -60,12 +54,10 @@ models:
     columns:
       - name: cdo_user_id
         description: "The Code.org user_id (via their project_storage_id)"
-
       - name: project_id
         description: "The project id associated with the creator of the project (use this when cdo_user_id is null for anonymous projects )"
       - name: user_id_merged
         description: The `cdo_user_id` if a known code.org user id exists, otherwise value is `'project_id_' || project_id`.  This 'merged' user id serves as a unique identifer accross all projects for known code.org users, and anonymous.
-
       - name: activity_date
         description: "The date (day) when the project record was created, derived from the `created_at` timestamp."
         tests:
@@ -81,12 +73,8 @@ models:
             - user_id_merged
             - activity_date
 
-
-
   - name: int_active_sections
     description: |
-      **Data Team Internal** 
-           
       All sections passing the "active" threshold in a given school year (5+ students completing 1+ levels of same course)
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -98,8 +86,6 @@ models:
 
   - name: int_school_years
     description: |
-      **Data Team Internal**   
-         
       1 row per school year in different formats
 
   - name: int_section_mapping
@@ -117,17 +103,14 @@ models:
 
   - name: int_parent_levels_child_levels 
     description: |
-      **Not released**   
-      mapping parent and child level ids
+      Mapping parent and child level ids
 
   - name: int_teacher_schools_historical
     description: |
-      **Not released**   
-      all historical school associations made by teachers-- for a given school year, it takes their most recent school selection
+      All historical school associations made by teachers-- for a given school year, it takes their most recent school selection
             
   - name: int_school_weeks
     description: |
-      **Not released**   
       This model allows us to report metrics on a weekly basis based on timestamps.  We want to do this using ISO weeks to the greatest extent possible because our school year is defined to start on July 1 and end June 30. This means that the start of the school year can start either in ISO week 26 or 27 depending on the year. Some years have 52 weeks and some bleed into a 53rd week. This table numbers the "school year weeks" with week 1 possibly being a fragment (less than 7 days) of a week that starts with July 1, and stops at the first ISO week boundary that comes after july 1. Weeks 2 through 51 fall on standard ISO week boundaries. Week 52 (or 53, depending on the year) is another possible fragment of a week running from the ISO week boundary that is closest to June 30, and running up through and including June 30. As a result, for example, the end of one school year (june 30) and the start of another (july 1) may fall entirely within ISO week 27, but in this table you might see ISO week 27 split between "school year week" 52 (being 4 days) and school year week 1 of the next year being 3 days.
     tests: 
       - dbt_utils.unique_combination_of_columns:
