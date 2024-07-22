@@ -3,8 +3,6 @@ version: 2
 models: 
   - name: dim_teacher_schools
     description: |
-      **Data Team Internal**   
-         
       A historical record of all teacher-school associations by school year.   
       
       If the teacher changed schools mid-year, this model takes their school from the end of the year. If there is a date entered for "ended_at", that particular teacher changed schools.   
@@ -32,9 +30,7 @@ models:
        
   - name: dim_active_teachers
     description: |
-      **Beta**   
-
-      This model is a comprehensive view of daily teacher activities that roll into the 'active teacher' metric. 
+      This model serves as a prototype for a comprehensive view of daily teacher activities that roll into the 'active teacher' metric. 
 
       A teacher is 'active' on a day if they sign-in or perform any one of the set of core teacher actions that we capture via Amplitude.
       (for more details see - placeholder for doc - or the RED team).
@@ -120,9 +116,7 @@ models:
 
   - name: dim_teachers
     description: |
-      **Released**   
-         
-      one row per teacher account ever created, with geographic information and current school association
+      One row per teacher account ever created, with geographic information and current school association
       
     columns: 
       - name: user_id
@@ -148,12 +142,12 @@ models:
       
       - name: is_international
         description: 1 if the most recent sign in from the teacher account was from outside the US, 0 otherwise 
+    config:
+      tags: ['released']
 
   - name: dim_teacher_status
     description: |
-      **Released**   
-         
-      1 row per teacher, per school_year, with "active" defined by having a section of 5+ students completing 1+ levels of the same course. The teacher's status can thus be defined by one of the following in a given school year:   
+      One row per teacher, per school_year, with "active" defined by having a section of 5+ students completing 1+ levels of the same course. The teacher's status can thus be defined by one of the following in a given school year:   
       
       **active new**: has never before been "active" until this school year   
       **active retained**: was "active" the previous school year and this school year   
@@ -167,3 +161,5 @@ models:
           combination_of_columns:
             - school_year
             - teacher_id
+    config:
+      tags: ['released']

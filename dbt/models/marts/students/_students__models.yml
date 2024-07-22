@@ -3,8 +3,6 @@ version: 2
 models:
   - name: dim_active_students
     description: |
-      **Beta**   
-      
       This model serves as a **prototype** for the active student metric. (Please update this description as the metric is improved/modified.) 
 
       The model aggregates student activities _per user, per day_ across**:
@@ -84,9 +82,7 @@ models:
 
   - name: dim_students
     description: |
-      **Released**   
-         
-      This model contains all student accounts ever created + geographic info on the student
+      This model contains all student accounts ever created + geographic info on the student. 
 
     columns:
       - name: user_id
@@ -94,12 +90,6 @@ models:
         tests:
           - not_null
           - unique
-
-        
-    # - name: user_type
-    #   description: always "student"- used for verification
-    #   tests: 
-    #     - not_null 
     
       - name: created_at_school_year
         description: the school year in which the student account was created
@@ -115,11 +105,8 @@ models:
 
       - name: school_id
         description: school association of student 
-
-        # - name: user_type
-        #   description: always "student"- used for verification
-        #   tests:
-        #     - not_null
+    config:
+      tags: ['released']
 
 # - name: dim_student_status
 #   description: This model categorizes students based on their activity status across different school years. It provides insights into user engagement by assigning a status that reflects their activity in the current, previous, and any earlier school years.

@@ -103,9 +103,7 @@ models:
       1 row per school year in different formats
 
   - name: int_section_mapping
-    description: |
-      **Released**   
-      xref table to pull together these FK's for reference
+    description: xref table to pull together these FK's for reference. Contains every student_id/section_id combination by school year, with teacher and school information provided for reference. 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -114,6 +112,8 @@ models:
             - section_id
             - teacher_id
             - school_id 
+    config:
+      tags: ['released']
 
   - name: int_parent_levels_child_levels 
     description: |
@@ -136,7 +136,6 @@ models:
             - iso_week
             - school_year_week
   - name: int_daily_summary_sign_in
-    description: |
-      **Not released**   
+    description: number of sign ins by user for a given date. 
 
 

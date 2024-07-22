@@ -2,10 +2,7 @@ version: 2
 
 models: 
   - name: dim_districts
-    description: |
-      **Released**   
-         
-      1 row per NCES school_district_id with dimensions and school related aggregations. Includes all NCES school districts in the US, regardless of whether they are active on Code.org. 
+    description: 1 row per NCES school_district_id with dimensions and school related aggregations. Includes all NCES school districts in the US, regardless of whether they are active on Code.org. 
     columns:
       - name: school_district_id
         tests:
@@ -46,11 +43,12 @@ models:
         description: the percent of students in the district who are from an underrepresented racial group (not white or asian)
       - name: district_frl_eligible_percent
         description: the percent of students in the district who are eligible for free and reduced lunch
+    config:
+      tags: ['released']
 
   - name: dim_district_status
     description: |
-      **Released**   
-         
+      
       1 row per district, per school_year, with "active" defined by having at least one "active" school (has a teacher with a section of 5+ students completing 1+ levels of the same course). The district's status can thus be defined by one of the following in a given school year:   
            
       **active new**: has never before been "active" until this school year   
@@ -59,13 +57,7 @@ models:
       **inactive this year**: was "active" last school year, but not so far this school year   
       **inactive churn**: was "inactive" last school year and so far this school year    
       **market**: has never had a school considered "active" on code.org
-    
-    # tests:
-      # - dbt_utils.unique_combination_of_columns:
-      #   combination_of_columns:
-      #     - school_district_id
-      #     - school_year
-      #     - status
+   
     columns:
       - name: school_district_id
         description: NCES ID associated with this school district
@@ -77,3 +69,5 @@ models:
         description: time of first activity from an active school in this district in this school year
       - name: active_courses
         description: comma separated list of courses associated with active schools in this school year
+    config:
+      tags: ['released']

@@ -3,9 +3,7 @@ version: 2
 models: 
   - name: dim_users 
     description: |
-      **Released**   
-         
-      1 row per user + user_geos + user pii
+      One row per user + user_geos + user pii. 
 
     columns: 
       - name: user_id
@@ -48,6 +46,8 @@ models:
         description: gender categorization column
         tags: 
           - contains_pii
+    config:
+      tags: ['released']
 
   # - name: dim_user_surveys
   #   description: modeling survey data 
@@ -61,8 +61,7 @@ models:
 
   - name: dim_user_levels 
     description: |
-      **Data Team Internal**   
-      replaces int_user_levels with a few more columns
+      Adds more columns to the base user_levels table. 
     columns:
     - name: user_id
       description: the unique user ID associated with the activity
@@ -71,8 +70,6 @@ models:
     
   - name: dim_user_course_activity
     description: |
-      **Released**   
-         
       This model is a log of all student- and teacher-course activity within a school year.   
 
       Grain: user_id, school_year, course_name
@@ -104,3 +101,6 @@ models:
     
     - name: last_activity_at 
       description: timestamp of the student's latest activity within the given course and school year
+  
+    config:
+      tags: ['released']
