@@ -3,78 +3,54 @@ version: 2
 models:
   - name: stg_dashboard_pii__projects
     description: |
-      **Data Team Internal**   
-         
-      records of all user's projects 
+      Records of all user's projects 
 
   - name: stg_dashboard_pii__level_sources
     description: |
-      **Data Team Internal**   
-         
-      bringing in these data for level source mapping
+      Bringing in these data for level source mapping
     
   - name: stg_dashboard_pii__pd_applications
     description: |
-      **Data Team Internal**   
-         
-      staging pd applications data 
+      Staging pd applications data 
 
   - name: stg_dashboard_pii__pd_attendances
     description: |
-      **Data Team Internal**   
-         
-      staging pd attendances data 
+      Staging pd attendances data 
 
   - name: stg_dashboard_pii__pd_enrollments
     description: |
-      **Data Team Internal**   
-         
-      staging pd enrollments data 
+      Staging pd enrollments data 
 
   - name: stg_dashboard_pii__pd_international_opt_ins
     description: |
-      **Data Team Internal**   
-         
-      staging pd_intl_opt_in data 
+      Staging pd_intl_opt_in data 
 
   # - name: stg_dashboard_pii__regional_partner_mappings
   #   description: staging regional partner mapping data 
 
   - name: stg_dashboard_pii__pd_sessions
     description: |
-      **Data Team Internal**   
-         
-      staging pd session data 
+      Staging pd session data 
 
   - name: stg_dashboard_pii__pd_workshop_facilitators
     description: |
-      **Data Team Internal**   
-         
-      staging pd workshop facilitator data 
+      Staging pd workshop facilitator data 
   
   - name: stg_dashboard_pii__pd_workshops
     description: |
-      **Data Team Internal**   
-         
-      staging pd workshops data 
+      Staging pd workshops data 
   
   - name: stg_dashboard_pii__regional_partners
     description: |
-      **Data Team Internal**   
-         
-      staging regional partner data
+      Staging regional partner data
 
   - name: stg_dashboard_pii__user_school_infos
     description: |
-      **Data Team Internal**   
-         
-      staging user school info data 
+      Staging user school info data 
 
   - name: stg_dashboard_pii__users 
     description: |
-      **Data Team Internal**   
-         
-      staging user pii data 
+      Staging user pii data 
     columns:
         - name: self_reported_state
           description: user-entered state value, normalized 

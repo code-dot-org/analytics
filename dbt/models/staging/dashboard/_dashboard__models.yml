@@ -20,9 +20,7 @@ models:
         
   - name: stg_dashboard__followers
     description: |
-      **Data Team Internal**   
-         
-      staging model for followers source data
+      Staging model for followers source data.
     columns: 
       - name: follower_id
         description: unique id for table
@@ -43,16 +41,12 @@ models:
 
   - name: stg_dashboard__user_proficiencies
     description: |
-      **Data Team Internal**   
-         
-      staging model for ""
+      Staging model for ""
 
 
   - name: stg_dashboard__sections
     description: |
-      **Data Team Internal**   
-        
-      staging model for `sections` source data
+      Staging model for `sections` source data
     columns: 
       - name: section_id 
         description: unique id for each section
@@ -62,9 +56,7 @@ models:
           
   - name: stg_dashboard__section_instructors
     description: |
-      **Data Team Internal**   
-         
-      coteacher data 
+      Coteacher data 
     columns: 
       - name: instructor_id
         description: coteacher id
@@ -77,9 +69,7 @@ models:
 
   - name: stg_dashboard__schools 
     description: |
-      **Data Team Internal**   
-         
-      staging model for core school data, where len(school_id)=11 we are applying a LPAD to maintain school length convention
+      Staging model for core school data, where len(school_id)=11 we are applying a LPAD to maintain school length convention
     columns:
       - name: school_id 
         tests: 
@@ -88,9 +78,7 @@ models:
 
   - name: stg_dashboard__school_stats_by_years
     description: |
-      **Data Team Internal**   
-         
-      staging model for `school_stats_by_years` source data
+      Staging model for `school_stats_by_years` source data
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -103,9 +91,7 @@ models:
 
   - name: stg_dashboard__users
     description: |
-      **Data Team Internal**   
-         
-      staging model for `users` table from scource data
+      Staging model for `users` table from scource data
     columns: 
       - name: user_type
         description: the type of acount the user created. value is either 'student' or 'teacher'
@@ -123,9 +109,7 @@ models:
       
   - name: stg_dashboard__user_levels
     description: |
-      **Data Team Internal**   
-         
-      staging model for `user_levels` source data
+      Staging model for `user_levels` source data
     columns: 
       - name: user_level_id
         description: unique id for for each user at each level

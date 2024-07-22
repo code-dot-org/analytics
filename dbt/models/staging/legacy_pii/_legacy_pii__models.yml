@@ -4,7 +4,5 @@ models:
 
   - name: stg_legacy_pii__international_partners
     description: |
-      **Data Team Internal**   
-         
-      seed file for international partners hosted in s3 (contains pii)
+      Seed file for international partners hosted in s3 (contains pii)
     

@@ -3,37 +3,14 @@ version: 2
 models: 
   - name: stg_pegasus_pii__forms
     description: |
-      **Data Team Internal**   
-         
-      staging model for 'forms' source data
-    # columns: 
-      # - name: form_id
-      #   description: unique id for table
-      #   tests:
-      #     - unique
-      #     - not_null
+      Staging model for 'forms' source data
 
   - name: stg_pegasus_pii__form_geos
     description: |
-      **Data Team Internal**   
-         
-      staging model for 'form_geos' source data
-    # columns: 
-    #   - name: form_geo_id
-    #     description: unique id for for each user geo
-    #     tests:
-    #       - unique
-    #       - not_null
+      Staging model for 'form_geos' source data
 
   - name: stg_pegasus_pii__hoc_activity
     description: |
-      **Data Team Internal**   
-           
-      staging model for `hoc_activity` source data
-    # columns: 
-    #   - name: hoc_activity_id
-    #     description: unique id for each url hit
-    #     tests: 
-    #       - not_null
-    #       - unique
+      Staging model for `hoc_activity` source data
+  
           
