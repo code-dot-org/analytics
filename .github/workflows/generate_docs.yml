@@ -50,6 +50,20 @@ jobs:
       - name: Hide unnecessary parts of docs
         run: python .github/hide_docs.py
 
+      - name: Add custom styling
+        working-directory: ./dbt/target
+        run: |
+          echo "
+          .logo {
+            background-image: url(https://code.org/images/logo.svg);
+            background-color: transparent;
+          }
+          " > styling.css
+          sed -i '/<head>/<head>\n<link rel="stylesheet" type="text/css" href="styling.css"/>' index.html
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
