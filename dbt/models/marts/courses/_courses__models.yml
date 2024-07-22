@@ -2,29 +2,22 @@ version: 2
 
 models: 
   - name: dim_course_names
-    description: |
-      **Data Team Internal**
-         
-      distinct list of course names sourced via seed file 
+    description: distinct list of course names sourced via seed file 
 
   - name: dim_course_structure
-    description: |
-      **Released**
-          
-      dim table for courses data
+    description: course information about every level/script combination
     columns: 
       - name: level_id
         description: |
           This field includes a hard coded error correction, 
           level_script_levels defines the first level of this script as 
           id '14633' when user_levels defines this level as '1'...
+    config:
+      tags: ['released']
 
 
   - name: dim_levels
-    description: |
-      **Data Team Internal**
-         
-      dimensional table to provide attrtibution to levels data
+    description: dimensional table to provide attrtibution to levels data
     columns: 
       - name: level_id
         description: uid for this model, 1 row per level_id
@@ -33,10 +26,7 @@ models:
           - not_null
 
   - name: dim_script_names
-    description: |
-      **Data Team Internal**
-         
-      distinct list of script names provided via seed file
+    description: distinct list of script names provided via seed file
     columns: 
       - name: versioned_script_id
         description: uid for script by school year
@@ -45,10 +35,7 @@ models:
           - not_null
 
   - name: dim_level_concept_difficulties
-    description: |
-      **Released**
-         
-      this table is full listing of every level in course structure showing the mapping to any/all "concepts and difficulties" for use in the "coding proficiency" metric.  
+    description: a full listing of every level in course structure showing the mapping to any/all "concepts and difficulties" for use in the "coding proficiency" metric.  
     columns: 
       - name: level_id
         description: id of the level being mapped
