@@ -50,9 +50,6 @@ jobs:
       - name: Hide unnecessary parts of docs
         run: python .github/hide_docs.py
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Add custom styling
         working-directory: ./dbt/target
         run: |
@@ -60,6 +57,11 @@ jobs:
           .logo {
             background-image: url(https://code.org/images/logo.svg);
             background-color: transparent;
+            width: 100px;
+            height: 40px;
+          }
+          img.logo {
+            display: none;
           }
           " > styling.css
           sed -i 's/<head>/<head><link rel="stylesheet" type="text\/css" href="styling.css" \/>/g' index.html
