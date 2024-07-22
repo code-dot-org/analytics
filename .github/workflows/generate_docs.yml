@@ -57,8 +57,7 @@ jobs:
           .logo {
             background-image: url(https://code.org/images/logo.svg);
             background-color: transparent;
-            width: 100px;
-            height: 40px;
+            background-repeat: no-repeat;
           }
           img.logo {
             display: none;
