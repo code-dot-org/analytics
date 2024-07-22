@@ -62,7 +62,7 @@ jobs:
             background-color: transparent;
           }
           " > styling.css
-          sed -i 's/<head>/<head><link rel="stylesheet" type="text/css" href="styling.css"/>/g' index.html
+          sed -i 's/<head>/<head><link rel="stylesheet" type="text\/css" href="styling.css" \/>/g' index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
