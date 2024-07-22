@@ -68,6 +68,8 @@ models:
       tags:
         - "int"
       +materialized: table
+      +docs:
+        show: false
 
     marts:
       tags:
@@ -80,6 +82,11 @@ models:
       +materialized: view
 
       external_datasets:
+        base:
+      +docs:
+        show: false
+      
+      dashboard:
         base:
           tags:
             - "base"
@@ -110,9 +117,15 @@ models:
           tags:
             - "base"
           +materialized: ephemeral
+        +docs:
+          show: false
 
       amplitude:
         base: 
           tags:
             - "base"
           materialized: ephemeral
+
+seeds:
+  +docs:
+    show: false
