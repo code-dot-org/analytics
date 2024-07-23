@@ -50,6 +50,24 @@ jobs:
       - name: Hide unnecessary parts of docs
         run: python .github/hide_docs.py
 
+      - name: Add custom styling
+        working-directory: ./dbt/target
+        run: |
+          echo "
+          .logo {
+            background-image: url(https://code.org/images/logo.svg);
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-size: contain;
+          }
+          img.logo {
+            display: none;
+          }
+          " > styling.css
+          sed -i 's|<head>|<head><link rel="stylesheet" type="text/css" href="styling.css" />|g' index.html
+          sed -i 's|<title>dbt Docs</title>|<title>Code.org dbt Docs</title>|g' index.html
+          sed -i "s|\${require('./assets/favicons/favicon.ico')}|https://code.org/images/logo.svg|g" index.html
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
