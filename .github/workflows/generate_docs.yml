@@ -50,6 +50,9 @@ jobs:
       - name: Hide unnecessary parts of docs
         run: python .github/hide_docs.py
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       - name: Add custom styling
         working-directory: ./dbt/target
         run: |
