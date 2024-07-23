@@ -69,7 +69,7 @@ jobs:
           " > styling.css
           sed -i 's/<head>/<head><link rel="stylesheet" type="text\/css" href="styling.css" \/>/g' index.html
           sed -i 's/<title>dbt Docs<\/title>/<title>Code.org dbt Docs<\/title>/g' index.html
-          sed -i 's/href="${require(\'.\/assets\/favicons\/favicon.ico\')}"/href="https:\/\/code.org\/images\/logo.svg"/g' index.html
+          sed -i "s/\${require('.\/assets\/favicons\/favicon.ico')}/https://code.org/images/logo.svg/g" index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
