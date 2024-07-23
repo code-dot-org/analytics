@@ -4,7 +4,7 @@ Welcome to all things documentation! We are so glad you're here.
 
 ### Key terms + definitions
 #### models   
-In trevor, these materialize as tables, but we call them **models** because they do not represent raw data, but rather, are manipulations of data that models business context.
+In trevor, these materialize as tables, but we call them **models** because they do not represent raw data, but rather, are manipulations of data that reflect business context.
 
 #### sources
 Source data is where the raw data lies: the data we use to create the models. Generally, you'll never need to look at the documentation of source data, but it could be helpful if you want to trace back where a model's data is coming from. 
