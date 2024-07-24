@@ -121,4 +121,3 @@ models:
   - name: int_daily_summary_sign_in
     description: number of sign ins by user for a given date. 
 
-

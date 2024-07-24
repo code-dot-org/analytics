@@ -7,10 +7,11 @@ source as (
 
 renamed as (
     select
-        id as follower_id,
-        student_user_id as student_id,
+        id                  as follower_id,
+        student_user_id     as student_id,
         section_id,
-        created_at,
+        created_at          as student_added_at,
+        deleted_at          as student_removed_at,
         updated_at
     from source
 )
