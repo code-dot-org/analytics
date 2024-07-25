@@ -46,6 +46,10 @@ models:
         description: gender categorization column
         tags: 
           - contains_pii
+      
+      - name: updated_at
+        description: the date at which an update was last made to the account
+        
     config:
       tags: ['released']
 
