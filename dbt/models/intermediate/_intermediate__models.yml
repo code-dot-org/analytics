@@ -89,7 +89,7 @@ models:
       1 row per school year in different formats
 
   - name: int_section_mapping
-    description: xref table to pull together these FK's for reference. Contains every student_id/section_id combination by school year, with teacher and school information provided for reference. 
+    description: A complete mapping of every student added to a section, with their associated teacher/ school information for reference.  
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
