@@ -81,7 +81,8 @@ models:
             - activity_date
 
   - name: dim_students
-    description: This model contains all student accounts ever created + geographic info on the student
+    description: |
+      This model contains all student accounts ever created + geographic info on the student. 
 
     columns:
       - name: user_id
@@ -89,12 +90,6 @@ models:
         tests:
           - not_null
           - unique
-
-        
-    # - name: user_type
-    #   description: always "student"- used for verification
-    #   tests: 
-    #     - not_null 
     
       - name: created_at_school_year
         description: the school year in which the student account was created
@@ -110,11 +105,8 @@ models:
 
       - name: school_id
         description: school association of student 
-
-        # - name: user_type
-        #   description: always "student"- used for verification
-        #   tests:
-        #     - not_null
+    config:
+      tags: ['released']
 
 # - name: dim_student_status
 #   description: This model categorizes students based on their activity status across different school years. It provides insights into user engagement by assigning a status that reflects their activity in the current, previous, and any earlier school years.

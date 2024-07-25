@@ -2,7 +2,8 @@ version: 2
 
 models: 
   - name: dim_sections
-    description: all sections ever created, with activity metrics for those that are "active" (5+ students starting 1+ levels of same course during a school year)
+    description: |
+      All sections ever created, with activity metrics for those that are "active" (5+ students starting 1+ levels of same course during a school year)
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -41,3 +42,5 @@ models:
         description: the course associated with the student activity in the section. If a section is "active" (has 5+ students starting 1+ levels of the same course in a year) in multiple courses, they will have a row for each one.
       - name: is_active
         description: a 0/1 flag for whether or not the section is "active" for that course and school year (has 5+ students starting 1+ levels of the same course in a year). 
+    config:
+      tags: ['released']

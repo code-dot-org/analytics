@@ -2,43 +2,55 @@ version: 2
 
 models:
   - name: stg_dashboard_pii__projects
-    description: records of all user's projects 
+    description: |
+      Records of all user's projects 
 
   - name: stg_dashboard_pii__level_sources
-    description: bringing in these data for level source mapping
+    description: |
+      Bringing in these data for level source mapping
     
   - name: stg_dashboard_pii__pd_applications
-    description: staging pd applications data 
+    description: |
+      Staging pd applications data 
 
   - name: stg_dashboard_pii__pd_attendances
-    description: staging pd attendances data 
+    description: |
+      Staging pd attendances data 
 
   - name: stg_dashboard_pii__pd_enrollments
-    description: staging pd enrollments data 
+    description: |
+      Staging pd enrollments data 
 
   - name: stg_dashboard_pii__pd_international_opt_ins
-    description: staging pd_intl_opt_in data 
+    description: |
+      Staging pd_intl_opt_in data 
 
   # - name: stg_dashboard_pii__regional_partner_mappings
   #   description: staging regional partner mapping data 
 
   - name: stg_dashboard_pii__pd_sessions
-    description: staging pd session data 
+    description: |
+      Staging pd session data 
 
   - name: stg_dashboard_pii__pd_workshop_facilitators
-    description: staging pd workshop facilitator data 
+    description: |
+      Staging pd workshop facilitator data 
   
   - name: stg_dashboard_pii__pd_workshops
-    description: staging pd workshops data 
+    description: |
+      Staging pd workshops data 
   
   - name: stg_dashboard_pii__regional_partners
-    description: staging regional partner data
+    description: |
+      Staging regional partner data
 
   - name: stg_dashboard_pii__user_school_infos
-    description: staging user school info data 
+    description: |
+      Staging user school info data 
 
   - name: stg_dashboard_pii__users 
-    description: staging user pii data 
+    description: |
+      Staging user pii data 
     columns:
         - name: self_reported_state
           description: user-entered state value, normalized 

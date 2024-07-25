@@ -44,22 +44,32 @@ combined as (
         sy.school_year, 
         followers.student_id,
         sections.teacher_id,
-        sections.section_id         as section_id,
+        sections.section_id                                                 as section_id,
         tsc.school_id,
         tsc.school_info_id,
+        student_added_at,
+        case 
+            when 
+                followers.student_removed_at is null 
+                or followers.student_removed_at > sy.ended_at 
+            then sy.ended_at
+            else followers.student_removed_at
+        end                                                                 as student_removed_at,
         row_number() over(
             partition by 
                 followers.student_id, 
-                sy.school_year
+                sy.school_year,
+                sections.section_id,
+                sections.teacher_id
                 order by 
-                    followers.created_at
+                    followers.student_added_at
         ) as row_num
 
     from followers  
     left join sections 
         on followers.section_id = sections.section_id
     join school_years as sy 
-        on followers.created_at between sy.started_at and sy.ended_at
+        on followers.student_added_at between sy.started_at and sy.ended_at
     left join teacher_school_changes tsc 
         on sections.teacher_id = tsc.teacher_id 
         and sy.ended_at between tsc.started_at and tsc.ended_at 
@@ -72,7 +82,9 @@ final as (
         section_id,
         teacher_id,
         school_id,
-        school_info_id
+        school_info_id,
+        student_added_at,
+        student_removed_at
     from combined
     where row_num = 1 
 )
