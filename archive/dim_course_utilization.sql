@@ -14,6 +14,11 @@ user_levels as (
     from {{ ref('dim_user_levels') }}
 ),
 
+section_mapping as (
+    select *
+    from {{ ref('int_section_mapping') }}
+),
+
 school_status as (
     select 
         school_id,
@@ -30,7 +35,7 @@ schools as (
         from school_status )
 ),
 
-teachers as (
+teacher_status as (
     select 
         teacher_id,
         school_year,
@@ -56,7 +61,7 @@ combined as (
         cs.script_name,
         cs.level_name,
         cs.stage_name,
-        cs.unit         as unit_name,
+        cs.unit                                     as unit_name,
         
         -- {#
         cs.is_student,
@@ -67,7 +72,7 @@ combined as (
         -- sections 
         ias.section_id,
         ias.teacher_id,
-        ias.is_active   as is_active_section,
+        ias.is_active                              as is_active_section,
 
         -- schools 
         ias.school_year,
@@ -80,32 +85,32 @@ combined as (
         tea.teacher_status,
 
         -- dates
-        ul.created_dt          as activity_date,
+        extract('day' from ul.created_dt)          as activity_date,
 
 
         -- aggregations 
-        sum(ul.attempts)       as num_attempts,
-        max(ul.best_result)    as best_result,
-        sum(ul.time_spent)     as time_spent
+        sum(ul.attempts)                           as num_attempts,
+        max(ul.best_result)                        as best_result,
+        sum(ul.time_spent)                         as time_spent
 
-    from course_structure                       as cs 
+    from user_levels                               as ul 
 
-    left join user_levels                       as ul 
+    left join course_structure                     as cs 
         on  cs.script_id = ul.script_id
         and cs.level_id  = ul.level_id 
     
-    left join teachers                          as tea
+    left join teacher_status                       as tea
          on tea.teacher_id  = ias.teacher_id 
         and tea.school_year = ias.school_year
     
-    left join school_status                     as sst 
+    left join school_status                        as sst 
          on sst.school_id   = ias.school_id
         and sst.school_year = ias.school_year
 
-    left join schools                           as sc 
+    left join schools                              as sc 
         on sst.school_id = sc.school_id 
     
-    left join active_sections               as ias 
+    left join active_sections                      as ias 
          on tea.teacher_id  = ias.teacher_id 
         and tea.school_year = ias.school_year 
 
