@@ -68,8 +68,8 @@ models:
       tags:
         - "int"
       +materialized: table
-      +docs:
-        show: false
+      # +docs:
+      #   show: false
 
     marts: 
       tags:
