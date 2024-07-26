@@ -20,10 +20,9 @@ select
     demographic_category,
     demographic_group,
     max(num_schools) as num_schools, --every school+score+group combo has the number of schools that apply.  Max will be 1 for individual schools and NN for the "less than 10 aggregate"
-    --SUM(CASE WHEN score_category = 'total' THEN num_students ELSE 0 END) AS total_students, --used to sanity check. scores 1-5 should = total
-    SUM(CASE WHEN score_of IN (1,2,3,4,5) THEN num_students ELSE 0 END) AS num_taking,
-    SUM(CASE WHEN score_of IN (3,4,5) THEN num_students ELSE 0 END) AS num_passing,
-    COALESCE(num_passing::float / NULLIF(num_taking::float, 0), 0) AS pct_passing --prevent division by 0
+    sum(case when score_of in (1,2,3,4,5) then num_students else 0 end)             as num_taking,
+    sum(case when score_of in (3,4,5) then num_students else 0 end)                 as num_passing,
+    coalesce(num_passing::float / nullif(num_taking::float, 0), 0)                  as pct_passing --prevent division by 0
 from
     exam_results
 {{dbt_utils.group_by(8)}}
