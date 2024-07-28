@@ -105,7 +105,7 @@ models:
             - activity_date
 
 
-  - name: int_daily_summary_sign_ins
+  - name: int_daily_summary_sign_in
     description: |
       This model summarizes the number of sign-ins per user per day. It tracks the number of times a user logs in per day."
     columns:
