@@ -198,7 +198,5 @@ models:
           combination_of_columns:
             - school_year
             - iso_week
-            - school_year_week
-  - name: int_daily_summary_sign_in
-    description: number of sign ins by user for a given date. 
+            - school_year_week 
 
