@@ -1,32 +1,32 @@
 version: 2
 
 models: 
-  - name: dim_teacher_schools
-    description: |
-      A historical record of all teacher-school associations by school year.   
+  # - name: dim_teacher_schools
+  #   description: |
+  #     A historical record of all teacher-school associations by school year.   
       
-      If the teacher changed schools mid-year, this model takes their school from the end of the year. If there is a date entered for "ended_at", that particular teacher changed schools.   
-    columns:
-      - name: teacher_id
-        description: unique user id for every teacher
-        data_type: varchar
-        tests:
-          - not_null
-      - name: school_info_id
-        description: id for the school entered or chosen (NCES list) by the teacher in account setup
-        data_type: varchar
-      - name: school_id
-        description: id for NCES school chosen by teacher, if manually entered, this will be null
-        data_type: varchar
-      - name: started_at_sy
-        description: the school year in which the teacher first made this school selection (either in account setup or changed in account settings)
-        data_type: varchar
-      - name: started_at
-        description: the date/time at which that school selection was made
-        data_type: datetime
-      - name: ended_at
-        description: the date/time at which the teacher changed their school association. Will be '9999-12-31T00:00:00' if they are still associated with that school.
-        data_type: datetime
+  #     If the teacher changed schools mid-year, this model takes their school from the end of the year. If there is a date entered for "ended_at", that particular teacher changed schools.   
+  #   columns:
+  #     - name: teacher_id
+  #       description: unique user id for every teacher
+  #       data_type: varchar
+  #       tests:
+  #         - not_null
+  #     - name: school_info_id
+  #       description: id for the school entered or chosen (NCES list) by the teacher in account setup
+  #       data_type: varchar
+  #     - name: school_id
+  #       description: id for NCES school chosen by teacher, if manually entered, this will be null
+  #       data_type: varchar
+  #     - name: started_at_sy
+  #       description: the school year in which the teacher first made this school selection (either in account setup or changed in account settings)
+  #       data_type: varchar
+  #     - name: started_at
+  #       description: the date/time at which that school selection was made
+  #       data_type: datetime
+  #     - name: ended_at
+  #       description: the date/time at which the teacher changed their school association. Will be '9999-12-31T00:00:00' if they are still associated with that school.
+  #       data_type: datetime
        
   - name: dim_active_teachers
     description: |
