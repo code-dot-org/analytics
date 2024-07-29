@@ -10,7 +10,7 @@ models:
       - name: teacher_id
         description: unique user id for every teacher
         data_type: varchar
-        tests:
+        data_tests:
           - not_null
       - name: school_info_id
         description: id for the school entered or chosen (NCES list) by the teacher in account setup
@@ -47,13 +47,13 @@ models:
       - name: event_date
         description: "The date on which either a sign-in or an Amplitude event was recorded (or both). This field merges dates from sign-ins and Amplitude events to align activities across sources."
         data_type: "date"
-        tests:
+        data_tests:
           - not_null
 
       - name: merged_user_id
         description: "A unified identifier for the user that merges user IDs from Code.org platform sign-ins and Amplitude events, ensuring consistent tracking across sources. This user_id will be the user's Code.org user_id if it is known or the amplitude_id if not."
         data_type: "varchar"
-        tests:
+        data_tests:
           - not_null
 
       - name: user_type
@@ -121,7 +121,7 @@ models:
     columns: 
       - name: user_id
         description: unique ID for every teacher account created
-        tests: 
+        data_tests: 
           - not_null
           - unique
 
