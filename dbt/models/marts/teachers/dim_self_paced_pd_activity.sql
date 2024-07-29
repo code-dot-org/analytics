@@ -6,7 +6,7 @@ course_structure as (
 
 user_levels as (
     select *
-    from {{ ref('dim_user_levels') }}
+    from {{ ref('stg_dashboard__user_levels') }}
 ),
 
 teachers as (
@@ -28,6 +28,8 @@ self_paced_scripts as (
     select distinct 
         cs.level_id
         , cs.script_id
+        , cs.stage_id
+        , unit
         , cs.script_name
         , cs.stage_name
         , cs.level_name
@@ -36,17 +38,16 @@ self_paced_scripts as (
         , cs.level_script_order
         , cs.course_name_true
         , case 
-            when cs.script_name LIKE 'k5-onlinepd%' 		    then 'csf'
+            when cs.script_name like 'k5-onlinepd%' 		    then 'csf'
 			when cs.script_name like 'self-paced-pl-k5%'	    then 'csf'
-  			when cs.script_name LIKE 'self-paced-pl-csd%'	    then 'csd'
-  			when cs.script_name LIKE 'self-paced-pl-csp%'	    then 'csp'
-  			when cs.script_name LIKE 'self-paced-pl-csc%'	    then 'csc'
-  			when cs.script_name LIKE 'self-paced-pl-aiml%'	    then 'aiml'
-			when cs.script_name like 'self-paced-pl-ai-101%'    then 'ai for teachers'
-  			when cs.script_name LIKE 'self-paced-pl-physical%'	then 'maker: cp'
-  			when cs.script_name LIKE 'self-paced-pl-microbit%'	then 'maker: mb'
+  			when cs.script_name like 'self-paced-pl-csd%'	    then 'csd'
+  			when cs.script_name like 'self-paced-pl-csp%'	    then 'csp'
+  			when cs.script_name like 'self-paced-pl-csc%'	    then 'csc'
+			when cs.script_name like 'self-paced-pl-ai%'        then 'csd'
+  			when cs.script_name like 'self-paced-pl-physical%'	then 'csd'
+  			when cs.script_name like 'self-paced-pl-microbit%'	then 'csd'
   			when cs.script_name like 'kodea-pd%'			    then 'csf'
-  			end                                                 as self_paced_pl_course
+  			end                                                 as course_name
     from course_structure cs
     where 
         (
@@ -58,14 +59,17 @@ self_paced_scripts as (
         and cs.script_name not like 'self-paced-pl-csa%'  -- csa's self-paced pl is asynchronous work for facilitator-led pd workshops
 )
 select
-    ul.user_id
+    ul.user_id                                                  as teacher_id
     , ul.level_id
     , ul.script_id
+    , sps.stage_id
+    , sps.unit
     , sps.script_name
     , sps.stage_name
     , sps.level_name
-    , ul.created_dt
-    , ul.updated_dt
+    , sps.course_name
+    , ul.created_at                                             as level_created_at
+    , sy.school_year                                            as level_created_school_year
     , ul.best_result
     , ul.time_spent
     , l.level_type
@@ -73,11 +77,11 @@ select
     , t.gender
     , t.races
     , t.is_urg
-    , t.school_info_id
+    , t.school_id
     , rank () 
         over (
             partition by ul.user_id 
-                order by ul.created_dt asc)                     as touch_rank
+                order by ul.created_at asc)                     as touch_rank
     , sps.level_number
     , sps.level_script_order
     , sps.stage_number 
@@ -95,5 +99,5 @@ join levels                                                     as l
 join teachers                                                   as t
     on ul.user_id = t.teacher_id
 
-limit 100
-
+join school_years                                               as sy
+    on ul.created_at between sy.started_at and sy.ended_at
