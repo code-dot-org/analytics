@@ -1,0 +1,274 @@
+version: 2
+
+models:
+  - name: ap_school_level_exam_results_summary
+    description: |
+      
+      This model generates a summary of school-level AP exam results.      
+      Specifically, it calculates **for each** grouping of: (exam_year | ai_code | exam | demographic_category | demographic_group ) the number of students:
+      1. taking the exam
+      2. passing the exam (score of 3, 4, or 5)
+      3. the pass rate percentage of that (passing/taking)
+
+      This model is VERY similar to `ap_agg_exam_results_summary` except:
+        1. the AP exam score aggregation is happening at the single school-level**, rather than groups of schools.
+        2. it does not calculate the additional demographic groups (eg. bhnapi, tr_urg, urg, etc.) that is done for the agg_exam_results.
+        3. it excludes several fields of school-level data (see: `stg_ap_school_level_exam_results`) in order to conform to a similar structure as the other ap_agg_exam_results table.
+
+      **Note**: For schools with fewer than 10 students:   
+      - The College Board gives us results aggregated at the school level **if the number of students taking the exam at that school is ≥ 10**. 
+      - For all schools with **fewer than 10 students** an aggregate report is created with a `school_name` = "less than 10 aggregate".
+
+
+    columns:
+      - name: exam_year
+        description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
+        tests:
+          - not_null
+          
+
+      - name: ai_code
+        description: "The College Board's AI (Attending Institution) code, padded to ensure consistent formatting."
+
+      - name: nces_id
+        description: "This is NOT from the orginal data set. It is here as a convience, simply using the `ap_aicode_nces_crosswalk` to map an nces_id to this ai_code **if it exists**.  If the crosswalk is improved this field will come along for the ride."
+
+      - name: high_school_name
+        description: "The name of the school _as given_ by the College Board - this might vary in spelling and/or capitalization with what you might find in our other NCES schools data."
+      
+      - name: state
+        description: "The U.S. state of the high school _as given_ by the College Board in the school-level exam results data."
+      
+      - name: exam
+        description: "The specific AP exam for which the record applies. This is normalized to one of (`csp` or `csa`)."
+
+      - name: num_schools
+        description: "`1` or `[some large number]` -- The number of schools represented in the aggregate record. This `1` in the case of results for a single school or some larger value (e.g. `650`) when this is the the 'LESS THAN 10 AGGREGATE' set of results"
+      
+      - name: num_taking
+        description: "The calculated number of students taking the AP exam for this (exam_year | reporting_group | exam | demographic_group )"
+      
+      - name: num_passing
+        description: "The calculated number of students passing the AP exam for this (exam_year | reporting_group | exam | demographic_group )."
+      
+      - name: pct_passing_calc
+        description: "The calculated percentage of students passing the AP exam (passrate) of this group. It is simply dividing `num_taking / num_passing` values you see in this record"
+
+   
+
+
+  - name: ap_agg_exam_results_summary
+    description: |
+      This model generates a summary of aggregated AP exam results.   
+
+      Specifically, it calculates **for each** grouping of: (exam_year | reporting_group | exam | demographic_category | demographic_group ) the number of students:   
+
+      1. taking the exam   
+      2. passing the exam (score of 3, 4, or 5)   
+      3. the pass rate percentage of that (passing/taking)   
+          
+      It also, importantly, follows the "External URG" formula to calculate the number of URG students taking and passing the exam.
+
+    columns:
+      - name: source
+        description: "One of `college board` or `calculated` - tells you whether the demographic group came straight from the College Board data or whether we calculated it from that."
+      
+      - name: exam_year
+        description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
+        tests:
+          - not_null
+
+      - name: reporting_group
+        description: |
+          Historically known as **`exam_group`**, the name was changed to disambuguate from demographic groups.    
+          The field is the name of the aggregated report we get back from the college board derived from lists of schools we provide to the college board with "tags".  
+          The "tags" _are_ the reporting group, however we don't give and get them back with consistent names YoY.  So this field normalized reporting group into consisten YoY labels e.g. `cdo_audit`, `csp_users_and_audit` etc. 
+          As of 2024 the set of reporting groups (given by `select distinct reporting_group from stg_external_datasets__ap_agg_exam_results` ) is:
+          ```
+          2019_AFE
+          2019_and_2020_AFE
+          2020_AFE
+          cdo_audit
+          csa pd all time
+          csa_users
+          csa_users_afe
+          csa_users_and_audit
+          csp pd all time
+          csp pd per year
+          csp_users
+          csp_users_afe
+          csp_users_and_audit
+          national
+          pd_2016
+          pd_2017
+          pd_2018
+          pd_2019
+          pd_2020
+          rp all time
+          rp per year
+          ```
+        tests:
+          - not_null
+      - name: rp_id
+        description: "The regional partner id. This is for years when we recieved sepearate aggregated reports for our regional partners, and is largely historical at this point. Regional partner reports would now need to be derived and calcuated from `school_level_exam_results` data in a different model."
+      
+      - name: exam
+        description: "The specific AP exam for which the record applies. This is normalized to one of (`csp` or `csa` or `sum_csa_csp`). `sum_csa_csp` **should be used with caution** -- it was reported in some older data before we had Code.org CSA exam - it represents the total number of AP exam takers at schools that audited as **Code.org CSP**. "
+        tests:
+          - not_null
+      - name: demographic_category
+        description: |
+          The category to which the demographic group belongs, such as race or gender. NOTE: see field: **demographic_group** to see which demographic groups go with each category.   
+             
+          In this summary view there are 6 categories:   
+             
+            Four straight from the college board:   
+            ```
+            1. gender      - male, female, etc.   
+            2. race        - black, white, hispanic, etc.   
+            3. grade_level - freshman, sophomore, etc.   
+            4. total   
+            ```   
+            Two necessary for computing and reporting out the external URG calculation:    
+            ```
+            5. calc_urg   - bhnapi, tr_urg, etc.   
+            6. urg_final  - urg, non_urg   
+            ```   
+        tests:
+          - not_null  
+
+      - name: demographic_group
+        description: |
+          The normalized demographic group e.g. 'black', 'hispanic', 'white', etc. 
+          
+          As of May 2024 here are the distinct demographic_groups along with the demographic_cateogry that goes with them:
+          ```
+          +-------------+--------------------------------------------+
+          | Demographic |                                            |
+          | Category    | Demographic Group                          |
+          +-------------+--------------------------------------------+
+          | gender      | male, female, other_gender                 |
+          |             |                                            |
+          | race        | black, hispanic, american_indian, hawaiian | <- bhnapi
+          |             | white, asian, other_race                   | <- wh_as_other
+          |             | two_or_more, race_no_response              |
+          |             |                                            |
+          | grade_level | freshman, sophomore, junior, senior        |
+          |             |                                            |
+          | total       | total                                      |
+          |             |                                            |
+          | calc_urg    | bhnapi, wh_as_other                        | 
+          |             | tr_urg, tr_non_urg                         | <- calculated here
+          |             |                                            |
+          | urg_final   | urg                                        | <- (bhnapi + tr_urg)  
+          |             | non_urg                                    | <- (wh_as_other + tr_non_urg)
+          +-------------+--------------------------------------------+
+          ```
+        tests:
+          - not_null
+
+      - name: num_taking
+        description: "The calculated number of students taking the AP exam for this (exam_year | reporting_group | exam | demographic_group )"
+        tests:
+          - not_null      
+      - name: num_passing
+        description: "The calculated number of students passing the AP exam for this (exam_year | reporting_group | exam | demographic_group )."
+        tests:
+          - not_null      
+      - name: pct_passing
+        description: "The calculated percentage of students passing the AP exam (passrate) of this group. It is simply dividing `num_taking / num_passing` values you see in this record"
+        tests:
+          - not_null
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['source', 'exam_year', 'reporting_group', 'rp_id', 'exam', 'demographic_category', 'demographic_group']
+
+  - name: ap_aicode_nces_crosswalk
+    description: "This model retrieves the most recent record for each distinct ai_code|nces_id pair from all the AI/NCES crosswalk datasets we've received from the college board. "
+    columns:
+      - name: ai_code
+        description: "The College Board AI (Attending Institution) code, padded to ensure consistent formatting."
+        tests:
+          - not_null
+          - test_string_length_in:
+              list_of_acceptable_lengths: "6"
+      - name: nces_id
+        description: "The National Center for Education Statistics (NCES) ID, padded to ensure consistent formatting."
+        tests:
+          - not_null
+          - test_string_length_in:
+              list_of_acceptable_lengths: "8, 12"
+
+      - name: most_recent_update_year
+        description: "This will show the exam year of the most recent for which we received crosswalk data. i.e. exam_year 2023 means the 2022-23 school year."
+        tests:
+          - not_null
+      - name: source
+        description: "The source of the AP crosswalk data. e.g. 'college board', 'by_hand_matching' etc.  "
+        tests:
+          - not_null
+      - name: school_name
+        description: "The name of the school _as given_ by the College Board - this might vary in spelling and/or capitalization with what you might find in our other NCES schools data."
+        tests:
+          - not_null
+      - name: city
+        description: "The city where the school is located."
+        tests:
+          - not_null
+      - name: state
+        description: "The state where the school is located."
+        tests:
+          - not_null
+      - name: zip
+        description: "The ZIP code of the school's location, padded to ensure consistent formatting."
+        tests:
+          - not_null
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['most_recent_update_year', 'ai_code', 'nces_id']
+
+  - name: ap_ledgers
+    description: |
+      The AP School Ledgers provided by the college board show for any given year the set of 1. National and 2. Code.org Audit schools who declared they are teaching either AP Computer Science A or AP Computer Science Principles.
+
+
+      We effectively get four (4) sets of ledgers each year:
+        1. National - Computer Science Principles
+        2. National - Computer Science A
+        3. Code.org "Audit" - Computer Science Principles
+        4. Code.org "Audit" - Computer Science A
+        
+      This model consolidates all AP ledger data, joining it with the existing aicode/nces crosswalk table to include NCES IDs where a mapping is availble.       We use this data for the access report, as well as for analyses related to the types of schools doing AP computer science.
+
+    columns:
+      - name: exam_year
+        description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
+
+      - name: school_year
+        description: "The academic year in which the AP exam took place."
+
+      - name: exam
+        description: "The specific AP exam for which the record applies. This is normalized to one of (`csp` or `csa`)."
+
+      - name: ledger_group
+        description: "The group or category of the ledger entry."
+
+      - name: ai_code
+        description: "The AI (Attending Institution) code, padded to ensure consistent formatting."
+
+      - name: nces_id
+        description: "The National Center for Education Statistics (NCES) ID associated with the school."
+
+      - name: school_name
+        description: "The name of the school _as given_ by the College Board - this might vary in spelling and/or capitalization with what you might find in our other NCES schools data."
+        
+      - name: city
+        description: "The city where the school is located."
+      - name: state
+        description: "The state where the school is located."
+      - name: country
+        description: "The country where the school is located."
+      - name: provider_syllabus
+        description: "The syllabus provided by the exam provider. Typically 'code.org' but sometimes e.g. 'CMU + code.org' or some listing with a collaborative partner."
+
