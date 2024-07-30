@@ -5,7 +5,7 @@ models:
     description: 1 row per NCES school_district_id with dimensions and school related aggregations. Includes all NCES school districts in the US, regardless of whether they are active on Code.org. 
     columns:
       - name: school_district_id
-        tests:
+        data_tests:
           - not_null
           - unique
         description: unique ID for each school district, as defined by NCES. 

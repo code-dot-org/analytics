@@ -6,6 +6,6 @@ models:
     columns: 
       - name: form_id
         description: unique id for table
-        tests:
+        data_tests:
            - unique
            - not_null

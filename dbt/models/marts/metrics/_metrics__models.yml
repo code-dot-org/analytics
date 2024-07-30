@@ -6,7 +6,7 @@ models:
     columns:
     - name: date
       description: "the date (day) of activity"
-      tests:
+      data_tests:
         - not_null
     - name: country
       description: "the country of the users as determined by code.org geolocation"
@@ -14,7 +14,7 @@ models:
       description: "'us' if the `country` = 'United States', 'intl' if not (there are a handful of Nulls)"
     - name: num_actives
       description: the number of active students on given date, in given country
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - date
@@ -27,7 +27,7 @@ models:
     columns:
     - name: month_year
       description: "The month and year of activity, truncated/aggregated to first of the month. e.g. all data for January, 2022 is given as month_year = '2022-01-01' "
-      tests:
+      data_tests:
         - not_null
     - name: country
       description: "the country of the users as determined by code.org geolocation"
@@ -35,7 +35,7 @@ models:
       description: "'us' if the `country` = 'United States', 'intl' if not (there are a handful of Nulls)"
     - name: num_actives
       description: the number of active students on given month, in given country
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - month_year
@@ -53,7 +53,7 @@ models:
               
       - name: school_year
         description: school year in which the activity at a school is counted
-        tests:
+        data_tests:
           - not_null
         
       - name: status
@@ -85,7 +85,7 @@ models:
     columns:
       - name: user_type
         description: teacher or student
-        tests:
+        data_tests:
           - not_null
           
       - name: us_intl
@@ -96,17 +96,17 @@ models:
        
       - name: school_year
         description: school year in which the accounts were created
-        tests:
+        data_tests:
           - not_null
 
       - name: created_year
         description: the calendar year in which the accounts were created
-        tests:
+        data_tests:
           - not_null
       
       - name: created_month
         description: the month number in which the accounts were created
-        tests:
+        data_tests:
           - not_null
       
       - name: created_year_month
@@ -126,7 +126,7 @@ models:
     columns:
       - name: user_type
         description: teacher or student (or `null`)
-        tests:
+        data_tests:
           - not_null
       
       - name: us_intl
@@ -146,7 +146,7 @@ models:
     columns:
       - name: user_type
         description: teacher or student (or `null`)
-        tests:
+        data_tests:
           - not_null
     config:
       tags: ['released']

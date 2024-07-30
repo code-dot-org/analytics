@@ -4,7 +4,7 @@ models:
   - name: dim_sections
     description: |
       All sections ever created, with activity metrics for those that are "active" (5+ students starting 1+ levels of same course during a school year)
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - teacher_id
