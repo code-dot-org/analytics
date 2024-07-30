@@ -139,12 +139,12 @@ active_teachers as (
 
 select distinct
     coalesce(th.teacher_id, sps.teacher_id)                                             as teacher_id
-    , th.course_name
+    , coalesce(th.course_name, sps.course_name)                                         as course_name
     , th.first_teaching_sy
     , case 
         when sps.teacher_id is not null then 1 
         else 0 
-    end                                                                                 as self_paced_pl
+    end                                                                                 as did_self_paced_pl
     , sps.start_dt
     , sps.end_dt
     , sps.first_self_paced_sy
