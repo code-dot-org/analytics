@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: base_external_datasets__ap_agg_exam_results_2023
+    description: "Base model for AP aggregated exam results for 2023"
+    columns:
+      - name: exam_year
+        description: "The year in which the AP exam was taken."
+        tests:
+          - not_null
+      - name: pd_year
+        description: "The reporting year for the AP exam data."
+      - name: exam_group
+        description: "The exam group."
+        tests:
+          - not_null
+      - name: rp_id
+        description: "The unique identifier for the reporting period."
+      - name: exam
+        description: "The specific AP exam for which the record applies."
+        tests:
+          - not_null
