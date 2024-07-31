@@ -42,7 +42,7 @@ school_years as (
     from {{ref('int_school_years')}}
 )
 
-select
+select distinct 
     sa.project_id                                                           as project_id
     , u.user_id                                                             as user_id
     , case 
@@ -63,8 +63,6 @@ select
     , sy.school_year                                                        as school_year
     , extract('year' from sa.created_at)                                    as cal_year
     , pc.display_name                                                       as country
-    , pc.intl_partner_id                                                    as intl_partner_id
-    , ico.contact_name                                                      as intl_partner_name
     , ipr.region                                                            as region
     , sa.standalone                                                         as is_standalone
     , sa.abuse_score                                                        as abuse_score
@@ -90,6 +88,3 @@ left join countries                                                         as p
 
 left join international_partners_raw                                        as ipr 
     on pc.display_name = ipr.display_name
-
-left join international_contact_info                                        as ico 
-    on ipr.partner_id = ico.partner_id
