@@ -107,6 +107,42 @@ models:
         description: school association of student 
     config:
       tags: ['released']
+  
+  - name: dim_ambassador_survey
+    description: |
+      This model contains all the survey responses for the foorm survey given to CS Ambassadors as part of the YWinCS program. 
+    columns: 
+      - name: user_id
+        tests: 
+          - not_null  
+      - name: code_studio_name
+      - name: ambassador_email
+      - name: created_at
+        description: the date on which the foorm was submitted
+      - name: item_name
+      - name: item_text
+      - name: item_type
+      - name: response_text
+      - name: full_response_text
+        description: includes the text associated with "other"
+      - name: school_year
+        description: the school year in which the foorm was submitted
+      - name: school_name
+        description: if the school name is in all-caps, it was found int he NCES dropdown. If not, it was typed in manually by the user. 
+      - name: school_type
+      - name: school_state
+      - name: school_id
+        description: if the ambassador found their school in the NCES dropdown, this will be populated. Null otherwise. 
+  - name: dim_ambassador_activity
+    description: |
+      this model contains all the student activity within ambassador's sections in order to answer questions like:
+        - how many students were associated with each ambassador? 
+        - how many sections did each ambassador have?
+        - what course(s) was the student activity associated with?
+    columns:
+      - name: school_year
+        description: the school year in which students were added to the section
+
 
 # - name: dim_student_status
 #   description: This model categorizes students based on their activity status across different school years. It provides insights into user engagement by assigning a status that reflects their activity in the current, previous, and any earlier school years.
