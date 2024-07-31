@@ -64,13 +64,13 @@ models:
     columns:
       - name: activity_date
         description: "The date on which activity was recorded for the user, merged across all aggregated activity types."
-        tests:
+        data_tests:
           - not_null 
         data_type: "date"
 
       - name: user_id
         description: "The Code.org user id for a user, consolidated from any activity across user levels, sign-ins, and projects data."
-        tests:
+        data_tests:
           - not_null
         data_type: "varchar"
 
@@ -135,7 +135,7 @@ models:
     columns:
       - name: user_id
         description: unique ID for individual student user
-        tests:
+        data_tests:
           - not_null
           - unique
     
