@@ -34,7 +34,7 @@ course_structure as (
 select distinct 
     fs.user_id
     , fs.code_studio_name
-    , fs.ambassador_email
+    , fs.email
     , s.section_id
     , s.section_name
     , s.created_at                                                  as section_created_dt
