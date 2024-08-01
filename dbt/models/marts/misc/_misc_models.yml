@@ -52,6 +52,8 @@ models:
 
       - name: school_id
         description: if the ambassador found their school in the NCES dropdown, this will be populated. Null otherwise. 
+    config:
+      tags: ['released']
 
   - name: dim_ambassador_activity
     description: |
@@ -62,7 +64,11 @@ models:
     columns:
       - name: school_year
         description: the school year in which students were added to the section
+    config:
+      tags: ['released']
   
   - name: dim_ambassador_apps
     description: |
       this model contains information from the ambassador applications (imported periodically from google form output). There is one row per application submitted. 
+    config:
+      tags: ['released']
