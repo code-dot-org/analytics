@@ -8,6 +8,7 @@ source as (
 renamed as (
     select
         id                          as user_id,
+        name,
         user_type,
         email,
         gender,

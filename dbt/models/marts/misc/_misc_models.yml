@@ -1,11 +1,68 @@
 version: 2
 
 models: 
-  - name: dim_forms
-    description: all forms data with form geos fields
+  # - name: dim_forms
+  #   description: all forms data with form geos fields
+  #   columns: 
+  #     - name: form_id
+  #       description: unique id for table
+  #       tests:
+  #          - unique
+  #          - not_null
+
+  - name: dim_foorms
+    description: |
+      This model contains the formatted survey responses for all foorm surveys (e.g. YWinCS ambassador application)
     columns: 
-      - name: form_id
-        description: unique id for table
-        tests:
-           - unique
-           - not_null
+      - name: form_name
+
+      - name: user_id
+        tests: 
+          - not_null  
+
+      - name: code_studio_name
+        description: the name of the person filling out the foorm, as it appears in code studio
+
+      - name: email
+        description: email associated with the account filling out the foorm
+
+      - name: created_at
+        description: the date on which the foorm was submitted
+
+      - name: item_name
+
+      - name: item_text
+
+      - name: item_type
+
+      - name: response_text
+
+      - name: full_response_text
+        description: includes the text associated with "other"
+
+      - name: school_year
+        description: the school year in which the foorm was submitted
+
+      - name: school_name
+        description: if the school name is in all-caps and there is a school_id associated with it, it was found in the NCES dropdown. If not, it was typed in manually by the user. 
+
+      - name: school_type
+
+      - name: school_state
+
+      - name: school_id
+        description: if the ambassador found their school in the NCES dropdown, this will be populated. Null otherwise. 
+
+  - name: dim_ambassador_activity
+    description: |
+      this model contains all the student activity within ambassador's sections in order to answer questions like:
+        - how many students were associated with each ambassador? 
+        - how many sections did each ambassador have?
+        - what course(s) was the student activity associated with?
+    columns:
+      - name: school_year
+        description: the school year in which students were added to the section
+  
+  - name: dim_ambassador_apps
+    description: |
+      this model contains information from the ambassador applications (imported periodically from google form output). There is one row per application submitted. 
