@@ -50,8 +50,6 @@ foorm_surveys as (
         on ffr.form_name = fssf.form_name 
         and ffr.form_version = fssf.form_version
         and fsr.item_name = ffr.item_name
-
-    where fssf.form_name = 'surveys/teachers/young_women_in_cs'
 ),
 
 comments as (
@@ -137,14 +135,14 @@ users as (
 )
 
 select distinct 
-    -- s.form_name
-    -- , s.foorm_submission_id
-    s.user_id
+    s.form_name
+    , s.foorm_submission_id
+    , s.user_id
     , u.name                                                                        as code_studio_name
-    , u.teacher_email                                                               as ambassador_email
+    , u.teacher_email                                                               as email
     , trunc(s.created_at)                                                           as created_at
-    -- , s.matrix_item_name
-    -- , s.matrix_item_header
+    , s.matrix_item_name
+    , s.matrix_item_header
     , s.item_name
     , trim(rtrim(s.item_text,'.'))                                                  as item_text
     , s.item_type 

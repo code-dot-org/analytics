@@ -2,7 +2,8 @@ with
 
 foorm_survey as (
     select * 
-    from {{ ref('dim_ambassador_survey') }}
+    from {{ ref('dim_foorms') }}
+    where form_name = 'surveys/teachers/young_women_in_cs'
 ),
 
 sections as (
