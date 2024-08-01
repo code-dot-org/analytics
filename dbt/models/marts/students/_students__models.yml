@@ -36,18 +36,26 @@ models:
       
       - name: country
         description: the country associated with the signed-in user's location
+
       - name: intl_partner_id
         description: the intl partner ID associated with user's country
+
       - name: intl_partner_name
         description: the intl partner name associated with user's country
+
       - name: region
         description: the signed-in user's region
+
       - name: is_standalone
         description: 1 if the project was done as a standalone project, 0 if done as part of a curriculum
+
       - name: abuse_score
         description: the score given for reporting abuse in a project
+
       - name: project_type
+
       - name: remix_parent_id
+        description: null if not remixed
 
   - name: dim_active_students
     description: |
