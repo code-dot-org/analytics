@@ -12,7 +12,8 @@ models:
 
   - name: dim_foorms
     description: |
-      This model contains the formatted survey responses for all foorm surveys (e.g. YWinCS ambassador application)
+      This model contains the formatted survey responses for all foorm surveys (e.g. YWinCS ambassador application).   
+      Note: when querying this model, be sure to filter for the form_name you're looking for results from. 
     columns: 
       - name: form_name
 
@@ -52,6 +53,8 @@ models:
 
       - name: school_id
         description: if the ambassador found their school in the NCES dropdown, this will be populated. Null otherwise. 
+    config:
+      tags: ['released']
 
   - name: dim_ambassador_activity
     description: |
@@ -60,9 +63,85 @@ models:
         - how many sections did each ambassador have?
         - what course(s) was the student activity associated with?
     columns:
+      - name: user_id
+        description: the user_id associated with the ambassador's teacher account
+
+      - name: code_studio_name
+        description: the ambassador's name as it appears in code studio 
+
+      - name: email
+        description: the email associated with the ambassador's teacher account
+
+      - name: section_id
+        description: the section_d associated with the ambassador's teacher account
+
+      - name: section_name
+        description: the name of the section associtated with the ambassador's teacher account
+
+      - name: section_created_dt
+        description: the timestamp for when the section was created by the ambassador 
+
       - name: school_year
         description: the school year in which students were added to the section
+
+      - name: student_id 
+        description: the id of the student associated with the given section
+
+      - name: course_name
+        description: the course associated with the student's activity 
+
+      - name: script_name
+        description: the script associated with the given student's activity 
+
+    config:
+      tags: ['released']
   
   - name: dim_ambassador_apps
     description: |
       this model contains information from the ambassador applications (imported periodically from google form output). There is one row per application submitted. 
+    columns: 
+      - name: created_dt
+        description: the timestamp for when the app was submitted
+      - name: teacher_email
+        description: the email of the teacher of the ambassador 
+      - name: cdo_teacher
+        description: survey response to whether or not the teacher teaches using code.org 
+      - name: teacher_first_name
+      - name: teacher_last_name
+      - name: teacher_email_school
+      - name: teacher_email_cdo
+        description: the email the teacher uses on code.org
+      - name: teacher_email_alt
+        description: alternate teacher email, if provided
+      - name: state
+      - name: courses_taught
+      - name: taught_csp
+        description: 1 if the teacher indicated they taught csp, 0 otherwise 
+      - name: taught_csa
+        description: 1 if the teacher indicated they taught csa, 0 otherwise 
+      - name: taught_csd
+        description: 1 if the teacher indicated they taught csd, 0 otherwise 
+      - name: applicant_type
+        description: first time applicant, or application renewal
+      - name: ambassador_first_name
+      - name: ambassador_last_name
+      - name: ambassador_email 
+      - name: ambassador_email_receive_comms
+        description: whether or not the ambassador indicated they can receive emails on the email provided, null if no response 
+      - name: ambassador_email_alt
+        description: alternate email for the ambassador, if provided
+      - name: ambassador_grade
+        description: the grade level of the ambassador 
+      - name: parent_email
+      - name: school_name
+        description: school name entered by the ambassador- not NCES verified
+      - name: courses_taken
+        description: full list of the courses the ambassador indicated they have taken 
+      - name: took_csp
+        description: 1 if the ambassador indicated they took csp, 0 otherwise 
+      - name: took_csa
+        description: 1 if the ambassador indicated they took csa, 0 otherwise 
+      - name: took_csd
+        description: 1 if the ambassador indicated they took csd, 0 otherwise 
+    config:
+      tags: ['released']
