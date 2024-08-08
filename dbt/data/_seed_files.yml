@@ -1,6 +1,112 @@
 version: 2
 
 seeds:
+  - name: seed_ap_tr_urg_multiplier
+    description: | 
+      The `cdo_multiplier` here is one factor, used to compute the number of tr_urg students in an external data source, in this case AP exam results data.
+      
+      The code used to pull this data is here
+
+      ```sql
+         -- Warning - this can take 5-10 minutes to run
+         with race_groups_calc_started as (
+          SELECT
+            'ap_urg_calc_started' as dataset_name,
+            (left(c.school_year,4)::integer + 1) as exam_year,
+            c.school_year,
+            get_user_race(u.races) race_group,
+            CASE WHEN race_group = 'no_response' then null else u.urm end as urg,
+            CASE WHEN race_group in ('black','hispanic','hawaiian','american_indian') then 1 else 0 end as bhnapi,
+            CASE WHEN race_group in ('black','hispanic','hawaiian','american_indian','asian','white','other') then 1 else 0 end as single_race,
+            CASE WHEN race_group = 'tr' and urg=1 then 1 else 0 end as tr_urg,
+            CASE WHEN race_group = 'tr' and urg=0 then 1 else 0 end as tr_non_urg,
+            CASE WHEN race_group = 'tr' then 1 else 0 end as tr_tot,
+            CASE WHEN (race_group = 'no_response' or race_group is null) then 0 else 1 end reporting_race,
+            current_timestamp::date AS pulled_at,
+            'using analysis.csp_csd_started per year' AS notes,
+            count(distinct(user_id)) num_students 
+          FROM analysis.csp_csd_started c
+          JOIN users u ON u.id = c.user_id
+          WHERE 
+            course_name IN ('csp','csa','csd') 
+          GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13
+        ),
+        race_groups_calc_completed as (
+          SELECT
+            'ap_urg_calc_completed' as dataset_name,
+            (left(c.school_year,4)::integer + 1) as exam_year,
+            c.school_year,
+            get_user_race(u.races) race_group,
+            CASE WHEN race_group = 'no_response' then null else u.urm end as urg,
+            CASE WHEN race_group in ('black','hispanic','hawaiian','american_indian') then 1 else 0 end as bhnapi,
+            CASE WHEN race_group in ('black','hispanic','hawaiian','american_indian','asian','white','other') then 1 else 0 end as single_race,
+            CASE WHEN race_group = 'tr' and urg=1 then 1 else 0 end as tr_urg,
+            CASE WHEN race_group = 'tr' and urg=0 then 1 else 0 end as tr_non_urg,
+            CASE WHEN race_group = 'tr' then 1 else 0 end as tr_tot,
+            CASE WHEN (race_group = 'no_response' or race_group is null) then 0 else 1 end reporting_race,
+            current_timestamp::date AS pulled_at,
+            'analysis.csp_csd_completed per year' AS notes,
+            count(distinct(user_id)) num_students 
+          FROM analysis.csp_csd_completed c
+          JOIN users u ON u.id = c.user_id
+          WHERE 
+            course_name IN ('csp','csa','csd') 
+          GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13
+        ),
+        unioned_calcs as (
+          SELECT
+            dataset_name,
+            exam_year,
+            school_year,
+            SUM(CASE WHEN bhnapi = 1 THEN num_students ELSE 0 END) AS bhnapi_students,
+            SUM(CASE WHEN single_race = 1 THEN num_students ELSE 0 END) AS single_race_students,
+            SUM(CASE WHEN tr_urg = 1 THEN num_students ELSE 0 END) AS tr_urg_students,
+            SUM(CASE WHEN tr_tot = 1 THEN num_students ELSE 0 END) AS tr_tot_students,
+            (single_race_students::float * tr_urg_students::float) / 
+            NULLIF((bhnapi_students::float * tr_tot_students), 0) AS cdo_multiplier,
+            notes,
+            pulled_at
+          FROM
+            race_groups_calc_started
+          GROUP BY
+            dataset_name,
+            exam_year,
+            school_year,
+            notes,
+            pulled_at
+
+          union all
+
+          SELECT
+            dataset_name,
+            exam_year,
+            school_year,
+            SUM(CASE WHEN bhnapi = 1 THEN num_students ELSE 0 END) AS bhnapi_students,
+            SUM(CASE WHEN single_race = 1 THEN num_students ELSE 0 END) AS single_race_students,
+            SUM(CASE WHEN tr_urg = 1 THEN num_students ELSE 0 END) AS tr_urg_students,
+            SUM(CASE WHEN tr_tot = 1 THEN num_students ELSE 0 END) AS tr_tot_students,
+            (single_race_students::float * tr_urg_students::float) / 
+            NULLIF((bhnapi_students::float * tr_tot_students), 0) AS cdo_multiplier,
+            notes,
+            pulled_at
+          FROM
+            race_groups_calc_completed
+          GROUP BY
+            dataset_name,
+            exam_year,
+            school_year,
+            notes,
+            pulled_at
+        )
+        select *
+        from unioned_calcs
+        ORDER BY
+          exam_year,
+          school_year,
+          dataset_name
+        ;
+      ```
+
   - name: seed_course_names
   - name: seed_school_years
   - name: seed_script_names

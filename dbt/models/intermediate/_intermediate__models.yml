@@ -1,6 +1,87 @@
 version: 2
 
 models: 
+  - name: int_ap_agg_exam_results_union_agg_school_level
+    description: |
+      This intermediate model unions together:
+      
+      1. All of the aggregated AP exam results from `stg_ap_agg_exam_results`.
+      2. Computes the 'cdo_audit' aggregate group from Code.org school-level exam results from `stg_school_level_exam_results`.
+
+      For column descriptions please see upstream: `stg_ap_agg_exam_results` - the column descriptions are the same and the aggregation of school-level results is made to fit those descriptions.
+
+    columns:
+      - name: source
+        description: used in downstream models to identify the source of the data.  Since these data are just straight from the college board the source is `college board`. Downstream groups derived from this will be source = 'calculated'
+      - name: exam_year
+      - name: pd_year
+      - name: reporting_group
+      - name: rp_id
+      - name: exam
+      - name: demographic_category
+      - name: demographic_group
+      - name: score_category
+      - name: score_of
+      - name: num_students
+
+  - name: int_ap_agg_exam_results_calculate_race_no_response 
+    description: >
+      This model computes the number of students in each dataset who are not associated with a race demographic_group
+      i.e., the "race_no_response" group. The model ensures every year|reporting|group|exam has a value for 
+      demographic_group='race_no_response' under demographic_category='race' such that the sum of all values under 
+      demographic_category='race' is equal to the total.
+    columns:
+      - name: source
+        description: "Indicates whether the data source is 'college board' or 'calculated'."
+      - name: exam_year
+        description: "The year the exam was taken."
+        tests:
+          - not_null
+      - name: pd_year
+        description: "The program year of the exam data."
+      - name: reporting_group
+        description: "The group for which the report is generated."
+        tests:
+          - not_null
+      - name: rp_id
+        description: "Unique identifier for the reporting program."
+      - name: exam
+        description: "The name of the exam."
+        tests:
+          - not_null
+      - name: demographic_category
+        description: "Category of the demographic data, such as 'race' or 'total'."
+      - name: demographic_group
+        description: "Specific group within the demographic category, e.g., 'race_no_response'."
+      - name: score_category
+        description: "'total' or 'detail' - if 'detail' then there will be a score_of 1,2,3,4 or 5"
+      - name: score_of
+        description: "The specific score achieved 1,2,3,4 or 5"
+      - name: num_students
+        description: "Number of students in the demographic group for the specific score category."
+        tests:
+          - not_null
+
+  - name: int_ap_agg_exam_results_calculate_agg_race_groups
+    description: |
+      This intermediate model builds aggregated race/ethnic groupings (bhnapi and wh_as_other). These are needed both for reporting as well as for the URG calculation.
+
+      For column descriptions please see upstream: `stg_ap_agg_exam_results` - the column descriptions are the same and the aggregation of school-level results is made to fit those descriptions.
+      
+    columns:
+      - name: source
+        description: One of `college board` or `calculated`.  Used in downstream models to identify the source of the demographic category and group.  This model adds some `calculated` to the existing `college board` group.
+      - name: exam_year
+      - name: pd_year
+      - name: reporting_group
+      - name: rp_id
+      - name: exam
+      - name: demographic_category
+      - name: demographic_group
+      - name: score_category
+      - name: score_of
+      - name: num_students
+
   - name: int_daily_summary_user_level_activity
     description: |
       This model summarizes user-level activity per user per day.  Specifically, this summarizes the number of first-time interactions a user had with levels on a given day. It does not count re-visits to levels."
@@ -24,7 +105,7 @@ models:
             - activity_date
 
 
-  - name: int_daily_summary_sign_ins
+  - name: int_daily_summary_sign_in
     description: |
       This model summarizes the number of sign-ins per user per day. It tracks the number of times a user logs in per day."
     columns:
@@ -117,7 +198,5 @@ models:
           combination_of_columns:
             - school_year
             - iso_week
-            - school_year_week
-  - name: int_daily_summary_sign_in
-    description: number of sign ins by user for a given date. 
+            - school_year_week 
 

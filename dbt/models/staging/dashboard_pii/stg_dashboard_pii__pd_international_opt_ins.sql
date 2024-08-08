@@ -36,4 +36,4 @@ final as (
 )
 
 select * 
-from final 
+from international_opt_ins 
