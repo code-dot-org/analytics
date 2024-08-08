@@ -1,1 +1,7 @@
 version: 2
+
+models: 
+  - name: pd_funnel_6_12
+    description: |
+      the model represents the entire professional development funnel for the "5 day summer" workshops (csd, csp, csa). It tracks all teachers who apply, enroll, attend, and are considered trained, along with various dimensions about their application (e.g. time between applying and enrolling).    
+      **note**: a teacher may apply through code.org, or through a regional partner's own application process. For the external applicants, they will still be counted as "enrolled" in our system but not "applied". 
