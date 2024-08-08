@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: pegasus
+    database: dashboard
+    schema: pegasus
+    tables:
+      - name: user_storage_ids
+
+
