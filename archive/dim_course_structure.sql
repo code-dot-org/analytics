@@ -200,8 +200,57 @@ combined as (
     
     left join contained_levels as col 
         on lsl.level_id = col.level_group_level_id 
-)
+),
+
+final as (
+    select * 
+    from combined ),
+
+{# 
+    select distinct 
+        participant_audience
+    from combined 
+#}
+-- teacher
+-- student 
+-- facilitator 
+
+{#
+    select distinct 
+        instruction_type
+    from combined
+#}
+-- self-paced
+-- teacher_led 
+report as (
+    select 
+        extract('year' from updated_at) as updated_year,
+        course_name,
+        instruction_type,
+        participant_audience,
+        count(*) as num_rows
+    from 
+        final 
+    group by 1, 2, 3, 4 ), 
+    {# having count(*) > 100 -- over 50 rows #}
+
+model_1 as (
+    select *, 
+        dense_rank() 
+            over (
+                partition by 
+                    course_name,
+                    instruction_type,
+                    participant_audience,
+                    num_rows
+                order by 
+                    num_rows desc 
+        ) as rnk_num_rows
+
+    from report
     
-select * 
-from combined
+    {{ dbt_utils.group_by(5) }}
+    
+    order by 
+        rnk_num_rows desc )
 

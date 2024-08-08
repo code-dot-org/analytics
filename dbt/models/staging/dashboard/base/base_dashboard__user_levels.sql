@@ -12,14 +12,14 @@ renamed as (
         script_id,
         level_source_id,
         attempts,
-        created_at,
-        updated_at,
         best_result,
         time_spent,
         submitted                   as is_submitted,
         readonly_answers            as is_read_only_answers,
-        unlocked_at
         -- properties
+        unlocked_at,
+        created_at,
+        updated_at
     from source
 )
 
