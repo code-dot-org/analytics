@@ -1,13 +1,13 @@
 with 
 
-storage_apps as (
+projects as (
     select * 
-    from {{ ref('stg_pegasus_pii__storage_apps') }}
+    from {{ ref('stg_dashboard_pii__projects') }}
 ),
 
 user_storage_ids as (
     select * 
-    from {{ ref('stg_pegasus__user_storage_ids') }}
+    from {{ ref('stg_dashboard__user_project_storage_ids') }}
 ), 
 
 users as (
@@ -43,39 +43,38 @@ school_years as (
 )
 
 select distinct 
-    sa.project_id                                                           as project_id
-    , u.user_id                                                             as user_id
+    p.project_id 
+    , u.user_id
     , case 
         when u.user_id is not null then 1 
         else 0 
     end                                                                     as is_signed_in
-    , u.user_type                                                           as user_type
+    , u.user_type 
     , case 
-        when sa.published_at is not null then 1
+        when p.published_at is not null then 1
         else 0
     end                                                                     as is_published
-    , sa.created_at                                                         as project_created_at
-    , case 
-        when sa.published_at is not null
-            then datediff(hour, sa.created_at, sa.published_at)
-        else null
-    end                                                                     as hours_to_publish
+    , p.created_at                                                          as project_created_at
+    , p.updated_at                                                          as project_updated_at
+    , p.published_at                                                        as project_published_at
     , sy.school_year                                                        as school_year
-    , extract('year' from sa.created_at)                                    as cal_year
+    , extract('year' from p.created_at)                                     as cal_year
     , pc.display_name                                                       as country
     , ipr.region                                                            as region
-    , sa.standalone                                                         as is_standalone
-    , sa.abuse_score                                                        as abuse_score
-    , sa.project_type                                                       as project_type
-    , sa.remix_parent_id                                                    as remix_parent_id
+    , p.is_standalone 
+    , p.abuse_score 
+    , p.project_type 
+    , p.state                                                               as project_state
+    , p.remix_parent_id
+    , p.value
 
-from storage_apps                                                           as sa
+from projects                                                               as p
 
 join user_storage_ids                                                       as ui 
-    on sa.storage_id = ui.storage_id
+    on p.storage_id = ui.user_project_storage_id
 
 join school_years                                                           as sy
-    on sa.created_at between sy.started_at and sy.ended_at
+    on p.created_at between sy.started_at and sy.ended_at
 
 left join users                                                             as u 
     on u.user_id = ui.user_id
