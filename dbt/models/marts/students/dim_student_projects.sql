@@ -64,9 +64,12 @@ select distinct
     , p.is_standalone 
     , p.abuse_score 
     , p.project_type 
-    , p.state                                                               as project_state
+    , case 
+        when p.state = 'deleted' then 1 
+        else 0 
+    end                                                                     as is_deleted
     , p.remix_parent_id
-    , p.value
+    , p.value                                                               as project_info
 
 from projects                                                               as p
 
