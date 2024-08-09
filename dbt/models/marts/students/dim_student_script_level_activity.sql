@@ -112,7 +112,7 @@ left join course_structure                                          as cs
 
 left join section_mapping                                           as sm
     on ul.user_id = sm.student_id
-    and ul.created_at between student_added_at and student_removed_at
+    and sm.school_year = sy.school_year
 
 left join section_size                                              as ssi
     on ssi.section_id = sm.section_id
