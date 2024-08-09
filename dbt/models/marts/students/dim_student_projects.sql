@@ -70,10 +70,10 @@ select distinct
     end                                                                     as is_deleted
     , p.remix_parent_id
     , p.value                                                               as project_info
-, case
-when JSON_EXTRACT_PATH_TEXT(p.value, 'id') <> '' then 1 
-else 0 
-end as is_valid
+    , case
+        when json_extract_path_text(p.value, 'id') <> '' then 1 
+        else 0 
+    end                                                                     as is_valid
 from projects                                                               as p
 
 join user_storage_ids                                                       as ui 
