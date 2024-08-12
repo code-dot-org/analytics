@@ -74,7 +74,7 @@ models:
         description: "A 3-character long string 'encoded' to represent the three possible types of activity present for the user on the given day: 'S' for sign-ins, 'L' for user levels, 'P' for projects, in that order; '_' represents absence of the respective activity. For example: `SL_` means that on this day the user has user_level activity and a sign-in record, but no project created. `__P` means only a project was created on this day for this user.  This field reflects in a single sring the 0|1 values from the `has_[event]_activity` fields."
         data_type: "varchar"
 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - user_id

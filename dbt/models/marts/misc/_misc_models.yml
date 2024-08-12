@@ -6,24 +6,30 @@ models:
   #   columns: 
   #     - name: form_id
   #       description: unique id for table
-  #       tests:
+  #       data_tests:
   #          - unique
   #          - not_null
 
   - name: dim_foorms
+
     description: |
       This model contains the formatted survey responses for all foorm surveys (e.g. YWinCS ambassador application).   
       Note: when querying this model, be sure to filter for the form_name you're looking for results from. 
+
     columns: 
-      - name: form_id
-        description: unique id for table
-        data_tests:
-           - unique
-           - not_null
+
       - name: form_name
+        data_tests:
+          - not_null
+      
+      - name: foorm_submission_id
+        description: unique ID for every foorm foorm_submission_id
+        data_tests: 
+          - not_null
+          - unique
 
       - name: user_id
-        tests: 
+        data_tests: 
           - not_null  
 
       - name: code_studio_name
@@ -107,6 +113,8 @@ models:
     columns: 
       - name: created_dt
         description: the timestamp for when the app was submitted
+        data_tests:
+          - not_null
       - name: teacher_email
         description: the email of the teacher of the ambassador 
       - name: cdo_teacher

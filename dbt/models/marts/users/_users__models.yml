@@ -15,7 +15,7 @@ models:
       #   description: student or teacher if NULL = fail
       #       # - accepted_values:
       #       #     values: ['teacher','student']
-      #   tests: 
+      #   data_tests: 
       #       - not_null
 
       - name: us_state
@@ -53,10 +53,10 @@ models:
   #   description: modeling survey data 
   #   columns: 
   #     - name: user_id 
-  #       tests: 
+  #       data_tests: 
   #         - not_null
   #     - name: section_id 
-  #       tests: 
+  #       data_tests: 
   #         - not_null
 
   - name: dim_user_levels 

@@ -6,16 +6,16 @@ models:
   #   columns:
   #     - name: course_script_id
   #       description: unique id for each course and script combination
-  #       tests: 
+  #       data_tests: 
   #         - unique
   #         - not_null
   #     - name: course_id 
   #       description: unique id for each course
-  #       tests: 
+  #       data_tests: 
   #         - not_null
   #     - name: script_id 
   #       description: unique id for each script
-  #       tests: 
+  #       data_tests: 
   #         - not_null
         
   - name: stg_dashboard__followers
@@ -33,7 +33,7 @@ models:
           - not_null
       # - name: section_id
       #   description: fk for follower section
-      #   tests:
+      #   data_tests:
       #     - not_null 
 
   - name: stg_dashboard__level_concept_difficulties
@@ -79,7 +79,7 @@ models:
   - name: stg_dashboard__school_stats_by_years
     description: |
       Staging model for `school_stats_by_years` source data
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - school_id

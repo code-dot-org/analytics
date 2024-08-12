@@ -79,7 +79,7 @@ models:
           - 'Section Progress Unit Changed' --> 'Change unit'
         data_type: "text"
 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - merged_user_id
@@ -129,7 +129,7 @@ models:
       **inactive churn**: was "inactive" last school year and so far this school year    
       **market**: has a code.org account, but has never been considered "active" 
 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - school_year
