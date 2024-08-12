@@ -23,10 +23,9 @@ models:
           - not_null
       
       - name: foorm_submission_id
-        description: unique ID for every foorm foorm_submission_id
+        description: unique ID for every foorm foorm_submission_id for a given foorm. 
         data_tests: 
           - not_null
-          - unique
 
       - name: user_id
         data_tests: 
