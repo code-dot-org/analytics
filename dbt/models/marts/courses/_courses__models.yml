@@ -21,7 +21,7 @@ models:
     columns: 
       - name: level_id
         description: uid for this model, 1 row per level_id
-        tests: 
+        data_tests: 
           - unique
           - not_null
 
@@ -30,7 +30,7 @@ models:
     columns: 
       - name: versioned_script_id
         description: uid for script by school year
-        tests: 
+        data_tests: 
           - unique
           - not_null
 

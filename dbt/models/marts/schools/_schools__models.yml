@@ -4,7 +4,7 @@ models:
   - name: dim_school_stats_by_years
     description: |
       Historical record of all NCES school stats and associated calculations. 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - school_year
@@ -47,7 +47,7 @@ models:
     columns: 
       - name: school_id
         description: the NCES id associated with a school 
-        tests:
+        data_tests:
           - not_null
           - unique
 

@@ -23,7 +23,7 @@ models:
     columns:
       - name: exam_year
         description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
-        tests:
+        data_tests:
           - not_null
           
 
@@ -76,7 +76,7 @@ models:
       
       - name: exam_year
         description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
-        tests:
+        data_tests:
           - not_null
 
       - name: reporting_group
@@ -108,14 +108,14 @@ models:
           rp all time
           rp per year
           ```
-        tests:
+        data_tests:
           - not_null
       - name: rp_id
         description: "The regional partner id. This is for years when we recieved sepearate aggregated reports for our regional partners, and is largely historical at this point. Regional partner reports would now need to be derived and calcuated from `school_level_exam_results` data in a different model."
       
       - name: exam
         description: "The specific AP exam for which the record applies. This is normalized to one of (`csp` or `csa` or `sum_csa_csp`). `sum_csa_csp` **should be used with caution** -- it was reported in some older data before we had Code.org CSA exam - it represents the total number of AP exam takers at schools that audited as **Code.org CSP**. "
-        tests:
+        data_tests:
           - not_null
       - name: demographic_category
         description: |
@@ -135,7 +135,7 @@ models:
             5. calc_urg   - bhnapi, tr_urg, etc.   
             6. urg_final  - urg, non_urg   
             ```   
-        tests:
+        data_tests:
           - not_null  
 
       - name: demographic_group
@@ -165,22 +165,22 @@ models:
           |             | non_urg                                    | <- (wh_as_other + tr_non_urg)
           +-------------+--------------------------------------------+
           ```
-        tests:
+        data_tests:
           - not_null
 
       - name: num_taking
         description: "The calculated number of students taking the AP exam for this (exam_year | reporting_group | exam | demographic_group )"
-        tests:
+        data_tests:
           - not_null      
       - name: num_passing
         description: "The calculated number of students passing the AP exam for this (exam_year | reporting_group | exam | demographic_group )."
-        tests:
+        data_tests:
           - not_null      
       - name: pct_passing
         description: "The calculated percentage of students passing the AP exam (passrate) of this group. It is simply dividing `num_taking / num_passing` values you see in this record"
-        tests:
+        data_tests:
           - not_null
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['source', 'exam_year', 'reporting_group', 'rp_id', 'exam', 'demographic_category', 'demographic_group']
     config:
@@ -191,43 +191,43 @@ models:
     columns:
       - name: ai_code
         description: "The College Board AI (Attending Institution) code, padded to ensure consistent formatting."
-        tests:
+        data_tests:
           - not_null
           - test_string_length_in:
               list_of_acceptable_lengths: "6"
       - name: nces_id
         description: "The National Center for Education Statistics (NCES) ID, padded to ensure consistent formatting."
-        tests:
+        data_tests:
           - not_null
           - test_string_length_in:
               list_of_acceptable_lengths: "8, 12"
 
       - name: most_recent_update_year
         description: "This will show the exam year of the most recent for which we received crosswalk data. i.e. exam_year 2023 means the 2022-23 school year."
-        tests:
+        data_tests:
           - not_null
       - name: source
         description: "The source of the AP crosswalk data. e.g. 'college board', 'by_hand_matching' etc.  "
-        tests:
+        data_tests:
           - not_null
       - name: school_name
         description: "The name of the school _as given_ by the College Board - this might vary in spelling and/or capitalization with what you might find in our other NCES schools data."
-        tests:
+        data_tests:
           - not_null
       - name: city
         description: "The city where the school is located."
-        tests:
+        data_tests:
           - not_null
       - name: state
         description: "The state where the school is located."
-        tests:
+        data_tests:
           - not_null
       - name: zip
         description: "The ZIP code of the school's location, padded to ensure consistent formatting."
-        tests:
+        data_tests:
           - not_null
 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['most_recent_update_year', 'ai_code', 'nces_id']
 
@@ -268,10 +268,13 @@ models:
         
       - name: city
         description: "The city where the school is located."
+
       - name: state
         description: "The state where the school is located."
+
       - name: country
         description: "The country where the school is located."
+        
       - name: provider_syllabus
         description: "The syllabus provided by the exam provider. Typically 'code.org' but sometimes e.g. 'CMU + code.org' or some listing with a collaborative partner."
 

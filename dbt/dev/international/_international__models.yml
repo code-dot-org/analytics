@@ -6,11 +6,11 @@ models:
     # columns: 
       # - name: partner_id
       #   description: unique partner id for table
-      #   tests:
+      #   data_tests:
       #     - unique
       #     - not_null
           
       # - name: teacher_user_id
       #   description: fk for individual student user
-      #   tests:
+      #   data_tests:
       #     - not_null
