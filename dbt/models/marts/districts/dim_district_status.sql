@@ -111,7 +111,7 @@ active_status_simple as (
     left join started_districts
         on started_districts.school_district_id = all_districts_sy.school_district_id 
         and started_districts.school_year = all_districts_sy.school_year
-    join active_district_stats
+    left join active_district_stats
         on active_district_stats.school_district_id = started_districts.school_district_id 
         and active_district_stats.school_year = started_districts.school_year
 ),
