@@ -55,6 +55,8 @@ teacher_active_courses as (
         course_name,
         section_started_at
     from {{ref('int_active_sections')}}
+    where teacher_id is not null 
+        and course_name in ('csa', 'csp', 'csd', 'csf', 'csc', 'ai')
 ),
 
 teacher_active_courses_with_sy as (
@@ -78,10 +80,20 @@ teacher_active_courses_with_sy as (
 
 started_districts as (
     select 
-        school_district_id,
-        school_year,
-        min(section_started_at) as district_started_at,
-        listagg( distinct course_name, ', ') within group (order by course_name) active_courses
+        school_district_id
+        , school_year
+        , min(section_started_at)                                                       as district_started_at
+        , listagg( distinct course_name, ', ') within group (order by course_name)      as active_courses
+    from teacher_active_courses_with_sy
+    group by 1, 2
+),
+
+active_district_stats as (
+    select 
+        school_district_id
+        , school_year
+        , count(distinct teacher_id)                                                    as num_active_teachers
+        , count(distinct school_id)                                                     as num_active_schools
     from teacher_active_courses_with_sy
     group by 1, 2
 ),
@@ -92,58 +104,93 @@ active_status_simple as (
         all_districts_sy.school_year,
         case when started_districts.school_district_id is null then 0 else 1 end as is_active,
         started_districts.district_started_at,
-        started_districts.active_courses
+        started_districts.active_courses,
+        active_district_stats.num_active_teachers,
+        active_district_stats.num_active_schools
     from all_districts_sy 
     left join started_districts
         on started_districts.school_district_id = all_districts_sy.school_district_id 
         and started_districts.school_year = all_districts_sy.school_year
+    join active_district_stats
+        on active_district_stats.school_district_id = started_districts.school_district_id 
+        and active_district_stats.school_year = started_districts.school_year
 ),
 
 full_status as (
-    -- Determine the active status for each school in each school year
+    -- Determine the active status for each school district in each school year
 
     select
-        school_district_id,
-        school_year,
-        is_active,
-        coalesce(
+        school_district_id
+        , school_year
+        , is_active
+        , coalesce(
             lag(is_active, 1) 
                 over (partition by school_district_id order by school_year) 
             , 0
-        ) as prev_year_active,
-        coalesce( --force any NULL to be 0 for this function
+        )                                                                               as prev_year_active
+        , coalesce( --force any NULL to be 0 for this function
             max(is_active) 
-                over (partition by school_district_id order by school_year rows between unbounded preceding and 1 preceding)
+                over (
+                    partition by 
+                        school_district_id 
+                    order by 
+                        school_year 
+                    rows between unbounded preceding and 1 preceding)           
             , 0
-        ) as ever_active_before,
-        (is_active || prev_year_active || ever_active_before) status_code,
-        district_started_at,
-        active_courses
+        )                                                                               as ever_active_before
+        , (is_active || prev_year_active || ever_active_before) status_code
+        , district_started_at
+        , active_courses
+        , num_active_teachers
+        , num_active_schools
     from
         active_status_simple
 
 ), 
 
+districts_enrolled as (
+    select * 
+    from {{ ref('stg_external_datasets__districts_enrolled') }}
+),
+
 final as (
 
     select
-        school_district_id,
-        school_year,
-        case 
-            when status_code = '000' then 'market'
-            when status_code = '001' then 'inactive churn'
-            when status_code = '010' then '<impossible status>'
-            when status_code = '011' then 'inactive this year'
-            when status_code = '100' then 'active new'
-            when status_code = '101' then 'active reacquired'
-            when status_code = '110' then '<impossible status>'
-            when status_code = '111' then 'active retained'
-        end as status,
-        district_started_at,
-        active_courses
-    from full_status
+        fs.school_district_id
+        , fs.school_year
+        , case 
+            when fs.status_code = '000' then 'market'
+            when fs.status_code = '001' then 'inactive churn'
+            when fs.status_code = '010' then '<impossible status>'
+            when fs.status_code = '011' then 'inactive this year'
+            when fs.status_code = '100' then 'active new'
+            when fs.status_code = '101' then 'active reacquired'
+            when fs.status_code = '110' then '<impossible status>'
+            when fs.status_code = '111' then 'active retained'
+        end                                                             as status
+        , fs.district_started_at
+        , fs.active_courses
+        , fs.num_active_teachers
+        , fs.num_active_schools
+        , case 
+            when de_1.school_year_enrolled is not null then 1 
+            else 0 
+        end                                                             as enrolled
+        , case
+            when de_2.school_year_enrolled is not null then 1
+            else 0 
+        end                                                             as enrolled_this_year
+
+    from full_status                                                    as fs
+    left join districts_enrolled                                        as de_1
+        on fs.school_district_id = de_1.district_id 
+        and fs.school_year >= de_1.school_year_enrolled
+    left join districts_enrolled                                        as de_2
+        on fs.school_district_id = de_2.district_id 
+        and fs.school_year = de_2.school_year_enrolled
     order by
-        school_district_id, school_year
+        fs.school_district_id
+        , fs.school_year
 )
 
 select * 

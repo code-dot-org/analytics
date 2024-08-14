@@ -50,6 +50,8 @@ teacher_active_courses as (
         course_name,
         section_started_at
     from {{ref('int_active_sections')}}
+    where teacher_id is not null 
+        and course_name in ('csa', 'csp', 'csd', 'csf', 'csc', 'ai')
 ),
 
 teacher_active_courses_with_sy as (
