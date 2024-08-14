@@ -55,8 +55,6 @@ teacher_active_courses as (
         course_name,
         section_started_at
     from {{ref('int_active_sections')}}
-    where teacher_id is not null 
-        and course_name in ('csa', 'csp', 'csd', 'csf', 'csc', 'ai')
 ),
 
 teacher_active_courses_with_sy as (
@@ -102,7 +100,11 @@ active_status_simple as (
     select 
         all_districts_sy.school_district_id,
         all_districts_sy.school_year,
-        case when started_districts.school_district_id is null then 0 else 1 end as is_active,
+        case 
+            when started_districts.school_district_id is not null 
+            and started_districts.active_courses <> 'hoc'then 1 
+            else 0 
+        end                                                                 as is_active,
         started_districts.district_started_at,
         started_districts.active_courses,
         active_district_stats.num_active_teachers,
