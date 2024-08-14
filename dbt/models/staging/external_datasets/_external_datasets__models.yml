@@ -12,7 +12,7 @@ models:
     columns:
       - name: exam_year
         description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
-        tests:
+        data_tests:
           - not_null
       - name: pd_year
         description: "The `pd_year` is here for historical consistency.  If the school year is e.g. 2019-20, then the `pd_year` is 2019 and the `exam_year` is 2020"
@@ -45,13 +45,13 @@ models:
           rp all time
           rp per year
           ```
-        tests:
+        data_tests:
           - not_null
       - name: rp_id
         description: "The regional partner id. This is for years when we recieved sepearate aggregated reports for our regional partners, and is largely historical at this point. Regional partner reports would now need to be derived and calcuated from `school_level_exam_results` data in a different model."
       - name: exam
         description: "The specific AP exam for which the record applies. This is normalized to one of (`csp`, `csa`, `sum_csa_csp`)."
-        tests:
+        data_tests:
           - not_null
           - accepted_values:
               values: ['csp', 'csa', 'sum_csa_csp']
@@ -70,7 +70,7 @@ models:
             total
             ```
           PLEASE NOTE: **additional demographic categories are added** in downstream models to handle other race/ethnic groupings such as BHNAPI, URG, etc.
-        tests:
+        data_tests:
           - not_null
       - name: demographic_group
         description: |
@@ -89,25 +89,25 @@ models:
             two_or_more
             white
           ```
-        tests:
+        data_tests:
           - not_null
       - name: score_category
         description: "Either `total` or `detail`. 'total' means the number of total student associated with this demographic_group. 'detail' means use this combined with `score_of` tells you the number of students in this demographic_group who got a particular score."
-        tests:
+        data_tests:
           - not_null
           - accepted_values:
               values: ['total', 'detail']
       - name: score_of
         description: "One of: `null`, `1`,`2`,`3`,`4`, or`5`. 'null' means the number of students reported here is a total (see: score_category). Otherwise it's the number of students with a specific exam score 1-5."
-        tests:
+        data_tests:
           - accepted_values:
               values: [null, '1', '2', '3', '4', '5']
       - name: num_students
         description: "The number of students in this `demographic_group` earning a `score_of` in this `score category`."
-        tests:
+        data_tests:
           - not_null
 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['exam_year', 'reporting_group', 'pd_year', 'rp_id', 'exam', 'demographic_group', 'score_of']
 
@@ -116,43 +116,43 @@ models:
     columns:
       - name: exam_year
         description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
-        tests:
+        data_tests:
           - not_null
       - name: source
         description: "The source of the AP crosswalk data. e.g. 'college board', 'by_hand_matching' etc.  "
-        tests:
+        data_tests:
           - not_null
       - name: nces_id
         description: "The National Center for Education Statistics (NCES) ID, padded to ensure consistent formatting."
-        tests:
+        data_tests:
           - not_null
           - test_string_length_in:
               list_of_acceptable_lengths: "8, 12"
       - name: ai_code
         description: "The College Board AI (Attending Institution) code, padded to ensure consistent formatting."
-        tests:
+        data_tests:
           - not_null
           - test_string_length_in:
               list_of_acceptable_lengths: "6"
 
       - name: school_name
         description: "The name of the school _as given_ by the College Board - this might vary in spelling and/or capitalization with what you might find in our other NCES schools data."
-        tests:
+        data_tests:
           - not_null
       - name: city
         description: "The city where the school is located."
-        tests:
+        data_tests:
           - not_null
       - name: state
         description: "The state where the school is located."
-        tests:
+        data_tests:
           - not_null
       - name: zip
         description: "The ZIP code of the school's location, padded to ensure consistent formatting."
-        tests:
+        data_tests:
           - not_null
 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['exam_year', 'ai_code', 'nces_id']
 
@@ -161,25 +161,25 @@ models:
     columns:
       - name: exam_year
         description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
-        tests:
+        data_tests:
           - not_null
       - name: school_year
         description: "The academic year in which the AP exam took place. i.e. exam_year 2023 means the 2022-23 school year."
-        tests:
+        data_tests:
           - not_null
       - name: exam
         description: "The specific AP exam for which the record applies.  This is normalized to one of (`csp` or `csa`)"
-        tests:
+        data_tests:
           - not_null
           - accepted_values:
               values: ['csp', 'csa']
       - name: ledger_group
         description: "The group or category of the ledger entry."
-        tests:
+        data_tests:
           - not_null
       - name: ai_code
         description: "The AI (Attending Institution) code, padded to ensure consistent formatting."
-        tests:
+        data_tests:
           - not_null
           - test_string_length_in:
               list_of_acceptable_lengths: "6"
@@ -198,7 +198,7 @@ models:
       - name: provider_syllabus
         description: "The syllabus provided by the exam provider. Typically 'code.org' but sometimes e.g. 'CMU + code.org' or some listing with a collaborative partner."
 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['exam_year', 'exam', 'ai_code', 'ledger_group']
 
@@ -228,15 +228,15 @@ models:
     columns:
       - name: exam_year
         description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
-        tests:
+        data_tests:
           - not_null
       - name: country
         description: "The country where the school is located."
-        tests:
+        data_tests:
           - not_null
       - name: ai_code
         description: "The AI (Attending Institution) code, padded to ensure consistent formatting."
-        tests:
+        data_tests:
           - not_null
           - test_string_length_in:
               list_of_acceptable_lengths: "6"
@@ -255,7 +255,7 @@ models:
 
       - name: exam
         description: "The specific AP exam for which the record applies. This is normalized to one of (`csp` or `csa`)."
-        tests:
+        data_tests:
           - not_null
           - accepted_values:
               values: ['csp', 'csa']
@@ -274,7 +274,7 @@ models:
             total
             ```
           PLEASE NOTE: **additional demographic categories are added** in downstream models to handle other race/ethnic groupings such as BHNAPI, URG, etc.
-        tests:
+        data_tests:
           - not_null
       - name: demographic_group
         description: |
@@ -293,23 +293,23 @@ models:
             two_or_more
             white
           ```
-        tests:
+        data_tests:
           - not_null
       - name: score_category
         description: "Either `total` or `detail`. 'total' means the number of total student associated with this demographic_group. 'detail' means use this combined with `score_of` tells you the number of students in this demographic_group who got a particular score."
       - name: score_of
         description: "One of: `null`, `1`,`2`,`3`,`4`, or`5`. 'null' means the number of students reported here is a total (see: score_category). Otherwise it's the number of students with a specific exam score 1-5."
-        tests:
+        data_tests:
           - accepted_values:
               values: [null, '1', '2', '3', '4', '5']
       - name: num_students
         description: "The number of students in this `demographic_group` earning a `score_of` in this `score category`."
-        tests:
+        data_tests:
           - not_null
       - name: num_schools
         description: "`1` or `[some large number]` -- The number of schools represented in the aggregate record. This `1` in the case of results for a single school or some larger value (e.g. `650`) when this is the the 'LESS THAN 10 AGGREGATE' set of results"
-        tests:
+        data_tests:
           - not_null
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['exam_year', 'ai_code', 'exam', 'demographic_group', 'score_of']

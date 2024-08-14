@@ -24,10 +24,10 @@ models:
 
   #     - name: course_id 
   #       description: unique id for each course
-  #       tests: 
+  #       data_tests: 
   #         - not_null
   #     - name: script_id 
   #       description: unique id for each script
-  #       tests: 
+  #       data_tests: 
   #         - not_null
   
