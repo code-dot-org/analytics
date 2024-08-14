@@ -46,9 +46,3 @@ models:
       - name: course_family
         description: the short name for which course this script/level combo belongs to e.g. csf, csd, csp, csa, hoc, etc.
 
-  - name: dim_course_utilization
-    description: model designed to show course usage across various segments
-    # columns:
-    #   - name: 
-    # config:
-    # tags: ['released']
