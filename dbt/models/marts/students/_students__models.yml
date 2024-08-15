@@ -134,7 +134,7 @@ models:
       - name: level_name
       - name: level_type 
       - name: unit_name
-        description: formerly known as stage_name
+        description: formerly known as script_name
       - name: course_name
       - name: lesson_name 
       - name: section_id
