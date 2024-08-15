@@ -110,7 +110,7 @@ models:
 
   - name: dim_student_script_level_activity
     description: |
-      This model contains 1 row for every level completed by a student.    
+      This model contains 1 row for every level/script touched by a student.    
       This model also includes important segmentations (e.g. school status at the time of activity, whether or not the student was in a section at that time, etc) 
     columns:
       - name: student_id
