@@ -43,7 +43,7 @@ self_paced_scripts as (
   			when cs.script_name like 'self-paced-pl-csd%'	    then 'csd'
   			when cs.script_name like 'self-paced-pl-csp%'	    then 'csp'
   			when cs.script_name like 'self-paced-pl-csc%'	    then 'csc'
-			when cs.script_name like 'self-paced-pl-ai%'        then 'csd'
+			when cs.script_name like 'self-paced-pl-aiml%'        then 'csd'
   			when cs.script_name like 'self-paced-pl-physical%'	then 'csd'
   			when cs.script_name like 'self-paced-pl-microbit%'	then 'csd'
   			when cs.script_name like 'kodea-pd%'			    then 'csf'
