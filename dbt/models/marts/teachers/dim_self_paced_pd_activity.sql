@@ -29,7 +29,7 @@ self_paced_scripts as (
         cs.level_id
         , cs.script_id
         , cs.stage_id
-        , unit
+        , cs.unit
         , cs.script_name
         , cs.stage_name
         , cs.level_name
