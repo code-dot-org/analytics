@@ -38,7 +38,7 @@ self_paced_scripts as (
         , cs.level_script_order
         , cs.course_name_true
         , case 
-            when cs.script_name like 'k5-onlinepd%' 		    then 'csf'
+            when cs.script_name ilike 'k5-onlinepd%' 		    then 'csf'
 			when cs.script_name like 'self-paced-pl-k5%'	    then 'csf'
   			when cs.script_name like 'self-paced-pl-csd%'	    then 'csd'
   			when cs.script_name like 'self-paced-pl-csp%'	    then 'csp'
