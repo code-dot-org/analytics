@@ -51,7 +51,9 @@ self_paced_scripts as (
     from course_structure cs
     where 
         (
-            cs.script_name like 'k5-onlinepd-20__'
+cs.participant_audience = 'teacher'
+and cs.instruction_type = 'self_paced'
+and cs.published_state in ('stable', 'beta')
             or cs.script_name like 'self-paced-pl%'
             or cs.script_name like 'kodea-pd%'  -- Translated version of csf in Spanish, for Chilean parter Kodea
         )
