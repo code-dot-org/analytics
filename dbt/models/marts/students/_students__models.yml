@@ -125,8 +125,8 @@ models:
         description: the script ID associated with the level the student was interacting with
       - name: activity_date
         description: the date of the level-script activity, truncated to the day. 
-      - name: activity_month 
-        description: the month in which the activity occurred
+      # - name: activity_month 
+      #   description: the month in which the activity occurred
       - name: school_year_quarter
         description: the quarter of the school year in which the activity occurred (Q1 = Jul - Sep, Q2 = Oct - Dec, Q3 = Jan - Mar, Q4 = Apr - Jun)
       - name: activity_school_year
