@@ -172,4 +172,4 @@ select distinct
 from teacher_history                                                                    as th
 full outer join self_paced_summary                                                      as sps 
     on th.teacher_id = sps.teacher_id 
-    and th.course_name = sps.course_name
+    and th.course_name = sps.course_name_implementation
