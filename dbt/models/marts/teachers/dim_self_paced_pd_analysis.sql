@@ -83,7 +83,7 @@ active_teachers as (
                 rows between unbounded preceding and unbounded following)               as max_script_id
         , last_value (script_name) 
 	        over (
-                partition by teacher_id, course_name
+                partition by teacher_id, course_name_true
 			    order by level_created_at 
                 rows between unbounded preceding and unbounded following)               as max_script_name
         , last_value (level_id) 
