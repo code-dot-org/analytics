@@ -69,7 +69,7 @@ active_teachers as (
         , script_name
         , min (level_created_at) 	
             over (
-                partition by teacher_id, course_name)                                   as start_dt
+                partition by teacher_id, course_name_true)                                   as start_dt
         , max (level_created_at) 	
             over (
                 partition by teacher_id, course_name)                                   as end_dt
