@@ -112,7 +112,8 @@ active_teachers as (
 , self_paced_summary as (   
     select distinct 
         sp.teacher_id
-        , sp.course_name
+        , sp.course_name_true
+        , sp.course_name_implementation
         , sp.studio_person_id
         , m2.start_dt
         , m2.end_dt
