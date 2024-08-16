@@ -134,7 +134,7 @@ active_teachers as (
         and sp.script_name = m1.script_name
     join self_paced_metrics_2                                                           as m2 
         on sp.teacher_id = m2.teacher_id 
-        and sp.course_name = m2.course_name  
+        and sp.course_name_true = m2.course_name_true  
         and sp.script_name = m2.script_name
 )
 
