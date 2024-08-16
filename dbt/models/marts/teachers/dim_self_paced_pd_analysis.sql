@@ -103,7 +103,7 @@ active_teachers as (
                 rows between unbounded preceding and unbounded following)               as max_stage_id
         , last_value (stage_name) 
 	        over (
-                partition by teacher_id, course_name, script_name
+                partition by teacher_id, course_name_true, script_name
 			    order by level_created_at 
                 rows between unbounded preceding and unbounded following)               as max_stage_name
     from self_paced_pd_activity 
