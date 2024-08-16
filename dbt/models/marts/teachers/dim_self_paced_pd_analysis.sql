@@ -170,6 +170,6 @@ select distinct
             then 'Same year as self-paced'
     end                                                                                 as course_teaching_timing
 from teacher_history                                                                    as th
-full outer join self_paced_summary                                                      as sps 
+left join  teacher_history as th
     on th.teacher_id = sps.teacher_id 
     and th.course_name = sps.course_name_implementation
