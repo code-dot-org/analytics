@@ -16,13 +16,13 @@ models:
     columns:
       - name: activity_date
         description: "The date on which activity was recorded for the user, merged across all aggregated activity types."
-        tests:
+        data_tests:
           - not_null 
         data_type: "date"
 
       - name: user_id
         description: "The Code.org user id for a user, consolidated from any activity across user levels, sign-ins, and projects data."
-        tests:
+        data_tests:
           - not_null
         data_type: "varchar"
 
@@ -74,7 +74,7 @@ models:
         description: "A 3-character long string 'encoded' to represent the three possible types of activity present for the user on the given day: 'S' for sign-ins, 'L' for user levels, 'P' for projects, in that order; '_' represents absence of the respective activity. For example: `SL_` means that on this day the user has user_level activity and a sign-in record, but no project created. `__P` means only a project was created on this day for this user.  This field reflects in a single sring the 0|1 values from the `has_[event]_activity` fields."
         data_type: "varchar"
 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - user_id
@@ -87,7 +87,7 @@ models:
     columns:
       - name: user_id
         description: unique ID for individual student user
-        tests:
+        data_tests:
           - not_null
           - unique
     
@@ -105,6 +105,74 @@ models:
 
       - name: school_id
         description: school association of student 
+    config:
+      tags: ['released']
+
+  - name: dim_student_script_level_activity
+    description: |
+      This model contains 1 row for every level/script touched by a student.    
+      This model also includes important segmentations (e.g. school status at the time of activity, whether or not the student was in a section at that time, etc) 
+    columns:
+      - name: student_id
+        description: the unique ID associated with the activity
+        data_tests:
+          - not_null
+      - name: level_id
+        description: the level the student was interacting with
+        data_tests:
+          - not_null
+      - name: script_id
+        description: the script ID associated with the level the student was interacting with
+      - name: activity_date
+        description: the date of the level-script activity, truncated to the day. 
+      - name: school_year_quarter
+        description: the quarter of the school year in which the activity occurred (Q1 = Jul - Sep, Q2 = Oct - Dec, Q3 = Jan - Mar, Q4 = Apr - Jun)
+      - name: activity_school_year
+        description: the school year in which the activity occurred 
+      - name: level_name
+      - name: level_type 
+      - name: unit_name
+        description: formerly known as script_name
+      - name: course_name
+      - name: lesson_name 
+      - name: section_id
+        description: only populated if the student is in a section that school year
+      - name: section_teacher_id 
+        descirption: the teacher id associated with the section (if the student is in a section)
+      - name: section_size
+        description: the number of students in the student's section in that school year
+      - name: teacher_status 
+        description: the activity status of the teacher associated with the section in that school year of activity
+      - name: school_status
+        description: the activity status of the school associated with the section/teacher in that school year of activity; only populated if student in a section with a teacher with an NCES school association
+      - name: school_name
+        description: the school associated with the teacher of the student's section in the given school year; only populated if student in a section with a teacher with an NCES school association
+      - name: school_district_id
+        description: only populated if student in a section with a teacher with an NCES school association
+      - name: school_district_name
+        description: only populated if student in a section with a teacher with an NCES school association
+      - name: school_state
+        description: only populated if student in a section with a teacher with an NCES school association
+      - name: school_type 
+        description: only populated if student in a section with a teacher with an NCES school association
+      - name: school_is_stage_el
+        description: 1 if the school associated with the section's teacher has grades K-5; only populated if student in a section with a teacher with an NCES school association
+      - name: school_is_stage_mi
+        description: 1 if the school associated with the section's teacher has grades 6-8; only populated if student in a section with a teacher with an NCES school association
+      - name: school_is_stage_hi
+        description: 1 if the school associated with the section's teacher has grades 9-12; only populated if student in a section with a teacher with an NCES school association
+      - name: school_is_high_needs
+        description: only populated if student in a section with a teacher with an NCES school association
+      - name: school_is_rural
+        description: only populated if student in a section with a teacher with an NCES school association
+      - name: activity_country 
+        description: the country associated with the IP address of the activity (not the school association)
+      - name: total_attempts 
+        description: the total number of attempts the student had on the particular level on that date
+      - name: best_result
+        description: the best result the student got in the particular level on that date
+      - name: time_spent_minutes 
+        description: the number of minutes the student spent on that level on the particular date
     config:
       tags: ['released']
 

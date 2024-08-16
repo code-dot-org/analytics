@@ -40,6 +40,7 @@ combined as (
 renamed as (
     select
         user_id,
+        name,
         user_type,
         case when user_type = 'student' then user_id end            as student_id,
         

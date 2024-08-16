@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: analysis
+    database: dashboard
+    schema: analysis
+    tables:
+      - name: foorm_forms_reshaped
