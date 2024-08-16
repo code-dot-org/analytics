@@ -58,7 +58,7 @@ active_teachers as (
         , count (distinct level_id)                                                     as num_levels
     from self_paced_pd_activity     
     group by teacher_id
-            , course_name
+            , course_name_true
             , script_name
 )
 
