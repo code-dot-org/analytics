@@ -47,7 +47,11 @@ self_paced_scripts as (
   			when cs.script_name like 'self-paced-pl-physical%'	then 'csd'
   			when cs.script_name like 'self-paced-pl-microbit%'	then 'csd'
   			when cs.script_name like 'kodea-pd%'			    then 'csf'
-  			end                                                 as course_name
+when cs.script_name like 'self-paced-pl-ai-101%'then 'ai_teachers'
+when cs.script_name like 'k5howaimakesdecisions' then 'ai_k5'
+when cs.script_name like '%foundations%' then 'foundations'
+when cs.course_name_true in ('csf self paced pl') then 'csf'
+  			end                                                 as course_name_implementation
     from course_structure cs
     where 
         (
