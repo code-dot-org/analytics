@@ -72,7 +72,7 @@ active_teachers as (
                 partition by teacher_id, course_name_true)                                   as start_dt
         , max (level_created_at) 	
             over (
-                partition by teacher_id, course_name)                                   as end_dt
+                partition by teacher_id, course_name_true)                                   as end_dt
         , min (level_created_school_year) 	
             over (
                 partition by teacher_id, course_name)                                   as first_self_paced_sy  -- accounting for users who are have activity in multiple schools years for the same course
