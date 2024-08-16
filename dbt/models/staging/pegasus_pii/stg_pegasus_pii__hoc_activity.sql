@@ -12,7 +12,7 @@ hoc_activity as (
         referer,
         company,
         tutorial,
-        coalesce(started_at, pixel_started_at)                      as started_at,
+        coalesce(started_at, pixel_started_at, pixel_finished_at)   as started_at,
         case when pixel_started_at is not null then 1 else 0 end    as is_third_party,
         country_code,
         state_code,
