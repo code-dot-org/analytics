@@ -98,7 +98,7 @@ active_teachers as (
                 rows between unbounded preceding and unbounded following)               as max_level_name
         , last_value (stage_id) 
 	        over (
-                partition by teacher_id, course_name, script_name
+                partition by teacher_id, course_name_true, script_name
 			    order by level_created_at 
                 rows between unbounded preceding and unbounded following)               as max_stage_id
         , last_value (stage_name) 
