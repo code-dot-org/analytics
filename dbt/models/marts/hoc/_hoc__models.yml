@@ -49,8 +49,8 @@ models:
         description: the state associated with the user's location
       - name: country_code
       - name: state_code
-    config:
-      tags: ['released']
+    # config:
+    #   tags: ['released']
  
   - name: dim_hoc_event_registrations 
     columns: 
