@@ -163,13 +163,13 @@ select distinct
             or sps.first_self_paced_sy is null 
             then null
         when left(th.first_teaching_sy,4) > left(sps.first_self_paced_sy,4) 
-            then 'After self-paced'
+            then 'after self-paced'
         when left(th.first_teaching_sy,4) < left(sps.first_self_paced_sy,4) 
-            then 'Before self-paced'
+            then 'before self-paced'
         when left(th.first_teaching_sy,4) = left(sps.first_self_paced_sy,4) 
-            then 'Same year as self-paced'
+            then 'same year as self-paced'
     end                                                                                 as course_teaching_timing
-from self_paced_summary                                                      as sps 
+from self_paced_summary                                                                 as sps 
 left join  teacher_history as th
     on th.teacher_id = sps.teacher_id 
     and th.course_name = sps.course_name_implementation

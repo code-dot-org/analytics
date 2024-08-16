@@ -1,6 +1,32 @@
 version: 2
 
 models: 
+  - name: dim_self_paced_pd_activity
+    description: |
+      This model contains every teacher interaction with a self-paced PD level/script as well as variables that are helpful for segmentation. 
+
+    columns: 
+      - name: teacher_id 
+      - name: level_id 
+      - name: script_id
+      - name: stage_id 
+      - name: unit
+      - name: script_name
+      - name: stage_name
+      - name: level_name
+      - name: level_created_at
+      - name: level_created_school_year
+      - name: best_result
+      - name: time_spent
+      - name: level_type
+      - name: school_id
+      - name: touch_rank
+      - name: level_number
+      - name: level_script_order
+      - name: stage_number
+    config:
+      tags: ['released']
+      
   - name: dim_active_teachers
     description: |
       This model serves as a prototype for a comprehensive view of daily teacher activities that roll into the 'active teacher' metric. 
