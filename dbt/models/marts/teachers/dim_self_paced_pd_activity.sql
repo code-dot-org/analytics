@@ -59,7 +59,7 @@ cs.participant_audience = 'teacher'
 and cs.instruction_type = 'self_paced'
 and cs.published_state in ('stable', 'beta')
         )
-        and cs.script_name not like 'self-paced-pl-csd6-2021'
+        and cs.script_name not in ('alltheselfpacedplthings')
         and cs.script_name not like 'self-paced-pl-csa%'  -- csa's self-paced pl is asynchronous work for facilitator-led pd workshops
 )
 select
