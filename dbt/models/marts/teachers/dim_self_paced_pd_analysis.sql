@@ -52,7 +52,7 @@ active_teachers as (
 , self_paced_metrics_1 as (
     select distinct
         teacher_id
-        , course_name
+        , course_name_true
         , script_name
         , count (distinct script_id)                                                    as num_scripts
         , count (distinct level_id)                                                     as num_levels
