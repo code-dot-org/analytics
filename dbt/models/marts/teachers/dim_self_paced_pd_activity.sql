@@ -60,7 +60,7 @@ and cs.instruction_type = 'self_paced'
 and cs.published_state in ('stable', 'beta')
         )
         and cs.script_name not in ('alltheselfpacedplthings')
-        and cs.script_name not like 'self-paced-pl-csa%'  -- csa's self-paced pl is asynchronous work for facilitator-led pd workshops
+        cs.course_name_true not like 'pd workshop activity%'  -- csa's self-paced pl is asynchronous work for facilitator-led pd workshops
 )
 select
     ul.user_id                                                  as teacher_id
