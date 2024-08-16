@@ -58,7 +58,6 @@ when cs.course_name_true in ('csf self paced pl') then 'csf'
 cs.participant_audience = 'teacher'
 and cs.instruction_type = 'self_paced'
 and cs.published_state in ('stable', 'beta')
-            or cs.script_name like 'self-paced-pl%'
             or cs.script_name like 'kodea-pd%'  -- Translated version of csf in Spanish, for Chilean parter Kodea
         )
         and cs.script_name not like 'self-paced-pl-csd6-2021'
