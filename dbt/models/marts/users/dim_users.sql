@@ -25,6 +25,7 @@ final as (
         ug.country,
         ug.us_intl,
         ug.is_international
+
     from users 
     left join users_pii 
         on users.user_id = users_pii.user_id

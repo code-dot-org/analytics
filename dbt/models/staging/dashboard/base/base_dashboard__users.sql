@@ -24,7 +24,9 @@ renamed as (
         purged_at,
         urm                         as is_urg,
         races,
-        primary_contact_info_id
+        primary_contact_info_id,
+        cap_status,
+        cap_status_date
     from source
 )
 
