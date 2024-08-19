@@ -54,7 +54,7 @@ select
     , date_trunc('day', ul.created_at)                              as activity_date
 
     -- time variables 
-    , date_trunc ('month', ul.created_at)                           as activity_month  
+    --, date_trunc ('month', ul.created_at)                           as activity_month  
     , case 
         when extract ('month' from ul.created_at) in (7,8,9) then 'Q1'
         when extract ('month' from ul.created_at) in (10,11,12) then 'Q2'
@@ -129,4 +129,4 @@ left join schools                                                   as sch
     on sm.school_id = sch.school_id  
 
 where cs.participant_audience = 'student'
-{{ dbt_utils.group_by(29) }}
+{{ dbt_utils.group_by(28) }}

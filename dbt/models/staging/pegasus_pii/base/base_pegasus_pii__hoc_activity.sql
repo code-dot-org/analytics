@@ -12,6 +12,7 @@ renamed as (
         tutorial,
         started_at,
         pixel_started_at,
+        pixel_finished_at,
         country_code,
         state_code,
         city,
