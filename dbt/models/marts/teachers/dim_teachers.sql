@@ -28,11 +28,11 @@ teacher_schools as (
         si.school_id,
         rank () over (
             partition by teachers.user_id 
-            order by usi.ended_at desc) as rnk
+            order by usi.ended_at desc)                             as rnk
     from teachers
-    left join user_school_infos as usi    
+    left join user_school_infos                                     as usi    
         on usi.user_id = teachers.user_id
-    left join school_infos as si 
+    left join school_infos                                          as si 
         on si.school_info_id = usi.school_info_id
 ),
 
@@ -65,9 +65,9 @@ final as (
         teachers.us_intl,
         teachers.is_international,
         ts.school_id,
-        school_years.school_year as created_at_school_year
+        school_years.school_year                                    as created_at_school_year
     from teachers 
-    inner join teacher_schools as ts 
+    inner join teacher_schools                                      as ts 
         on teachers.user_id = ts.user_id
         and ts.rnk = 1
     inner join school_years 

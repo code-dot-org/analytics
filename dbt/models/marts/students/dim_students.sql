@@ -12,9 +12,9 @@ school_years as (
 final as (
     select 
         students.*, 
-        sy.school_year as created_at_school_year
+        sy.school_year                                          as created_at_school_year
     from students 
-    left join school_years as sy 
+    left join school_years                                      as sy 
         on students.created_at 
             between sy.started_at 
                 and sy.ended_at )
