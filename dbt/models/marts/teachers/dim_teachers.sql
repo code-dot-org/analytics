@@ -1,6 +1,6 @@
 with 
 teachers as (
-    select *
+    select *  
     from {{ ref('dim_users')}}
     where user_type = 'teacher'
 ),
@@ -36,9 +36,34 @@ teacher_schools as (
         on si.school_info_id = usi.school_info_id
 ),
 
+--excludes student_id, cap_status, and cap_status_date from dim_users
 final as (
     select 
-        teachers.*, 
+        teachers.user_id,
+        teachers.teacher_id,
+        teachers.user_type,
+        teachers.studio_person_id,
+        teachers.school_info_id,
+        teachers.is_urg,
+        teachers.gender,
+        teachers.locale,
+        teachers.birthday,
+        teachers.sign_in_count,
+        teachers.total_lines,
+        teachers.current_sign_in_at,
+        teachers.last_sign_in_at,
+        teachers.created_at,
+        teachers.updated_at,
+        teachers.deleted_at,
+        teachers.purged_at,
+        teachers.teacher_email,
+        teachers.races,
+        teachers.race_group,
+        teachers.gender_group,
+        teachers.self_reported_state,
+        teachers.country,
+        teachers.us_intl,
+        teachers.is_international,
         ts.school_id,
         school_years.school_year as created_at_school_year
     from teachers 
