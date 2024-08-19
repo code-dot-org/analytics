@@ -120,6 +120,14 @@ models:
         +docs:
           show: false
 
+      pegasus:
+        base:
+          tags:
+            - "base"
+          +materialized: ephemeral
+        +docs:
+          show: false
+
       amplitude:
         base: 
           tags:
