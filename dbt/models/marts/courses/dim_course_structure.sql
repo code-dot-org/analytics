@@ -184,11 +184,11 @@ combined as (
     left join unit_groups as ug 
         on ug.unit_group_id = cs.course_id 
     
-    left join course_names as cn 
-        on ug.unit_group_id = cn.versioned_course_id   
+    -- left join course_names as cn 
+    --     on ug.unit_group_id = cn.versioned_course_id   
     
-    left join script_names as sn 
-        on sn.versioned_script_id = sc.script_id
+    -- left join script_names as sn 
+    --     on sn.versioned_script_id = sc.script_id
     
     left join parent_levels_child_levels as plcl 
         on plcl.parent_level_id = lsl.level_id 
