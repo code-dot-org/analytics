@@ -69,11 +69,9 @@ script_names as (
 combined as (
     select distinct 
         -- courses
-        ug.unit_group_id    as course_id,
-        ug.unit_group_name  as course_name,
-        cn.course_name_short,
-        cn.course_name_long,
-        sc.course_name_true,
+        ug.unit_group_id                                                as course_id,
+        ug.unit_group_name                                              as course_name_full,
+        sc.course_name,
         
         {# proposed additions:      
             case when 
@@ -90,16 +88,13 @@ combined as (
         -- scripts
         sl.script_id,
         sc.script_name,
-        sn.versioned_script_name,
-        sn.script_name_short,
-        sn.script_name_long,
         sc.is_standalone,
         sc.unit,
         
         -- stages
         st.stage_id,
         st.stage_name,
-        st.absolute_position as stage_number,
+        st.absolute_position                                            as stage_number,
         st.relative_position,
         st.is_lockable,
         st.is_unplugged,
@@ -107,20 +102,20 @@ combined as (
         -- script_levels
         sl.is_assessment,
         sl.is_challenge,
-        sl.position as level_number,
+        sl.position                                                     as level_number,
 
         -- levels
         -- custom calc for level_id
         case when sl.script_id = '26' 
               and lsl.level_id = '14633' 
              then 1 else lsl.level_id 
-        end as level_id,
+        end                                                             as level_id,
 
         rank() over(
             partition by sl.script_id 
             order by 
                 st.stage_number, 
-                sl.position)    as level_script_order,
+                sl.position)                                            as level_script_order,
 
         lev.level_name,
         lev.level_type,
@@ -133,41 +128,41 @@ combined as (
         plcl.parent_level_kind,
         case 
             when plcl.parent_level_id is not null 
-            then 1 else 0 end       as is_parent_level,
+            then 1 else 0 end                                           as is_parent_level,
 
         -- contained levels 
         col.level_group_level_id,
         case 
             when col.level_group_level_id is not null 
             then 1 else 0 
-        end                         as is_group_level,
-        col.contained_level_type    as group_level_type,
+        end                                                             as is_group_level,
+        col.contained_level_type                                        as group_level_type,
 
         coalesce(
             ug.family_name,
-            sc.family_name)     as family_name, 
+            sc.family_name)                                             as family_name, 
 
         coalesce(
             ug.version_year, 
-            sc.version_year)    as version_year,
+            sc.version_year)                                            as version_year,
 
         coalesce(
             ug.published_state,
-            sc.published_state) as published_state,
+            sc.published_state)                                         as published_state,
 
         coalesce(
             ug.instruction_type,
-            sc.instruction_type)    as instruction_type,
+            sc.instruction_type)                                        as instruction_type,
         
         coalesce(
             ug.instructor_audience,
-            sc.instructor_audience) as instructor_audience,
+            sc.instructor_audience)                                     as instructor_audience,
         
         coalesce(
             ug.participant_audience,
-            sc.participant_audience)    as participant_audience,
+            sc.participant_audience)                                    as participant_audience,
         
-        lev.updated_at                  as updated_at
+        lev.updated_at                                                  as updated_at
 
     from scripts as sc 
 
