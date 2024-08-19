@@ -107,7 +107,7 @@ models:
         description: child account policy tag; only relevant for students (options are 'grace period', 'locked_out', 'permission_granted')
           
       - name: cap_status_date
-        description: child account policy tag; 
+        description: child account policy tag; date the status is set
 
       - name: school_id
         description: school association of student 
