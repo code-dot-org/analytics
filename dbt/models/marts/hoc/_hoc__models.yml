@@ -53,6 +53,7 @@ models:
     #   tags: ['released']
  
   - name: dim_hoc_event_registrations 
+    description: this model has 1 row for every HoC event registered via our form. 
     columns: 
       - name: form_id
         data_tests:
