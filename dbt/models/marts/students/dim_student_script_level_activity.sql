@@ -1,4 +1,5 @@
 with 
+
 course_structure as (
     select *
     from {{ ref('dim_course_structure') }}
@@ -52,9 +53,6 @@ select
     , ul.level_id                                                   as level_id
     , ul.script_id                                                  as script_id
     , date_trunc('day', ul.created_at)                              as activity_date
-
-    -- time variables 
-    --, date_trunc ('month', ul.created_at)                           as activity_month  
     , case 
         when extract ('month' from ul.created_at) in (7,8,9) then 'Q1'
         when extract ('month' from ul.created_at) in (10,11,12) then 'Q2'
