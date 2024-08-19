@@ -8,14 +8,14 @@ models:
     columns: 
       - name: user_id
         description: UID for each user
-        tests: 
+        data_tests: 
           - not_null
 
       # - name: user_type
       #   description: student or teacher if NULL = fail
       #       # - accepted_values:
       #       #     values: ['teacher','student']
-      #   tests: 
+      #   data_tests: 
       #       - not_null
 
       - name: us_state
@@ -53,10 +53,10 @@ models:
   #   description: modeling survey data 
   #   columns: 
   #     - name: user_id 
-  #       tests: 
+  #       data_tests: 
   #         - not_null
   #     - name: section_id 
-  #       tests: 
+  #       data_tests: 
   #         - not_null
 
   - name: dim_user_levels 
@@ -65,7 +65,7 @@ models:
     columns:
     - name: user_id
       description: the unique user ID associated with the activity
-      tests:
+      data_tests:
         - not_null
     
   - name: dim_user_course_activity
@@ -82,12 +82,12 @@ models:
     
     - name: school_year
       description: the school year in which the course activity was in
-      tests:
+      data_tests:
         - not_null 
         
     - name: course_name
       description: the course associated with the individual user's activity in a given school year
-      tests: 
+      data_tests: 
         - not_null 
     
     - name: us_intl

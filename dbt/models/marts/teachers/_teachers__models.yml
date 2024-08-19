@@ -1,33 +1,32 @@
 version: 2
 
 models: 
-  # - name: dim_teacher_schools
-  #   description: |
-  #     A historical record of all teacher-school associations by school year.   
+  - name: dim_self_paced_pd_activity
+    description: |
+      This model contains every teacher interaction with a self-paced PD level/script as well as variables that are helpful for segmentation. 
+
+    columns: 
+      - name: teacher_id 
+      - name: level_id 
+      - name: script_id
+      - name: stage_id 
+      - name: unit
+      - name: script_name
+      - name: stage_name
+      - name: level_name
+      - name: level_created_at
+      - name: level_created_school_year
+      - name: best_result
+      - name: time_spent
+      - name: level_type
+      - name: school_id
+      - name: touch_rank
+      - name: level_number
+      - name: level_script_order
+      - name: stage_number
+    config:
+      tags: ['released']
       
-  #     If the teacher changed schools mid-year, this model takes their school from the end of the year. If there is a date entered for "ended_at", that particular teacher changed schools.   
-  #   columns:
-  #     - name: teacher_id
-  #       description: unique user id for every teacher
-  #       data_type: varchar
-  #       tests:
-  #         - not_null
-  #     - name: school_info_id
-  #       description: id for the school entered or chosen (NCES list) by the teacher in account setup
-  #       data_type: varchar
-  #     - name: school_id
-  #       description: id for NCES school chosen by teacher, if manually entered, this will be null
-  #       data_type: varchar
-  #     - name: started_at_sy
-  #       description: the school year in which the teacher first made this school selection (either in account setup or changed in account settings)
-  #       data_type: varchar
-  #     - name: started_at
-  #       description: the date/time at which that school selection was made
-  #       data_type: datetime
-  #     - name: ended_at
-  #       description: the date/time at which the teacher changed their school association. Will be '9999-12-31T00:00:00' if they are still associated with that school.
-  #       data_type: datetime
-       
   - name: dim_active_teachers
     description: |
       This model serves as a prototype for a comprehensive view of daily teacher activities that roll into the 'active teacher' metric. 
@@ -47,13 +46,13 @@ models:
       - name: event_date
         description: "The date on which either a sign-in or an Amplitude event was recorded (or both). This field merges dates from sign-ins and Amplitude events to align activities across sources."
         data_type: "date"
-        tests:
+        data_tests:
           - not_null
 
       - name: merged_user_id
         description: "A unified identifier for the user that merges user IDs from Code.org platform sign-ins and Amplitude events, ensuring consistent tracking across sources. This user_id will be the user's Code.org user_id if it is known or the amplitude_id if not."
         data_type: "varchar"
-        tests:
+        data_tests:
           - not_null
 
       - name: user_type
@@ -106,7 +105,7 @@ models:
           - 'Section Progress Unit Changed' --> 'Change unit'
         data_type: "text"
 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - merged_user_id
@@ -121,7 +120,7 @@ models:
     columns: 
       - name: user_id
         description: unique ID for every teacher account created
-        tests: 
+        data_tests: 
           - not_null
           - unique
 
@@ -156,7 +155,7 @@ models:
       **inactive churn**: was "inactive" last school year and so far this school year    
       **market**: has a code.org account, but has never been considered "active" 
 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - school_year
