@@ -171,6 +171,12 @@ models:
       - name: is_international 
         description: 1 if last activity was outside the US, 0 otherwise
 
+      - name: cap_status
+        description: child account policy tag; only relevant for students (options are 'grace period', 'locked_out', 'permission_granted')
+          
+      - name: cap_status_date
+        description: child account policy tag; date the status is set
+
       - name: school_id
         description: school association of student 
     config:

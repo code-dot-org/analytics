@@ -39,7 +39,9 @@ renamed as (
         created_at,
         updated_at,  
         deleted_at,   
-        purged_at
+        purged_at,
+        cap_status,
+        cap_status_date
     from users
 )
 
