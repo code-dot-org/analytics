@@ -157,7 +157,7 @@ districts_enrolled as (
 
 final as (
 
-    select
+    select distinct
         fs.school_district_id
         , fs.school_year
         , case 
