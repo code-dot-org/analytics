@@ -72,18 +72,35 @@ combined as (
         ug.unit_group_id                                                as course_id,
         ug.unit_group_name                                              as course_name_full,
         sc.course_name,
-        
-        {# proposed additions:      
-            case when 
-                instruction_type = 'self paced' 
-                then 1 else 0 end               as is_self_paced,    
-            case when 
-                participant_audience = 'student' 
-                then 1 else 0 end               as is_student,
-            case when 
-                participant_audience = 'teacher' 
-                then 1 else 0 end               as is_pd,
-        #}
+
+        --flags
+        case 
+            when 
+                coalesce(
+                    ug.instruction_type,
+                    sc.instruction_type
+                ) = 'self_paced' 
+            then 1 
+            else 0 
+        end                                                             as is_self_paced,    
+        case 
+            when 
+                coalesce(
+                    ug.participant_audience,
+                    sc.participant_audience
+                )  = 'student' 
+            then 1 
+            else 0 
+        end                                                             as is_student_content,
+        case 
+            when 
+                coalesce(
+                    ug.participant_audience,
+                    sc.participant_audience
+                )  = 'teacher' 
+            then 1 
+            else 0 
+        end                                                             as is_pd_content,
 
         -- scripts
         sl.script_id,
