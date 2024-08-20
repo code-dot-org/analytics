@@ -56,7 +56,9 @@ models:
       **active reacquired**: was "inactive churn" last school year and now "active" this school year     
       **inactive this year**: was "active" last school year, but not so far this school year   
       **inactive churn**: was "inactive" last school year and so far this school year    
-      **market**: has never had a school considered "active" on code.org
+      **market**: has never had a school considered "active" on code.org      
+
+      This model also contains information about those **enrolled** in our district program, and the particular school year in which they enrolled. If you see a single district with "enrolled this year" = 1 for multiple school years, this represents a suplicate in the source data, and warrants a fix in data collection. 
    
     columns:
       - name: school_district_id
@@ -69,5 +71,13 @@ models:
         description: time of first activity from an active school in this district in this school year
       - name: active_courses
         description: comma separated list of courses associated with active schools in this school year
+      - name: num_active_teachers
+        description: the number of active (has a section of 5+ students completing 1+ levels) teachers in that school year at that district
+      - name: num_active_schools
+        description: the number of active schools (has 1+ active teachers) in the district in that school year
+      - name: enrolled_this_year
+        description: 1 if the district enrolled in our district program with a close date during this school year, 0 otherwise
+      - name: enrolled 
+        description: 1 if the district is enrolled in our district program (enrolled this school year or any year prior), 0 otherwise
     config:
       tags: ['released']
