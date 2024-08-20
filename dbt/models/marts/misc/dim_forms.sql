@@ -36,9 +36,9 @@ combined as (
         forms.event_type,
         forms.email_pref,
         forms.special_event_flag,
-        coalesce(forms.city,form_geos.city)                     as city,
-        coalesce(forms.state,form_geos.state)                   as state,
-        coalesce(forms.country,form_geos.country)               as country,
+        lower(coalesce(forms.city,form_geos.city))              as city,
+        lower(coalesce(forms.state,form_geos.state))            as state,
+        lower(coalesce(forms.country,form_geos.country))        as country,
         max(forms.created_at)                                   as registered_at,
         max(coalesce(forms.updated_at,forms.created_at))        as last_updated_at
     from forms 
