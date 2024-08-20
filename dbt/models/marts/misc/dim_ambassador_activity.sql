@@ -40,7 +40,7 @@ select distinct
     , s.created_at                                                  as section_created_dt
     , sy.school_year                 
     , f.student_id 
-    , cs.course_name_true                                           as course_name
+    , cs.course_name
     , cs.script_name 
 from foorm_survey                                                   as fs
 

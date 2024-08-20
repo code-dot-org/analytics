@@ -36,7 +36,7 @@ self_paced_scripts as (
         , cs.stage_number
         , cs.level_number
         , cs.level_script_order
-        , cs.course_name_true
+        , cs.course_name
         , case 
             when cs.script_name ilike 'k5-onlinepd%' 		    then 'csf'
 			when cs.script_name like 'self-paced-pl-k5%'	    then 'csf'
@@ -50,7 +50,7 @@ self_paced_scripts as (
             when cs.script_name like 'self-paced-pl-ai-101%'    then 'ai_teachers'
             when cs.script_name like 'k5howaimakesdecisions'    then 'ai_k5'
             when cs.script_name like '%foundations%'            then 'foundations'
-            when cs.course_name_true in ('csf self paced pl')   then 'csf'
+            when cs.course_name in ('csf self paced pl')        then 'csf'
   			end                                                                         as course_name_implementation
     from course_structure cs
     where 
@@ -60,7 +60,7 @@ self_paced_scripts as (
         and cs.published_state in ('stable', 'beta')
         )
         and cs.script_name not in ('alltheselfpacedplthings')
-        and cs.course_name_true not like 'pd workshop activity%'  -- csa's self-paced pl is asynchronous work for facilitator-led pd workshops
+        and cs.course_name not like 'pd workshop activity%'  -- csa's self-paced pl is asynchronous work for facilitator-led pd workshops
 )
 select
     ul.user_id                                                                          as teacher_id
@@ -71,7 +71,7 @@ select
     , sps.script_name
     , sps.stage_name
     , sps.level_name
-    , sps.course_name_true                                                              as course_name
+    , sps.course_name
     , sps.course_name_implementation
     , ul.created_at                                                                     as level_created_at
     , sy.school_year                                                                    as level_created_school_year
