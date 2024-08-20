@@ -81,8 +81,7 @@ started_schools as (
     select 
         all_schools_sy.school_id,
         all_schools_sy.school_year,
-        --case when started_schools.school_id is null then 0 else 1 end as is_active,
-
+        
         case when -- for a school to be active it has to have started a course that is NOT hoc-only
             started_schools.school_id is not null 
             and started_schools.active_courses <> 'hoc' then 1 

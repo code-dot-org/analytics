@@ -17,10 +17,12 @@ final as (
         cs.level_name,
         cs.level_script_order,
         cs.level_id,
-        cs.course_name_true as course_family,
+        cs.course_name                                  as course_family,
 
-        case when lcd.level_id is null 
-            then 1 else 0 end as has_lcd_mapping,
+        case 
+            when lcd.level_id is null then 1 
+            else 0 
+        end                                             as has_lcd_mapping,
         
         lcd.sequencing,
         lcd.debugging,
