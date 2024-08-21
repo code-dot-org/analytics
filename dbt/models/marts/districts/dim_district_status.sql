@@ -107,8 +107,8 @@ active_status_simple as (
         end                                                                 as is_active,
         started_districts.district_started_at,
         started_districts.active_courses,
-        active_district_stats.num_active_teachers,
-        active_district_stats.num_active_schools
+        coalesce(active_district_stats.num_active_teachers, 0)              as num_active_teachers,
+        coalesce(active_district_stats.num_active_schools, 0)               as num_active_schools
     from all_districts_sy 
     left join started_districts
         on started_districts.school_district_id = all_districts_sy.school_district_id 
