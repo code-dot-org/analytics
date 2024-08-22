@@ -6,7 +6,7 @@ select
     ul.created_at::date activity_date,
     --ul.updated_at::date       -- would be better if we could log updated_at for daily activity
 
-    listagg(distinct cs.course_name_true) within group (order by cs.course_name_true) course_list,
+    listagg(distinct cs.course_name) within group (order by cs.course_name)             as course_list,
     count(*) num_user_level_records
 
 from {{ ref('stg_dashboard__user_levels') }} ul

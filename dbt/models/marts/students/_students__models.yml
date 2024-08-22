@@ -1,6 +1,74 @@
 version: 2
 
 models:
+  - name: dim_student_projects
+    description: |
+      This model tracks all projects started on code.org. It includes additional information about the project itself, as well as other variables to make for easy segmentation for commonly asked questions. 
+    columns:
+      - name: project_id
+        description: unique ID for the project
+        data_tests:
+          - not_null 
+          - unique
+      - name: user_id
+        description: unique ID for the user, if they were signed in when completing the project
+
+      - name: is_signed_in
+        description: 1 if the user was signed in while completing the project, 0 otherwise
+
+      - name: user_type
+        description: student or teacher
+      
+      - name: is_published
+        description: 1 if the project was published, 0 otherwise
+      
+      - name: project_created_at
+        description: the timestamp for when the project was first created
+      
+      - name: project_updated_at
+        description: the timestamp for when the project was last updated
+      
+      - name: project_published_at
+        description: the timestamp for when the project was published, null if not published
+      
+      - name: school_year
+        description: the school year when the project was first created 
+      
+      - name: cal_year
+        description: the calendar year when the project was first created 
+      
+      - name: country
+        description: the country associated with the signed-in user's location
+
+      - name: intl_partner_id
+        description: the intl partner ID associated with user's country
+
+      - name: intl_partner_name
+        description: the intl partner name associated with user's country
+
+      - name: region
+        description: the signed-in user's region
+
+      - name: is_standalone
+        description: 1 if the project was done as a standalone project, 0 if done as part of a curriculum
+
+      - name: abuse_score
+        description: the score given for reporting abuse in a project
+
+      - name: project_type
+
+      - name: is_deleted
+        description: 1 if the project has been deleted, 0 if still active
+
+      - name: remix_parent_id
+        description: null if not remixed
+      
+      - name: is_valid 
+        description: 0 if the project is a "ghost project" with a null channel id, 1 otherwise
+
+    config:
+      tags: ['released']
+
   - name: dim_active_students
     description: |
       This model serves as a **prototype** for the active student metric. (Please update this description as the metric is improved/modified.) 
@@ -103,11 +171,84 @@ models:
       - name: is_international 
         description: 1 if last activity was outside the US, 0 otherwise
 
+      - name: cap_status
+        description: child account policy tag; only relevant for students (options are 'grace period', 'locked_out', 'permission_granted')
+          
+      - name: cap_status_date
+        description: child account policy tag; date the status is set
+
       - name: school_id
         description: school association of student 
     config:
       tags: ['released']
 
+  - name: dim_student_script_level_activity
+    description: |
+      This model contains 1 row for every level/script touched by a student.    
+      This model also includes important segmentations (e.g. school status at the time of activity, whether or not the student was in a section at that time, etc) 
+    columns:
+      - name: student_id
+        description: the unique ID associated with the activity
+        data_tests:
+          - not_null
+      - name: level_id
+        description: the level the student was interacting with
+        data_tests:
+          - not_null
+      - name: script_id
+        description: the script ID associated with the level the student was interacting with
+      - name: activity_date
+        description: the date of the level-script activity, truncated to the day. 
+      - name: school_year_quarter
+        description: the quarter of the school year in which the activity occurred (Q1 = Jul - Sep, Q2 = Oct - Dec, Q3 = Jan - Mar, Q4 = Apr - Jun)
+      - name: activity_school_year
+        description: the school year in which the activity occurred 
+      - name: level_name
+      - name: level_type 
+      - name: unit_name
+        description: formerly known as script_name
+      - name: course_name
+      - name: lesson_name 
+      - name: section_id
+        description: only populated if the student is in a section that school year
+      - name: section_teacher_id 
+        descirption: the teacher id associated with the section (if the student is in a section)
+      - name: section_size
+        description: the number of students in the student's section in that school year
+      - name: teacher_status 
+        description: the activity status of the teacher associated with the section in that school year of activity
+      - name: school_status
+        description: the activity status of the school associated with the section/teacher in that school year of activity; only populated if student in a section with a teacher with an NCES school association
+      - name: school_name
+        description: the school associated with the teacher of the student's section in the given school year; only populated if student in a section with a teacher with an NCES school association
+      - name: school_district_id
+        description: only populated if student in a section with a teacher with an NCES school association
+      - name: school_district_name
+        description: only populated if student in a section with a teacher with an NCES school association
+      - name: school_state
+        description: only populated if student in a section with a teacher with an NCES school association
+      - name: school_type 
+        description: only populated if student in a section with a teacher with an NCES school association
+      - name: school_is_stage_el
+        description: 1 if the school associated with the section's teacher has grades K-5; only populated if student in a section with a teacher with an NCES school association
+      - name: school_is_stage_mi
+        description: 1 if the school associated with the section's teacher has grades 6-8; only populated if student in a section with a teacher with an NCES school association
+      - name: school_is_stage_hi
+        description: 1 if the school associated with the section's teacher has grades 9-12; only populated if student in a section with a teacher with an NCES school association
+      - name: school_is_high_needs
+        description: only populated if student in a section with a teacher with an NCES school association
+      - name: school_is_rural
+        description: only populated if student in a section with a teacher with an NCES school association
+      - name: activity_country 
+        description: the country associated with the IP address of the activity (not the school association)
+      - name: total_attempts 
+        description: the total number of attempts the student had on the particular level on that date
+      - name: best_result
+        description: the best result the student got in the particular level on that date
+      - name: time_spent_minutes 
+        description: the number of minutes the student spent on that level on the particular date
+    config:
+      tags: ['released']
 
 # - name: dim_student_status
 #   description: This model categorizes students based on their activity status across different school years. It provides insights into user engagement by assigning a status that reflects their activity in the current, previous, and any earlier school years.

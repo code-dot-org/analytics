@@ -1,6 +1,6 @@
 with 
 teachers as (
-    select *
+    select *  
     from {{ ref('dim_users')}}
     where user_type = 'teacher'
 ),
@@ -28,21 +28,46 @@ teacher_schools as (
         si.school_id,
         rank () over (
             partition by teachers.user_id 
-            order by usi.ended_at desc) as rnk
+            order by usi.ended_at desc)                             as rnk
     from teachers
-    left join user_school_infos as usi    
+    left join user_school_infos                                     as usi    
         on usi.user_id = teachers.user_id
-    left join school_infos as si 
+    left join school_infos                                          as si 
         on si.school_info_id = usi.school_info_id
 ),
 
+--excludes student_id, cap_status, and cap_status_date from dim_users
 final as (
     select 
-        teachers.*, 
+        teachers.user_id,
+        teachers.teacher_id,
+        teachers.user_type,
+        teachers.studio_person_id,
+        teachers.school_info_id,
+        teachers.is_urg,
+        teachers.gender,
+        teachers.locale,
+        teachers.birthday,
+        teachers.sign_in_count,
+        teachers.total_lines,
+        teachers.current_sign_in_at,
+        teachers.last_sign_in_at,
+        teachers.created_at,
+        teachers.updated_at,
+        teachers.deleted_at,
+        teachers.purged_at,
+        teachers.teacher_email,
+        teachers.races,
+        teachers.race_group,
+        teachers.gender_group,
+        teachers.self_reported_state,
+        teachers.country,
+        teachers.us_intl,
+        teachers.is_international,
         ts.school_id,
-        school_years.school_year as created_at_school_year
+        school_years.school_year                                    as created_at_school_year
     from teachers 
-    inner join teacher_schools as ts 
+    inner join teacher_schools                                      as ts 
         on teachers.user_id = ts.user_id
         and ts.rnk = 1
     inner join school_years 
