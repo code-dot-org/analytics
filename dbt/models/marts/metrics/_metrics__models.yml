@@ -1,19 +1,59 @@
 version: 2
 
 models:
+  - name: fct_active_students_daily
+    description: this model represents a daily aggregation of the prototype active student metric (as defined in dim_active_students). Counts total active students by date. 
+    columns:
+    - name: date
+      description: "the date (day) of activity"
+      data_tests:
+        - not_null
+    - name: country
+      description: "the country of the users as determined by code.org geolocation"
+    - name: us_intl
+      description: "'us' if the `country` = 'United States', 'intl' if not (there are a handful of Nulls)"
+    - name: num_actives
+      description: the number of active students on given date, in given country
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - date
+            - country
+            - user_type_merged
 
-  # Weekly School Acquisition Metrics
+  - name: fct_active_students_monthly
+    description: this model represents a monthly aggregation of the prototype active student metric (as defined in dim_active_students). Counts total active students by month.
+
+    columns:
+    - name: month_year
+      description: "The month and year of activity, truncated/aggregated to first of the month. e.g. all data for January, 2022 is given as month_year = '2022-01-01' "
+      data_tests:
+        - not_null
+    - name: country
+      description: "the country of the users as determined by code.org geolocation"
+    - name: us_intl
+      description: "'us' if the `country` = 'United States', 'intl' if not (there are a handful of Nulls)"
+    - name: num_actives
+      description: the number of active students on given month, in given country
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - month_year
+            - country
+            - user_type_merged
+
   - name: fct_weekly_school_acquisition_metrics
-    description: 
-      Weekly counts of school acquisitions by status (new, retained, reacquired, inactive, churn, market).  
-      These are the top line metrics we use to measure against our goals of active schools.
+    description: |
+      Weekly counts of school acquisitions by status (new, retained, reacquired, inactive, churn, market). These are the top line metrics we use to measure against our goals of active schools.   
+         
+      **Note**: aggregating across weeks may result in inaccurate counts, as a single school can be considered "retained" multiple weeks in a row, for example, and thus would be double-counted.
     columns:
       - name: school_level
         description: elementary, middle, or high school- note that a given school may be counted in multiple school level aggregations (e.g. K-8)
               
       - name: school_year
         description: school year in which the activity at a school is counted
-        tests:
+        data_tests:
           - not_null
         
       - name: status
@@ -33,14 +73,19 @@ models:
 
       - name: num_schools_running_total
         description: total number of schools within the school level and active status dimensions as of that week
+    config:
+      tags: ['released']
 
   # Monthly Accounts Created
   - name: fct_monthly_accounts_created
-    description: number of user accounts created by month, segmented by country. This only includes accounts that have been signed into at least once (there are cases where teachers can create accounts to pre-populate a section, but no student ever signs in with it).
+    description: |
+      Monthly count of total accounts created, segmented by country and user type (teacher and student).   
+      
+      **Note**: This only includes accounts that have been signed into at least once (there are cases where teachers can create accounts to pre-populate a section, but no student ever signs in with it).
     columns:
       - name: user_type
         description: teacher or student
-        tests:
+        data_tests:
           - not_null
           
       - name: us_intl
@@ -51,17 +96,17 @@ models:
        
       - name: school_year
         description: school year in which the accounts were created
-        tests:
+        data_tests:
           - not_null
 
       - name: created_year
         description: the calendar year in which the accounts were created
-        tests:
+        data_tests:
           - not_null
       
       - name: created_month
         description: the month number in which the accounts were created
-        tests:
+        data_tests:
           - not_null
       
       - name: created_year_month
@@ -69,14 +114,19 @@ models:
       
       - name: num_accounts
         description: the number of accounts created in that school year, month, user type and geography
+    config:
+      tags: ['released']
 
   # Monthly Signed-In Users
   - name: fct_monthly_signed_in_users
-    description: total users who signed in each month, segmented by user type and us/intl
+    description: |
+      Monthly count of users who signed in, segmented by user type and us/intl   
+
+      **Note**: aggregating monthly counts may result in inaccuracies, since the same user may be double counted if they signed in within multiple months. 
     columns:
       - name: user_type
         description: teacher or student (or `null`)
-        tests:
+        data_tests:
           - not_null
       
       - name: us_intl
@@ -84,12 +134,19 @@ models:
       
       - name: num_signed_in_users
         description: the number of users who signed in in that school year, month, user type and geography
+    config:
+      tags: ['released']
 
   ## Yearly Signed In Users (will refactor later)
   - name: fct_yearly_signed_in_users 
-    description: total users who signed in each month, segmented by user type and us/intl
+    description: |
+      Yearly count of users who signed in, segmented by user type and us/intl   
+
+      **Note**: aggregating yearly counts may result in inaccuracies, since the same user may be double counted if they signed in within multiple years.
     columns:
       - name: user_type
         description: teacher or student (or `null`)
-        tests:
+        data_tests:
           - not_null
+    config:
+      tags: ['released']

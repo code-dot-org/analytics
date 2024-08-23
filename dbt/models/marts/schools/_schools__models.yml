@@ -2,35 +2,27 @@ version: 2
 
 models: 
   - name: dim_school_stats_by_years
-    description: historical record of all NCES school stats and associated calculations
-    tests:
+    description: |
+      Historical record of all NCES school stats and associated calculations. 
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - school_year
             - school_id
+    config:
+      tags: ['released']
 
   - name: dim_school_status
     description: |
-      1 row per school, per school_year, with "active" defined by having a techer with a section of 5+ students completing 1+ levels of the same course. The school's status can thus be defined by one of the following in a given school year--
-      ### active new 
-      * has never before been "active" until this school year
-      ### active retained 
-      * was "active" the previous school year and this school year
-      ### active reacquired 
-      * was "inactive churn" last school year and now "active" this school year.  
-      ### inactive this year 
-      * was "active" last school year, but not so far this school year. 
-      ### inactive churn 
-      * was "inactive" last school year and so far this school year. 
-      ### market 
-      * has never been considered "active" on code.org 
+      1 row per school, per school_year, with "active" defined by having a techer with a section of 5+ students completing 1+ levels of the same course. The school's status can thus be defined by one of the following in a given school year:   
+           
+      **active new**: has never before been "active" until this school year   
+      **active retained**: was "active" the previous school year and this school year   
+      **active reacquired**: was "inactive churn" last school year and now "active" this school year    
+      **inactive this year**: was "active" last school year, but not so far this school year    
+      **inactive churn**: was "inactive" last school year and so far this school year   
+      **market**: has never been considered "active" on code.org 
     
-    # tests:
-      # - dbt_utils.unique_combination_of_columns:
-      #   combination_of_columns:
-      #     - school_id
-      #     - school_year
-      #     - status
     columns:
       - name: school_id
         description: NCES school ID (this school must have been selected by teacher via NCES dropdown in account setup)
@@ -39,20 +31,23 @@ models:
         description: school year in which an activity status is assigned
       
       - name: status
-        description: '{{ doc("dim_school_status_status") }}'
+        description: active/inactive status of the school in the given school year
       
       - name: school_started_at
         description: time of first activity from an active section at this school in this school year
       
       - name: active_courses
         description: comma separated list of courses associated with active sections at this school in this school year
+    config:
+      tags: ['released']
 
   - name: dim_schools
-    description: NCES school-level information for the most recent school year it is updated for
+    description: |
+      NCES school-level information for the most recent school year it is updated for. 
     columns: 
       - name: school_id
         description: the NCES id associated with a school 
-        tests:
+        data_tests:
           - not_null
           - unique
 
@@ -73,3 +68,5 @@ models:
       
       - name: total_urg_no_tr_students
         description: total number of URG students, excluding those identifying as two or more races
+    config:
+      tags: ['released']

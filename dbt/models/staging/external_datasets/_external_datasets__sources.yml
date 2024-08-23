@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 06cea9a8d3dc992d2959f480422dac0eebb46827
 sources:
   - name: external_datasets
     database: dashboard 
@@ -27,6 +31,7 @@ sources:
 
     tables:
 
+<<<<<<< HEAD
       # access report
       - name: access_report_megatable_2023
         description: "Final megatable from 2023"
@@ -40,6 +45,8 @@ sources:
       - name: access_report_review_table_2024
         description: "Final locked version of the review table that was used in 2024"
 
+=======
+>>>>>>> 06cea9a8d3dc992d2959f480422dac0eebb46827
       # aggregate AP exam results
       - name: stg_ap_agg_exam_results_raw_2023
         description: "Raw aggregated exam results from 2023. This is more or less a direct copy of data .csv provided by the college board.  See S3 ap_data bucket."
@@ -120,6 +127,7 @@ sources:
 
       - name: stg_ap_crosswalk_2023
         description: "AP crosswalk data for 2023. This is more or less a direct copy of data .csv provided by the college board.  See S3 ap_data bucket."
+<<<<<<< HEAD
 
 
 
@@ -128,3 +136,5 @@ sources:
 
 
 
+=======
+>>>>>>> 06cea9a8d3dc992d2959f480422dac0eebb46827

@@ -1,15 +1,15 @@
 # ==================
 # Project Details
 # ==================
-name: 'cdo_analytics'
-version: '1.0.0'
+name: "cdo_analytics"
+version: "1.0.0"
 
-# dbt Cloud CLI 
+# dbt Cloud CLI
 dbt-cloud:
-    project-id: 286339
+  project-id: 286339
 
 config-version: 2
-profile: 'cdo_redshift'
+profile: "cdo_redshift"
 require-dbt-version: [">=1.0.0", "<2.0.0"]
 quoting:
   identifier: true
@@ -25,8 +25,8 @@ macro-paths: ["macros"]
 analysis-paths: ["analyses"]
 target-path: "target"
 clean-targets:
-    - "target"
-    - "dbt_packages"
+  - "target"
+  - "dbt_packages"
 
 # ==================
 # Variable Configs
@@ -44,23 +44,23 @@ vars:
   valid_at: '{{ run_started_at.strftime("%Y-%m-%d %H:%M:%S%z") }}'
 
 # ==================
-# Model Configs 
+# Model Configs
 # https://docs.getdbt.com/docs/configuring-models
 # ==================
 models:
   # +database: "{{ env_var('DBT_DATABASE')}}"
   # +schema: "{{ env_var('DBT_DB_SCHEMA')}}"
-  
+
   cdo_analytics:
-    # applies to all models 
-  
+    # applies to all models
+
     post-hook:
       - "grant select on {{ this }} to group reader_pii_dbt"
       # - "grant select on {{ this }} to group trevorio"
-  
+
     # +grants:
     #   select: ['dbt','trevorio']
-  
+
     +query_tag: dbt
     bind: false
 
@@ -68,8 +68,10 @@ models:
       tags:
         - "int"
       +materialized: table
+      # +docs:
+      #   show: false
 
-    marts: 
+    marts:
       tags:
         - "mart"
       +materialized: table
@@ -78,29 +80,60 @@ models:
       tags:
         - "staging"
       +materialized: view
+
+      external_datasets:
+        base:
+      +docs:
+        show: false
       
       dashboard:
-        base: 
+        base:
           tags:
-            - "base" 
-          materialized: ephemeral
+            - "base"
+          +materialized: view
+
+      dashboard:
+        base:
+          tags:
+            - "base"
+          +materialized: ephemeral
 
       dashboard_pii:
         tags:
           - "contains_pii"
-        base: 
+        base:
           tags:
             - "base"
-          materialized: ephemeral
-      
+          +materialized: ephemeral
+
       legacy_pii:
         tags:
           - "contains_pii"
-      
+
       pegasus_pii:
         tags:
           - "contains_pii"
+        base:
+          tags:
+            - "base"
+          +materialized: ephemeral
+        +docs:
+          show: false
+
+      pegasus:
+        base:
+          tags:
+            - "base"
+          +materialized: ephemeral
+        +docs:
+          show: false
+
+      amplitude:
         base: 
           tags:
             - "base"
           materialized: ephemeral
+
+seeds:
+  +docs:
+    show: false

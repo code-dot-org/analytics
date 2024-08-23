@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: analysis_pii
+    database: dashboard
+    schema: analysis_pii
+    tables:
+      - name: foorm_submissions_reshaped

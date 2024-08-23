@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: public
+    database: dashboard
+    schema: public
+    tables:
+      - name: countries
+      - name: international_partners_raw
+      - name: international_contact_info
+
+

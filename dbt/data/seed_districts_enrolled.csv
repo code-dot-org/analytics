@@ -1,0 +1,316 @@
+company_name,state,company_owner,company_type,month_closed,month_created,district_id
+Williston Trinity Christian School,ND,Carrie Morrison,District-Religious,2024-06-01,2024-06-01,A9303500
+Oak Hall School,FL,Tonya Davis,District-Public,2024-05-01,2024-05-01,A2101215
+Phoenix Hebrew Academy,AZ,Carrie Morrison,District-Private,2024-05-01,2024-05-01,A2100201
+Notre Dame Preparatory and Marist Academy,MI,Andy Teipen,District-Public,2024-02-01,2024-03-01,A1902476
+Holy Family Catholic Schools,IA,Andy Teipen,District-Religious,2024-01-01,2024-03-01,A1701794
+Trinity Christian School,IN,Andy Teipen,(No value),2024-08-01,2024-08-01,A1301410
+Crosspoint Christian School,WA,Carrie Morrison,District-Religious,2024-07-01,2024-07-01,A1192099
+Crosspoint Christian School,WA,Carrie Morrison,District-Religious,2024-07-01,2024-06-01,A1192099
+Shonto Preparatory School,AZ,Carrie Morrison,District-Public,2024-05-01,2024-05-01,590012800186
+Eleanor Kolitz Hebrew Language Academy,TX,Tonya Davis,District-Public,2024-05-01,2024-05-01,480143513053
+Epic Charter Schools,OK,Carrie Morrison,District-Charter,2024-04-01,2024-04-01,400077702789
+Horizon Science Academy Cleveland High School,OH,Andy Teipen,District-Public,2023-11-01,2024-03-01,390004002939
+The Innovation School,ND,Carrie Morrison,District-Private,2024-04-01,2024-04-01,380040500911
+New Visions Charter Network IV,NY,Caison Bridger,District-Charter,2024-04-01,2024-04-01,360113606549
+Manhattan Charter School,NY,Caison Bridger,District-Charter,2024-05-01,2024-05-01,360013705766
+Voz Collegiate Preparatory Charter School,NM,Carrie Morrison,District-Charter,2024-05-01,2024-05-01,350006001164
+Alpine Academy,NV,Carrie Morrison,District-Private,2024-08-01,2024-08-01,320000100800
+Springfield International Charter School,MA,Caison Bridger,District-Public,2024-05-01,2024-05-01,250002800537
+Pacific Charter Institute,CA,Nikki Navta,District-Charter,2024-02-01,2024-03-01,60258214639
+Arizona Connections Academy Charter School Inc.,AZ,Carrie Morrison,District-Charter,2024-05-01,2024-05-01,40042703160
+Oneida Nation School System,WI,Andy Teipen,District-Public,2024-06-01,2024-06-01,5900114
+Sheridan County School District #2,WY,Carrie Morrison,District-Public,2024-05-01,2024-05-01,5605695
+Sweetwater County School District 1,WY,Carrie Morrison,District-Public,2024-04-01,2024-04-01,5605302
+Converse County School District #2,WY,Carrie Morrison,District-Public,2024-04-01,2024-04-01,5602150
+Seymour Community Schools,WI,Andy Teipen,District-Public,2024-05-01,2024-05-01,5513530
+Pewaukee School District,WI,Andy Teipen,District-Public,2024-05-01,2024-05-01,5511640
+Marshall Public Schools,WI,Andy Teipen,District-Public,2024-05-01,2024-05-01,5508790
+Gibraltar Area School District,WI,Andy Teipen,District-Public,2024-07-01,2024-07-01,5505220
+Dodgeville Schools,WI,Andy Teipen,District-Public,2024-05-01,2024-05-01,5503690
+Cornell School District,WI,Andy Teipen,District-Public,2024-04-01,2024-04-01,5502880
+School District of Brown Deer,WI,Andy Teipen,District-Public,2024-05-01,2024-05-01,5501800
+Elmbrook School District,WI,Andy Teipen,District-Public,2024-05-01,2024-05-01,5501770
+Roane County School District,WV,Caison Bridger,District-Public,2024-05-01,2024-05-01,5401320
+Raleigh County Schools,WV,Andy Teipen,District-Public,2024-01-01,2024-03-01,5401230
+Fayette County Schools,WV,Andy Teipen,District-Public,2024-01-01,2024-03-01,5400960
+Monroe County Schools,WV,Andy Teipen,District-Public,2024-04-01,2024-04-01,5400960
+Renton School District,WA,Carrie Morrison,District-Public,2024-05-01,2024-05-01,5307230
+Omak School District,WA,Carrie Morrison,District-Public,2024-05-01,2024-05-01,5306220
+Marysville School District,WA,Carrie Morrison,District-Public,2024-06-01,2024-06-01,5304860
+Lake Washington School District,WA,Carrie Morrison,District-Public,2024-04-01,2024-04-01,5304230
+Clover Park School District,WA,Carrie Morrison,District-Public,2024-05-01,2024-05-01,5301410
+Catalyst Public Schools,WA,Carrie Morrison,District-Public,2024-05-01,2024-05-01,5300347
+Suffolk Public Schools,VA,Caison Bridger,District-Public,2024-06-01,2024-06-01,5103710
+Loudoun County Public Schools,VA,Caison Bridger,District-Public,2024-05-01,2024-05-01,5102250
+"Frederick County Public Schools, VIRGINIA",VA,Caison Bridger,District-Public,2024-05-01,2024-05-01,5101470
+Alleghany Highlands Public Schools,VA,Caison Bridger,District-Public,2024-06-01,2024-06-01,5100152
+Southside Independent School District,TX,Tonya Davis,District-Public,2024-02-01,2024-03-01,4840920
+Lexington Independent School District,TX,Tonya Davis,District-Public,2024-05-01,2024-05-01,4827330
+Jacksboro Independent School District,TX,Tonya Davis,District-Public,2024-04-01,2024-04-01,4824530
+Humble Independent School District,TX,Tonya Davis,District-Public,2024-02-01,2024-03-01,4823910
+Lubbock-Cooper ISD,TX,Tonya Davis,District-Public,2024-05-01,2024-05-01,4815180
+Canutillo Independent School District,TX,Tonya Davis,District-Public,2024-05-01,2024-05-01,4812780
+Westlake Academy,TX,Tonya Davis,District-Charter,2024-06-01,2024-05-01,4800254
+Wilson County Schools,NC,Caison Bridger,District-Public,2024-02-01,2024-03-01,4704550
+Warren County Schools,NC,Caison Bridger,District-Public,2024-03-01,2024-03-01,4704350
+Sevier County School System,TN,Caison Bridger,District-Public,2024-06-01,2024-06-01,4703780
+Robertson County Schools,KY,Andy Teipen,District-Public,2024-01-01,2024-03-01,4703600
+Overton County,TN,Caison Bridger,District-Public,2024-05-01,2024-05-01,4703330
+Oak Ridge City School District,TN,Caison Bridger,District-Public,2024-05-01,2024-05-01,4703240
+McKenzie Special School District,TN,Caison Bridger,District-Public,2024-05-01,2024-05-01,4702790
+Hickman County Schools,TN,Caison Bridger,District-Public,2024-04-01,2024-04-01,4701860
+Bristol Tennessee City School District,TN,Caison Bridger,District-Public,2024-05-01,2024-05-01,4700360
+Bradley County Schools,TN,Caison Bridger,District-Public,2024-05-01,2024-05-01,4700330
+Germantown Municipal School District,TN,Caison Bridger,District-Public,2024-04-01,2024-04-01,4700151
+Anderson County School District,TN,Caison Bridger,District-Public,2024-06-01,2024-06-01,4700090
+Darlington County School District,SC,Tonya Davis,District-Public,2024-05-01,2024-05-01,4501860
+Clarendon County School District,SC,Tonya Davis,District-Public,2024-05-01,2024-05-01,4501770
+Charleston County School District,SC,Caison Bridger,District-Public,2024-05-01,2024-05-01,4501440
+Smithfield Public Schools,RI,Caison Bridger,District-Public,2024-02-01,2024-03-01,4400990
+Carbon Learning Achievement School,PA,Andy Teipen,District-Public,2024-01-01,2024-03-01,4289310
+School District of Springfield Township,PA,Andy Teipen,District-Public,2023-11-01,2024-03-01,4222620
+Philadelphia Academy Charter School,PA,Andy Teipen,District-Charter,2024-01-01,2024-03-01,4218990
+Norwin School District,PA,Andy Teipen,District-Public,2024-01-01,2024-03-01,4217940
+Coleman Public Schools,OK,Carrie Morrison,District-Public,2024-07-01,2024-07-01,4008310
+Allen Public Schools,OK,Carrie Morrison,District-Public,2024-07-01,2024-07-01,4002760
+Clearview Local School District,OH,Andy Teipen,District-Public,2024-03-01,2024-03-01,3904813
+Pickerington Local School District,OH,Andy Teipen,District-Public,2024-04-01,2024-04-01,3904689
+New Miami Local,OH,Andy Teipen,District-Public,2024-04-01,2024-04-01,3904613
+Perrysburg Exempted Village School District,OH,Andy Teipen,District-Public,2024-04-01,2024-04-01,3904558
+Indian Hill Exempted Village School District,OH,Andy Teipen,District-Public,2024-04-01,2024-04-01,3904543
+Cleveland Metropolitan School District,OH,Andy Teipen,District-Public,2024-01-01,2024-03-01,3904378
+Westhope 17 School District,ND,Carrie Morrison,District-Public,2024-04-01,2024-04-01,3819470
+Washburn Public School,ND,Carrie Morrison,District-Public,2024-04-01,2024-04-01,3819290
+United #7,ND,Carrie Morrison,District-Public,2024-03-01,2024-03-01,3818730
+Thompson Public Schools,ND,Carrie Morrison,District-Public,2024-03-01,2024-03-01,3818280
+Sawyer Public School District,ND,Carrie Morrison,District-Public,2024-03-01,2024-03-01,3816470
+Sargent Central Public School,ND,Carrie Morrison,District-Public,2024-05-01,2024-05-01,3816430
+Northwood 129,ND,Carrie Morrison,District-Public,2024-04-01,2024-04-01,3814340
+Napoleon 2 School District,ND,Carrie Morrison,District-Public,2024-04-01,2024-04-01,3813510
+Midway Public School #128,ND,Carrie Morrison,District-Public,2024-05-01,2024-05-01,3812920
+Kenmare 28 School District,ND,Carrie Morrison,District-Public,2024-04-01,2024-04-01,3810180
+Hillsboro Public School District,ND,Carrie Morrison,District-Public,2024-03-01,2024-03-01,3809570
+Finley-Sharon 19 School District,ND,Carrie Morrison,District-Public,2024-03-01,2024-03-01,3806910
+Alexander 2 School District,ND,Carrie Morrison,District-Public,2024-06-01,2024-06-01,3801760
+Kindred 2 School District,ND,Carrie Morrison,District-Public,2024-06-01,2024-06-01,3801760
+Williston Basin School District 7,ND,Carrie Morrison,District-Public,2024-06-01,2024-06-01,3800405
+Mott-Regent Public Schools,ND,Carrie Morrison,District-Public,2024-04-01,2024-04-01,3800046
+Mt Pleasant School District #4,ND,Carrie Morrison,District-Public,2024-04-01,2024-04-01,3800046
+New England Public School,ND,Carrie Morrison,District-Public,2024-06-01,2024-06-01,3800046
+May-Port CG School District,ND,Carrie Morrison,District-Public,2024-03-01,2024-03-01,3800041
+Dakota Boys and Girls Ranch,ND,Carrie Morrison,District-Public,2024-04-01,2024-04-01,3800040
+Hazen Public Schools,ND,Carrie Morrison,District-Public,2024-04-01,2024-04-01,3800031
+Cavalier 6 School District,ND,Carrie Morrison,District-Public,2024-03-01,2024-03-01,3800018
+Martin County Schools (NC),NC,Caison Bridger,District-Public,2024-04-01,2024-04-01,3702880
+Johnston County Public Schools,NC,Caison Bridger,District-Public,2024-04-01,2024-04-01,3702370
+Hoke County Schools,NC,Caison Bridger,District-Public,2024-07-01,2024-07-01,3702250
+Guilford County Schools,NC,Caison Bridger,District-Public,2024-03-01,2024-03-01,3701920
+Duplin County Schools,NC,Caison Bridger,District-Public,2024-06-01,2024-06-01,3701200
+Davie County Schools,NC,Caison Bridger,District-Public,2024-05-01,2024-05-01,3701170
+Currituck County School District,NC,Caison Bridger,District-Public,2023-12-01,2024-03-01,3701080
+Columbus County Schools,NC,Caison Bridger,District-Public,2024-02-01,2024-03-01,3700960
+Telra Institute,NC,Caison Bridger,District-Private,2023-12-01,2024-03-01,3700472
+Mount Markham Central School District,NY,Caison Bridger,District-Public,2024-04-01,2024-04-01,3630930
+Uniondale School District,NY,Caison Bridger,District-Public,2024-08-01,2024-08-01,3629280
+Public Schools of the Tarrytowns,NY,Caison Bridger,District-Public,2024-03-01,2024-03-01,3628650
+South Glens Falls CSD,NY,Caison Bridger,District-Public,2024-04-01,2024-04-01,3627240
+Schenectady School District,NY,Caison Bridger,District-Public,2024-05-01,2024-05-01,3626010
+Rocky Point Union Free School District,NY,Caison Bridger,District-Public,2024-05-01,2024-05-01,3624840
+Orchard Park Central School District,NY,Caison Bridger,District-Public,2024-04-01,2024-04-01,3621900
+Norwood-Norfolk Central School District,NY,Caison Bridger,District-Public,2024-01-01,2024-03-01,3621360
+City School District of New Rochelle,NY,Caison Bridger,District-Public,2024-04-01,2024-04-01,3620490
+Lake Shore Central School District,NY,Caison Bridger,District-Public,2024-01-01,2024-03-01,3616560
+Highland Falls Fort Montgomery CSD,NY,Caison Bridger,District-Public,2024-01-01,2024-03-01,3614430
+Greece Central schools,NY,Caison Bridger,District-Public,2024-07-01,2024-07-01,3612630
+Gananda Central School District,NY,Caison Bridger,District-Public,2024-05-01,2024-05-01,3611740
+Arlington Central School District,NY,Caison Bridger,District-Public,2024-05-01,2024-05-01,3603270
+Las Cruces Public Schools,NM,Carrie Morrison,District-Public,2024-04-01,2024-04-01,3501500
+Estancia Municipal School District,NM,Carrie Morrison,District-Public,2024-04-01,2024-04-01,3500930
+Estancia Municipal School District,NM,Carrie Morrison,District-Public,2024-08-01,2024-08-01,3500930
+Cuba Independent Schools,NM,Carrie Morrison,District-Public,2024-05-01,2024-05-01,3500660
+Rio Rancho Public Schools,NM,Carrie Morrison,District-Public,2024-06-01,2024-06-01,3500010
+"Washington Township Schools, Morris County",NJ,Caison Bridger,District-Public,2024-02-01,2024-03-01,3417130
+Upper Township School District,NJ,Caison Bridger,District-Public,2024-05-01,2024-05-01,3416650
+Barnegat Township School District,NJ,Caison Bridger,District-Public,2024-05-01,2024-05-01,3416470
+South Brunswick Township School District,NJ,Caison Bridger,District-Public,2024-04-01,2024-04-01,3415210
+Somerville Public Schools,MA,Caison Bridger,District-Public,2023-12-01,2024-03-01,3415090
+Rumson-Fair Haven Regional High School District,NJ,Caison Bridger,District-Public,2024-04-01,2024-04-01,3414400
+Newark Board of Education,NJ,Caison Bridger,District-Public,2024-01-01,2024-03-01,3411340
+New Brunswick School District,NJ,Caison Bridger,District-Public,2024-07-01,2024-07-01,3411220
+Montclair Public Schools,NJ,Caison Bridger,District-Public,2024-05-01,2024-05-01,3410560
+The Lower Alloways Creek School District,NJ,Caison Bridger,District-Public,2024-05-01,2024-05-01,3409030
+Lopatcong Township School District,NJ,Caison Bridger,District-Public,2024-06-01,2024-06-01,3409000
+Lopatcong Township School District,NJ,Caison Bridger,District-Public,2024-06-01,2024-05-01,3409000
+Leonia School District,NJ,Caison Bridger,District-Public,2024-05-01,2024-05-01,3408520
+Hillsborough Township Public Schools,NJ,Caison Bridger,District-Public,2024-05-01,2024-05-01,3407230
+Hanover Park Regional High School District,NJ,Caison Bridger,District-Public,2024-05-01,2024-05-01,3406660
+Haddon Heights School District,NJ,Caison Bridger,District-Public,2024-05-01,2024-05-01,3406330
+Glen Rock Public Schools,NJ,Caison Bridger,District-Public,2024-05-01,2024-05-01,3405970
+Eastern Camden County Regional School District,NJ,Caison Bridger,District-Public,2024-05-01,2024-05-01,3404380
+East Hanover Township School District,NJ,Caison Bridger,District-Public,2024-05-01,2024-05-01,3404170
+Dunellen Public Schools,NJ,Caison Bridger,District-Public,2024-05-01,2024-05-01,3404020
+Bloomfield Public Schools,NJ,Caison Bridger,District-Public,2024-03-01,2024-03-01,3401830
+Bayonne Board of Education,NJ,Caison Bridger,District-Public,2024-05-01,2024-05-01,3401260
+Portsmouth School District,NH,Caison Bridger,District-Public,2024-02-01,2024-03-01,3305820
+Derry Cooperative School District,NH,Caison Bridger,District-Public,2024-04-01,2024-04-01,3302610
+Nye County School District,NV,Carrie Morrison,District-Public,2023-11-01,2024-03-01,3200360
+Lincoln County School District,NV,Carrie Morrison,District-Public,2024-02-01,2024-03-01,3200270
+Humboldt County School District,NV,Carrie Morrison,District-Public,2024-02-01,2024-03-01,3200210
+Elko County School District,NV,Carrie Morrison,District-Public,2024-01-01,2024-03-01,3200120
+Clark County School District,NV,Carrie Morrison,District-Public,2023-11-01,2024-03-01,3200060
+Wakefield Community Schools,NE,Andy Teipen,District-Public,2024-03-01,2024-03-01,3178240
+Pierce Public Schools,NE,Andy Teipen,District-Public,2024-04-01,2024-04-01,3175510
+Northwest Public Schools,NE,Andy Teipen,District-Public,2024-05-01,2024-05-01,3174580
+Lincoln Public Schools,NE,Andy Teipen,District-Public,2024-06-01,2024-06-01,3172840
+Hershey Public Schools,NE,Andy Teipen,District-Public,2024-05-01,2024-05-01,3171820
+Hay Springs Public School District 3,NE,Andy Teipen,District-Public,2024-07-01,2024-07-01,3171610
+Hastings Public Schools,NE,Andy Teipen,District-Public,2024-04-01,2024-04-01,3171580
+Gretna Public Schools,NE,Andy Teipen,District-Public,2024-07-01,2024-07-01,3171220
+Cozad Community Schools,NE,Andy Teipen,District-Public,2024-04-01,2024-04-01,3105460
+Battle Creek Public Schools,NE,Andy Teipen,District-Public,2024-05-01,2024-05-01,3103540
+Scribner Snyder Community Schools,NE,Andy Teipen,District-Public,2024-05-01,2024-05-01,3100076
+Wentzville School District,MO,Andy Teipen,District-Public,2024-06-01,2024-06-01,2931650
+University City,MO,Andy Teipen,District-Public,2024-03-01,2024-03-01,2930660
+Putnam County R-I School District,MO,Andy Teipen,District-Public,2024-04-01,2024-04-01,2925640
+Plato R-V School District,MO,Andy Teipen,District-Public,2024-05-01,2024-05-01,2925210
+Miller R-II Schools,MO,Andy Teipen,District-Public,2024-07-01,2024-07-01,2921000
+Ferguson-Florissant School District,MO,Andy Teipen,District-Public,2024-04-01,2024-04-01,2912010
+Cole County R-V School District,MO,Andy Teipen,District-Public,2024-04-01,2024-04-01,2911550
+Quitman Consolidated School District,MS,Tonya Davis,District-Public,2024-05-01,2024-05-01,2803780
+Newton Municipal,MS,Tonya Davis,District-Public,2024-05-01,2024-05-01,2803180
+Louisville Municipal School District,MS,Tonya Davis,District-Public,2024-05-01,2024-05-01,2802700
+Ambition Preparatory Charter,MS,Tonya Davis,District-Charter,2023-12-01,2024-03-01,2800197
+"Thief River Falls Public Schools, District 564",MN,Andy Teipen,District-Public,2024-05-01,2024-05-01,2738850
+Nicollet Public 507,MN,Andy Teipen,District-Public,2024-01-01,2024-03-01,2723580
+Mankato Area Public Schools,MN,Andy Teipen,District-Public,2024-02-01,2024-03-01,2718780
+Kasson-Mantorville Schools,MN,Andy Teipen,District-Public,2024-02-01,2024-03-01,2716980
+Brooklyn Center Community Schools,MN,Andy Teipen,District-Public,2024-02-01,2024-03-01,2706240
+Belle Plaine Public Schools,MN,Andy Teipen,District-Public,2024-05-01,2024-05-01,2704050
+Adrian Public Schools District 511,MN,Andy Teipen,District-Public,2024-07-01,2024-07-01,2702730
+St. Louis County Schools ISD 2142,MN,Andy Teipen,District-Public,2024-05-01,2024-05-01,2700008
+Mountain Iron-Buhl,MN,Andy Teipen,District-Public,2024-05-01,2024-05-01,2700001
+Utica Community Schools,MI,Andy Teipen,District-Public,2024-04-01,2024-04-01,2634470
+Troy School District,MI,Andy Teipen,District-Public,2024-05-01,2024-05-01,2634260
+Three Rivers Community Schools,MI,Andy Teipen,District-Public,2024-06-01,2024-06-01,2633840
+Lake Shore Public Schools,MI,Andy Teipen,District-Public,2024-02-01,2024-03-01,2632670
+Niles Community Schools,MI,Andy Teipen,District-Public,2024-07-01,2024-07-01,2625560
+Muskegon Public Schools,MI,Andy Teipen,District-Public,2024-07-01,2024-07-01,2624840
+Muskegon Public Schools,MI,Andy Teipen,District-Public,2024-07-01,2024-06-01,2624840
+Lansing School District,MI,Andy Teipen,District-Public,2024-05-01,2024-05-01,2621150
+Kearsley Community Schools,MI,Andy Teipen,District-Public,2024-05-01,2024-05-01,2620070
+Chippewa Valley Schools,MI,Andy Teipen,District-Public,2023-11-01,2024-03-01,2609570
+Detroit Public Schools Community District,MI,Andy Teipen,District-Public,2024-01-01,2024-03-01,2601103
+Wayne-Westland Community Schools,MI,Andy Teipen,District-Public,2024-02-01,2024-03-01,2600015
+Sudbury Public Schools,MA,Caison Bridger,District-Public,2024-05-01,2024-05-01,2511340
+Plymouth Public Schools,MA,Caison Bridger,District-Public,2024-05-01,2024-05-01,2509720
+Natick Public Schools,MA,Caison Bridger,District-Public,2024-06-01,2024-06-01,2508340
+Melrose Public Schools,MA,Caison Bridger,District-Public,2024-05-01,2024-05-01,2507620
+Maynard Public Schools,MA,Caison Bridger,District-Public,2024-05-01,2024-05-01,2507500
+Ipswich Public Schools,MA,Caison Bridger,District-Public,2024-06-01,2024-06-01,2506480
+Granby Public Schools,MA,Caison Bridger,District-Public,2024-05-01,2024-05-01,2505400
+Bourne Public Schools,MA,Caison Bridger,District-Public,2024-05-01,2024-05-01,2502820
+Berlin-Boylston Regional School District,MA,Caison Bridger,District-Public,2024-05-01,2024-05-01,2502580
+Southeastern Massachusetts Educational Collaborative,MA,Caison Bridger,Service Center,2024-07-01,2024-07-01,2500560
+Garrett County Public Schools,MD,Caison Bridger,District-Public,2024-07-01,2024-07-01,2400360
+Charles County Public Schools,MD,Caison Bridger,District-Public,2024-07-01,2024-07-01,2400270
+Baltimore City Public Schools,MD,Caison Bridger,District-Public,2024-06-01,2024-06-01,2400090
+Bossier Parish Schools,LA,Tonya Davis,District-Public,2024-04-01,2024-04-01,2200270
+Ascension Parish School Board,LA,Tonya Davis,District-Public,2024-01-01,2024-03-01,2200090
+Jefferson County Public Schools (KY),KY,Andy Teipen,District-Public,2024-04-01,2024-04-01,2102990
+Daviess County Public Schools,KY,Andy Teipen,District-Public,2023-11-01,2024-03-01,2101470
+Wichita Public Schools - USD 259,KS,Andy Teipen,District-Public,2023-12-01,2024-03-01,2012990
+Sylvan Grove Unified School District 299,KS,Andy Teipen,District-Public,2024-05-01,2024-05-01,2012120
+Blue Valley Unified School District 229,KS,Andy Teipen,District-Public,2024-05-01,2024-05-01,2012000
+Woodbine Community School District,IA,Andy Teipen,District-Public,2024-03-01,2024-03-01,1931920
+Sioux City Community School District,IA,Andy Teipen,District-Public,2024-03-01,2024-03-01,1926400
+Hope Christian Academy,ND,Carrie Morrison,District-Religious,2024-06-01,2024-06-01,1924575
+Osage Community School,IA,Andy Teipen,District-Public,2024-02-01,2024-03-01,1921840
+Mid-Prairie Community Schools,IA,Andy Teipen,District-Public,2024-02-01,2024-03-01,1919140
+Iowa City Community School District,IA,Andy Teipen,District-Public,2024-05-01,2024-05-01,1914700
+Dubuque Community School District,IA,Andy Teipen,District-Public,2024-02-01,2024-03-01,1909480
+Denison Community Schools,IA,Andy Teipen,District-Public,2024-03-01,2024-03-01,1908910
+Cedar Rapids Community School District,IA,Andy Teipen,District-Public,2024-03-01,2024-03-01,1906540
+North Iowa Community Schools,IA,Andy Teipen,District-Public,2024-04-01,2024-04-01,1905750
+Southwest Parke Community Schools,IN,Andy Teipen,District-Public,2024-03-01,2024-03-01,1810900
+South Vermillion Community School Corporation,IN,Andy Teipen,District-Public,2023-11-01,2024-03-01,1810590
+Plainfield Community School Corporation,IN,Andy Teipen,District-Public,2024-03-01,2024-03-01,1808970
+MSD Mount Vernon,IN,Andy Teipen,District-Public,2024-04-01,2024-04-01,1807290
+Cowan Community School Corporation,IN,Andy Teipen,District-Public,2024-04-01,2024-04-01,1807020
+Linton-Stockton School Corporation,IN,Andy Teipen,District-Public,2024-08-01,2024-08-01,1805910
+Lawrenceburg Community School Corporation,IN,Andy Teipen,District-Public,2024-02-01,2024-03-01,1805700
+Jennings County Schools,IN,Andy Teipen,District-Public,2023-12-01,2024-03-01,1805190
+Hanover Community School Corporation,IN,Andy Teipen,District-Public,2024-03-01,2024-03-01,1804350
+Griffith Public Schools,IN,Andy Teipen,District-Public,2024-04-01,2024-04-01,1804170
+Franklin Township Community School Corporation,IN,Andy Teipen,District-Public,2024-02-01,2024-03-01,1803750
+Fort Wayne Community Schools,IN,Andy Teipen,District-Public,2024-06-01,2024-06-01,1803630
+Danville Community School Corporation,IN,Andy Teipen,District-Public,2024-07-01,2024-06-01,1802550
+Danville Community School Corporation,IN,Andy Teipen,District-Public,2024-07-01,2024-07-01,1802550
+Center Grove Community Schools,IN,Andy Teipen,District-Public,2023-12-01,2024-03-01,1801440
+Monroe County Community School,IN,Andy Teipen,District-Public,2024-04-01,2024-03-01,1800630
+Indiana Math & Science Academy North,IN,Andy Teipen,District-Charter,2024-04-01,2024-04-01,1800067
+National Heritage Academies,MI,Andy Teipen,District-Public,2024-01-01,2024-03-01,1800042
+Rockridge Community Unit School District 300,IL,Andy Teipen,District-Public,2024-05-01,2024-05-01,1734440
+Riverton Community Unit School District 14,IL,Andy Teipen,District-Public,2024-06-01,2024-06-01,1734100
+Herscher Community Unit School District #2,IL,Andy Teipen,District-Public,2024-05-01,2024-05-01,1718840
+Grayslake CCSD 46,IL,Andy Teipen,District-Public,2023-11-01,2024-03-01,1717520
+Evanston Skokie CCSD 65,IL,Andy Teipen,District-Public,2024-06-01,2024-06-01,1714460
+Effingham Community Unit School District 40,IL,Andy Teipen,District-Public,2024-03-01,2024-03-01,1713560
+Carlinville CUSD#1,IL,Andy Teipen,District-Public,2024-02-01,2024-03-01,1708430
+Calvary Academy,IL,Andy Teipen,District-Private,2024-02-01,2024-03-01,1647828
+Pocatello Chubbuck School District #25,ID,Carrie Morrison,District-Public,2024-03-01,2024-03-01,1602640
+Lewiston Independent School District #1,ID,Carrie Morrison,District-Public,2024-05-01,2024-05-01,1601860
+Caldwell School District,ID,Carrie Morrison,District-Public,2024-05-01,2024-05-01,1600510
+Blaine County School District,ID,Carrie Morrison,District-Public,2024-05-01,2024-05-01,1600300
+American Falls School District,ID,Carrie Morrison,District-Public,2024-05-01,2024-05-01,1600060
+Hawaii State Department of Education,HI,Carrie Morrison,District-Public,2024-02-01,2024-03-01,1500030
+Twiggs County School District,GA,Tonya Davis,District-Public,2024-03-01,2024-03-01,1305220
+Newton County Schools,GA,Tonya Davis,District-Public,2024-03-01,2024-03-01,1303930
+Jeff Davis County School District,GA,Tonya Davis,District-Public,2024-03-01,2024-03-01,1303000
+Effingham County School District,GA,Tonya Davis,District-Public,2024-04-01,2024-04-01,1301980
+Decatur County School District,GA,Tonya Davis,District-Public,2024-03-01,2024-03-01,1301710
+City Schools of Decatur,GA,Tonya Davis,District-Public,2024-04-01,2024-04-01,1301680
+Clinch County School District,GA,Tonya Davis,District-Public,2024-03-01,2024-03-01,1301260
+St. Johns County School District,FL,Tonya Davis,District-Public,2024-05-01,2024-05-01,1201740
+Orange County Public Schools,FL,Caison Bridger,District-Public,2024-04-01,2024-04-01,1201440
+Duval County Public Schools,FL,Tonya Davis,District-Public,2024-04-01,2024-04-01,1200480
+Brandywine School District,DE,Caison Bridger,District-Public,2024-03-01,2024-03-01,1001240
+Wallingford School District,CT,Caison Bridger,District-Public,2024-04-01,2024-04-01,904740
+New Canaan Public Schools,CT,Caison Bridger,District-Public,2024-06-01,2024-06-01,902700
+New Britain School District,CT,Caison Bridger,District-Public,2024-01-01,2024-03-01,902670
+Bethel School District,CT,Caison Bridger,District-Public,2024-04-01,2024-04-01,900270
+Berlin Public Schools,CT,Caison Bridger,District-Public,2024-04-01,2024-04-01,900210
+St Joseph High School,NJ,Caison Bridger,District-Religious,2024-03-01,2024-03-01,867902
+Telluride School District No. R-1,CO,Carrie Morrison,District-Public,2024-09-01,2024-08-01,806870
+Pueblo School District 60,CO,Carrie Morrison,District-Public,2024-01-01,2024-03-01,806120
+Denver Public Schools,CO,Carrie Morrison,District-Public,2024-03-01,2024-03-01,803360
+Trinity County Office of Education,CA,Nikki Navta,District-Public,2024-02-01,2024-03-01,691044
+Sacramento County Office of Education,CA,Nikki Navta,Regional Partner,2024-02-01,2024-03-01,691027
+Stanislaus County Office of Education,CA,Nikki Navta,District-Public,2024-03-01,2024-03-01,637950
+Shasta Union High School District,CA,Nikki Navta,District-Public,2023-11-01,2024-03-01,636600
+San Bernardino City Unified School District,CA,Nikki Navta,District-Public,2024-06-01,2024-06-01,634170
+Riverside Unified School District,CA,Nikki Navta,District-Public,2024-05-01,2024-05-01,633150
+Piedmont Unified School District,CA,Nikki Navta,District-Public,2023-12-01,2024-03-01,630330
+Monterey Peninsula Unified School District,CA,Nikki Navta,District-Public,2024-05-01,2024-05-01,625530
+Montebello Unified School District,CA,Nikki Navta,District-Public,2024-05-01,2024-05-01,625470
+Los Gatos Union School District,CA,Nikki Navta,District-Public,2024-04-01,2024-04-01,622830
+Los Angeles Unified School District,CA,Nikki Navta,District-Public,2024-06-01,2024-06-01,622710
+Garden Grove Unified School District,CA,Nikki Navta,District-Public,2024-01-01,2024-03-01,614880
+Fort Bragg Unified School District,CA,Nikki Navta,District-Public,2024-01-01,2024-03-01,614070
+Corona-Norco Unified School District,CA,Nikki Navta,District-Public,2024-07-01,2024-07-01,609850
+Clovis Unified School District,CA,Nikki Navta,District-Public,2024-02-01,2024-03-01,609030
+Alta Loma School District,CA,Nikki Navta,District-Public,2024-05-01,2024-05-01,602160
+Bald Knob School District,AR,Tonya Davis,District-Public,2024-05-01,2024-05-01,502700
+Newport Special School District,AR,Tonya Davis,District-Public,2024-04-01,2024-04-01,500023
+Whiteriver Unified School District,AZ,Carrie Morrison,District-Public,2024-04-01,2024-04-01,409160
+Deer Valley Unified School District,AZ,Carrie Morrison,District-Public,2024-02-01,2024-03-01,407750
+Scottsdale Unified School District,AZ,Carrie Morrison,District-Public,2024-05-01,2024-05-01,407570
+Paradise Valley Unified School District,AZ,Carrie Morrison,District-Public,2023-11-01,2024-03-01,405930
+Balsz Elementary School District,AZ,Carrie Morrison,District-Public,2024-04-01,2024-04-01,401050
+Yukon Flats School District,AK,Carrie Morrison,District-Public,2024-02-01,2024-03-01,200775
+Matanuska-Susitna Borough School District,AK,Carrie Morrison,District-Public,2024-04-01,2024-04-01,200510
+Kenai Peninsula Borough School District,AK,Carrie Morrison,District-Public,2024-03-01,2024-03-01,200390
+Hydaburg City School District,AK,Carrie Morrison,District-Public,2024-03-01,2024-03-01,200330
+Sitka School District,AK,Carrie Morrison,District-Public,2024-04-01,2024-04-01,200240
+Galena City School District,AK,Carrie Morrison,District-Public,2024-05-01,2024-05-01,200130
+Montgomery Public Schools,AL,Tonya Davis,District-Public,2023-11-01,2024-03-01,102430

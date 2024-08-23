@@ -2,19 +2,20 @@ version: 2
 
 models: 
   - name: dim_users 
-    description: 1 row per user + user_geos + user pii
+    description: |
+      One row per user + user_geos + user pii. 
 
     columns: 
       - name: user_id
         description: UID for each user
-        tests: 
+        data_tests: 
           - not_null
 
       # - name: user_type
       #   description: student or teacher if NULL = fail
       #       # - accepted_values:
       #       #     values: ['teacher','student']
-      #   tests: 
+      #   data_tests: 
       #       - not_null
 
       - name: us_state
@@ -46,38 +47,54 @@ models:
         tags: 
           - contains_pii
 
+      - name: cap_status
+        description: child account policy tag; only relevant for students (options are 'grace period', 'locked_out', 'permission_granted')
+          
+      - name: cap_status_date
+        description: child account policy tag; 
+
+    config:
+      tags: ['released']
+
   # - name: dim_user_surveys
   #   description: modeling survey data 
   #   columns: 
   #     - name: user_id 
-  #       tests: 
+  #       data_tests: 
   #         - not_null
   #     - name: section_id 
-  #       tests: 
+  #       data_tests: 
   #         - not_null
 
   - name: dim_user_levels 
-    description: replaces int_user_levels with a few more columns
+    description: |
+      Adds more columns to the base user_levels table. 
     columns:
     - name: user_id
       description: the unique user ID associated with the activity
-      tests:
+      data_tests:
         - not_null
     
   - name: dim_user_course_activity
-    description: This model is a log of all student- and teacher-course activity within a school year.
+    description: |
+      This model is a log of all student- and teacher-course activity within a school year.   
+
+      Grain: user_id, school_year, course_name
     columns:
+    - name: user_id
+      description: unique ID for teacher or student
+
     - name: user_type
       description: student or teacher
     
     - name: school_year
       description: the school year in which the course activity was in
-      tests:
+      data_tests:
         - not_null 
         
     - name: course_name
       description: the course associated with the individual user's activity in a given school year
-      tests: 
+      data_tests: 
         - not_null 
     
     - name: us_intl
@@ -91,3 +108,6 @@ models:
     
     - name: last_activity_at 
       description: timestamp of the student's latest activity within the given course and school year
+  
+    config:
+      tags: ['released']

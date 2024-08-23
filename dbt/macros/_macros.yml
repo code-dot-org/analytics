@@ -3,31 +3,252 @@ version: 2
 macros:
   - name: active_status_label
     description: >
-      This macro is an attempt to engage in some DRY practice - to remove repeticious hard-coded labels for school, teacher, etc. activity. We have a method for determining whether a school, teacher, section is "active" (see: dim_school_status.) The method produces a 3-digit binary code. The key is below. This method is used in several locations where a label e.g. "active new" is applided. These 3 values can be combined into an ordered 3-char string representing the concatenated true/false combinations for Active|Prev|Ever. (e.g. "101" means the schools is 1. Active, 2. Was not active last year) therefore, we label it as "Active - Reacquired."
-
-  - name: pad_school_id
-    description: >
-      This macro adjusts for known data quality issue where a `school_id` can be 11 or 12 characters in length.
+      This macro is an attempt to engage in some DRY practice - to remove repetitious hard-coded labels for school, teacher, etc. activity. We have a method for determining whether a school, teacher, section is "active" (see: dim_school_status.) The method produces a 3-digit binary code. The key is below. This method is used in several locations where a label e.g. "active new" is applided. These 3 values can be combined into an ordered 3-char string representing the concatenated true/false combinations for Active|Prev|Ever. (e.g. "101" means the schools is 1. Active, 2. Was not active last year) therefore, we label it as "Active - Reacquired."
+    docs:
+      show: false
 
   - name: us_intl_label
     description: Quick and handy way to convert is_international to a reporting label.
+    docs:
+      show: false
 
+  - name: ap_norm_exam_subject
+    description: |
+      Normalizes the AP exam names to a consistent format.
+      
+      **Inputs:**
+      - 'csa', 'Computer Sci A', 'COMSCA'
+      - 'csp', 'Computer Sci Prin', 'COMSCP'
+      - 'sum_csa_csp'
 
-# template from chatgpt
+      **Outputs:**
+      - 'csa'
+      - 'csp'
+      - 'sum_csa_csp'
 
-# version: 2
-# macros:
-#   - name: ""
-#     description: >
-#     arguments:
-#       - name: argument_name
-#         type: argument_type
-#         description: >
-#           A description of the argument, including what it represents, valid
-#           values, and default value if applicable.
+      If an input value isn't recognized, it returns a string with the format: 'UNEXPECTED exam_name: <input_value>. SEE macro - ap_norm_exam_subject'.
 
-#     examples:
-#       - name: Example Usage
-#         description: A brief description of the example.
-#         code: |
-#           {{ macro_name(argument='value') }}
+      **Return**: Returns a normalized exam name (`csa`, `csp`, or `sum_csa_csp`).
+    arguments:
+      - name: exam_name
+        description: The name of the exam to be normalized.
+
+  - name: ap_split_column
+    description: |
+      Splits a demographic score group column into two fields: `demographic_group_raw` and `score_category_raw`.
+
+      **Return**: Returns two new fields: `demographic_group_raw` and `score_category_raw`.
+    arguments:
+      - name: orig_col_name
+        description: The original column name containing demographic and score group data.
+
+  - name: ap_norm_demographic_group
+    description: |
+      Normalizes raw demographic group values and categorizes them into a demographic group and category.
+      
+      **Inputs:**
+      - 'bl', 'black', 'black_african_american'
+      - 'hi', 'hispanic', 'hispanic_latino'
+      - 'as', 'asian', 'asian_asian_american'
+      - 'am', 'american_indian_alaska_native', 'american_indian', 'amind'
+      - 'wh', 'white'
+      - 'hp', 'native_hawaiian_other_pacific_islander', 'pacific_islander', 'nhpi'
+      - 'tr', 'two_or_more_races', 'twomore'
+      - 'other', 'other_race_ethnicity', 'other_race'
+      - 'race_ethnicity_no_response', 'race_no_response', 'no_response'
+      - 'other_gender', 'gender_another'
+      - 'overall', 'total'
+      
+      **Outputs:**
+      - 'black'
+      - 'hispanic'
+      - 'asian'
+      - 'american_indian'
+      - 'white'
+      - 'hawaiian'
+      - 'two_or_more'
+      - 'other_race'
+      - 'race_no_response'
+      - 'other_gender'
+      - 'total'
+
+      If an input value isn't recognized, it returns the raw input value and fails loudly when processed by the next case-when statement.
+
+      **Return**: Returns two new columns: `demographic_group` and `demographic_category`.
+    arguments:
+      - name: demographic_group_raw
+        description: The raw demographic group value.
+
+  - name: ap_norm_score_category
+    description: |
+      Categorizes the score category (detail or total) and extracts the score value.
+      
+      **Inputs:**
+      - '1', '2', '3', '4', '5'
+      - 'total', 'all'
+      
+      **Outputs:**
+      - 'detail'
+      - 'total'
+
+      If an input value isn't recognized, it returns a string with the format: 'UNEXPECTED input: <input_value>. SEE macro - ap_norm_score_category'. If an unrecognized category is encountered, it returns: 'UNEXPECTED category: <category_value>. SEE macro - ap_norm_score_category'.
+
+      **Return**: Returns two new columns: `score_category` and `score_of`.
+    arguments:
+      - name: score_category_input
+        description: The input score category.
+
+  - name: ap_norm_exam_group
+    description: |
+      Normalizes the names of aggregated AP score reports.
+      
+      **Inputs:**
+      - 'cdo_audit'
+      - 'national'
+      - 'csa pd all time', 'csa_all_time_pd'
+      - 'csp pd all time', 'csp_all_time_pd'
+      - 'csp_users', 'csa_users'
+      - 'csp_users_and_audit', 'csp_ballmer'
+      - 'csa_ballmer'
+      - '2019_and_2020_AFE', '2019_AFE', '2020_AFE'
+      - 'csp_users_afe', 'csa_users_afe'
+      - 'csp pd per year'
+      - 'pd_2016', 'pd_2017', 'pd_2018', 'pd_2019', 'pd_2020'
+      - 'rp per year', 'rp all time'
+
+      **Outputs:**
+      - The corresponding normalized exam group names
+
+      If an input value isn't recognized, it returns a string with the format: 'UNEXPECTED exam_group: <input_value>. SEE macro - ap_norm_exam_group'.
+
+      **Return**: Returns a normalized exam group name or an error message for unexpected values.
+    arguments:
+      - name: exam_group
+        description: The name of the exam group to be normalized.
+
+  - name: ap_extract_n_schools_from_aggregate
+    description: |
+      Extracts the number of schools from the aggregate school name with specified assumptions.
+      
+      **Assumptions:**
+      1. The school_name fits the pattern "%LESS%THAN%10%AGG%"
+      2. There is an '=' sign in the school_name
+      3. There is an integer somewhere after the '=' sign
+
+      **Return**: Returns an integer representing the number of schools.
+    arguments:
+      - name: school_name
+        description: The name of the school containing the number of schools.
+
+  - name: unpivot_big_table
+    description: |
+      This macro dynamically generates SQL for a Redshift UNPIVOT command. It is especially useful for reshaping a very wide table (e.g., AP exam results with 89 columns) from wide to long format. 
+      Redshift's UNPIVOT command requires listing all columns by name, which can be tedious. This macro lists all column names as strings dynamically for you.
+
+      The macro returns an SQL SELECT statement to UNPIVOT data from a specified table with a specified number of fixed columns. The result of running the SQL will turn all columns from the UNPIVOT into pairs of 'orig_col_name' and 'orig_value'.
+
+      **Example:**
+
+      Given the table:
+
+      | exam_year | exam_group | exam  | total_1 | total_2 | total_3 | total_4 | total_5 | total_all |
+      |-----------|-------------|-------|---------|---------|---------|---------|---------|-----------|
+      | 2023      | national    | COMSCA| 19667   | 8202    | 15751   | 18919   | 22086   | 84625     |
+      | 2023      | national    | COMSCP| 26425   | 32706   | 49211   | 32411   | 17802   | 158555    |
+
+      Calling the macro with 3 fixed columns:
+      ```sql
+      unpivot_big_table('your_table_name', 3)
+      ```
+
+      Transforms it into:
+
+      | exam_year | exam_group | exam  | orig_col_name | orig_value |
+      |-----------|-------------|-------|---------------|------------|
+      | 2023      | national    | COMSCA| total_1       | 19667      |
+      | 2023      | national    | COMSCA| total_2       | 8202       |
+      | 2023      | national    | COMSCA| total_3       | 15751      |
+      | 2023      | national    | COMSCA| total_4       | 18919      |
+      | 2023      | national    | COMSCA| total_5       | 22086      |
+      | 2023      | national    | COMSCA| total_all     | 84625      |
+      | 2023      | national    | COMSCP| total_1       | 26425      |
+      | 2023      | national    | COMSCP| total_2       | 32706      |
+      | 2023      | national    | COMSCP| total_3       | 49211      |
+      | 2023      | national    | COMSCP| total_4       | 32411      |
+      | 2023      | national    | COMSCP| total_5       | 17802      |
+      | 2023      | national    | COMSCP| total_all     | 158555     |
+
+      **Return**: Returns an SQL SELECT statement that unpivots the data from the specified table, keeping the specified number of left-most columns fixed and turning the remaining columns into key-value pairs of 'orig_col_name' and 'orig_value'.  For the example above here is what it generates.
+      ```sql
+      select 
+          "exam_year", 
+          "exam_group", 
+          "exam", 
+          orig_col_name, 
+          orig_value
+      from(
+          select 
+              "exam_year", 
+              "exam_group", 
+              "exam", 
+              "total_1",
+              "total_2",
+              "total_3",
+              "total_4",
+              "total_5",
+              "total_all"
+          from  ref('your_table_name') 
+      ) as sourcetable
+      unpivot (orig_value for orig_col_name in ("total_1", "total_2", "total_3", "total_4", "total_5", "total_all"))
+      ```
+
+    arguments:
+      - name: table_name_ref
+        description: A string reference to the table to be unpivoted. The macro uses DBT's ref function to reference the table.
+      - name: num_fixed_columns
+        description: An integer representing the number of left-most columns in the table that should remain fixed while the remaining columns are unpivoted into key-value pairs with column names 'orig_col_name' and 'orig_value'.
+
+  - name: pad_school_id
+    description: |
+      This macro adjusts for known data quality issues where a `school_id` can be either 11 or 12 characters in length. If the `school_id` is 11 characters long, it pads the ID to 12 characters by adding a leading zero.
+
+      **Inputs:**
+      - `school_id` with length 11 or 12 characters
+
+      **Outputs:**
+      - A `school_id` padded to 12 characters if it was originally 11 characters long. Otherwise, it returns the original `school_id`.
+
+      **Return**: Returns a padded `school_id` if the length is 11, otherwise returns the original `school_id`.
+    arguments:
+      - name: school_id
+        description: The school ID to be padded.
+
+  - name: pad_ai_code
+    description: |
+      This macro adjusts for known data quality issues where an `ai_code` can be less than 6 characters in length. If the `ai_code` is less than 6 characters long, it pads the code to 6 characters by adding leading zeros.
+
+      **Inputs:**
+      - `ai_code` with length less than 6 or 6 characters
+
+      **Outputs:**
+      - An `ai_code` padded to 6 characters if it was originally less than 6 characters long. Otherwise, it returns the original `ai_code`.
+
+      **Return**: Returns a padded `ai_code` if the length is less than 6, otherwise returns the original `ai_code`.
+    arguments:
+      - name: ai_code
+        description: The AI code to be padded.
+
+  - name: pad_zipcode
+    description: |
+      This macro adjusts for known data quality issues where a `zip` code can be less than 5 characters in length. If the `zip` code is less than 5 characters long, it pads the code to 5 characters by adding leading zeros.
+
+      **Inputs:**
+      - `zip` code with length less than 5 or 5 characters
+
+      **Outputs:**
+      - A `zip` code padded to 5 characters if it was originally less than 5 characters long. Otherwise, it returns the original `zip` code.
+
+      **Return**: Returns a padded `zip` code if the length is less than 5, otherwise returns the original `zip` code.
+    arguments:
+      - name: zip
+        description: The ZIP code to be padded.

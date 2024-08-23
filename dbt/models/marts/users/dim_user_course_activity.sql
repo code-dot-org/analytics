@@ -40,7 +40,7 @@ user_levels as (
 
 course_structure as (
     select  
-        course_name_true, 
+        course_name, 
         level_id, 
         script_id 
     from {{ ref('dim_course_structure') }}
@@ -63,7 +63,7 @@ combined as (
         sy.school_year,
         u.us_intl,
         u.country,
-        cs.course_name_true                     as course_name,  
+        cs.course_name,
         min(ul.created_at)                      as first_activity_at,
 		max(ul.created_at)                      as last_activity_at
 

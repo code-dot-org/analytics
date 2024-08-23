@@ -6,108 +6,113 @@ models:
   #   columns:
   #     - name: course_script_id
   #       description: unique id for each course and script combination
-  #       tests: 
+  #       data_tests: 
   #         - unique
   #         - not_null
   #     - name: course_id 
   #       description: unique id for each course
-  #       tests: 
+  #       data_tests: 
   #         - not_null
   #     - name: script_id 
   #       description: unique id for each script
-  #       tests: 
+  #       data_tests: 
   #         - not_null
         
   - name: stg_dashboard__followers
-    description: staging model for followers source data
+    description: |
+      Staging model for followers source data.
     columns: 
       - name: follower_id
         description: unique id for table
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: student_id
         description: fk for individual student user
-        tests:
+        data_tests:
           - not_null
       # - name: section_id
       #   description: fk for follower section
-      #   tests:
+      #   data_tests:
       #     - not_null 
 
   - name: stg_dashboard__level_concept_difficulties
     description: staging model for ""
 
   - name: stg_dashboard__user_proficiencies
-    description: staging model for ""
+    description: |
+      Staging model for ""
 
 
   - name: stg_dashboard__sections
-    description: staging model for `sections` source data
+    description: |
+      Staging model for `sections` source data
     columns: 
       - name: section_id 
         description: unique id for each section
-        tests: 
+        data_tests: 
           - not_null
           - unique
           
   - name: stg_dashboard__section_instructors
-    description: coteacher data 
+    description: |
+      Coteacher data 
     columns: 
       - name: instructor_id
         description: coteacher id
-        tests:
+        data_tests:
           - not_null
       - name: section_id 
         description: ""
-        tests:
+        data_tests:
           - not_null
 
   - name: stg_dashboard__schools 
-    description: staging model for core school data, where len(school_id)=11 we are applying a LPAD to maintain school length convention
+    description: |
+      Staging model for core school data, where len(school_id)=11 we are applying a LPAD to maintain school length convention
     columns:
       - name: school_id 
-        tests: 
+        data_tests: 
           - unique
           - not_null        
 
   - name: stg_dashboard__school_stats_by_years
-    description: staging model for `school_stats_by_years` source data
-    tests:
+    description: |
+      Staging model for `school_stats_by_years` source data
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - school_id
             - school_year
     columns: 
       - name: school_id
-        tests:
+        data_tests:
           - not_null
 
   - name: stg_dashboard__users
-    description: staging model for `users` table from scource data
+    description: |
+      Staging model for `users` table from scource data
     columns: 
       - name: user_type
         description: the type of acount the user created. value is either 'student' or 'teacher'
-        tests:
+        data_tests:
             - not_null 
       
       - name: user_id
         description: the unique id for this user
-        tests:
+        data_tests:
           - not_null
           - unique
       
       - name: birthday
         description: an inexact date of birth for the user, calcuated as the date of account creation X years prior based on user reporting that their age is X.
       
-      - name: age_in_years
-        description: a calculation based on `birthday` to be how many years old the user is today. note - max age is 22.
-
   - name: stg_dashboard__user_levels
-    description: staging model for `user_levels` source data
+    description: |
+      Staging model for `user_levels` source data
     columns: 
       - name: user_level_id
         description: unique id for for each user at each level
-        tests:
+        data_tests:
           - unique
           - not_null

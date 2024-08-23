@@ -1,0 +1,90 @@
+name: Generate DBT Docs
+
+on:
+  push:
+    branches: [ "main" ]
+  # allows manual running
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' 
+
+      - name: Install dbt
+        run: python -m pip install dbt-core dbt-redshift
+
+      - name: Set up dbt profile
+        run: |
+          mkdir -p ~/.dbt
+          echo "
+          cdo_redshift:
+            target: dev
+            outputs:
+              dev:
+                type: redshift
+                host: \"${{ secrets.DBT_HOST }}\"
+                user: \"${{ secrets.DBT_USER }}\"
+                password: \"${{ secrets.DBT_PASSWORD }}\"
+                port: 5439
+                dbname: dev
+                schema: \"${{ secrets.DBT_DB_SCHEMA }}\"
+                sslmode: disable
+                threads: 16
+                ra3_node: true # see https://github.com/dbt-labs/dbt-redshift/issues/281#issuecomment-1407131697
+          " > ~/.dbt/profiles.yml
+
+      - name: Install dbt dependencies
+        working-directory: ./dbt
+        run: dbt deps
+
+      - name: Generate dbt docs
+        working-directory: ./dbt
+        run: dbt docs generate
+
+      - name: Hide unnecessary parts of docs
+        run: python .github/hide_docs.py
+
+      - name: Add custom styling
+        working-directory: ./dbt/target
+        run: |
+          echo "
+          .logo {
+            background-image: url(https://code.org/images/logo.svg);
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-size: contain;
+          }
+          img.logo {
+            display: none;
+          }
+          " > styling.css
+          sed -i 's|<head>|<head><link rel="stylesheet" type="text/css" href="styling.css" />|g' index.html
+          sed -i 's|<title>dbt Docs</title>|<title>Code.org dbt Docs</title>|g' index.html
+          sed -i "s|\${require('./assets/favicons/favicon.ico')}|https://code.org/images/logo.svg|g" index.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dbt/target
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: generate
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

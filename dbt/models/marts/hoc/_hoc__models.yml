@@ -1,0 +1,79 @@
+version: 2
+
+models:
+  - name: fct_hoc_activity
+    description: |
+      commonly tracked hoc metrics by month, school year, and country
+
+    columns:
+      - name: month
+      - name: school_year
+      - name: country
+        description: the country associated with the user's location
+      - name: total_new_teacher_accounts
+        description: the number of new teacher accounts created in the given month
+      - name: total_new_student_accounts
+        description: the number of new student accounts created in the given month
+      - name: total_event_registrations
+        description: the number of HoC events registered in the given month
+      - name: total_hoc_hits
+        description: the number of times an HoC activity was accessed 
+  
+  - name: dim_hoc_starts
+    description: |
+      this model contains 1 row for every URL hit of an HoC activity, regardless of whether the user was signed in or the user was on a 3rd party site.   
+          
+      note-- if you'd like to explore only signed-in hoc usage, you can use use dim_student_script_level_activity
+
+    columns:
+      - name: hoc_start_id
+        data_tests: 
+          - not_null
+          - unique
+      - name: started_at
+        description: the timestamp for the URL hit  
+      - name: cal_year
+        description: the calendar year associated with the HoC activity    
+      - name: school_year
+        description: the school year associated with the HoC activity 
+      - name: referer 
+      - name: company 
+      - name: tutorial
+      - name: is_third_party
+        description: 1 if the URL hit was from a third party site with pixel tracking, 0 otherwise
+      - name: city
+        description: the city associated with the user's location
+      - name: country 
+        description: the country associated with the user's location
+      - name: state
+        description: the state associated with the user's location
+      - name: country_code
+      - name: state_code
+    config:
+      tags: ['released']
+ 
+  - name: dim_hoc_event_registrations 
+    description: this model has 1 row for every HoC event registered via our form. 
+    columns: 
+      - name: form_id
+        data_tests:
+          - unique
+          - not_null
+      - name: form_kind
+      - name: email
+        description: the email associated with the person registering the event
+      - name: cal_year
+        description: the calendar year associated with the HoC year they are registering for
+      - name: school_year 
+        description: the school year associated with the HoC year they are registering for
+      - name: registered_at 
+        description: timestamp of when the registration form was submitted 
+      - name: event_type
+      - name: email_pref
+      - name: special_event_flag
+      - name: review
+      - name: city
+      - name: state
+      - name: country
+    config:
+      tags: ['released']
