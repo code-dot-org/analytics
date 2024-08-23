@@ -1,14 +1,14 @@
 {{
     config(
         materialized='incremental',
-        unique_key='hoc_activity_id'
+        unique_key='hoc_start_id'
     )
 }}
 
 with
-hoc_activity as (
+hoc_starts as (
     select
-        hoc_activity_id,
+        hoc_start_id,
         referer,
         company,
         tutorial,
@@ -28,5 +28,5 @@ hoc_activity as (
 )
 
 select *
-from hoc_activity
+from hoc_starts
 
