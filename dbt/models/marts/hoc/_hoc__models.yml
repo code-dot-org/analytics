@@ -21,9 +21,9 @@ models:
   
   - name: dim_hoc_activity
     description: |
-      this model contains 1 row for every URL hit of an HoC activity, regardless of whether the user was signed in   
+      this model contains 1 row for every URL hit of an HoC activity, regardless of whether the user was signed in or the user was on a 3rd party site.   
           
-      note-- if you'd like to explore signed-in hoc usage, you can use use dim_student_script_level_activity
+      note-- if you'd like to explore only signed-in hoc usage, you can use use dim_student_script_level_activity
 
     columns:
       - name: hoc_activity_id
@@ -49,8 +49,8 @@ models:
         description: the state associated with the user's location
       - name: country_code
       - name: state_code
-    # config:
-    #   tags: ['released']
+    config:
+      tags: ['released']
  
   - name: dim_hoc_event_registrations 
     description: this model has 1 row for every HoC event registered via our form. 
