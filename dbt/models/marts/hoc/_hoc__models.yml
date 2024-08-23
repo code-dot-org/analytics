@@ -19,14 +19,14 @@ models:
       - name: total_hoc_hits
         description: the number of times an HoC activity was accessed 
   
-  - name: dim_hoc_activity
+  - name: dim_hoc_starts
     description: |
       this model contains 1 row for every URL hit of an HoC activity, regardless of whether the user was signed in or the user was on a 3rd party site.   
           
       note-- if you'd like to explore only signed-in hoc usage, you can use use dim_student_script_level_activity
 
     columns:
-      - name: hoc_activity_id
+      - name: hoc_start_id
         data_tests: 
           - not_null
           - unique
