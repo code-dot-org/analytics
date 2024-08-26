@@ -23,7 +23,9 @@ with cutoff_date as (
         num_user_level_records  as num_records
 
     from {{ref("int_daily_summary_user_level_activity")}} ul
-    where ul.activity_date >= (select cutoff_date from cutoff_date limit 1) 
+    where ul.activity_date >= (select cutoff_date from cutoff_date limit 1) and
+    (ul.course_list LIKE '%csf%' or ul.course_list LIKE '%csd%' or ul.course_list LIKE '%csp%' or ul.course_list LIKE '%csa%' or ul.course_list LIKE '%csc%')
+    
 )
 , sign_in_summary as (
     select 
