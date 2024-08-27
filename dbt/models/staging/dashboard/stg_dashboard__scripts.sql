@@ -28,7 +28,7 @@ renamed as (
                     properties, 
                     'curriculum_umbrella',
                 true))
-        end as course_name_true,
+        end as course_name,
         
         json_extract_path_text(
             properties, 

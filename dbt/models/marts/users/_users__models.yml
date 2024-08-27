@@ -46,6 +46,13 @@ models:
         description: gender categorization column
         tags: 
           - contains_pii
+
+      - name: cap_status
+        description: child account policy tag; only relevant for students (options are 'grace period', 'locked_out', 'permission_granted')
+          
+      - name: cap_status_date
+        description: child account policy tag; 
+
     config:
       tags: ['released']
 

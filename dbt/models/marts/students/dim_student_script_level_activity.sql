@@ -67,7 +67,7 @@ select
     , cs.level_name                                                 as level_name
     , cs.level_type                                                 as level_type
     , cs.unit                                                       as unit_name
-    , cs.course_name_true                                           as course_name
+    , cs.course_name
     , cs.stage_name                                                 as lesson_name
 
     -- section/teacher characteristics
