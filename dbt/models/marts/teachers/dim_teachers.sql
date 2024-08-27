@@ -39,8 +39,7 @@ teacher_schools as (
 --excludes student_id, cap_status, and cap_status_date from dim_users
 final as (
     select 
-        teachers.user_id,
-        teachers.teacher_id,
+        teachers.user_id                                as teacher_id,
         ts.school_id,
         teachers.user_type,
         teachers.studio_person_id,
