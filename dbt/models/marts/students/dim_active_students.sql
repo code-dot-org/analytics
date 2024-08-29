@@ -8,6 +8,8 @@
     2) These might be able to leverage DBT's incremental modeling
 
     I have used a cutoff date of anything after 2022-07-01, the start of the 22-23 school year.
+
+    CK: Note that this model also includes HOC only user levels at this time
 */
 
 with cutoff_date as (
@@ -23,9 +25,7 @@ with cutoff_date as (
         num_user_level_records  as num_records
 
     from {{ref("int_daily_summary_user_level_activity")}} ul
-    where ul.activity_date >= (select cutoff_date from cutoff_date limit 1) and
-    (ul.course_list LIKE '%csf%' or ul.course_list LIKE '%csd%' or ul.course_list LIKE '%csp%' or ul.course_list LIKE '%csa%' or ul.course_list LIKE '%csc%')
-    
+    where ul.activity_date >= (select cutoff_date from cutoff_date limit 1)    
 )
 , sign_in_summary as (
     select 
