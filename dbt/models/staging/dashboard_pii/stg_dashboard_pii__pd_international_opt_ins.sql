@@ -41,16 +41,13 @@ final as (
                     'cs fundamentals (courses a-f)'
                     , 'csf_af'
                     , 'fundamentos de ciencias de la computación (cursos a-f)'
-                    , 'fundamentos de ciencias de la computación. (curso a-f)')
-                then 'csf'
-            when 
-                lower(json_extract_path_text(form_data, 'workshopCourse')) in (
-                    'cs fundamentals (pre-express or express)'
+                    , 'fundamentos de ciencias de la computación. (curso a-f)'
+                    , 'cs fundamentals (pre-express or express)'
                     , 'csf_express'
                     , 'fundamentos de ciencias de la computacion (express o pre-express)'
                     , 'fundamentos de ciencias de la computación (pre-express o express)'
                     , 'fundamentos de cs (pre-express o express)')
-                then 'csf express'
+                then 'csf'
             when 
                 lower(json_extract_path_text(form_data, 'workshopCourse')) in (
                     'cs principles'
