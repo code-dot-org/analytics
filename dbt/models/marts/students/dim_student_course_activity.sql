@@ -14,8 +14,6 @@ user_levels as (
     We can also roll through our aggregates and other calculations so as to not do them each time in some larger downstream query...
 */
     select 
-        -- keys 
-        
         user_id as student_id, 
         -- If it's a student model, let's maintain prior conventions
         
@@ -31,13 +29,14 @@ user_levels as (
         max(best_result)    as best_result,
         sum(time_spent)     as time_spent_minutes
     from {{ ref('stg_dashboard__user_levels') }}
-    {{ dbt_utils.group_by(3) }}
+    {{ dbt_utils.group_by(5) }}
 ), 
 
 course_structure as (
     select
         course_name,
         course_id,
+        script_id,
         level_id,
         level_name,
         level_type,
@@ -57,7 +56,7 @@ school_years as (
 student_activity as (
     select 
         ul.* ,
-        sy.school_year
+        sy.school_year,
 
         -- calc for qtr 
         case 
@@ -78,9 +77,9 @@ student_activity as (
         on ul.level_id = cs.level_id
         and ul.script_id = cs.script_id
     join school_years as sy
-        on comb.activity_date 
-            between sy.start_date 
-                and sy.end_date
+        on ul.activity_date 
+            between sy.started_at 
+                and sy.ended_at 
 ),
 
 /* 
@@ -95,7 +94,7 @@ section_mapping as (
     select * 
     from {{ ref('int_section_mapping') }}
 
-    where student_id in (select user_id from combined)
+    where student_id in (select student_id from student_activity)
     -- Note: again, filter out anything we don't need. We need to keep the ship as light as possible.
 ),
 
@@ -104,11 +103,12 @@ section_size as (
         section_id,
         count(distinct student_id) as section_size 
     from section_mapping
+    {{ dbt_utils.group_by(1) }}
 ),
 
 sections as (
     select 
-        scm.*,
+        scm.* ,
         -- Note: I don't actually need student_activity data here, so I won't bother to load it 
     
         scz.section_size
@@ -141,7 +141,7 @@ users as (
 ),
 
 school_status as (
-    select school_id, school_year, school_status
+    select school_id, school_year, status as school_status
     from {{ ref('dim_school_status') }}
 ),
 
@@ -157,24 +157,25 @@ combined as (
         -- teachers
         sec.teacher_id, 
         tes.teacher_status,
+        
+        -- students
+        sec.student_id,
+        usr.is_international,
+        usr.country,
 
         -- schools
         sec.school_id,
-        sch.school_status,
-        sch.school_name             as school_name,
-        sch.school_district_id      as school_district_id,
-        sch.school_district_name    as school_district_name,
+        sst.school_status,
+        sch.school_name,
+        sch.school_district_id,
+        sch.school_district_name,
         sch.state                   as school_state,
-        sch.school_type             as school_type,
+        sch.school_type,
         sch.is_stage_el             as school_is_stage_el,
         sch.is_stage_mi             as school_is_stage_mi,
         sch.is_stage_hi             as school_is_stage_hi,
         sch.is_high_needs           as school_is_high_needs,
-        sch.is_rural                as school_is_rural,
-
-        usr.student_id,
-        usr.is_international,
-        usr.country
+        sch.is_rural                as school_is_rural
 
     from sections   as sec 
     
@@ -194,10 +195,9 @@ combined as (
 
 final as (
     select * 
-    from combined
-    cross join student_activity
-    using student_id, school_year
-)
+    from combined as comb 
+    left join student_activity as sta 
+        on comb.student_id = sta.student_id )
 
-select * from final 
-limit 1 
+select * 
+from final

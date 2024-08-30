@@ -182,7 +182,8 @@ models:
     config:
       tags: ['released']
 
-  - name: dim_student_script_level_activity
+# - name: dim_student_script_level_activity
+  - name: dim_student_course_activity
     description: |
       This model contains 1 row for every level/script touched by a student.    
       This model also includes important segmentations (e.g. school status at the time of activity, whether or not the student was in a section at that time, etc) 
@@ -248,16 +249,8 @@ models:
       - name: time_spent_minutes 
         description: the number of minutes the student spent on that level on the particular date
     config:
-      tags: ['released']
+      tags: ['released'] #}
 
-# - name: dim_student_status
-#   description: This model categorizes students based on their activity status across different school years. It provides insights into user engagement by assigning a status that reflects their activity in the current, previous, and any earlier school years.
-#   columns:
-#   - name: student_id
-#     description: the unique ID associated with the activity
-#   - name: school_year
-#     description: school year in which an activity status is assigned
-#   - name: status
-#     description: the activity status of a student in a given school year- active if they have attempted at least 1 level of a course
-#   - name: courses_started
-#     description: comma separated list of courses associated with the levels attemped by the student in a given school year
+  - name: dim_student_course_activity
+    description: One row per student, script/level (course), and activity date 
+    
