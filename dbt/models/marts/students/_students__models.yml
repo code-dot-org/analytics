@@ -1,73 +1,73 @@
 version: 2
 
 models:
-  - name: dim_student_projects
-    description: |
-      This model tracks all projects started on code.org. It includes additional information about the project itself, as well as other variables to make for easy segmentation for commonly asked questions. 
-    columns:
-      - name: project_id
-        description: unique ID for the project
-        data_tests:
-          - not_null 
-          - unique
-      - name: user_id
-        description: unique ID for the user, if they were signed in when completing the project
+  # - name: dim_student_projects
+  #   description: |
+  #     This model tracks all projects started on code.org. It includes additional information about the project itself, as well as other variables to make for easy segmentation for commonly asked questions. 
+  #   columns:
+  #     - name: project_id
+  #       description: unique ID for the project
+  #       data_tests:
+  #         - not_null 
+  #         - unique
+  #     - name: user_id
+  #       description: unique ID for the user, if they were signed in when completing the project
 
-      - name: is_signed_in
-        description: 1 if the user was signed in while completing the project, 0 otherwise
+  #     - name: is_signed_in
+  #       description: 1 if the user was signed in while completing the project, 0 otherwise
 
-      - name: user_type
-        description: student or teacher
+  #     - name: user_type
+  #       description: student or teacher
       
-      - name: is_published
-        description: 1 if the project was published, 0 otherwise
+  #     - name: is_published
+  #       description: 1 if the project was published, 0 otherwise
       
-      - name: project_created_at
-        description: the timestamp for when the project was first created
+  #     - name: project_created_at
+  #       description: the timestamp for when the project was first created
       
-      - name: project_updated_at
-        description: the timestamp for when the project was last updated
+  #     - name: project_updated_at
+  #       description: the timestamp for when the project was last updated
       
-      - name: project_published_at
-        description: the timestamp for when the project was published, null if not published
+  #     - name: project_published_at
+  #       description: the timestamp for when the project was published, null if not published
       
-      - name: school_year
-        description: the school year when the project was first created 
+  #     - name: school_year
+  #       description: the school year when the project was first created 
       
-      - name: cal_year
-        description: the calendar year when the project was first created 
+  #     - name: cal_year
+  #       description: the calendar year when the project was first created 
       
-      - name: country
-        description: the country associated with the signed-in user's location
+  #     - name: country
+  #       description: the country associated with the signed-in user's location
 
-      - name: intl_partner_id
-        description: the intl partner ID associated with user's country
+  #     - name: intl_partner_id
+  #       description: the intl partner ID associated with user's country
 
-      - name: intl_partner_name
-        description: the intl partner name associated with user's country
+  #     - name: intl_partner_name
+  #       description: the intl partner name associated with user's country
 
-      - name: region
-        description: the signed-in user's region
+  #     - name: region
+  #       description: the signed-in user's region
 
-      - name: is_standalone
-        description: 1 if the project was done as a standalone project, 0 if done as part of a curriculum
+  #     - name: is_standalone
+  #       description: 1 if the project was done as a standalone project, 0 if done as part of a curriculum
 
-      - name: abuse_score
-        description: the score given for reporting abuse in a project
+  #     - name: abuse_score
+  #       description: the score given for reporting abuse in a project
 
-      - name: project_type
+  #     - name: project_type
 
-      - name: is_deleted
-        description: 1 if the project has been deleted, 0 if still active
+  #     - name: is_deleted
+  #       description: 1 if the project has been deleted, 0 if still active
 
-      - name: remix_parent_id
-        description: null if not remixed
+  #     - name: remix_parent_id
+  #       description: null if not remixed
       
-      - name: is_valid 
-        description: 0 if the project is a "ghost project" with a null channel id, 1 otherwise
+  #     - name: is_valid 
+  #       description: 0 if the project is a "ghost project" with a null channel id, 1 otherwise
 
-    config:
-      tags: ['released']
+  #   config:
+  #     tags: ['released']
 
   - name: dim_active_students
     description: |
