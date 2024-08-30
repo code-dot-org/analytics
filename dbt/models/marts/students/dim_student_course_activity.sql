@@ -111,7 +111,7 @@ student_activity as (
 */
 
 section_mapping as (
-    select * 
+    select *
     from {{ ref('int_section_mapping') }}
     
     where student_id in (
@@ -181,7 +181,7 @@ combined as (
         usr.country,
 
         -- teachers
-        sec.teacher_id,
+        sec.teacher_id as section_teacher_id,
         tes.teacher_status,
         
         -- sections
