@@ -52,6 +52,7 @@ select
     , ul.level_id                                                   as level_id
     , ul.script_id                                                  as script_id
     , date_trunc('day', ul.created_at)                              as activity_date
+    , extract(year from ul.created_at)                              as cal_year
 
     -- time variables 
     --, date_trunc ('month', ul.created_at)                           as activity_month  
@@ -61,11 +62,12 @@ select
         when extract ('month' from ul.created_at) in (1,2,3) then 'Q3'
         when extract ('month' from ul.created_at) in (4,5,6) then 'Q4'
       end                                                           as school_year_quarter
-    , sy.school_year                                                as activity_school_year
+    , sy.school_year                                                as school_year
 
     -- course, script, unit, lesson, and level characteristics
     , cs.level_name                                                 as level_name
     , cs.level_type                                                 as level_type
+    , cs.script_name                                                as script_name
     , cs.unit                                                       as unit_name
     , cs.course_name
     , cs.stage_name                                                 as lesson_name
@@ -129,4 +131,4 @@ left join schools                                                   as sch
     on sm.school_id = sch.school_id  
 
 where cs.participant_audience = 'student'
-{{ dbt_utils.group_by(28) }}
+{{ dbt_utils.group_by(29) }}
