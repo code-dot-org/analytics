@@ -1,8 +1,6 @@
 -- version: 2.0 (JS)
 
-
 with 
-user_levels as (
 /*
     1. User Course Activity
     
@@ -13,9 +11,16 @@ user_levels as (
     
     We can also roll through our aggregates and other calculations so as to not do them each time in some larger downstream query...
 */
+user_levels as (
     select 
-        user_id as student_id, 
-        -- If it's a student model, let's maintain prior conventions
+        user_id,
+        
+        -- Note: 
+        --      In order to not cross-polenate too soon, this part
+        --      of the model will maintain user_id only
+        -- Optional: 
+        --      Create surrogate key for incremental load
+        --      md5 ( concat (user_id,activity_date,level_id,script_id ) as surrogate_key
         
         level_id,
         script_id,
@@ -55,27 +60,42 @@ school_years as (
 
 student_activity as (
     select 
-        ul.* ,
+        
+        ul.user_id,
+        ul.level_id,
+        ul.script_id,
+        
+        -- dates 
         sy.school_year,
+        ul.activity_date,
+        ul.activity_month,
 
-        -- calc for qtr 
+        -- Note: post-process this work now that it is looking 
+        -- for only a few values 
         case 
-            when ul.activity_month in (7,8,9)       then 'Q1'
-            when ul.activity_month in (10,11,12)    then 'Q2'
-            when ul.activity_month in (1,2,3)       then 'Q3'
-            when ul.activity_month in (4,5,6)       then 'Q4'
+            when ul.activity_month in ( 7,   8,  9 )  then 'Q1'
+            when ul.activity_month in ( 10,  11, 12 ) then 'Q2'
+            when ul.activity_month in ( 1,   2,  3 )  then 'Q3'
+            when ul.activity_month in ( 4,   5,  6 )  then 'Q4'
         end as activity_quarter, 
 
         cs.course_name,
         cs.level_name,
         cs.level_type,
         cs.unit_name,
-        cs.lesson_name
+        cs.lesson_name,
+
+        -- aggs
+        ul.total_attempts,
+        ul.best_result,
+        ul.time_spent_minutes
 
     from user_levels as ul 
+    
     left join course_structure as cs
         on ul.level_id = cs.level_id
         and ul.script_id = cs.script_id
+    
     join school_years as sy
         on ul.activity_date 
             between sy.started_at 
@@ -93,9 +113,11 @@ student_activity as (
 section_mapping as (
     select * 
     from {{ ref('int_section_mapping') }}
-
-    where student_id in (select student_id from student_activity)
-    -- Note: again, filter out anything we don't need. We need to keep the ship as light as possible.
+    
+    where student_id in (
+        select user_id 
+        from student_activity )
+        -- Note: again, filter out anything we don't need. We need to keep the ship as light as possible.
 ),
 
 section_size as (
@@ -108,16 +130,12 @@ section_size as (
 
 sections as (
     select 
-        scm.* ,
-        -- Note: I don't actually need student_activity data here, so I won't bother to load it 
-    
+        scm.*,     
         scz.section_size
+    
     from section_mapping    as scm 
     join section_size       as scz 
-        on scm.section_id = scz.section_id 
-    join student_activity   as sta 
-        on scm.student_id = sta.student_id 
-        and scm.school_year = sta.school_year
+        on scm.section_id = scz.section_id
 ),
 
 /*
@@ -152,17 +170,23 @@ teacher_status as (
 
 combined as (
     select 
-        sec.school_year, 
-        
-        -- teachers
-        sec.teacher_id, 
-        tes.teacher_status,
-        
         -- students
         sec.student_id,
+        sec.school_year,
+
+        case when sec.student_removed_at is not null 
+             then 1 else 0 end as is_removed,
+
         usr.is_international,
         usr.country,
 
+        -- teachers
+        sec.teacher_id,
+        tes.teacher_status,
+        
+        -- sections
+        sec.section_id,
+        
         -- schools
         sec.school_id,
         sst.school_status,
@@ -177,6 +201,11 @@ combined as (
         sch.is_high_needs           as school_is_high_needs,
         sch.is_rural                as school_is_rural
 
+        -- dates if need 
+
+        -- sec.student_added_at,
+        -- sec.student_removed_at,
+        
     from sections   as sec 
     
     join teacher_status as tes 
@@ -194,10 +223,32 @@ combined as (
 ),
 
 final as (
-    select * 
+    select 
+        comb.*,
+
+        -- moar dates
+        sta.activity_date,
+        sta.activity_month,
+        sta.activity_quarter, 
+        
+        -- coursework 
+        sta.level_id,
+        sta.script_id,
+        sta.course_name,
+        sta.level_name,
+        sta.level_type,
+        sta.unit_name,
+        sta.lesson_name,
+
+        -- totals
+        sta.total_attempts,
+        sta.best_result,
+        sta.time_spent_minutes
+
     from combined as comb 
     left join student_activity as sta 
-        on comb.student_id = sta.student_id )
+        on comb.student_id = sta.user_id 
+        and comb.school_year = sta.school_year )
 
 select * 
 from final
