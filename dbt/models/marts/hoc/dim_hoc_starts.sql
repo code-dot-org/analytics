@@ -11,7 +11,7 @@ school_years as (
 )
 
 select 
-    hoc_activity.hoc_activity_id
+    hoc_activity.hoc_start_id
     , hoc_activity.started_at
     , sy.school_year_int                                                as cal_year 
     , sy.school_year

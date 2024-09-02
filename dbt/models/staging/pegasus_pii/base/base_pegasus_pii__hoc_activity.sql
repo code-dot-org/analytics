@@ -6,7 +6,7 @@ source as (
 
 renamed as (
     select
-        id                                      as hoc_activity_id,
+        id                                      as hoc_start_id,
         referer,
         company,
         tutorial,

@@ -1,8 +1,8 @@
 with 
 
-hoc_activity as (
+hoc_starts as (
     select * 
-    from {{ ref('dim_hoc_activity') }}
+    from {{ ref('dim_hoc_starts') }}
 ),
 
 school_years as (
@@ -35,9 +35,9 @@ hoc_hits as (
         date_trunc('month', hoc.started_at)                                                 as hoc_month,
         hoc.school_year,
         hoc.country,
-        count(distinct hoc.hoc_activity_id)                                                 as total_hoc_hits 
+        count(distinct hoc.hoc_start_id)                                                 as total_hoc_hits 
        
-    from hoc_activity                                                                       as hoc
+    from hoc_starts                                                                      as hoc
     group by 
         hoc_month,
         hoc.school_year,
