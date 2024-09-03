@@ -23,13 +23,14 @@ student_activity as (
         student_id
         , script_id
         , script_name
+        , course_name
         , extract (year from activity_date)                     as cal_year
         , section_teacher_id
         , count(distinct level_id)                              as num_levels_attempted
     from {{ ref('dim_student_script_level_activity') }}
     where level_type != 'StandaloneVideo'
     and section_teacher_id in (select teacher_id from trained_teachers)
-    {{ dbt_utils.group_by(5) }}
+    {{ dbt_utils.group_by(6) }}
 ),
 
 final as (
@@ -41,6 +42,7 @@ final as (
         , tt.school_country
         , sa.script_id
         , sa.script_name
+        , sa.course_name
         , ls.num_levels_in_script
         , avg(sa.num_levels_attempted)                          as avg_levels_attempted
         , max(sa.num_levels_attempted)                          as highest_level_attempted
@@ -50,7 +52,7 @@ final as (
         on tt.teacher_id = sa.section_teacher_id
     left join levels_per_script                                 as ls
         on sa.script_id = ls.script_id
-    {{ dbt_utils.group_by(8) }} 
+    {{ dbt_utils.group_by(9) }} 
 )
 
 select * 

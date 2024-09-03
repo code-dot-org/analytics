@@ -1,8 +1,30 @@
 version: 2
 
 models: 
-  - name: dim_intl_teacher_roster
-    description: This model consists of all the form submissions by international teachers for professional development. 
+  - name: dim_global_trained_teacher_script_progress
+    description: This model contains various aggregations on the teacher/script/year level to measure student progress by particular scripts YoY for a given global trained teacher. 
+    columns: 
+      - name: teacher_id
+      - name: cal_year 
+      - name: cal_year_trained
+      - name: workshop_organizer 
+      - name: school_country 
+        description: the school country the teacher selected on the form
+      - name: script_id 
+      - name: script_name
+      - name: num_levels_in_script
+        description: the total number of levels within the script
+      - name: avg_levels_attempted
+        description: the average number of levels attempted by students associated with the teacher/ script/ cal year
+      - name: highest_level_attempted 
+        description: the highest level attempted out of all students associated with the teacher/ script/ cal year
+      - name: num_students_with_activity 
+        description: the total number of students associated with the teacher/ cal year with any activity
+    config:
+      tags: ['released']
+
+  - name: dim_global_teacher_roster
+    description: This model consists of all the form submissions by international teachers for professional development, as well as some key metrics to measure program effectiveness. 
     columns: 
       - name: teacher_id
       - name: form_submitted_at 
@@ -29,6 +51,12 @@ models:
         description: the most recent date time the teacher signed into our platform
       - name: sign_in_count
         description: the number of times the teacher has signed into our platform all-time
+      - name: implemented
+        description: 1 if the teacher implemented (has section of 5+ students with activity) any course at any time, pre or post training
+      - name: pre_training_num_students
+        description: the number of students with activity associated with the teacher before the teacher submitted their PD form
+      - name: post_training_num_students
+        description: the number of students with activity associated with the teacher after the teacher submitted their PD form
     config:
       tags: ['released']
       

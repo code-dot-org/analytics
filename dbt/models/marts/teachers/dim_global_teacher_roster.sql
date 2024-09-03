@@ -13,6 +13,7 @@ teachers as (
 student_activity as (
     select * 
     from {{ ref('dim_student_script_level_activity') }}
+    where section_teacher_id in (select distinct teacher_id from pd_intl_opt_ins)
 ),
 
 teachers_started as (
@@ -57,7 +58,8 @@ select
             when sa.activity_date >= oi.workshop_date then sa.student_id 
             else null
         end
-    )                                                           as post_training_num_students                                         
+    )                                                           as post_training_num_students
+    , count(distinct sa.student_id)                             as total_students                                        
 from pd_intl_opt_ins                                            as oi 
 left join teachers                                              as t 
     on oi.teacher_id = t.teacher_id

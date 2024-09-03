@@ -131,4 +131,4 @@ left join schools                                                   as sch
     on sm.school_id = sch.school_id  
 
 where cs.participant_audience = 'student'
-{{ dbt_utils.group_by(29) }}
+{{ dbt_utils.group_by(30) }}
