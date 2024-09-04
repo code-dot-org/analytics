@@ -49,7 +49,7 @@ final as (
                 and sy.ended_at 
     left join school_association                                as sa 
         on sa.student_id = students.user_id
-    where sa.row_num = 1
+        and sa.row_num = 1
 )
 select * 
 from final 
