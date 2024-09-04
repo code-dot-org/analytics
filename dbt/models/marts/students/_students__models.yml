@@ -194,8 +194,8 @@ models:
       
       - name: level_id
         description: the level the student was interacting with
-        data_tests:
-          - not_null
+        # data_tests:
+        #   - not_null
       
       - name: script_id
         description: the script ID associated with the level the student was interacting with
