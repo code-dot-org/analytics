@@ -33,7 +33,7 @@ teacher_section_started as (
 
 all_teacher_users as (
     select
-        user_id as teacher_id,
+        teacher_id,
         created_at
     from {{ref('dim_teachers')}}
 ), 
