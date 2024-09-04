@@ -39,11 +39,10 @@ teacher_schools as (
 --excludes student_id, cap_status, and cap_status_date from dim_users
 final as (
     select 
-        teachers.user_id,
-        teachers.teacher_id,
+        teachers.user_id                                as teacher_id,
+        ts.school_id,
         teachers.user_type,
         teachers.studio_person_id,
-        teachers.school_info_id,
         teachers.is_urg,
         teachers.gender,
         teachers.locale,
@@ -64,7 +63,6 @@ final as (
         teachers.country,
         teachers.us_intl,
         teachers.is_international,
-        ts.school_id,
         school_years.school_year                                    as created_at_school_year
     from teachers 
     inner join teacher_schools                                      as ts 
