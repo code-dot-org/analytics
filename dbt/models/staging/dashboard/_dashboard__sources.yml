@@ -5,6 +5,7 @@ sources:
     database: dashboard 
     schema: dashboard_production
     tables:
+      - name: ai_tutor_interaction_feedbacks
       - name: ap_cs_offerings
       - name: ap_school_codes
       - name: census_submissions
