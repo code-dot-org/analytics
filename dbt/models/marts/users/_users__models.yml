@@ -1,7 +1,7 @@
 version: 2
 
 models: 
-  - name: dim_user_feedback
+  - name: dim_feature_feedback
     description: this model contains all the feedback we get from students and teachers about particular features or products (e.g. AI Tutor).  
     columns: 
       - name: feedback_id 
