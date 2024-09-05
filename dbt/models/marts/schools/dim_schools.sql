@@ -18,7 +18,7 @@ school_stats_by_years as (
                 partition by school_id 
                 order by school_year desc) as row_num
 
-    from {{ ref('stg_dashboard__school_stats_by_years') }}
+    from {{ ref('dim_school_stats_by_years') }}
 ),
 
 combined as (
@@ -29,27 +29,21 @@ combined as (
         schools.state,
         schools.zip,
 
-        school_stats_by_years.school_year   as last_survey_year,
+        school_stats_by_years.school_year                               as last_survey_year,
         school_stats_by_years.is_stage_el,
         school_stats_by_years.is_stage_mi,
         school_stats_by_years.is_stage_hi,
-        
-        (
-            (case when school_stats_by_years.is_stage_el = 1 then 'el' else '__' end ) ||
-            (case when school_stats_by_years.is_stage_mi = 1 then 'mi' else '__' end ) ||
-            (case when school_stats_by_years.is_stage_hi = 1 then 'hi' else '__' end ) 
-        ) as school_level_simple,
+        school_stats_by_years.school_level_simple,
 
-        school_stats_by_years.is_rural,
+        school_stats_by_years.frl_quartile,
+        school_stats_by_years.school_size_cat,
         school_stats_by_years.is_title_i,
         school_stats_by_years.community_type,
 
         schools.school_category,
         schools.school_name,
         schools.school_type,
-        case when total_frl_eligible_students / total_students::float > 0.5
-            then 1 else 0 
-        end as is_high_needs,
+        is_high_needs,
 
         schools.last_known_school_year_open,
 
@@ -68,37 +62,42 @@ combined as (
         school_stats_by_years.count_student_tr,
         school_stats_by_years.total_frl_eligible_students,
 
-        nullif(
-            sum(school_stats_by_years.count_student_am 
-                + school_stats_by_years.count_student_hi
-                + school_stats_by_years.count_student_bl
-                + school_stats_by_years.count_student_hp)
-            ,0) as total_urg_no_tr_students,
+        -- nullif(
+        --     sum(school_stats_by_years.count_student_am 
+        --         + school_stats_by_years.count_student_hi
+        --         + school_stats_by_years.count_student_bl
+        --         + school_stats_by_years.count_student_hp)
+        --     ,0) as total_urg_no_tr_students,
 
-        nullif(
-            sum(school_stats_by_years.count_student_am
-                + school_stats_by_years.count_student_hi
-                + school_stats_by_years.count_student_bl
-                + school_stats_by_years.count_student_hp
-                + school_stats_by_years.count_student_tr)
-            ,0) as total_urg_students,
-
-        nullif(
-            sum(school_stats_by_years.count_student_am  
-                + school_stats_by_years.count_student_as  
-                + school_stats_by_years.count_student_hi  
-                + school_stats_by_years.count_student_bl  
-                + school_stats_by_years.count_student_wh  
-                + school_stats_by_years.count_student_hp
-                + school_stats_by_years.count_student_tr)
-            ,0) as total_students_calculated,
+        -- nullif(
+        --     sum(school_stats_by_years.count_student_am
+        --         + school_stats_by_years.count_student_hi
+        --         + school_stats_by_years.count_student_bl
+        --         + school_stats_by_years.count_student_hp
+        --         + school_stats_by_years.count_student_tr)
+        --     ,0) as total_urg_students,
+        total_urg_no_tr_students,
+        total_urg_students,    
+        total_students_calculated,
+        -- nullif(
+        --     sum(school_stats_by_years.count_student_am  
+        --         + school_stats_by_years.count_student_as  
+        --         + school_stats_by_years.count_student_hi  
+        --         + school_stats_by_years.count_student_bl  
+        --         + school_stats_by_years.count_student_wh  
+        --         + school_stats_by_years.count_student_hp
+        --         + school_stats_by_years.count_student_tr)
+        --     ,0) as total_students_calculated,
         
+        urg_percent,
+        urg_no_tr_percent,
+        frl_eligible_percent,
         -- calculations 
-        total_urg_students / total_students_calculated::float as urg_percent,
+        -- total_urg_students / total_students_calculated::float as urg_percent,
 
-        total_urg_no_tr_students / total_students_calculated::float as urg_no_tr_percent,
+        -- total_urg_no_tr_students / total_students_calculated::float as urg_no_tr_percent,
         
-        total_frl_eligible_students / total_students::float as frl_eligible_percent,
+        -- total_frl_eligible_students / total_students::float as frl_eligible_percent,
         
         -- dates 
         min(schools.created_at) as school_created_at,
@@ -110,7 +109,7 @@ combined as (
         and school_stats_by_years.row_num = 1
     left join school_districts
         on schools.school_district_id = school_districts.school_district_id
-    {{ dbt_utils.group_by(28) }}
+    {{ dbt_utils.group_by(35) }}
 )
 
 select *
