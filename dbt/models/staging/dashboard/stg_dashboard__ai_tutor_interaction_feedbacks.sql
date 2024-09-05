@@ -14,10 +14,11 @@ renamed as (
             when thumbs_up = 1 then 1 
             when thumbs_down = 1 then 0 
             else null 
-        end                                         as thumbs_up
+        end                                         as satisfied
         , details 
         , created_at
-    from feedbacks )
+    from feedbacks 
+)
 
 select * 
 from renamed 

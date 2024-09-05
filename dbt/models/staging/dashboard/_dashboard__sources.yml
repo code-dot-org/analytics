@@ -26,6 +26,8 @@ sources:
       - name: level_sources_multi_types
       - name: levels
       - name: levels_script_levels
+      - name: lti_feedbacks
+      - name: new_feature_feedbacks
       - name: parent_levels_child_levels
       - name: pd_applications
       - name: pd_attendances

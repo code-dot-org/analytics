@@ -13,8 +13,8 @@ models:
         description: the name of the feature that the feedback is about 
       - name: user_id
         description: unique idenitfier for users who submitted feedback, can map to student_id and teacher_id in other models
-      - name: thumbs_up
-        description: 1 if the user selected thumbs up, 0 if user selected thumbs down, null if not selected
+      - name: satisfied
+        description: 1 if the user indicated they are satisfied, 0 if user indicated they are disastified, null if not selected
       - name: details
         description: the notes inputed by the user submitting feedback
       - name: created_at

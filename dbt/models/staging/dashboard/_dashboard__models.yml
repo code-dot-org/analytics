@@ -17,6 +17,20 @@ models:
   #       description: unique id for each script
   #       data_tests: 
   #         - not_null
+  - name: stg_dashboard__new_feature_feedbacks
+    description: staging model for the feedback table for new features (unclear which new feature this is for- check with PMs)
+    columns: 
+      - name: feedback_id
+        data_tests:
+          - unique
+          - not_null
+  - name: stg_dashboard__lti_feedbacks
+    description: staging model for the user feedback on LTI
+    columns: 
+      - name: feedback_id
+        data_tests:
+          - unique
+          - not_null
   - name: stg_dashboard__ai_tutor_interaction_feedbacks
     description: Staging model for the feedback table for AI Tutor
     columns: 
