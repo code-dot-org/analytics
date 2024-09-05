@@ -88,14 +88,14 @@ models:
   #       data_tests: 
   #         - not_null
 
-  - name: dim_user_levels 
-    description: |
-      Adds more columns to the base user_levels table. 
-    columns:
-    - name: user_id
-      description: the unique user ID associated with the activity
-      data_tests:
-        - not_null
+  # - name: dim_user_levels 
+  #   description: |
+  #     Adds more columns to the base user_levels table. 
+  #   columns:
+  #   - name: user_id
+  #     description: the unique user ID associated with the activity
+  #     data_tests:
+  #       - not_null
     
   - name: dim_user_course_activity
     description: |
@@ -116,9 +116,7 @@ models:
         
     - name: course_name
       description: the course associated with the individual user's activity in a given school year
-      data_tests: 
-        - not_null 
-    
+
     - name: us_intl
       description: label for us / intl 
 

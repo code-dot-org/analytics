@@ -1,4 +1,4 @@
-
+archive/
 target/
 dbt_packages/
 logs/
@@ -11,4 +11,3 @@ venv/
 dev/
 data/
 legacy/
-archive/

@@ -1,8 +1,8 @@
-
+./archive/
 target/
 dbt_packages/
 logs/
 venv/
 /.vscode/
-/.DS_Store
+../.DS_Store/
 requirements.txt
