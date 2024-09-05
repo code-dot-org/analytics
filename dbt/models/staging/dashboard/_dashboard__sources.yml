@@ -5,6 +5,7 @@ sources:
     database: dashboard 
     schema: dashboard_production
     tables:
+      - name: ai_tutor_interaction_feedbacks
       - name: ap_cs_offerings
       - name: ap_school_codes
       - name: census_submissions
@@ -25,6 +26,8 @@ sources:
       - name: level_sources_multi_types
       - name: levels
       - name: levels_script_levels
+      - name: lti_feedbacks
+      - name: new_feature_feedbacks
       - name: parent_levels_child_levels
       - name: pd_applications
       - name: pd_attendances
