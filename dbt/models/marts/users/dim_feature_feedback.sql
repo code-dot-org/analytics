@@ -48,7 +48,7 @@ all_feedback as (
 
 final as (
     select 
-        row_number() over (order by all_feedback.user_id) as id
+        row_number() over (order by all_feedback.user_id) as feedback_id
         , all_feedback.feature_name
         , all_feedback.user_id
         , all_feedback.satisfied 
