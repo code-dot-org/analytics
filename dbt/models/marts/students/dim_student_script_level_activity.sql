@@ -43,6 +43,7 @@ course_structure as (
         course_name,
         course_id,
         script_id,
+        script_name,
         level_id,
         level_name,
         level_type,
