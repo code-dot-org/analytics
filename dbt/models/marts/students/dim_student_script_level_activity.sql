@@ -83,6 +83,7 @@ student_activity as (
         cs.course_name,
         cs.level_name,
         cs.level_type,
+        cs.script_name,
         cs.unit_name,
         cs.lesson_name,
 
@@ -175,8 +176,8 @@ combined as (
         sec.student_id,
         sec.school_year,
 
-        case when sec.student_removed_at is not null 
-             then 1 else 0 end as is_removed,
+        -- case when sec.student_removed_at is not null 
+        --      then 1 else 0 end as is_removed,
 
         usr.is_international,
         usr.country,
@@ -236,6 +237,7 @@ final as (
         sta.level_id,
         sta.script_id,
         sta.course_name,
+        sta.script_name,
         sta.level_name,
         sta.level_type,
         sta.unit_name,

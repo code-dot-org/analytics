@@ -210,6 +210,8 @@ models:
       
       - name: level_type 
       
+      - name: script_name
+      
       - name: unit_name
         description: formerly known as script_name
       
