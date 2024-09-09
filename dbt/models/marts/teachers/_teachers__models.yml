@@ -149,7 +149,7 @@ models:
       One row per teacher account ever created, with geographic information and current school association
       
     columns: 
-      - name: user_id
+      - name: teacher_id
         description: unique ID for every teacher account created
         data_tests: 
           - not_null

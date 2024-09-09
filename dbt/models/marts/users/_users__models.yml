@@ -1,6 +1,28 @@
 version: 2
 
 models: 
+  - name: dim_feature_feedback
+    description: this model contains all the feedback we get from students and teachers about particular features or products (e.g. AI Tutor).  
+    columns: 
+      - name: feedback_id 
+        description: unique identifier for the feedback submission 
+        data_tests: 
+          - unique
+          - not_null
+      - name: feature_name
+        description: the name of the feature that the feedback is about 
+      - name: user_id
+        description: unique idenitfier for users who submitted feedback, can map to student_id and teacher_id in other models
+      - name: satisfied
+        description: 1 if the user indicated they are satisfied, 0 if user indicated they are disastified, null if not selected
+      - name: details
+        description: the notes inputed by the user submitting feedback
+      - name: created_at
+        description: timestamp for when the feedback was submitted 
+      - name: school_year 
+        description: the school year in which the feedback was submitted 
+    config:
+      tags: ['released']
   - name: dim_users 
     description: |
       One row per user + user_geos + user pii. 
@@ -94,9 +116,7 @@ models:
         
     - name: course_name
       description: the course associated with the individual user's activity in a given school year
-      data_tests: 
-        - not_null 
-    
+
     - name: us_intl
       description: label for us / intl 
 

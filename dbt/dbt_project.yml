@@ -85,12 +85,6 @@ models:
         base:
       +docs:
         show: false
-      
-      dashboard:
-        base:
-          tags:
-            - "base"
-          +materialized: view
 
       dashboard:
         base:
@@ -133,6 +127,12 @@ models:
           tags:
             - "base"
           materialized: ephemeral
+
+        external_datasets:
+        base:
+          tags:
+            - "base"
+          +materialized: view
 
 seeds:
   +docs:

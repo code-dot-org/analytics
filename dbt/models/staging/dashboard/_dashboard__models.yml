@@ -17,7 +17,39 @@ models:
   #       description: unique id for each script
   #       data_tests: 
   #         - not_null
-        
+  - name: stg_dashboard__new_feature_feedbacks
+    description: staging model for the feedback table for new features (unclear which new feature this is for- check with PMs)
+    columns: 
+      - name: feedback_id
+        data_tests:
+          - unique
+          - not_null
+  - name: stg_dashboard__lti_feedbacks
+    description: staging model for the user feedback on LTI
+    columns: 
+      - name: feedback_id
+        data_tests:
+          - unique
+          - not_null
+  - name: stg_dashboard__ai_tutor_interaction_feedbacks
+    description: Staging model for the feedback table for AI Tutor
+    columns: 
+      - name: feedback_id 
+        description: unique identifier for the feedback submission 
+        data_tests: 
+          - unique
+          - not_null
+      - name: feature_name
+        description: ai_tutor for all rows
+      - name: user_id
+        description: unique identifier for users who submitted feedback
+      - name: thumbs_up
+        description: 1 if the user selected thumbs up, 0 if user selected thumbs down, null if not selected
+      - name: details
+        description: the notes inputed by the user submitting feedback
+      - name: created_at
+        description: timestamp for when the feedback was submitted 
+
   - name: stg_dashboard__followers
     description: |
       Staging model for followers source data.
