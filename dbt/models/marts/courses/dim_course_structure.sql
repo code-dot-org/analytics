@@ -84,7 +84,7 @@ combined as (
             )
             then 1 
             else 0 
-        end                                                             as active_student_course,
+        end                                                             as is_active_student_course,
 
         --flags
         case 

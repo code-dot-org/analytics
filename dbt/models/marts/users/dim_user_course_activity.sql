@@ -44,7 +44,7 @@ course_structure as (
         level_id, 
         script_id 
     from {{ ref('dim_course_structure') }}
-    where active_student_course = 1
+    where is_active_student_course = 1
 ),
 
 school_years as (
