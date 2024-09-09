@@ -37,7 +37,6 @@ final as (
         ,num_students
     from combined
     where num_students >= 5
-    and course_name in ('csa', 'csp', 'csd', 'csf', 'csc', 'ai', 'foundations of cs')
 )
 
 select *

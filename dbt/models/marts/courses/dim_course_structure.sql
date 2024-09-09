@@ -72,6 +72,19 @@ combined as (
         ug.unit_group_id                                                as course_id,
         ug.unit_group_name                                              as course_name_full,
         sc.course_name,
+        case 
+            when course_name in (
+                'csc',
+                'csf', 
+                'csd', 
+                'csa', 
+                'csp', 
+                'ai', 
+                'foundations of cs'
+            )
+            then 1 
+            else 0 
+        end                                                             as active_student_course,
 
         --flags
         case 
