@@ -51,5 +51,19 @@ renamed as (
         updated_at
     from scripts )
     
-select * 
+select 
+    *
+    , case 
+        when course_name in (
+            'csc',
+            'csf', 
+            'csd', 
+            'csa', 
+            'csp', 
+            'ai', 
+            'foundations of cs'
+        )
+        then 1 
+        else 0 
+    end                                                             as is_active_student_course
 from renamed
