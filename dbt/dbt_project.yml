@@ -19,7 +19,7 @@ quoting:
 # File Path Configs
 # ==================
 model-paths: ["models"]
-test-paths: ["tests"]
+test-paths: ["data_tests"]
 seed-paths: ["data"]
 macro-paths: ["macros"]
 analysis-paths: ["analyses"]
