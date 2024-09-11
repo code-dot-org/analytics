@@ -43,7 +43,8 @@ school_status_sy as (
         count(distinct school_id) as num_schools
     from school_status_sy sssy
     left join school_weeks sw
-        on school_started_at between sw.started_at and sw.ended_at
+        on school_started_at 
+            between sw.started_at and sw.ended_at
     where status like 'active %'
     group by 1,2,3,4,5,6,7,8,9
 
@@ -94,29 +95,41 @@ report_by_week as (
     union all
   
     select
-        'middle'                    as school_level,
+        'middle',
         school_year,
         status,
-        start_week                  as iso_week,
+        start_week,
         school_year_week,
         week_of,
-        mi_schools                  as num_schools_this_week,
-        mi_running_total            as num_schools_running_total
+        mi_schools
+        mi_running_total
     from running_totals_by_week
 
     union all
   
     select
-        'high'                      as school_level,
+        'high',
         school_year,
         status,
-        start_week                  as iso_week,
+        start_week,
         school_year_week,
         week_of,
-        hi_schools                  as num_schools_this_week,
-        hi_running_total            as num_schools_running_total
+        hi_schools,
+        hi_running_total
     from running_totals_by_week
-)
+),
+
+final as (
+    select 
+        school_level,
+        school_year, 
+        status, 
+        iso_week,
+        week_of, 
+        coalesce(num_schools_this_week,0)       as num_schools_this_week,
+        coalesce(num_schools_running_total,0)   as num_schools_running_total
+    from report_by_week )
 
 select * 
-from report_by_week 
+from final 
+where num_schools_this_week is null 
