@@ -26,7 +26,8 @@ school_status_sy as (
         on school_status.school_id = dim_schools.school_id
 )
 , school_weeks as (
-    select * FROM {{ref('int_school_weeks')}}
+    select * 
+    from {{ ref('int_school_weeks') }}
 )
 
 , active_schools_by_week as (
@@ -37,16 +38,22 @@ school_status_sy as (
         sssy.is_stage_mi,
         sssy.is_stage_hi,
         sssy.status,
-        sw.iso_week start_week, --keeping start_week alias for now, even though the output gets re-aliased as iso_week
+        
+        sw.iso_week start_week, 
+        -- keeping start_week alias for now, even though the output gets re-aliased as iso_week
+        
         sw.school_year_week,
         sw.started_at week_of,
-        count(distinct school_id) as num_schools
+        count(distinct school_id)   as num_schools
     from school_status_sy sssy
+    
     left join school_weeks sw
         on school_started_at 
-            between sw.started_at and sw.ended_at
-    where status like 'active %'
-    group by 1,2,3,4,5,6,7,8,9
+            between sw.started_at 
+                and sw.ended_at
+    where 
+        left(status,6) = 'active'
+    {{ dbt_utils.group_by(9) }}
 
 )
 , running_totals_by_week as (
@@ -55,27 +62,37 @@ school_status_sy as (
         status,
         start_week,
         school_year_week,
-        min(week_of)::date week_of,
+        min(week_of)::date                                          as week_of,
         sum(case when is_stage_el=1 then num_schools else 0 end) as el_schools,
         sum(case when is_stage_mi=1 then num_schools else 0 end) as mi_schools,
         sum(case when is_stage_hi=1 then num_schools else 0 end) as hi_schools,
         sum(el_schools) over (
-            partition by school_year, status order by school_year_week
-            rows between unbounded preceding and current row
-        ) el_running_total,
+            partition by 
+                school_year, 
+                status 
+            order by school_year_week
+            rows between unbounded preceding 
+                     and current row
+        )                                                   as el_running_total,
         
         sum(mi_schools) over (
-            partition by school_year, status order by school_year_week
-            rows between unbounded preceding and current row
-        ) mi_running_total,
+            partition by 
+                school_year, 
+                status 
+            order by school_year_week
+            rows between unbounded preceding 
+                and current row
+        )                                                   as mi_running_total,
         
         sum(hi_schools) over (
             partition by school_year, status order by school_year_week
-            rows between unbounded preceding and current row
-        ) hi_running_total
+            rows between unbounded preceding 
+                     and current row
+        )                                                   as hi_running_total
+    
     from active_schools_by_week
-    group by 1,2,3,4
-    order by status, school_year_week
+
+    {{ dbt_utils.group_by(4) }}
 ),
 
 report_by_week as (
@@ -122,10 +139,10 @@ report_by_week as (
 final as (
     select 
         school_level,
-        school_year, 
         status, 
-        iso_week,
+        school_year, 
         school_year_week,
+        iso_week,
         week_of, 
         coalesce(num_schools_this_week,0)       as num_schools_this_week,
         coalesce(num_schools_running_total,0)   as num_schools_running_total
@@ -133,4 +150,7 @@ final as (
 
 select * 
 from final 
---where num_schools_this_week is null 
+order by 
+    school_year,
+    school_year_week,
+    status desc
