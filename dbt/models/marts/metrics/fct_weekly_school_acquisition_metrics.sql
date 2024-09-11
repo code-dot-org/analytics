@@ -101,7 +101,7 @@ report_by_week as (
         start_week,
         school_year_week,
         week_of,
-        mi_schools
+        mi_schools,
         mi_running_total
     from running_totals_by_week
 
@@ -125,6 +125,7 @@ final as (
         school_year, 
         status, 
         iso_week,
+        school_year_week,
         week_of, 
         coalesce(num_schools_this_week,0)       as num_schools_this_week,
         coalesce(num_schools_running_total,0)   as num_schools_running_total
@@ -132,4 +133,4 @@ final as (
 
 select * 
 from final 
-where num_schools_this_week is null 
+--where num_schools_this_week is null 
