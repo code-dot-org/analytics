@@ -59,6 +59,36 @@ models:
         description: the number of students with activity associated with the teacher after the teacher submitted their PD form
     config:
       tags: ['released']
+  # - name: dim_intl_teacher_roster
+  #   description: This model consists of all the form submissions by international teachers for professional development. 
+  #   columns: 
+  #     - name: teacher_id
+  #     - name: form_submitted_at 
+  #     - name: cal_year 
+  #       description: the calendar year that the form was submitted in 
+  #     - name: first_name
+  #     - name: last_name
+  #     - name: pref_name
+  #     - name: email
+  #     - name: email_alt
+  #     - name: school_department
+  #     - name: school_municipality
+  #     - name: school_name
+  #     - name: school_city 
+  #     - name: school_country 
+  #     - name: workshop_date
+  #     - name: workshop_organizer 
+  #     - name: workshop_course_name 
+  #     - name: email_opt_in
+  #       description: 1 if the teacher opted into emails, 0 otherwise 
+  #     - name: account_created_at
+  #       description: the date time on which the teacher's account was created on our platform
+  #     - name: current_sign_in_at
+  #       description: the most recent date time the teacher signed into our platform
+  #     - name: sign_in_count
+  #       description: the number of times the teacher has signed into our platform all-time
+  #   config:
+  #     tags: ['released']
       
   - name: dim_self_paced_pd_activity
     description: |
@@ -177,7 +207,7 @@ models:
       One row per teacher account ever created, with geographic information and current school association
       
     columns: 
-      - name: user_id
+      - name: teacher_id
         description: unique ID for every teacher account created
         data_tests: 
           - not_null
@@ -205,7 +235,7 @@ models:
 
   - name: dim_teacher_status
     description: |
-      One row per teacher, per school_year, with "active" defined by having a section of 5+ students completing 1+ levels of the same course. The teacher's status can thus be defined by one of the following in a given school year:   
+      One row per teacher, per school_year, with "active" defined by having a section of 5+ students completing 1+ levels of the same student-facing course, excludes HoC. The teacher's status can thus be defined by one of the following in a given school year:   
       
       **active new**: has never before been "active" until this school year   
       **active retained**: was "active" the previous school year and this school year   

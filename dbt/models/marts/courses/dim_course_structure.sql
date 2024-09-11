@@ -72,6 +72,7 @@ combined as (
         ug.unit_group_id                                                as course_id,
         ug.unit_group_name                                              as course_name_full,
         sc.course_name,
+        sc.is_active_student_course,
 
         --flags
         case 
