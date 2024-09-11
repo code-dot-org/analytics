@@ -177,7 +177,7 @@ models:
 
   - name: dim_teacher_status
     description: |
-      One row per teacher, per school_year, with "active" defined by having a section of 5+ students completing 1+ levels of the same course. The teacher's status can thus be defined by one of the following in a given school year:   
+      One row per teacher, per school_year, with "active" defined by having a section of 5+ students completing 1+ levels of the same student-facing course, excludes HoC. The teacher's status can thus be defined by one of the following in a given school year:   
       
       **active new**: has never before been "active" until this school year   
       **active retained**: was "active" the previous school year and this school year   
