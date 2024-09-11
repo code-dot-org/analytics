@@ -1,9 +1,14 @@
--- version: 2.0 (JS)
--- 2024-08-30
+_type = /* 
+-- changelog 
+date        auth    notes   
+2024-08-28  js      init
+2024-09-11  js      incrementalize model
+*/
 
-with 
+
+
 /*
-    1. User Course Activity
+    1. Student User-level and Courses
     
     This is the mostly costly part of the model, so we will
     build it as easily as possible and earlier in the process...
@@ -12,34 +17,17 @@ with
     
     We can also roll through our aggregates and other calculations so as to not do them each time in some larger downstream query...
 */
+
+with 
 user_levels as (
-    select 
-        user_id,
-        
-        -- Note: 
-        --      In order to not cross-polenate too soon, this part
-        --      of the model will maintain user_id only
-        -- Optional: 
-        --      Create surrogate key for incremental load
-        --      md5 ( concat (user_id,activity_date,level_id,script_id ) as surrogate_key
-        
-        level_id,
-        script_id,
-        
-        -- dates 
-        date_trunc('day', created_at)    as activity_date,
-        extract('month' from created_at) as activity_month,
-        
-        -- aggs
-        max(attempts)       as total_attempts,
-        max(best_result)    as best_result,
-        sum(time_spent)     as time_spent_minutes
-    from {{ ref('stg_dashboard__user_levels') }}
-    {{ dbt_utils.group_by(5) }}
-), 
+    select * 
+    from {{ ref('dim_user_levels') }}
+    where user_type = 'student' 
+        and total_attempts > 0 
+),
 
 course_structure as (
-    select
+    select distinct -- thish number shouldn't change all that often (~50k)
         course_name,
         course_id,
         script_id,
