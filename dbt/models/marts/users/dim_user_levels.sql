@@ -64,8 +64,8 @@ combined as (
         sy.school_year,
         
         -- dates
-        usl.updated_dt,
-        usl.created_dt, 
+        usl.activity_date,
+        usl.activity_month, 
         
         -- aggs 
         sum(usl.time_spent) as time_spent_minutes,
@@ -85,7 +85,8 @@ combined as (
         on usl.activity_date
             between sy.started_at
                 and sy.ended_at 
-    {{ dbt_utils.group_by(10) }} )
+                
+    {{ dbt_utils.group_by(12) }} )
 
 select *
 from combined
