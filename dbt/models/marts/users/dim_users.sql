@@ -22,8 +22,8 @@ school_infos as (
 final as (
     select 
         users.user_id,
-        --users.student_id,
-        --users.teacher_id,
+        users.student_id,
+        users.teacher_id,
         school_infos.school_id,
         users.user_type,
         users.studio_person_id,
