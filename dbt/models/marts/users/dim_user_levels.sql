@@ -3,7 +3,7 @@
 {{
     config(
         materialized='incremental',
-        unique_key=['user_level_id','updated_at']
+        unique_key='user_level_id'
     )
 }}
 
@@ -20,7 +20,7 @@ user_levels as (
     -- this filter will only be applied on an incremental run
     -- (uses >= to include records arriving later on the same day as the last run of this model)
     
-    where created_at >= (select max(coalesce(created_at,updated_at)) from {{ this }})
+    where created_at >= (select max(coalesce(created_at,updated_at)) from {{ this }} )
     -- where attempts > 0
 
     {% endif %}
