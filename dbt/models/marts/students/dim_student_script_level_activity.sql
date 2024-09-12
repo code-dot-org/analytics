@@ -27,7 +27,7 @@ user_levels as (
 ),
 
 course_structure as (
-    select distinct -- thish number shouldn't change all that often (~50k)
+    select distinct
         course_name,
         course_id,
         script_id,
