@@ -143,10 +143,8 @@ final as (
         active_courses
         from full_status
     order by
-        school_id, school_year
-)
-select status, status_code, count(*) from final group by 1,2 
--- select status, stauts_code, count(*)
--- from final
--- group by 1,2
--- order by status
+        school_id, 
+        school_year )
+        
+select *
+from final
