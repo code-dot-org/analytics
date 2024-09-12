@@ -127,20 +127,26 @@ final as (
         school_year,
         case 
             when status_code = '000' then 'market'
-            when status_code = '001' then 'inactive churn'
-            when status_code = '010' then '<impossible status>'
             when status_code = '011' then 'inactive this year'
+            when status_code = '001' then 'inactive churn'
             when status_code = '100' then 'active new'
             when status_code = '101' then 'active reacquired'
-            when status_code = '110' then '<impossible status>'
             when status_code = '111' then 'active retained'
+            else null 
         end as status,
+
+            -- (js): impossible = "i'm possible"
+            -- when status_code = '110' then '<impossible status>' 
+            -- when status_code = '010' then '<impossible status>'
+        status_code,
         school_started_at,
         active_courses
         from full_status
     order by
         school_id, school_year
 )
-
-select * 
-from final
+select status, status_code, count(*) from final group by 1,2 
+-- select status, stauts_code, count(*)
+-- from final
+-- group by 1,2
+-- order by status
