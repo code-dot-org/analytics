@@ -3,7 +3,7 @@
 {{
     config(
         materialized='incremental',
-        unique_key=['user_level_id']
+        unique_key=['user_level_id','updated_at']
     )
 }}
 
