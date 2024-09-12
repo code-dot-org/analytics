@@ -103,7 +103,7 @@ models:
     description: |
       This model is a log of all student- and teacher-course activity within a school year.   
 
-      Grain: user_id, level_id, activity_date
+      Grain: user_id, level_id, script_id, activity_date
     columns:
     - name: user_id
       description: unique ID for teacher or student
