@@ -54,11 +54,4 @@ renamed as (
     
 select 
     *
-    , case 
-        when participant_audience = 'student'
-            and published_state in ('stable', 'preview', 'beta')
-            and course_name not in ('hoc', 'other')                                                             
-        then 1 
-        else 0 
-    end                                                                     as is_active_student_course
 from renamed

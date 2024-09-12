@@ -80,10 +80,14 @@ combined as (
                 coalesce(
                     ug.instruction_type,
                     sc.instruction_type
-                ) = 'self_paced' 
+                ) = 'self_paced'
+                and coalesce(
+                    ug.participant_audience,
+                    sc.participant_audience
+                )  = 'teacher'
             then 1 
             else 0 
-        end                                                             as is_self_paced,    
+        end                                                             as is_self_paced_pd,    
         case 
             when 
                 coalesce(
@@ -102,6 +106,23 @@ combined as (
             then 1 
             else 0 
         end                                                             as is_pd_content,
+
+        case 
+            when 
+                coalesce(
+                    ug.participant_audience,
+                    sc.participant_audience
+                )  = 'student'
+                and sc.published_state in (
+                    'stable',
+                    'preview',
+                    'beta')
+                and sc.course_name not in (
+                    'hoc', 
+                    'other')                                                             
+            then 1 
+            else 0 
+        end                                                             as is_active_student_course,
 
         -- scripts
         sl.script_id,
