@@ -20,11 +20,9 @@ user_levels as (
     -- this filter will only be applied on an incremental run
     -- (uses >= to include records arriving later on the same day as the last run of this model)
     
-    where created_at >= (select max(created_at,updated_dt) from {{ this }})
+    where created_at >= (select max(coalesce(created_at,updated_at)) from {{ this }})
     -- where attempts > 0
 
-    {{ dbt_utils.group_by(5) }}
-    
     {% endif %}
 ),
 
