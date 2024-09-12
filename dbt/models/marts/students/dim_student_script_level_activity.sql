@@ -1,4 +1,4 @@
-_type = /* 
+/* 
 -- changelog 
 date        auth    notes   
 2024-08-28  js      init
