@@ -11,6 +11,7 @@ renamed as (
         , 'progress_view'                           as feature_name
         , user_id 
         , satisfied
+        , 0                                         as early_access
         , null                                      as message 
         , created_at
     from feedbacks 
