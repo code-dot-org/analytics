@@ -8,6 +8,7 @@ pd_intl_opt_ins as (
 teachers as (
     select * 
     from {{ ref('dim_teachers') }}
+    where teacher_id in (select distinct teacher_id from pd_intl_opt_ins)
 ),
 
 student_activity as (
