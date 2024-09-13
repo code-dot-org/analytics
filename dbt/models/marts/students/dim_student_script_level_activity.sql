@@ -176,30 +176,7 @@ combined as (
         -- students
         sec.student_id,
         sec.school_year,
-select 
-    ul.user_id                                                      as student_id
-    , ul.level_id                                                   as level_id
-    , ul.script_id                                                  as script_id
-    , date_trunc('day', ul.created_at)                              as activity_date
-    , extract(year from ul.created_at)                              as cal_year
 
-    -- time variables 
-    --, date_trunc ('month', ul.created_at)                           as activity_month  
-    , case 
-        when extract ('month' from ul.created_at) in (7,8,9) then 'Q1'
-        when extract ('month' from ul.created_at) in (10,11,12) then 'Q2'
-        when extract ('month' from ul.created_at) in (1,2,3) then 'Q3'
-        when extract ('month' from ul.created_at) in (4,5,6) then 'Q4'
-      end                                                           as school_year_quarter
-    , sy.school_year                                                as school_year
-
-    -- course, script, unit, lesson, and level characteristics
-    , cs.level_name                                                 as level_name
-    , cs.level_type                                                 as level_type
-    , cs.script_name                                                as script_name
-    , cs.unit                                                       as unit_name
-    , cs.course_name
-    , cs.stage_name                                                 as lesson_name
         -- case when sec.student_removed_at is not null 
         --      then 1 else 0 end as is_removed,
 
@@ -276,34 +253,6 @@ final as (
     left join student_activity as sta 
         on comb.student_id = sta.user_id 
         and comb.school_year = sta.school_year )
-
-left join school_years                                              as sy
-    on ul.created_at between sy.started_at and sy.ended_at 
-
-left join course_structure                                          as cs
-    on ul.level_id = cs.level_id
-    and ul.script_id = cs.script_id
-
-left join section_mapping                                           as sm
-    on ul.user_id = sm.student_id
-    and sm.school_year = sy.school_year
-
-left join section_size                                              as ssi
-    on ssi.section_id = sm.section_id
-
-left join teacher_status                                            as ts 
-    on sm.teacher_id = ts.teacher_id 
-    and sy.school_year = ts.school_year
-
-left join school_status                                             as ss 
-    on sm.school_id = ss.school_id 
-    and sy.school_year = ss.school_year
-
-left join schools                                                   as sch
-    on sm.school_id = sch.school_id  
-
-where cs.participant_audience = 'student'
-{{ dbt_utils.group_by(30) }}
 
 select * 
 from final
