@@ -5,8 +5,6 @@ date        auth    notes
 2024-09-11  js      incrementalize model
 */
 
-
-
 /*
     1. Student User-level and Courses
     
@@ -50,7 +48,6 @@ school_years as (
 
 student_activity as (
     select 
-        
         ul.user_id,
         ul.level_id,
         ul.script_id,

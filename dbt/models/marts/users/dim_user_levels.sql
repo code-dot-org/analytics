@@ -1,29 +1,11 @@
 -- fka: int_user_levels
 -- scope: capture user_level data in one model
-{{
-    config(
-        materialized='incremental',
-        unique_key='user_level_id'
-    )
-}}
+
 
 with 
 user_levels as (
-    select *, 
-        date_trunc('day', created_at)    as activity_date,
-        extract('month' from created_at) as activity_month
-   
-    from {{ ref('stg_dashboard__user_levels') }}
-    
-    {% if is_incremental() %}
-
-    -- this filter will only be applied on an incremental run
-    -- (uses >= to include records arriving later on the same day as the last run of this model)
-    
-    where created_at >= (select max(coalesce(created_at,updated_at)) from {{ this }} )
-    -- where attempts > 0
-
-    {% endif %}
+    select *
+    from {{ ref('stg_dashboard__user_levels') }}    
 ),
 
 users as (
@@ -62,13 +44,13 @@ combined as (
         sy.school_year,
         
         -- dates
-        usl.activity_date,
-        usl.activity_month, 
+        usl.created_at::date                as activity_date,
+        date_trunc('month',usl.created_at)  as activity_month,
         
         -- aggs 
-        sum(usl.time_spent) as time_spent_minutes,
-        sum(usl.attempts) as total_attempts,
-        max(best_result) as best_result
+        sum(usl.time_spent)                 as time_spent_minutes,
+        sum(usl.attempts)                   as total_attempts,
+        max(usl.best_result)                as best_result
 
     from user_levels    as usl 
     
@@ -80,7 +62,7 @@ combined as (
         and usl.level_id  = cs.level_id 
     
     join school_years as sy 
-        on usl.activity_date
+        on usl.created_at
             between sy.started_at
                 and sy.ended_at 
                 
