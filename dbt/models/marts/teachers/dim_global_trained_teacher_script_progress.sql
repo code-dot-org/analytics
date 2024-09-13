@@ -45,7 +45,7 @@ final as (
         , sa.course_name
         , ls.num_levels_in_script
         , avg(sa.num_levels_attempted)                          as avg_levels_attempted
-        , max(sa.num_levels_attempted)                          as highest_level_attempted
+        , max(sa.num_levels_attempted)                          as highest_num_levels_attempted
         , count(distinct sa.student_id)                         as num_students_with_activity
     from trained_teachers                                       as tt
     join student_activity                                       as sa
