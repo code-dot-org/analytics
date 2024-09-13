@@ -15,7 +15,7 @@ renamed as (
             when thumbs_down = 1 then 0 
             else null 
         end                                         as satisfied
-        , details 
+        , details                                   as message 
         , created_at
     from feedbacks 
 )

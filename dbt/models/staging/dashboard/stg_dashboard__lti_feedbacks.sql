@@ -14,7 +14,7 @@ renamed as (
         , case 
             when early_access = 1 then 'early access'
             else null
-        end                                         as details
+        end                                         as message
         , created_at
     from feedbacks 
 )

@@ -8,10 +8,10 @@ feedbacks as (
 renamed as (
     select 
         id                                          as feedback_id
-        , 'new feature'                             as feature_name
+        , 'progress_view'                           as feature_name
         , user_id 
         , satisfied
-        , null                                      as details 
+        , null                                      as message 
         , created_at
     from feedbacks 
 )

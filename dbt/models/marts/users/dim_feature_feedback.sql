@@ -5,7 +5,7 @@ ai_tutor_feedback as (
         feature_name
         , user_id
         , satisfied
-        , details
+        , message
         , created_at 
     from {{ ref('stg_dashboard__ai_tutor_interaction_feedbacks') }}
 ),
@@ -15,7 +15,7 @@ new_feature_feedback as (
         feature_name
         , user_id
         , satisfied
-        , details
+        , message
         , created_at
     from {{ ref('stg_dashboard__new_feature_feedbacks') }}
 ),
@@ -25,7 +25,7 @@ lti_feedback as (
         feature_name
         , user_id
         , satisfied
-        , details
+        , message
         , created_at 
     from {{ ref('stg_dashboard__lti_feedbacks') }}
 ),
@@ -54,7 +54,7 @@ final as (
         , all_feedback.satisfied 
         , all_feedback.created_at
         , school_years.school_year 
-        , all_feedback.details
+        , all_feedback.message
     from all_feedback
     join school_years 
         on all_feedback.created_at 
