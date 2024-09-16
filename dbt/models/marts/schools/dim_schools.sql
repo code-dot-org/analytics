@@ -107,6 +107,7 @@ combined as (
     left join school_stats_by_years
         on schools.school_id = school_stats_by_years.school_id
         and school_stats_by_years.row_num = 1
+    
     left join school_districts
         on schools.school_district_id = school_districts.school_district_id
     {{ dbt_utils.group_by(35) }}
