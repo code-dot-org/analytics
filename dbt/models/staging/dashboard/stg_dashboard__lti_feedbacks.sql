@@ -11,10 +11,8 @@ renamed as (
         , 'lti'                                     as feature_name
         , user_id 
         , satisfied
-        , case 
-            when early_access = 1 then 'early access'
-            else null
-        end                                         as details
+        , early_access                                        
+        , null                                      as message
         , created_at
     from feedbacks 
 )
