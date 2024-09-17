@@ -1,23 +1,23 @@
 version: 2
 
 models:
-  - name: fct_hoc_activity
-    description: |
-      commonly tracked hoc metrics by month, school year, and country
+#   - name: fct_hoc_activity
+#     description: |
+#       commonly tracked hoc metrics by month, school year, and country
 
-    columns:
-      - name: month
-      - name: school_year
-      - name: country
-        description: the country associated with the user's location
-      - name: total_new_teacher_accounts
-        description: the number of new teacher accounts created in the given month
-      - name: total_new_student_accounts
-        description: the number of new student accounts created in the given month
-      - name: total_event_registrations
-        description: the number of HoC events registered in the given month
-      - name: total_hoc_hits
-        description: the number of times an HoC activity was accessed 
+#     columns:
+#       - name: month
+#       - name: school_year
+#       - name: country
+#         description: the country associated with the user's location
+#       - name: total_new_teacher_accounts
+#         description: the number of new teacher accounts created in the given month
+#       - name: total_new_student_accounts
+#         description: the number of new student accounts created in the given month
+#       - name: total_event_registrations
+#         description: the number of HoC events registered in the given month
+#       - name: total_hoc_hits
+#         description: the number of times an HoC activity was accessed 
   
   - name: dim_hoc_starts
     description: |

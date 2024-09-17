@@ -25,15 +25,12 @@ teacher_section_started as (
         min(section_started_at) as started_teaching_at,
         listagg(distinct course_name, ', ') within group (order by course_name ASC) section_courses_started
     from {{ ref('int_active_sections') }}
-    where teacher_id is not null 
-        and course_name in ('csa', 'csp', 'csd', 'csf', 'csc', 'ai') -- Without this filter, it is counting as active teachers who are not teaching student-facing courses, or courses that are defined as not counting towards our metrics: they might be teaching PD courses, or some old virtual courses. We wouldn't consider as 'active' the teacher or the school of such a teacher if they are not teaching a student-facing course. Once we redesign course_structure we can adjust this filter to something more evergreen. @nataliazm99 
-
     group by 1, 2
 ),
 
 all_teacher_users as (
     select
-        user_id as teacher_id,
+        teacher_id,
         created_at
     from {{ref('dim_teachers')}}
 ), 
