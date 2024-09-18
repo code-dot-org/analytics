@@ -36,14 +36,11 @@ combined as (
         coalesce(
             ups.user_id::varchar, 
             'storage_id_' || proj.storage_id::varchar
-        ) as user_id_merged,
-        
-        count(*) as num_project_records
-    
+        ) as user_id_merged
+
     from projects as proj 
     left join user_project_storage as ups 
         on proj.project_id = ups.user_project_storage_id
-    {{ dbt_utils.group_by(6) }}
 ),
 
 final as (
@@ -51,6 +48,7 @@ final as (
         -- user info
         comb.user_id,
         comb.user_id_merged,
+        comb.known_cdo_user,
         users.country,
         users.us_intl,
 
@@ -62,17 +60,19 @@ final as (
         
         -- dates
         sy.school_year,
-        comb.activity_date,
+        comb.activity_date
         
-        -- aggs 
-        num_project_records
+        
     from combined as comb
     join users 
         on comb.user_id = users.user_id 
     join school_years as sy 
         on comb.activity_date 
             between sy.started_at 
-            and sy.ended_at ) 
+            and sy.ended_at )
+    
 
 select * 
 from final 
+-- where activity_date > '2024-01-01' 
+-- order by user_id, activity_date 

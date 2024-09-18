@@ -50,8 +50,7 @@ combined as (
         -- aggs 
         sum(usl.time_spent)                 as time_spent_minutes,
         sum(usl.attempts)                   as total_attempts,
-        max(usl.best_result)                as best_result,
-        count(*)                            as num_user_level_records
+        max(usl.best_result)                as best_result
 
     from user_levels    as usl 
     

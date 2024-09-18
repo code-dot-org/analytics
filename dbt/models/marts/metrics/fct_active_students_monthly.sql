@@ -10,7 +10,7 @@ user_levels as (
         country, 
         us_intl,
 
-        case when num_user_level_records > 0 
+        case when total_attempts > 0 
         then 1 else 0 
         end as is_active
 
@@ -40,39 +40,49 @@ projects as (
         country,
         us_intl,
         
-        case when num_project_records > 0 
+        case when count(project_id) > 0 
         then 1 else 0 
         end as is_active
 
     from {{ ref('dim_user_projects') }}
+    {{ dbt_utils.group_by(5) }}
 ),
 
 combined as (
-    select 
+    select 'User Levels' as activity_type
         date_trunc('month',activity_date)   as activity_month,
+        country, 
+        us_intl,
+
         count(distinct 
             case when is_active = 1 
             then user_id end)               as num_actives
     from user_levels
-    group by 1
+    {{ dbt_utils.group_by(3) }}
+    
     union all
 
-    select 
-        date_trunc('month',activity_date)   as activity_month,
+    select 'Sign Ins',
+        date_trunc('month',activity_date),
+        country,
+        us_intl,
         count(distinct
             case when is_active = 1 
-            then user_id end)               as num_actives
+            then user_id end)
     from sign_ins
-    group by 1
+    {{ dbt_utils.group_by(3) }}
+
     union all
 
-    select 
-        date_trun('month',activity_date)    as activity_month,
+    select 'Projects' as activity_type,
+        date_trunc('month',activity_date)
+        country,
+        us_intl,
         count(distinct
             case when is_active = 1
-            then user_id end)               as num_actives
+            then user_id end)
     from projects
-    group by 1
+    {{ dbt_utils.group_by(3) }}
 ),
 
 final as (
@@ -82,3 +92,5 @@ final as (
     from combined
     group by 1
 )
+
+select * from final
