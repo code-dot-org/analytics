@@ -8,10 +8,11 @@ final as (
         project_id,
         storage_id,
         project_type,
-        value, -- what do we need this for?
-        state,
-        remix_parent_id,
-        abuse_score,
+
+        {# value, #}
+        {# state, #}
+        {# remix_parent_id, #}
+        {# abuse_score, #}
         
         -- flags
         is_standalone,
