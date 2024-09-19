@@ -62,7 +62,6 @@ final as (
         sy.school_year,
         comb.activity_date
         
-        
     from combined as comb
     join users 
         on comb.user_id = users.user_id 
