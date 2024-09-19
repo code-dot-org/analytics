@@ -1,5 +1,0 @@
-version: 2
-
-models:
-  - name: fct_access_report_school_stats
-    description: school statistics used for the access report
