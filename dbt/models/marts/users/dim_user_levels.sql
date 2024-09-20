@@ -40,12 +40,9 @@ combined as (
         -- courses data 
         cs.course_name,
 
-        -- school year 
-        sy.school_year,
-        
         -- dates
-        usl.created_at::date                as activity_date,
-        date_trunc('month',usl.created_at)  as activity_month,
+        sy.school_year,
+        usl.created_at::date                as created_date,
         
         -- aggs 
         sum(usl.time_spent)                 as time_spent_minutes,
@@ -66,7 +63,7 @@ combined as (
             between sy.started_at
                 and sy.ended_at 
                 
-    {{ dbt_utils.group_by(12) }} )
+    {{ dbt_utils.group_by(11) }} )
 
 select *
 from combined

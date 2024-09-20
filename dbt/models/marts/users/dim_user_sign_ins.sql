@@ -24,7 +24,7 @@ final as (
         
         -- dates 
         sy.school_year,
-        sii.sign_in_at::date as activity_date,
+        sii.sign_in_at::date as sign_in_date,
         
         -- aggs 
         sum(sii.sign_in_count) as num_sign_ins  

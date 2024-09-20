@@ -5,46 +5,33 @@ with cutoff_date as (select '2020-06-30'::date as cutoff_date),
 
 user_levels as (
     select  
-        activity_date, 
+        created_date, 
         user_id,
-        1 as known_cdo_user, -- all known users
-        1 as is_active,
-        country, 
-        us_intl,
-        total_attempts
-
+        1 as is_active
     from {{ ref('dim_user_levels') }}
-    where activity_date > (select cutoff_date from cutoff_date)
+    where created_date > (select cutoff_date from cutoff_date)
         and total_attempts > 0 
-), -- select * from user_levels
+), 
 
 sign_ins as (
     select 
-        activity_date,
+        sign_in_date,
         user_id,
-        1 as known_cdo_user, -- all known users
-        1 as is_active,
-        country,
-        us_intl,
-        num_sign_ins
-
+        1 as is_active
     from {{ ref('dim_user_sign_ins') }}
-    where activity_date > (select cutoff_date from cutoff_date)
+    where sign_in_date > (select cutoff_date from cutoff_date)
         and num_sign_ins > 0
-), -- select * from sign_ins
+), 
 
 projects as (
     select 
-        activity_date, 
+        project_created_at::date 
         user_id,
         known_cdo_user, -- includes anonymous users (0=anon, 1=known)
-        1 as is_active,
-        country,
-        us_intl,
-        count(*)    as num_rows
+        1 as is_active
 
-    from {{ ref('dim_user_projects') }}
-    where activity_date > (select cutoff_date from cutoff_date)
+    from {{ ref('dim_student_projects') }}
+    where project_created_at > (select cutoff_date from cutoff_date)
     
     {{ dbt_utils.group_by(6) }}
     having num_rows > 0 

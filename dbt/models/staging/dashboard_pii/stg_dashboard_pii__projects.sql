@@ -9,10 +9,10 @@ final as (
         storage_id,
         project_type,
 
-        {# value, #}
-        {# state, #}
-        {# remix_parent_id, #}
-        {# abuse_score, #}
+        value,
+        state,
+        remix_parent_id,
+        abuse_score,
         
         -- flags
         is_standalone,

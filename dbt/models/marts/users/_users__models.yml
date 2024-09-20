@@ -158,19 +158,6 @@ models:
   
     # config:
       # tags: ['released']
-  - name: dim_user_projects
-    description: |
-      This model combines and models user projects data using the user's project_storage id and projects data
-    columns: 
-      - name: user_id
-      - name: known_cdo_user
-      - name: project_id
-      - name: storage_id
-      - name: user_project_storage_id
-      - name: project_type
-      - name: activity_date
-    # config:
-      # tags: ['released']
 
   - name: dim_user_sign_ins
     description: | 
