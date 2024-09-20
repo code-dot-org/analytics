@@ -22,31 +22,30 @@ renamed as (
         case 
             when json_extract_path_text(
                 properties, 
-                'curriculum_umbrella') = ''                         
-            then 'other'
+                'curriculum_umbrella') = ''                         then 'other'
             else lower(
                 json_extract_path_text(
                     properties, 
                     'curriculum_umbrella',
                 true))
-        end                                                                 as course_name,
+        end as course_name,
         
         json_extract_path_text(
             properties, 
-            'supported_locales')                                            as supported_locales,
+            'supported_locales')    as supported_locales,
         
         json_extract_path_text(
             properties,
-            'version_year')                                                 as version_year,
+            'version_year')         as version_year,
         
         json_extract_path_text(
             properties,
-            'is_course')                                                    as is_standalone,
+            'is_course')            as is_standalone,
         
         regexp_replace(
             script_name,
             '((-)+\\d{4})',
-            '')                                                             as unit,
+            '')                     as unit,
 
         created_at,
         updated_at
@@ -54,4 +53,17 @@ renamed as (
     
 select 
     *
+    , case 
+        when course_name in (
+            'csc',
+            'csf', 
+            'csd', 
+            'csa', 
+            'csp', 
+            'ai', 
+            'foundations of cs'
+        )
+        then 1 
+        else 0 
+    end                                                             as is_active_student_course
 from renamed
