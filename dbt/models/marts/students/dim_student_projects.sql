@@ -60,7 +60,7 @@ final as (
     select distinct 
           p.project_id 
         , u.user_id
-        , case when p.user_id   is not null then 1 else 0 end   as known_cdo_user      
+        , case when p.user_id   is not null then 1 else 0 end   as known_cdo_user -- (1=student, 0=anon)
         , case when u.user_id   is not null then 1 else 0 end   as is_signed_in
         , u.user_type 
         , case 
