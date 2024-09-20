@@ -24,7 +24,7 @@ school_stats_2019_2020 as (
 
 school_stats_by_years_adjusted as (
     select
-    {{ pad_school_id('ssby.school_id') }}                                       as school_id,
+    {{ pad_school_id('ssby.school_id') }}  as school_id,
         school_year,
         survey_year,
         first_survey_year,
@@ -54,7 +54,7 @@ school_stats_by_years_adjusted as (
                 and ssby.total_students is null 
                     then ssby2.total_students
                 else ssby.total_students
-        end, 0)                                                                 as total_students,
+        end, 0) as total_students,
 
         count_student_am,
         count_student_as,
@@ -69,49 +69,54 @@ school_stats_by_years_adjusted as (
              and ssby.total_frl_eligible_students is null 
                 then ssby2.total_frl_eligible_students
             else ssby.total_frl_eligible_students 
-        end                                                                     as total_frl_eligible_students,
+        end as total_frl_eligible_students,
 
         created_at,
         updated_at,
-        case 
-            when community_type like '%city%' THEN 'urban'
-            when community_type like '%suburban%' THEN 'suburban'
-            else 'rural'
-        end                                                                     as community_type,
+        community_type,
 
         case when title_i_status in (1,2,3,4,5) 
                 then 1
             when title_i_status = 6 
                 then 0
-        end                                                                     as is_title_i,
+        end as is_title_i,
+
+        case when community_type in (
+                    'rural_fringe',
+                    'rural_distant',
+                    'rural_remote',
+                    'town_remote',
+                    'town_distant')
+                then 1 
+            when community_type is not null 
+                then 0
+        end as is_rural,
 
         case 
-            when 
-                grades_offered_lo in ('01', '02', '03', '04', '05', 'pk', 'kg') 
-            then 1
+            when grades_offered_lo in ('01', '02', '03', '04', '05', 'pk', 'kg') then 1
             when 
                 is_grade_pk = 1 
-                or is_grade_kg = 1 
-                or is_grade_01 = 1 
-                or is_grade_02 = 1 
-                or is_grade_03 = 1 
-                or is_grade_04 = 1 
-                or is_grade_05 = 1 
+                OR is_grade_kg = 1 
+                OR is_grade_01 = 1 
+                OR is_grade_02 = 1 
+                OR is_grade_03 = 1 
+                OR is_grade_04 = 1 
+                OR is_grade_05 = 1 
             then 1
             when grades_offered_lo is null then null -- I don't this is possible unless everything else is already null
             else 0 
-        end                                                                     as is_stage_el,
+        end as is_stage_el,
 
         
         case 
-            when grades_offered_lo in ('pk','kg')  -- exclude K-6 and pre-K-6 schools from being classified as middle schools
+            when grades_offered_lo IN ('pk','kg')  -- exclude K-6 and pre-K-6 schools from being classified as middle schools
               and grades_offered_hi = '06'
-            then 0
+                then 0
 
             when                                    -- any school offering grade 6, 7 or 8 is middle school
                 is_grade_06=1 
-                or is_grade_07=1 
-                or is_grade_08 = 1
+                OR is_grade_07=1 
+                OR is_grade_08 = 1
                 then 1
 
             when 
@@ -123,15 +128,15 @@ school_stats_by_years_adjusted as (
                 grades_offered_lo is null 
                 then null 
             else 0 
-        end                                                                     as is_stage_mi,
+        end as is_stage_mi,
         
         case                                            --if any individual grade 9-13 is marked as 1, then it's HS
             when 
                 is_grade_09 = 1
-                or is_grade_10 = 1
-                or is_grade_11 = 1
-                or is_grade_12 = 1
-                or is_grade_13 = 1
+                OR is_grade_10 = 1
+                OR is_grade_11 = 1
+                OR is_grade_12 = 1
+                OR is_grade_13 = 1
                 then 1 
 
              when grades_offered_hi in ( '09','10','11','12') 
@@ -140,14 +145,7 @@ school_stats_by_years_adjusted as (
                 grades_offered_hi is null 
                 then null 
             else 0 
-        end                                                                     as is_stage_hi,
-
-        case 
-            when ssby.total_students < 500 then 'small'
-            when ssby.total_students < 1200 then 'medium'
-            when ssby.total_students >= 1200 then 'large'
-            else null
-        end                                                                     as school_size_cat
+        end as is_stage_hi
 
     from school_stats_by_years as ssby
     left join school_stats_2019_2020 as ssby2
