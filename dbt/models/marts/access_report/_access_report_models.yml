@@ -1,0 +1,97 @@
+version: 2
+
+models:
+  - name: dim_cs_access
+    description: |
+      This model contains information about whether or not a school has a computer science offering. There is one row per school/ access report year.
+      There is additional information about the source(s) from which we gained the data about that school from. 
+
+      **note**: this data is entirely from external datasets and does not contain any information regarding code.org usage. 
+    columns:
+      - name: access_report_year
+        description: "The 'Access Report Year' for which the data are applicable.  i.e. access_report_year = 2023 means the data is for the access report we released in 2023"
+        data_tests:
+          - not_null
+
+      - name: nces_school_id
+        description: "The unique identifier for the school as provided by the National Center for Education Statistics (NCES)."
+        data_tests:
+          - not_null
+
+      - name: state
+        description: "The state where the school is located."
+
+      - name: school_name
+        description: "The name of the school."
+
+      - name: grade_levels
+        description: "The grade levels offered by the school in human readable format, two chars per level: `elmihi`.  For example, if a school offers elemetary-only that will be `el____`.  If a school offers grades 6-12 that will be `__mihi`"
+        data_tests:
+          - accepted_values:
+              values:
+                [
+                  "el____",
+                  "elmi__",
+                  "el__hi",
+                  "elmihi",
+                  "__mi__",
+                  "__mihi",
+                  "____hi",
+                  "______",
+                ]
+
+      - name: school_type
+        description: "The type of school. Possible values are 'public' and 'charter'."
+
+      - name: doe
+        description: "Indicates if the Department of Education provides data. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: provider_ib
+        description: "Indicates if the school offers International Baccalaureate programs. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: provider_ap
+        description: "Indicates if the school offers Advanced Placement programs. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: provider_teals
+        description: "Indicates if the school offers TEALS programs. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: provider_bootup
+        description: "Indicates if the school offers BootUp programs. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: provider_cambridge
+        description: "Indicates if the school offers Cambridge programs. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: provider_cyber
+        description: "Indicates if the school offers Cyber programs. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: all_providers
+        description: "Indicates if the school offers all listed providers. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: survey
+        description: "Indicates if data is provided by a survey. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: staff_entry
+        description: "Indicates if data is provided by staff entry. Possible values are 'Y' for Yes and 'N' for No."
+
+      - name: last_year
+        description: "Indicates if data is from last year. Possible values are 'Y' for Yes, 'N' for No, 'E' for Exclude, 'HN' for Hybrid No, 'HY' for Hybrid Yes."
+        data_tests:
+          - accepted_values:
+              values: ["Y", "N", "E", "HN", "HY"]
+      - name: override
+        description: "Indicates if data is an override. Possible values are 'Y' for Yes, 'N' for No, 'E' for Exclude, 'HN' for Hybrid No, 'HY' for Hybrid Yes."
+        data_tests:
+          - accepted_values:
+              values: ["Y", "N", "E", "HN", "HY"]
+
+      - name: teaches_cs_final
+        description: "Indicates the final decision on whether the school teaches computer science. Possible values are 'Y' for Yes, 'N' for No, 'flag', 'unknown'."
+        data_tests:
+          - accepted_values:
+              values: ["Y", "N", "HY", "HN", "E", "flag", "unknown"]
+      - name: filenames
+        description: "The name of the file from which the data was sourced."
+      - name: notes
+        description: "Additional notes or comments regarding the data entry."
+    config:
+      tags: ['released']
