@@ -47,6 +47,14 @@ models:
       Weekly counts of school acquisitions by status (new, retained, reacquired, inactive, churn, market). These are the top line metrics we use to measure against our goals of active schools.   
          
       **Note**: aggregating across weeks may result in inaccurate counts, as a single school can be considered "retained" multiple weeks in a row, for example, and thus would be double-counted.
+    
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - status
+          - school_level
+          - week_of
+    
     columns:
       - name: school_level
         description: elementary, middle, or high school- note that a given school may be counted in multiple school level aggregations (e.g. K-8)
@@ -73,6 +81,8 @@ models:
 
       - name: num_schools_running_total
         description: total number of schools within the school level and active status dimensions as of that week
+    
+
     config:
       tags: ['released']
 

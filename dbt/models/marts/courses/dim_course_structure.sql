@@ -72,6 +72,7 @@ combined as (
         ug.unit_group_id                                                as course_id,
         ug.unit_group_name                                              as course_name_full,
         sc.course_name,
+        sc.is_active_student_course,
 
         --flags
         case 
@@ -79,14 +80,10 @@ combined as (
                 coalesce(
                     ug.instruction_type,
                     sc.instruction_type
-                ) = 'self_paced'
-                and coalesce(
-                    ug.participant_audience,
-                    sc.participant_audience
-                )  = 'teacher'
+                ) = 'self_paced' 
             then 1 
             else 0 
-        end                                                             as is_self_paced_pd,    
+        end                                                             as is_self_paced,    
         case 
             when 
                 coalesce(
