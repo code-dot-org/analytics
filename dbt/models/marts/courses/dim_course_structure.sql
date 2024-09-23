@@ -112,10 +112,6 @@ combined as (
                     ug.participant_audience,
                     sc.participant_audience
                 )  = 'student'
-                and sc.published_state in (
-                    'stable',
-                    'preview',
-                    'beta')
                 and sc.course_name not in (
                     'hoc', 
                     'other')                                                             
