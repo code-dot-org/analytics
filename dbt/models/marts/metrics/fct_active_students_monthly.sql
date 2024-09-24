@@ -13,21 +13,17 @@ users as (
     where user_type = 'student'
 ),
 
+-- 1. combine user_levels, sign_ins, and projects data 
+
 user_levels as (
     select  
 
         user_id             as user_id,
         created_date        as activity_date,
-        'u'             as activity_type,
-        1               as is_active,
         1               as has_user_level_activity,
         null            as has_sign_in_activity,
         null            as has_project_activity
         
-        -- user_type,
-        -- known_cdo_user, -- only capturing student; no anonymous (yet)    (js; 20240920)
-        
-
     from {{ ref('dim_user_levels') }}
     where 
         created_date > {{ get_cutoff_date() }}
@@ -39,8 +35,6 @@ sign_ins as (
 
         user_id,
         sign_in_date        as activity_date,
-        's'                 as activity_type,
-        1                   as is_active, 
         null                as has_user_level_activity,
         1                   as has_sign_in_activity,
         null                as has_project_activity
@@ -56,8 +50,6 @@ projects as (
 
         user_id,
         project_created_at::date    as activity_date,
-        1                           as is_active,
-        'p'                         as activity_type,
         null                        as has_user_level_activity,
         null                        as has_sign_in_activity,
         1                           as has_project_activity
@@ -72,26 +64,48 @@ school_years as (
     where started_at > {{ get_cutoff_date() }}
 ),
 
-combined as (
-    select * from user_levels  
+unioned as (
+    select * from user_levels
     union all 
     select * from sign_ins 
     union all 
     select * from projects 
 ),
 
-final as (
+combined as (
     select 
-        date_trunc('month', comb.activity_date) as activity_month,
-        sy.school_year,
+        date_trunc('month', uni.activity_date)  as activity_month,
+        sy.school_year                          as school_year,
+        uni.user_id                             as student_id,
+        
         usr.us_intl,
         usr.country,
 
+        max(uni.has_user_level_activity)       as has_user_level_activity,
+        max(uni.has_sign_in_activity)          as has_sign_in_activity,
+        max(uni.has_project_activity)          as has_project_activity
 
-        count(distinct 
-            case 
+    from unioned    as uni
+    join users      as usr
+        on uni.user_id = usr.user_id
 
-            {#  Active Student Metric: 
+    join school_years as sy 
+        on uni.activity_date 
+            between sy.started_at 
+                and sy.ended_at
+
+    {{ dbt_utils.group_by(5) }} 
+), 
+
+final as (
+    select 
+        activity_month,
+        school_year,
+        us_intl,
+        country,
+        
+        count(distinct student_id) as num_active_students
+        {#  Active Student Metric: 
             
             1.  Any user_id with a sign_in on any given day 
                 
@@ -102,27 +116,16 @@ final as (
             
             2.b. A `projects` row exists 
 
-            -- js; 20240920                         #}
+            3.a A student is defined as a known CDO user (non-anonymous data)
+
+        -- js; 20240920                         #}
+        from combined 
         
-        {#  case when sum(comb.known_cdo_user) >= 1 
-             then max(usr.user_type) 
-             else 'anon' end                        as user_type_merged, #}
-
-                when comb.has_sign_in_activity  = 1
+        where   has_sign_in_activity = 1
                 and coalesce(
-                    comb.has_user_level_activity,
-                    comb.has_project_activity)   = 1
-            then comb.user_id end)                                    as num_active_students
-
-        from combined   as comb 
-        join users      as usr
-            on comb.user_id = usr.user_id 
-            
-        join school_years as sy 
-            on comb.activity_date 
-                between sy.started_at 
-                    and sy.ended_at
-
+                    has_project_activity,
+                    has_user_level_activity) = 1
+        
         {{ dbt_utils.group_by(4) }} )
 
 select *
