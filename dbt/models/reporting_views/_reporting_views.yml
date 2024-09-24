@@ -1,0 +1,7 @@
+models: 
+  - name: test_view_student_activity
+    description: |
+      Ephemeral views created for reporting. 
+    
+    config:
+      tags: ['reporting']
