@@ -13,6 +13,7 @@ review_table as (
             else 0 
         end                                                     as teaches_cs
     from {{ ref('stg_external_datasets__access_report_review_table') }}
+    where access_report_year != '2024'
     
 )
 

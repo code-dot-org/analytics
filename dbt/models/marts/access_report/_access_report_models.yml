@@ -3,8 +3,7 @@ version: 2
 models:
   - name: dim_cs_access
     description: |
-      This model contains information about whether or not a school has a computer science offering. There is one row per school/ access report year.
-      There is additional information about the source(s) from which we gained the data about that school from. 
+      This model contains information about whether or not a school has a computer science offering. There is one row per school/ access report year. Only public and charter schools are included. 
 
       **note**: this data is entirely from external datasets and does not contain any information regarding code.org usage. 
     columns:
@@ -43,55 +42,7 @@ models:
       - name: school_type
         description: "The type of school. Possible values are 'public' and 'charter'."
 
-      - name: doe
-        description: "Indicates if the Department of Education provides data. Possible values are 'Y' for Yes and 'N' for No."
-
-      - name: provider_ib
-        description: "Indicates if the school offers International Baccalaureate programs. Possible values are 'Y' for Yes and 'N' for No."
-
-      - name: provider_ap
-        description: "Indicates if the school offers Advanced Placement programs. Possible values are 'Y' for Yes and 'N' for No."
-
-      - name: provider_teals
-        description: "Indicates if the school offers TEALS programs. Possible values are 'Y' for Yes and 'N' for No."
-
-      - name: provider_bootup
-        description: "Indicates if the school offers BootUp programs. Possible values are 'Y' for Yes and 'N' for No."
-
-      - name: provider_cambridge
-        description: "Indicates if the school offers Cambridge programs. Possible values are 'Y' for Yes and 'N' for No."
-
-      - name: provider_cyber
-        description: "Indicates if the school offers Cyber programs. Possible values are 'Y' for Yes and 'N' for No."
-
-      - name: all_providers
-        description: "Indicates if the school offers all listed providers. Possible values are 'Y' for Yes and 'N' for No."
-
-      - name: survey
-        description: "Indicates if data is provided by a survey. Possible values are 'Y' for Yes and 'N' for No."
-
-      - name: staff_entry
-        description: "Indicates if data is provided by staff entry. Possible values are 'Y' for Yes and 'N' for No."
-
-      - name: last_year
-        description: "Indicates if data is from last year. Possible values are 'Y' for Yes, 'N' for No, 'E' for Exclude, 'HN' for Hybrid No, 'HY' for Hybrid Yes."
-        data_tests:
-          - accepted_values:
-              values: ["Y", "N", "E", "HN", "HY"]
-      - name: override
-        description: "Indicates if data is an override. Possible values are 'Y' for Yes, 'N' for No, 'E' for Exclude, 'HN' for Hybrid No, 'HY' for Hybrid Yes."
-        data_tests:
-          - accepted_values:
-              values: ["Y", "N", "E", "HN", "HY"]
-
-      - name: teaches_cs_final
-        description: "Indicates the final decision on whether the school teaches computer science. Possible values are 'Y' for Yes, 'N' for No, 'flag', 'unknown'."
-        data_tests:
-          - accepted_values:
-              values: ["Y", "N", "HY", "HN", "E", "flag", "unknown"]
-      - name: filenames
-        description: "The name of the file from which the data was sourced."
-      - name: notes
-        description: "Additional notes or comments regarding the data entry."
+      - name: teaches_cs
+        description: 1 if the school has been verified to be teaching CS (either in the current year or last school year)
     config:
       tags: ['released']
