@@ -25,7 +25,7 @@ current_year_student_courses as (
 current_year_activity as (
     select sla.*
     from student_script_level_activity sla
-    join current_year_student_courses cyc on sla.script_id = cyc.script_id amd sla.level_id = cyc.level_id
+    join current_year_student_courses cyc on sla.script_id = cyc.script_id and sla.level_id = cyc.level_id
 )
 
 select * 
