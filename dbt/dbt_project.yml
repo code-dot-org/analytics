@@ -76,6 +76,11 @@ models:
         - "mart"
       +materialized: table
 
+    reporting_views:
+      tags:
+        - "reporting"
+      +materialized: view
+
     staging:
       tags:
         - "staging"

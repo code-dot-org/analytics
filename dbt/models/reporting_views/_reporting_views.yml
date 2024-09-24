@@ -1,0 +1,7 @@
+models: 
+  - name: test_view_student_activity
+    description: |
+      Student activity for 2024 curriculum, view created for reporting, to be used in Tableau. 
+    
+    config:
+      tags: ['reporting']
