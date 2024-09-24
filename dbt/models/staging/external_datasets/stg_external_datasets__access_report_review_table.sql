@@ -21,3 +21,7 @@ with all_data as (
 )
 select *
 from all_data
+where state not in ('AS', 'GU', 'MP', 'PR', 'VI') -- exclude territories
+and teaches_cs_final not in ('unknown', 'E', 'flag') -- exclude schools with unknown CS status
+and grade_levels != '______' -- exclude schools with no grade levels
+and school_type in ('public', 'charter')
