@@ -78,7 +78,7 @@ models:
 
     reporting_views:
       tags:
-        - "reporting_view"
+        - "reporting"
       +materialized: view
 
     staging:
