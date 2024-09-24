@@ -98,7 +98,7 @@ combined as (
 ), 
 
 final as (
-    select 
+    select
         activity_month,
         school_year,
         us_intl,
