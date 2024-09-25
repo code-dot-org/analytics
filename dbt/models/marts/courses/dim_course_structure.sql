@@ -56,9 +56,13 @@ parent_levels_child_levels as (
     from {{ ref('int_parent_levels_child_levels') }}
 ),
 
-course_names as (
-    select *
-    from {{ ref('dim_course_names') }}
+-- select all courses that should be categorized as active student courses, to account for those with null participant audience
+student_course_names as (
+    select distinct course_name
+    from {{ ref('stg_dashboard__scripts') }}
+    where participant_audience = 'student'
+    and course_name not like '%self paced pl%'
+    and course_name not in ('hoc', 'other')
 ),
 
 script_names as (
@@ -104,13 +108,19 @@ combined as (
 
         case 
             when 
-                coalesce(
-                    ug.participant_audience,
-                    sc.participant_audience
-                )  = 'student'
-                and sc.course_name not in (
-                    'hoc', 
-                    'other')                                                             
+                (
+                    coalesce(
+                        ug.participant_audience,
+                        sc.participant_audience
+                    )   = 'student'
+                    or coalesce(
+                        ug.participant_audience,
+                        sc.participant_audience
+                    )   is null
+                )
+                and sc.course_name in (
+                    select course_name from student_course_names
+                )                                                             
             then 1 
             else 0 
         end                                                             as is_active_student_course,
@@ -213,12 +223,6 @@ combined as (
     
     left join unit_groups as ug 
         on ug.unit_group_id = cs.course_id 
-    
-    -- left join course_names as cn 
-    --     on ug.unit_group_id = cn.versioned_course_id   
-    
-    -- left join script_names as sn 
-    --     on sn.versioned_script_id = sc.script_id
     
     left join parent_levels_child_levels as plcl 
         on plcl.parent_level_id = lsl.level_id 
