@@ -57,11 +57,7 @@ projects as (
     from {{ ref('dim_student_projects') }}
     where project_created_at > {{ get_cutoff_date() }}
         and user_type = 'student'
-),
-
-school_years as (
-    select * from {{ ref("int_school_years") }} 
-    where started_at > {{ get_cutoff_date() }}
+        and project_info = 1 
 ),
 
 unioned as (
@@ -75,7 +71,6 @@ unioned as (
 combined as (
     select 
         date_trunc('month', uni.activity_date)  as activity_month,
-        sy.school_year                          as school_year,
         uni.user_id                             as student_id,
         
         usr.us_intl,
@@ -89,18 +84,12 @@ combined as (
     join users      as usr
         on uni.user_id = usr.user_id
 
-    join school_years as sy 
-        on uni.activity_date 
-            between sy.started_at 
-                and sy.ended_at
-
-    {{ dbt_utils.group_by(5) }} 
+    {{ dbt_utils.group_by(4) }} 
 ), 
 
 final as (
     select
         activity_month,
-        school_year,
         us_intl,
         country,
         
@@ -126,7 +115,7 @@ final as (
                     has_project_activity,
                     has_user_level_activity) = 1
         
-        {{ dbt_utils.group_by(4) }} )
+        {{ dbt_utils.group_by(3) }} )
 
 select *
 from final 
