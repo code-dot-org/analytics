@@ -30,9 +30,6 @@ models:
       data_tests:
         - not_null
         
-    - name: school_year
-      description: Corresponding school year for activity date 
-    
     - name: country
       description: "the country of the users as determined by code.org geolocation"
     
@@ -41,6 +38,9 @@ models:
     
     - name: num_actives
       description: the number of active students on given month, in given country
+      data_tests:
+        - not_null 
+        
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
