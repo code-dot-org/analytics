@@ -84,7 +84,7 @@ started_schools as (
         
         case when -- for a school to be active it has to have started a course that is NOT hoc-only
             started_schools.school_id is not null 
-            and started_schools.active_courses <> 'hoc' then 1 
+            then 1 
             else 0 
         end as is_active,
 
