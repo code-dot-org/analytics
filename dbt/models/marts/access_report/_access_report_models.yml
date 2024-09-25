@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dim_cs_access
     description: |
-      This model contains information about whether or not a school has a computer science offering. There is one row per school/ access report year. Only public and charter schools are included. 
+      This model contains information about whether or not a school has a computer science offering. There is one row per school/ access report year. Only public/charter high schools are included. 
 
       **note**: this data is entirely from external datasets and does not contain any information regarding code.org usage. 
     columns:
