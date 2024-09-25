@@ -129,6 +129,5 @@ final as (
         {{ dbt_utils.group_by(4) }} )
 
 select *
-from final
-order by 
-    activity_month desc 
+from final 
+order by activity_month desc  
