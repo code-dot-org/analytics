@@ -11,8 +11,8 @@ users as (
 user_levels as (
     select  
 
-        user_id             as user_id,
-        created_date        as activity_date,
+        user_id,
+        created_date    as activity_date,
         1               as has_user_level_activity,
         null            as has_sign_in_activity,
         null            as has_project_activity

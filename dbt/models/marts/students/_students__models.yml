@@ -84,8 +84,8 @@ models:
           - not_null 
         data_type: "date"
 
-      - name: user_id
-        description: "The Code.org user id for a user, consolidated from any activity across user levels, sign-ins, and projects data."
+      - name: student_id
+        description: "The unique student id, consolidated from any activity across user levels, sign-ins, and projects data."
         data_tests:
           - not_null
         data_type: "varchar"
@@ -117,7 +117,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - user_id
+            - student_id
             - activity_date
 
   - name: dim_students
