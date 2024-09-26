@@ -18,7 +18,9 @@ user_levels as (
         null            as has_project_activity
         
     from {{ ref('dim_user_levels') }}
-    where total_attempts > 0 
+    where 
+        total_attempts > 0 
+        and created_date > {{ get_cutoff_date() }} 
 ), 
 
 sign_ins as (
@@ -31,7 +33,10 @@ sign_ins as (
         null                as has_project_activity
 
     from {{ ref('dim_user_sign_ins') }}
-    where num_sign_ins > 0
+    where 
+        num_sign_ins > 0
+        and sign_in_date > {{ get_cutoff_date() }} 
+
 ), 
 
 projects as (
@@ -44,8 +49,11 @@ projects as (
         1                           as has_project_activity
 
     from {{ ref('dim_student_projects') }}
-    where user_type = 'student'
+    where 
+        user_type = 'student'
         and project_info = 1 
+        and project_created_at > {{ get_cutoff_date() }} 
+
 ),
 
 unioned as (

@@ -9,7 +9,7 @@
 with active_students as (
     select * 
     from {{ ref('dim_active_students') }}
-    where activity_date > {{ get_cutoff_date() }}
+    -- where activity_date > {{ get_cutoff_date() }}
 ),
 
 final as (
