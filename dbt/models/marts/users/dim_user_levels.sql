@@ -42,8 +42,9 @@ combined as (
 
         -- dates
         sy.school_year,
-        usl.created_at::date                as created_date,
-        
+        usl.created_at::date                    as created_date,
+        min(usl.created_at)                     as first_activity_at,
+        max(usl.created_at)                     as last_activity_at,
         -- aggs 
         sum(usl.time_spent)                 as time_spent_minutes,
         sum(usl.attempts)                   as total_attempts,

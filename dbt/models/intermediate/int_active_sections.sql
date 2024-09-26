@@ -8,7 +8,7 @@ student_section as (
 
 student_course_starts as (
     select *
-    from {{ ref('dim_user_course_activity') }}
+    from {{ ref('dim_user_levels') }}
     where user_id in (select student_id from student_section)
 ),
 
@@ -18,8 +18,8 @@ combined as (
 		,ss.school_year
 		,scs.course_name
 		,ss.section_id
-        ,min(scs.first_activity_at) as section_started_at
-		,count(distinct ss.student_id) as num_students 
+        ,min(scs.first_activity_at)     as section_started_at
+		,count(distinct ss.student_id)  as num_students 
 	from student_course_starts scs
 	join student_section ss 
 	on scs.user_id = ss.student_id 
