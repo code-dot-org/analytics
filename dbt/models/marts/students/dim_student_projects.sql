@@ -83,10 +83,10 @@ final as (
         end                                                                     as is_deleted
         , p.remix_parent_id
         , p.value                                                               as project_info
-        , case
-            when json_extract_path_text(p.value, 'id', true) <> '' then 1 
-            else 0 
-        end                                                                     as is_valid
+        -- , case
+        --     when json_extract_path_text(p.value, 'id', true) <> '' then 1 
+        --     else 0 
+        -- end                                                                     as is_valid
 
     from student_projects                                                       as p
     join school_years                                                           as sy
