@@ -51,6 +51,7 @@ projects as (
     from {{ ref('dim_student_projects') }}
     where 
         user_type = 'student'
+        and is_valid = 1 
         and project_created_at > {{ get_cutoff_date() }} 
 
 ),
