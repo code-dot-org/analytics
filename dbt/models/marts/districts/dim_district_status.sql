@@ -102,7 +102,7 @@ active_status_simple as (
         all_districts_sy.school_year,
         case 
             when started_districts.school_district_id is not null 
-            and started_districts.active_courses <> 'hoc'then 1 
+            then 1 
             else 0 
         end                                                                 as is_active,
         started_districts.district_started_at,
