@@ -153,3 +153,38 @@ models:
 
     config:
       tags: ['released']
+      
+  - name: dim_user_course_activity
+    description: |
+      This model is a log of all student- and teacher-course activity within a school year.   
+
+      Grain: user_id, school_year, course_name
+    columns:
+    - name: user_id
+      description: unique ID for teacher or student
+
+    - name: user_type
+      description: student or teacher
+    
+    - name: school_year
+      description: the school year in which the course activity was in
+      data_tests:
+        - not_null 
+        
+    - name: course_name
+      description: the course associated with the individual user's activity in a given school year
+
+    - name: us_intl
+      description: label for us / intl 
+
+    - name: country
+      description: the country associated with the individual user's activity in a given school year
+    
+    - name: first_activity_at
+      description: timestamp of the student's first activity within the given course and school year- this field is later used to determine when a section/school first started teaching
+    
+    - name: last_activity_at 
+      description: timestamp of the student's latest activity within the given course and school year
+  
+    config:
+      tags: ['released']

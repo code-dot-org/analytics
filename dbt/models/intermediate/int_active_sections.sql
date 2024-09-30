@@ -7,9 +7,18 @@ student_section as (
 ),
 
 student_course_starts as (
-    select *
-    from {{ ref('dim_user_levels') }}
-    where user_id in (select student_id from student_section)
+    select 
+        user_id, 
+        school_year,
+        course_name,
+        min(first_activity_at) as first_activity_at,
+        max(last_activity_at) as last_activity_at
+    
+    from {{ ref('dim_user_course_activity') }}
+    where user_id in (
+        select student_id 
+        from student_section )
+    {{ dbt_utils.group_by(3)}}
 ),
 
 combined as (
@@ -18,13 +27,13 @@ combined as (
 		,ss.school_year
 		,scs.course_name
 		,ss.section_id
-        ,min(scs.first_activity_at)     as section_started_at
+        ,min(first_activity_at)     as section_started_at
 		,count(distinct ss.student_id)  as num_students 
 	from student_course_starts scs
 	join student_section ss 
 	on scs.user_id = ss.student_id 
     and scs.school_year = ss.school_year 
-	group by 1,2,3,4
+    {{ dbt_utils.group_by(4) }}
 ),
 
 final as (
@@ -36,8 +45,7 @@ final as (
         ,section_started_at
         ,num_students
     from combined
-    where num_students >= 5
-)
+    where num_students >= 5 )
 
 select *
 from final
