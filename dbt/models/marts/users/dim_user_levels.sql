@@ -4,8 +4,18 @@
 
 with 
 user_levels as (
-    select *
+    select 
+        user_id,
+        level_id,
+        script_id,
+        created_at,
+        created_at::date    as created_date,
+        sum(time_spent)     as time_spent_minutes,
+        sum(attempts)       as total_attempts,
+        max(best_result)    as best_result
     from {{ ref('stg_dashboard__user_levels') }}    
+    where created_at > {{ get_cutoff_date() }}
+    {{ dbt_utils.group_by(5) }}
 ),
 
 users as (
@@ -25,30 +35,30 @@ course_structure as (
 
 combined as (
     select 
-        -- user level id's 
-        usl.user_id,
-        usl.level_id,
-        usl.script_id,
-        
         -- user data
+        usl.user_id,
         usr.user_type,
         usr.self_reported_state,
         usr.country,
         usr.us_intl,
         usr.is_international,
 
+        -- user level id's 
+        usl.level_id,
+        usl.script_id,
+        
         -- courses data 
         cs.course_name,
         cs.is_active_student_course,
 
+        -- aggs 
+        usl.time_spent_minutes,
+        usl.total_attempts,
+        usl.best_result,
+
         -- dates
         sy.school_year,
-        usl.created_at::date                    as created_date,
-
-        -- aggs 
-        sum(usl.time_spent)                 as time_spent_minutes,
-        sum(usl.attempts)                   as total_attempts,
-        max(usl.best_result)                as best_result
+        usl.created_date 
 
     from user_levels    as usl 
     
@@ -62,9 +72,7 @@ combined as (
     join school_years as sy 
         on usl.created_at
             between sy.started_at
-                and sy.ended_at 
-                
-    {{ dbt_utils.group_by(12) }} )
+                and sy.ended_at )
 
 select *
 from combined
