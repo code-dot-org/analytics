@@ -8,8 +8,7 @@ final as (
         project_id,
         storage_id,
         project_type,
-
-        value,
+        value, -- what do we need this for?
         state,
         remix_parent_id,
         abuse_score,
@@ -21,15 +20,9 @@ final as (
         -- dates
         published_at,
         created_at,
-        updated_at,
-        case
-            when json_extract_path_text(value, 'id', true) <> '' 
-            then 1 
-            else 0 
-        end                                                                     as is_valid
+        updated_at
 
     from projects )
 
 select *
 from final
-where is_valid = 1
