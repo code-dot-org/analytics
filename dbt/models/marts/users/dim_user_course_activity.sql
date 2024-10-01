@@ -79,8 +79,7 @@ combined as (
             between sy.started_at 
                 and sy.ended_at
                 
-    {{ dbt_utils.group_by(6) }}
-)
+    {{ dbt_utils.group_by(6) }} )
 
 select *
 from combined

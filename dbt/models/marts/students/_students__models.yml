@@ -71,15 +71,11 @@ models:
 
   - name: dim_active_students
     description: |
-      This model serves as a **prototype** for the active student metric. (Please update this description as the metric is improved/modified.) 
-
-      The model aggregates student activities _per user, per day_ across**:
+      This model serves as a dimensional model of data required to achieve active student metrics/
+      For a student to be active, they must have a sign_in and either a user_level or project activity.
         - `user_levels`
         - `sign-ins` 
         - `projects`  
-
-      ** the timestamps used for `user_level` and `projects` are the created_at timestamps right now. A better approach (in theory) would be to
-      use updated_at, but we would need to start logging those daily.
 
     columns:
       - name: activity_date
@@ -88,16 +84,12 @@ models:
           - not_null 
         data_type: "date"
 
-      - name: user_id
-        description: "The Code.org user id for a user, consolidated from any activity across user levels, sign-ins, and projects data."
+      - name: student_id
+        description: "The unique student id, consolidated from any activity across user levels, sign-ins, and projects data."
         data_tests:
           - not_null
         data_type: "varchar"
-
-      - name: user_type_merged
-        description: "The type of user (e.g., student, teacher), sourced from the Code.org user profile."
-        data_type: "varchar"
-
+      
       - name: country
         description: "The country of the user, derived from Code.org user-geographical data linked to the user_id. The country is volitile - it maps to the user's _current_ geographic lociation, not necessarily their location at the time of the event, and it can change over time."
         data_type: "varchar"
@@ -109,22 +101,6 @@ models:
       - name: school_year
         description: "The school year during which the activity occurred, determined by matching the activity date with school year ranges. A school year is defined as the 365 days between July 1 in year 1, and June 30 in year 2."
         data_type: "varchar"
-
-      - name: calendar_year
-        description: "The calendar year extracted from the activity date, used for additional temporal analysis."
-        data_type: "integer"
-
-      - name: num_user_level_records
-        description: "The number of new user level records created for the user on the given day."
-        data_type: "integer"
-
-      - name: num_project_records
-        description: "The number of new projects created (project records) associated with the user for the given day."
-        data_type: "integer"
-
-      - name: num_sign_ins
-        description: "The number of sign-in records for the user on the given day."
-        data_type: "integer"
 
       - name: has_sign_in_activity
         description: "`0|1` flag indicating whether there was any sign-in activity for the user on the given day (1 for yes, 0 for no)."
@@ -138,14 +114,10 @@ models:
         description: "`0|1` flag indicating whether there was any project activity for the user on the given day (1 for yes, 0 for no)."
         data_type: "integer"
 
-      - name: activity_type
-        description: "A 3-character long string 'encoded' to represent the three possible types of activity present for the user on the given day: 'S' for sign-ins, 'L' for user levels, 'P' for projects, in that order; '_' represents absence of the respective activity. For example: `SL_` means that on this day the user has user_level activity and a sign-in record, but no project created. `__P` means only a project was created on this day for this user.  This field reflects in a single sring the 0|1 values from the `has_[event]_activity` fields."
-        data_type: "varchar"
-
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - user_id
+            - student_id
             - activity_date
 
   - name: dim_students

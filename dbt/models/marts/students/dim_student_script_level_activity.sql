@@ -14,28 +14,12 @@ with
 */
 user_levels as (
     select 
-        user_id,
-        
-        -- Note: 
-        --      In order to not cross-polenate too soon, this part
-        --      of the model will maintain user_id only
-        -- Optional: 
-        --      Create surrogate key for incremental load
-        --      md5 ( concat (user_id,activity_date,level_id,script_id ) as surrogate_key
-        
-        level_id,
-        script_id,
-        
+        *,
+
         -- dates 
-        date_trunc('day', created_at)    as activity_date,
-        extract('month' from created_at) as activity_month,
-        
-        -- aggs
-        max(attempts)       as total_attempts,
-        max(best_result)    as best_result,
-        sum(time_spent)     as time_spent_minutes
-    from {{ ref('stg_dashboard__user_levels') }}
-    {{ dbt_utils.group_by(5) }}
+        created_date                        as activity_date,
+        extract('month' from created_date)  as activity_month
+    from {{ ref('dim_user_levels') }}
 ), 
 
 course_structure as (
@@ -157,17 +141,26 @@ schools as (
 ),
 
 users as (
-    select user_id, is_international, country 
+    select 
+        user_id, 
+        is_international, 
+        country 
     from {{ ref('dim_users') }}
 ),
 
 school_status as (
-    select school_id, school_year, status as school_status
+    select 
+        school_id, 
+        school_year, 
+        status as school_status
     from {{ ref('dim_school_status') }}
 ),
 
 teacher_status as (
-    select teacher_id, school_year, status as teacher_status  
+    select 
+        teacher_id, 
+        school_year, 
+        status as teacher_status  
     from {{ ref('dim_teacher_status') }}
 ),
 
@@ -249,10 +242,10 @@ final as (
         sta.best_result,
         sta.time_spent_minutes
 
-    from combined as comb 
-    left join student_activity as sta 
-        on comb.student_id = sta.user_id 
-        and comb.school_year = sta.school_year )
+    from combined               as comb 
+    left join student_activity  as sta 
+        on comb.student_id      = sta.user_id 
+        and comb.school_year    = sta.school_year )
 
 select * 
 from final

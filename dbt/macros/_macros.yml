@@ -252,3 +252,8 @@ macros:
     arguments:
       - name: zip
         description: The ZIP code to be padded.
+
+  - name: get_cutoff_date
+    description: set 5-year cut off date value for use in marts (by school_year)
+    docs:
+      show: false
