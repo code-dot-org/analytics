@@ -1,10 +1,6 @@
 -- version: 2.0 (JS)
 -- 2024-08-30
 
--- version: 3.0 (Natalia)
--- 2024-10-01 
--- Made changes to include all users with activity in student-facing content
-
 with 
 /*
     1. User Course Activity
@@ -36,7 +32,6 @@ course_structure as (
         level_name,
         level_type,
         unit        as unit_name,
-        stage_id    as lesson_id,
         stage_name  as lesson_name
     from {{ ref('dim_course_structure') }}
     
@@ -75,7 +70,6 @@ student_activity as (
         cs.level_type,
         cs.script_name,
         cs.unit_name,
-        cs.lesson_id,
         cs.lesson_name,
 
         -- aggs
@@ -150,8 +144,7 @@ users as (
     select 
         user_id, 
         is_international, 
-        country,
-        user_type
+        country 
     from {{ ref('dim_users') }}
 ),
 
@@ -171,7 +164,7 @@ teacher_status as (
     from {{ ref('dim_teacher_status') }}
 ),
 
-sections_combined as (
+combined as (
     select 
         -- students
         sec.student_id,
@@ -179,6 +172,9 @@ sections_combined as (
 
         -- case when sec.student_removed_at is not null 
         --      then 1 else 0 end as is_removed,
+
+        usr.is_international,
+        usr.country,
 
         -- teachers
         sec.teacher_id as section_teacher_id,
@@ -206,82 +202,50 @@ sections_combined as (
         -- sec.student_added_at,
         -- sec.student_removed_at,
         
-    from   sections   as sec    -- left join to keep unsectioned students
+    from sections   as sec 
     
-    left join teacher_status as tes  -- left join to avoid missing teachers without status 
+    join teacher_status as tes 
         on tes.teacher_id   = sec.teacher_id 
         and tes.school_year = sec.school_year
     
-    left join school_status as sst  -- left join to keep sections without an NCES-associated school
+    join school_status as sst 
         on  sec.school_id   = sst.school_id 
         and sec.school_year = sst.school_year 
     
-    left join schools    as sch     -- left join to keep sections without an NCES-associated school
+    join schools    as sch
         on sch.school_id = sec.school_id 
-
+    join users      as usr 
+        on usr.user_id = sec.student_id
 ),
 
 final as (
     select 
-        sta.user_id as student_id,
-        sta.school_year,
+        comb.*,
 
-        -- activity dates
+        -- moar dates
         sta.activity_date,
         sta.activity_month,
         sta.activity_quarter, 
         
-        -- curriculum content of the activity 
-        sta.course_name,
-        sta.unit_name,
-        sta.script_id,
-        sta.script_name,
-        sta.lesson_id,
-        sta.lesson_name,
+        -- coursework 
         sta.level_id,
+        sta.script_id,
+        sta.course_name,
+        sta.script_name,
         sta.level_name,
         sta.level_type,
+        sta.unit_name,
+        sta.lesson_name,
 
-        -- activity metrics
+        -- totals
         sta.total_attempts,
         sta.best_result,
-        sta.time_spent_minutes,
+        sta.time_spent_minutes
 
-        -- User characteristics
-        usr.is_international,
-        usr.country,
-        usr.user_type,
-
-        -- sections
-        comb.section_id,
-
-        -- teachers
-        comb.section_teacher_id,
-        comb.teacher_status,
-        
-        -- schools
-        comb.school_id,
-        comb.school_name,
-        comb.school_status,
-        comb.school_district_id,
-        comb.school_district_name,
-        comb.school_state,
-        comb.school_type,
-        comb.school_is_stage_el,
-        comb.school_is_stage_mi,
-        comb.school_is_stage_hi,
-        comb.school_is_high_needs,
-        comb.school_is_rural
-
-    from 
-        student_activity    as sta
-
-    left join users         as usr 
-        on      sta.user_id      = usr.user_id
-
-    left join sections_combined      as comb  
-        on      sta.user_id      = comb.student_id
-            and sta.school_year  = comb.school_year )
+    from combined               as comb 
+    left join student_activity  as sta 
+        on comb.student_id      = sta.user_id 
+        and comb.school_year    = sta.school_year )
 
 select * 
 from final
