@@ -5,7 +5,7 @@ cs_ambassadors as (
 )
 
 select 
-    created_dt
+    to_timestamp(created_dt, 'MM/DD/YYYY HH24:MI:SS')       as created_dt
     , teacher_email
     , case when cdo_teacher = 'Yes' then 1 else 0 end as cdo_teacher
     , teacher_first_name   
