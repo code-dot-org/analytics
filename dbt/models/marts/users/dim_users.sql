@@ -41,6 +41,10 @@ final as (
         users.purged_at,
         users.cap_status,
         users.cap_status_date,
+        case 
+            when users_pii.teacher_email like '%+amb%' then 1
+            else 0 
+        end                                                         as is_ambassador,
         users_pii.teacher_email,
         users_pii.races,
         users_pii.race_group,
