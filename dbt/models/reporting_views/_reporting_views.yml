@@ -5,3 +5,10 @@ models:
     
     config:
       tags: ['reporting']
+
+  - name: csp_csd_csa_heavy_users
+    description: |
+      CSP/CSD/CSA heavy users is a critical view for Ballmer reporting, as it identifies the students that are heavy users of our CSP, CSA, and CSD curriculum
+    
+    config:
+      tags: ['reporting']
