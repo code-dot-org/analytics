@@ -1,7 +1,7 @@
 {#
 model: 
 auth: cory
-notes: ports the csd_csp_complete view from analysis to work on Hydrone. This is critical for determining heavy user schools, which we use for Ballmer deliverables
+notes: roughly based on csd_csp_completed view from analysis. This is critical for determining heavy user schools, which we use for Ballmer deliverables
 changelog:
 #}
 
@@ -148,6 +148,10 @@ from
   WHERE started_at_rank=5
 )
 
+--select * from 
+--csp_csd_course_structure
+
+
 ----------Build table unioning csd, csp and csa defs --------------------
 select 
   fs.user_id, 
@@ -181,7 +185,7 @@ from
     join analytics.dim_users u on u.user_id = us.user_id and u.user_type = 'student'
     where 
 	    cs.course_name = 'csp'
-	    and cs.version_year IN ('2017','2018','2019')
+	    and cs.version_year IN ('2017','2018','2019') --make sure this reflects > 2017, not unversioned
   )
   where stage_order = 5
 )
@@ -222,3 +226,4 @@ select
   0 as noncoding_qual
 
 FROM csa_completed
+*/
