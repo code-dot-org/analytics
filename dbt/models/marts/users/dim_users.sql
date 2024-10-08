@@ -41,6 +41,7 @@ final as (
         users.purged_at,
         users.cap_status,
         users.cap_status_date,
+        users_pii.is_ambassador,
         users_pii.teacher_email,
         users_pii.races,
         users_pii.race_group,
