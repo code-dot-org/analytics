@@ -14,9 +14,8 @@
 */ 
 
 with all_ledgers AS (
-    select * from {{source('external_datasets','stg_ap_ledgers_raw_2024')}}
+    select * from {{source('external_datasets','ap_ledgers_raw_2024')}}
 )
 
 select *
 from all_ledgers
-

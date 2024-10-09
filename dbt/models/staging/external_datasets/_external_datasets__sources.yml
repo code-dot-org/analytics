@@ -80,7 +80,7 @@ sources:
       - name: stg_ap_ledgers_raw_2023
         description: "AP ledgers for 2023"
       
-      - name: stg_ap_ledgers_raw_2024
+      - name: ap_ledgers_raw_2024
         description: "AP ledgers for 2024"
 
      # AP crosswalks

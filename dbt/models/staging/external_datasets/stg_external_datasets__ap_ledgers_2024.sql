@@ -38,7 +38,7 @@ with all_ledgers AS (
             when provider_syllabus = 'Code.org Sample Syllabus' then 'Code.org' 
             when provider_syllabus = 'Code.org Sample Syllabus (For Pilot Teachers Only)' then 'Code.org' 
             end as provider_syllabus
-    from {{source('external_datasets','stg_ap_ledgers_raw_2024')}}
+    from {{ ref('base_external_datasets__ap_ledgers_2024') }}
 ),
 
 national_group AS (
