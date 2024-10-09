@@ -10,16 +10,20 @@
     (3) repeat until you get a clean build passing all tests
 
 */
+
 with all_data as (
 
-    {% set years = ['2017_2021', '2022', '2023'] %} 
+    {% set years_base = ['2017_2021', '2022', '2023'] %} 
 
-    {% for year in years %}
+    {% for year in years_base %}
         select * from {{ ref('base_external_datasets__ap_ledgers_'~year) }}
         {% if not loop.last %}
             union all
         {% endif %}
     {% endfor %}
+
+    union all 
+    select * from {{ ref('stg_external_datasets__ap_ledgers_2024') }}
 )
 
 select 
@@ -34,6 +38,3 @@ select
     country,
     provider_syllabus
 from all_data
-
-
-

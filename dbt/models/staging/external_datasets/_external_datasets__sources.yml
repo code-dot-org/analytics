@@ -4,7 +4,7 @@ sources:
     database: dashboard 
     schema: analysis
     description: |
-      The data sources in external data sets are largely red shift tables that are direct copies of CSV files stored in S3.
+      The data sources in external datasets are largely redshift tables that are direct copies of CSV files stored in S3.
       Code.org's primary external data sources are:
 
         ## 1. AP Data (from the College Board) 
@@ -73,11 +73,15 @@ sources:
             FROM analysis.ap_ledger_raw
             WHERE exam_year IN (2017,2018,2019,2020,2021)
           );```
+
       - name: stg_ap_ledgers_raw_2022
         description: "AP ledgers for 2022"
 
       - name: stg_ap_ledgers_raw_2023
         description: "AP ledgers for 2023"
+      
+      - name: stg_ap_ledgers_raw_2024
+        description: "AP ledgers for 2024"
 
      # AP crosswalks
       - name: stg_ap_crosswalk_2016_2022
@@ -110,18 +114,11 @@ sources:
       - name: stg_ap_crosswalk_2023
         description: "AP crosswalk data for 2023. This is more or less a direct copy of data .csv provided by the college board.  See S3 ap_data bucket."
 
+      - name: stg_ap_crosswalk_2024
+        description: "AP crosswalk data for 2024"
+
     # access report tables   
       - name: access_report_megatable_2023
       - name: access_report_megatable_2024
       - name: access_report_review_table_2023
-      - name: access_report_review_table_202
-  - name: external_datasets_public
-    database: dashboard 
-    schema: public
-    description: sometimes we don't have access to the analysis schema so we have to use public instead
-    tables:
-      - name: stg_ap_ledgers_raw_2024
-        description: "AP ledgers for 2024. This is a copy of the CSV files provided by the college board, but aggregated together"
-
-      - name: stg_ap_crosswalk_2024
-        description: "AP crosswalk data for 2024. This is a copy of data .csv provided by the college board."
+      - name: access_report_review_table_2024
