@@ -70,7 +70,10 @@ models:
         description: child account policy tag; only relevant for students (options are 'grace period', 'locked_out', 'permission_granted')
           
       - name: cap_status_date
-        description: child account policy tag; 
+        description: child account policy tag
+      
+      - name: is_ambassador
+        description: 1 is the teacher account is associated with a student participating in the ambassador program, 0 otherwise
 
     config:
       tags: ['released']
