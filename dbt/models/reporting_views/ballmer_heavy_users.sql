@@ -17,7 +17,7 @@ with csp_csa_course_structure AS (
     stage_name,
     stage_number,
 
-    -- Extracting the unit number. 
+    -- Providing the unit number, this could be regex'd
    CASE
     when unit in ('csa1', 'csp1', 'cspunit1') then '1'
     when unit in ('csa2', 'csp2', 'cspunit2') then '2'
@@ -43,7 +43,7 @@ with csp_csa_course_structure AS (
 -- 1. Find all csa_users of units 1-8
 -- 2. keep only users/units that have 5+ lessons visited
 -- 3. keep only users that have 5+ units with 5+lessons
-, csa_users AS ( -- user|unit|school_year|stagecount --all students by # stages per unit per school year
+, csa_users AS ( 
   select 
 	us.user_id, 
 	cs.course_name, 
@@ -76,12 +76,6 @@ with csp_csa_course_structure AS (
       csa_users 
     WHERE
       unit_number IS NOT NULL and unit_number BETWEEN 1 AND 8
-)
-
-, int as (
-select user_id, school_year, max(started_at_rank)
-from csa_completed_num_stages_qualifiers
-group by user_id, school_year
 )
 
 , csa_completed AS ( -- keep only users who have 5+ units with 5+ stages (the record with rank=5 from csa_num_stages is the 'completed at' time)
