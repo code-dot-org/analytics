@@ -24,9 +24,9 @@ transformed_ledger as (
             when exam= 'Computer Science A' then 'csa'
             end                                                                          as exam,
         cast(ai_code as varchar)                                                         as ai_code,
-        school_name,
-        city,
-        state,
+        lower(school_name)                                                               as school_name,
+        lower(city)                                                                      as city,
+        lower(state)                                                                     as state,
         case 
             when state in (
                 'AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL',
@@ -35,7 +35,7 @@ transformed_ledger as (
                 'NJ','NM','NY','NC','ND','OH','OK','OR','PA','PR',
                 'RI','SC','SD','TN','TX','UT','VT','VA','WA','WV',
                 'WI','WY'
-            ) then 'US' 
+            ) then 'us' 
             else null 
         end                                                                                 as country,
         case 
@@ -44,9 +44,9 @@ transformed_ledger as (
             end                                                                             as zip,
         case 
             when provider_syllabus = ''                                                     then null 
-            when provider_syllabus = 'Code.org + CMU CS Academy Sample Syllabus'            then 'Code.org + CMU CS Academy'
-            when provider_syllabus = 'Code.org Sample Syllabus'                             then 'Code.org' 
-            when provider_syllabus = 'Code.org Sample Syllabus (For Pilot Teachers Only)'   then 'Code.org' 
+            when provider_syllabus = 'Code.org + CMU CS Academy Sample Syllabus'            then 'code.org + cmu cs academy'
+            when provider_syllabus = 'Code.org Sample Syllabus'                             then 'code.org' 
+            when provider_syllabus = 'Code.org Sample Syllabus (For Pilot Teachers Only)'   then 'code.org' 
             end                                                                             as provider_syllabus
     from new_ledgers
 ),
@@ -58,10 +58,10 @@ national_group as (
         exam,
         'national'                                                                      as ledger_group,
         ai_code,
-        school_name,
-        city,
-        state,
-        country,
+        lower(school_name)                                                              as school_name,
+        lower(city)                                                                     as city,
+        lower(state)                                                                    as state,
+        lower(country)                                                                  as country,
         null                                                                            as provider_syllabus
     from transformed_ledger
 ),
@@ -73,15 +73,15 @@ cdo_audit_group as (
         exam,
         'cdo_audit'                                                                     as ledger_group,
         ai_code,
-        school_name,
-        city,
-        state,
-        country,
+        lower(school_name)                                                              as school_name,
+        lower(city)                                                                     as city,
+        lower(state)                                                                    as state,
+        lower(country)                                                                  as country,
         provider_syllabus
     from transformed_ledger
     where provider_syllabus in (
-        'Code.org', 
-        'Code.org + CMU CS Academy'
+        'code.org', 
+        'code.org + cmu cs academy'
     )
 )
 

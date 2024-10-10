@@ -28,12 +28,12 @@ all_data as (
         source,
         {{ pad_school_id('nces_id') }}                                          as school_id,
         {{ pad_ai_code('ai_code') }}                                            as ai_code,
-        school_name,
-        city,
-        state,
+        lower(school_name)                                                      as school_name,
+        lower(city)                                                             as city,
+        lower(state)                                                            as state,
         {{ pad_zipcode('zip') }} as zip,
         row_number() over (
-            partition by ai_code 
+            partition by {{ pad_ai_code('ai_code') }} 
             order by exam_year desc
         )                                                                       as row_num
     from all_data
