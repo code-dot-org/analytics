@@ -22,8 +22,9 @@ with all_data as (
         {% endif %}
     {% endfor %}
 
-    union all 
-    select * from {{ ref('stg_external_datasets__ap_ledgers_2024') }}
+    --union all 
+
+    --select * from {{ ref('stg_external_datasets__ap_ledgers_2024') }}
 )
 
 select 
