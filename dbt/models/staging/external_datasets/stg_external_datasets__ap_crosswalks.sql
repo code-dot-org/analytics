@@ -10,7 +10,7 @@
 */
 with all_data as (
 
-    {% set years = ['2016_2022', '2023'] %} 
+    {% set years = ['2016_2022', '2023', '2024'] %} 
 
     {% for year in years %}
         select * from {{ ref('base_external_datasets__ap_crosswalk_'~year) }}
