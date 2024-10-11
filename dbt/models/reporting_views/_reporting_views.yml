@@ -5,3 +5,10 @@ models:
     
     config:
       tags: ['reporting']
+
+  - name: ballmer__heavy_users
+    description: |
+     Ballmer heavy users is a critical view for Ballmer reporting, as it identifies the students that are heavy users of our CSP and CSA curriculum
+    
+    config:
+      tags: ['reporting']
