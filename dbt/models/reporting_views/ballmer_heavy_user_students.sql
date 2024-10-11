@@ -1,7 +1,7 @@
 {#
 model: 
-auth: cory
-notes: roughly based on csd_csp_completed view from analysis. This is critical for determining heavy user schools, which we use for Ballmer deliverables
+auth: natalia
+notes: This counts heavy user students. This is roughly based on csd_csp_completed view from analysis. This is critical for determining heavy user schools, which we use for Ballmer deliverables
 changelog:
 #}
 with
@@ -10,13 +10,16 @@ course_users as (
             us.student_id as user_id,
             us.course_name,
             us.school_year,
+            us.section_id,
+            us.section_teacher_id,
+            us.school_id,
             cs.unit,
             (case when regexp_substr (cs.unit, '(\\d{1}|\\d{2})') <> '' then regexp_substr (cs.unit, '(\\d{1}|\\d{2})') else null end)::int unit_number,
             max (case when regexp_substr (cs.version_year, '(\\d{4})') <> '' then regexp_substr (cs.version_year, '(\\d{4})') else null end)::int version_year, -- if students have activity in different versions, we'll use the most recent one for that unit
             count(distinct us.lesson_id) as n_stages  -- specifying what's being counted makes it easier to understand the logic, validate, and decreases chances for error in case there's changes in the underlying table
-        from dev.analytics.dim_student_script_level_activity us
+        from {{ ref('dim_student_script_level_activity') }} us
         join
-            dev.analytics.dim_course_structure cs
+            {{ ref('dim_course_structure') }} cs
             on us.script_id = cs.script_id
             and us.level_id = cs.level_id
         where
@@ -36,10 +39,10 @@ course_users as (
             and us.user_type = 'student'
             and us.level_type != 'StandaloneVideo' -- Excluding standalone video levels as these are not activity levels
             and cs.version_year not in ('unversioned')
-        group by 1, 2, 3, 4, 5
+        group by 1, 2, 3, 4, 5, 6, 7, 8
     )
 --    
-    ,
+    , 
     course_coding_completed_qualifiers as -- defines qualifying criteria per user/unit/course/script version
 	(    
             select
@@ -100,8 +103,8 @@ course_users as (
             school_year,
             unit,
             unit_number,
-            version_year
-            , n_stages
+            version_year,
+            n_stages
     )
 --    
     ,
@@ -111,6 +114,9 @@ course_users as (
             cu.course_name,
             cu.version_year,
             cu.school_year,
+            cu.section_id,
+            cu.section_teacher_id,
+            cu.school_id,
             sum(cq.general_qual_by_unit) over (
                 partition by cu.user_id, cu.school_year, cu.course_name) general_unit_qual, -- number of total units meeting qualifying criteria
 			sum(cq.coding_stage_qual_by_unit) over (
@@ -125,6 +131,7 @@ course_users as (
 		and cu.unit_number = cq.unit_number
 		and cu.school_year = cq.school_year
 		)
+
 --
     ,
     course_completed as -- defines qualifying criteria per user/course/script version and keeps only user/course/school_year records that meet it
@@ -133,6 +140,9 @@ course_users as (
             user_id,
             course_name,
             school_year,
+            section_id, 
+            section_teacher_id,
+            school_id,
             coalesce(general_unit_qual, 0) as general_qual,
             coalesce(coding_unit_qual, 0) as coding_qual,
             coalesce(noncoding_unit_qual, 0) as noncoding_qual
@@ -142,7 +152,7 @@ course_users as (
         or (course_name = 'csp' and version_year < 2020 and general_unit_qual >= 4)		-- CSP - general for CSP scripts from versions before 2020: users with at least 4 units meeting qualifying criteria  
         or (course_name = 'csp' and version_year >= 2020 and coding_unit_qual >= 3)		-- CSP - coding for CSP scripts from versions 2020 and after: users with at least 3 coding units meeting qualifying criteria
         or (course_name = 'csp' and version_year >= 2020 and noncoding_unit_qual >= 3)	-- CSP - non-coding for CSP scripts from versions 2020 and after: users with at least 3 non-coding units meeting qualifying criteria
-        )
+    )
 
 select
 *
