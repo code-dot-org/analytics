@@ -24,9 +24,9 @@ transformed_ledger as (
             when exam= 'Computer Science A' then 'csa'
             end                                                                          as exam,
         cast(ai_code as varchar)                                                         as ai_code,
-        lower(school_name)                                                               as school_name,
-        lower(city)                                                                      as city,
-        lower(state)                                                                     as state,
+        school_name                                                             as school_name,
+        city                                                                      as city,
+        state                                                                   as state,
         case 
             when state in (
                 'AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL',
@@ -44,9 +44,9 @@ transformed_ledger as (
             end                                                                             as zip,
         case 
             when provider_syllabus = ''                                                     then null 
-            when provider_syllabus = 'Code.org + CMU CS Academy Sample Syllabus'            then 'code.org + cmu cs academy'
-            when provider_syllabus = 'Code.org Sample Syllabus'                             then 'code.org' 
-            when provider_syllabus = 'Code.org Sample Syllabus (For Pilot Teachers Only)'   then 'code.org' 
+            when provider_syllabus = 'Code.org + CMU CS Academy Sample Syllabus'            then 'Code.org + CMU CS Academy'
+            when provider_syllabus = 'Code.org Sample Syllabus'                             then 'Code.org' 
+            when provider_syllabus = 'Code.org Sample Syllabus (For Pilot Teachers Only)'   then 'Code.org' 
             end                                                                             as provider_syllabus
     from new_ledgers
 ),
@@ -58,10 +58,10 @@ national_group as (
         exam,
         'national'                                                                      as ledger_group,
         ai_code,
-        lower(school_name)                                                              as school_name,
-        lower(city)                                                                     as city,
-        lower(state)                                                                    as state,
-        lower(country)                                                                  as country,
+        school_name                                                             as school_name,
+        city                                                                    as city,
+        state                                                                    as state,
+        country                                                                  as country,
         null                                                                            as provider_syllabus
     from transformed_ledger
 ),
@@ -73,15 +73,15 @@ cdo_audit_group as (
         exam,
         'cdo_audit'                                                                     as ledger_group,
         ai_code,
-        lower(school_name)                                                              as school_name,
-        lower(city)                                                                     as city,
-        lower(state)                                                                    as state,
-        lower(country)                                                                  as country,
+        school_name                                                              as school_name,
+        city                                                                     as city,
+        state                                                                  as state,
+        country                                                                 as country,
         provider_syllabus
     from transformed_ledger
     where provider_syllabus in (
-        'code.org', 
-        'code.org + cmu cs academy'
+        'Code.org', 
+        'Code.org + CMU CS Academy'
     )
 )
 

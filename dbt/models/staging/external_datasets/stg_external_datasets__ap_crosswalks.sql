@@ -1,5 +1,5 @@
 /*
-   Union together all of the ai/nece crossswalk  base tables.
+   Union together all of the ai/nces crosswalk base tables.
 
    ANNUAL TASK:
    0. (Assumption) you have created a new base table named base_external_datasets__ap_crosswalk_'~year  for the year in question.
@@ -28,9 +28,9 @@ all_data as (
         source,
         {{ pad_school_id('nces_id') }}                                          as school_id,
         {{ pad_ai_code('ai_code') }}                                            as ai_code,
-        lower(school_name)                                                      as school_name,
-        lower(city)                                                             as city,
-        lower(state)                                                            as state,
+        school_name                                                     as school_name,
+        city                                                             as city,
+        state                                                            as state,
         {{ pad_zipcode('zip') }} as zip,
         row_number() over (
             partition by {{ pad_ai_code('ai_code') }} 
@@ -41,4 +41,4 @@ all_data as (
 
 select *
 from fixed
-where row_num = 1
+where row_num = 1 -- this pulls the most recent match
