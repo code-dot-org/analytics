@@ -6,7 +6,7 @@ source as (
 
 renamed as (
     select 
-        id as international_opt_in_id,
+        id as application_id,
         user_id,
         form_data,
         created_at,

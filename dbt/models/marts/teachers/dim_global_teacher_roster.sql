@@ -1,7 +1,12 @@
 with 
 
 pd_intl_opt_ins as (
-    select * 
+    select 
+        * 
+        , row_number() over (
+            partition by teacher_id 
+            order by form_submitted_at desc 
+        )                                                               as app_num
     from {{ ref('stg_dashboard_pii__pd_international_opt_ins') }}
 ), 
 
@@ -44,7 +49,12 @@ training_impact_flags as (
 )
 
 select 
-    oi.teacher_id 
+    oi.application_id
+    , oi.teacher_id 
+    , case 
+        when oi.app_num = 1 then 1 
+        else 0                                                  
+    end                                                         as most_recent_app
     , oi.form_submitted_at
     , oi.cal_year
     , oi.first_name
@@ -78,4 +88,4 @@ left join training_impact_flags                                 as tif
     on tif.section_teacher_id = oi.teacher_id
 left join teachers_started                                      as ts 
     on ts.teacher_id = oi.teacher_id 
-{{ dbt_utils.group_by(21) }}
+{{ dbt_utils.group_by(23) }}
