@@ -41,6 +41,7 @@ course_users as (
             and cs.version_year not in ('unversioned')
         group by 1, 2, 3, 4, 5, 6, 7, 8
     )
+
 --    
     , 
     course_coding_completed_qualifiers as -- defines qualifying criteria per user/unit/course/script version
@@ -118,11 +119,11 @@ course_users as (
             cu.section_teacher_id,
             cu.school_id,
             sum(cq.general_qual_by_unit) over (
-                partition by cu.user_id, cu.school_year, cu.course_name) general_unit_qual, -- number of total units meeting qualifying criteria
+                partition by cu.user_id, cu.school_year, cu.course_name, cu.section_id) general_unit_qual, -- number of total units meeting qualifying criteria
 			sum(cq.coding_stage_qual_by_unit) over (
-                partition by cu.user_id, cu.school_year, cu.course_name) coding_unit_qual, -- number of coding units meeting qualifying criteria
+                partition by cu.user_id, cu.school_year, cu.course_name, cu.section_id) coding_unit_qual, -- number of coding units meeting qualifying criteria
 			sum(cq.noncoding_stage_qual_by_unit) over (
-                partition by cu.user_id, cu.school_year, cu.course_name) noncoding_unit_qual -- number of noncoding units meeting qualifying criteria
+                partition by cu.user_id, cu.school_year, cu.course_name, cu.section_id) noncoding_unit_qual -- number of noncoding units meeting qualifying criteria
         from course_users cu
         left join course_coding_completed_qualifiers cq on 
         cu.user_id = cq.user_id
@@ -153,6 +154,12 @@ course_users as (
         or (course_name = 'csp' and version_year >= 2020 and coding_unit_qual >= 3)		-- CSP - coding for CSP scripts from versions 2020 and after: users with at least 3 coding units meeting qualifying criteria
         or (course_name = 'csp' and version_year >= 2020 and noncoding_unit_qual >= 3)	-- CSP - non-coding for CSP scripts from versions 2020 and after: users with at least 3 non-coding units meeting qualifying criteria
     )
+
+select
+school_year, course_name, count(distinct user_id)
+from course_completed
+group by school_year, course_name
+order by course_name desc, school_year desc
 
 select
 *
