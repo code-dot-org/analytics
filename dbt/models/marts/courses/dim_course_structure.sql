@@ -151,7 +151,7 @@ combined as (
              then 1 else lsl.level_id 
         end                                                             as level_id,
 
-        rank() over(
+        dense_rank() over(
             partition by sl.script_id 
             order by 
                 st.stage_number, 
