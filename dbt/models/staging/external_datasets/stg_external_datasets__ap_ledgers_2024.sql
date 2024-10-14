@@ -72,7 +72,7 @@ cdo_audit_group as (
         school_year,
         exam,
         'cdo_audit'                                                                     as ledger_group,
-        ai_code,
+        {{ pad_ai_code('ai_code') }}                                               as ai_code,
         school_name                                                              as school_name,
         city                                                                     as city,
         state                                                                  as state,

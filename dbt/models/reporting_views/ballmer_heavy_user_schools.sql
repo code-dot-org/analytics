@@ -29,7 +29,7 @@
         course_name,
         student_count,
         heavy_user_school_flag,
-        student_counts.school_id,
+        student_counts.school_id
         from student_counts
         left join schools on student_counts.school_id = schools.school_id
     )
