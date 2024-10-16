@@ -8,7 +8,6 @@ course_structure as (
         (
         participant_audience = 'teacher'
         and instruction_type = 'self_paced'
-        and published_state in ('stable', 'beta')
         )
         and script_name not in ('alltheselfpacedplthings')
         and course_name not like 'pd workshop activity%'
