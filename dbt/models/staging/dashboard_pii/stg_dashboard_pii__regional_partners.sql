@@ -3,5 +3,37 @@ with regional_partners as (
     from {{ ref('base_dashboard_pii__regional_partners') }}
 )
 
-select * 
+select
+    regional_partner_id
+    , regional_partner_group
+    , regional_partner_name
+    , is_urban
+    , attention
+    , street
+    , apartment_or_suite
+    , city
+    , state
+    , zip_code
+    , created_at
+    , updated_at
+    , is_active
+    , case 
+        when json_extract_path_text(
+            properties, 'urg_guardrail_percent'
+        ) != '' 
+        then json_extract_path_text(
+            properties, 'urg_guardrail_percent'
+        ) 
+        else '50' 
+    end                                                         as urg_guardrail_pct
+    , case 
+        when json_extract_path_text(
+            properties, 'frl_guardrail_percent'
+        ) != '' 
+        then json_extract_path_text(
+            properties, 'frl_guardrail_percent'
+        ) 
+        else '50' 
+    end                                                         as frl_guardrail_pct
+
 from regional_partners
