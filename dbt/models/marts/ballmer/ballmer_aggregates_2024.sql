@@ -120,6 +120,10 @@ with heavy_user_schools as (
 )
 
 , query_join as (
+SELECT * FROM csa_audit
+  union all
+  SELECT * FROM csp_audit
+  union all
   SELECT * FROM csa_ballmer
   union all
   SELECT * FROM csp_ballmer

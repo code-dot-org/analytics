@@ -33,9 +33,9 @@ SELECT
     ledgers.state,
     ledgers.school_year as ledger_year
     FROM teachers
-    LEFT JOIN ledgers on ledgers.school_id = teachers.school_id
-    WHERE trained=1
-    and course_name = 'csp'
+    LEFT JOIN ledgers on ledgers.school_id = teachers.school_id and ledgers.exam = teachers.course_name
+    WHERE 
+    course_name = 'csp' -- find all teachers who have ever been trained who teach csp this school year
     and ledgers.ai_code IS NOT NULL
 )
 
@@ -51,9 +51,8 @@ SELECT
     ledgers.state,
     ledgers.school_year as ledger_year
     FROM teachers
-    LEFT JOIN ledgers on ledgers.school_id = teachers.school_id
-    WHERE trained=1
-    and course_name = 'csa'
+    LEFT JOIN ledgers on ledgers.school_id = teachers.school_id and ledgers.exam = teachers.course_name
+    WHERE course_name = 'csa' -- find all teachers who have ever been trained who teach csa this school year
     and ledgers.ai_code IS NOT NULL
     )
 
