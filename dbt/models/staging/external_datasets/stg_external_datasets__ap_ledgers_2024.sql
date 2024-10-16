@@ -57,7 +57,7 @@ national_group as (
         school_year,
         exam,
         'national'                                                                      as ledger_group,
-        ai_code,
+        {{ pad_ai_code('ai_code') }}                                             as ai_code,
         school_name                                                             as school_name,
         city                                                                    as city,
         state                                                                    as state,

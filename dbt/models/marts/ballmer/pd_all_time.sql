@@ -1,5 +1,16 @@
 with teachers as (
-    select * from dashboard.analysis.teachers
+    select
+        user_id,
+        school_year,
+        school_info_id,
+        {{ pad_school_id('school_id') }}  as school_id,
+        school_name,
+        course_name,
+        started,
+        started_at,
+        trained,
+        trained_this_year
+        from dashboard.analysis.teachers
     WHERE trained=1
     and course_name in ('csp', 'csa')
     and school_year = '2023-24'
@@ -7,7 +18,7 @@ with teachers as (
 
 ledgers as (
     select * from {{ref ('dim_ap_ledgers')}}
-    where school_year = '2023-24' --testing this restriction because it seems to be limiting the results
+    where school_year = '2023-24' 
 ),
 
 csp_pd AS (
@@ -26,9 +37,9 @@ SELECT
     WHERE trained=1
     and course_name = 'csp'
     and ledgers.ai_code IS NOT NULL
-    ),
+)
 
-csa_pd AS (
+, csa_pd AS (
     SELECT
     distinct
     teachers.school_year,
@@ -44,18 +55,17 @@ csa_pd AS (
     WHERE trained=1
     and course_name = 'csa'
     and ledgers.ai_code IS NOT NULL
-    ),
+    )
 
-csp_final AS (
+, csp_final AS (
     SELECT
     distinct
     'csp_all_time_pd' as label,
     ai_code,
     school_name,
     state
-    --ledger_year
     FROM csp_pd
-),
+), 
 
 csa_final AS (
     SELECT
@@ -64,7 +74,6 @@ csa_final AS (
     ai_code,
     school_name,
     state
-    --ledger_year
     FROM csa_pd
 ),
 
@@ -74,4 +83,5 @@ combined as (
     select * from csa_final
 )
 
-select * from combined
+select * 
+from combined

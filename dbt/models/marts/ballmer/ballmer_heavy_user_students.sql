@@ -42,8 +42,6 @@ course_users as (
             and cs.version_year not in ('unversioned')
         group by 1, 2, 3, 4, 5, 6, 7, 8
     )
-
---    
     , 
     course_coding_completed_qualifiers as -- defines qualifying criteria per user/unit/course/script version
     (    
@@ -108,6 +106,7 @@ course_users as (
             version_year,
             n_stages
     )
+--    
 --    
     ,
        course_completed_qualifiers as (  -- keeps only users/unit records that meet qualifying criteria per unit as defined in course_coding_completed_qualifiers

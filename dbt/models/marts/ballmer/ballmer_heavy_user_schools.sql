@@ -37,3 +37,4 @@
     select 
         *
     from final
+    where heavy_user_school_flag = 1
