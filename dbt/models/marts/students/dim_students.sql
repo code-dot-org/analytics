@@ -31,9 +31,12 @@ final as (
         sa.school_id,
         sy.school_year      as created_at_school_year, 
         students.is_urg,
-        students.gender,
-        students.locale,
+        students.gender_group,
+        students.race_group,
         students.birthday,
+        students.locale,
+        students.country,
+        students.us_intl,
 
         -- aggs 
         students.sign_in_count,
