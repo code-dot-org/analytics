@@ -151,9 +151,10 @@ combined as (
              then 1 else lsl.level_id 
         end                                                             as level_id,
 
-        rank() over(
+        dense_rank() over(
             partition by sl.script_id 
             order by 
+                lsl.level_id,
                 st.stage_number, 
                 sl.position)                                            as level_script_order,
 
@@ -228,9 +229,7 @@ combined as (
         on plcl.parent_level_id = lsl.level_id 
     
     left join contained_levels as col 
-        on lsl.level_id = col.level_group_level_id 
-)
+        on lsl.level_id = col.level_group_level_id )
     
-select * 
+select *
 from combined
-
