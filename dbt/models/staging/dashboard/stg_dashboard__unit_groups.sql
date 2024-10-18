@@ -7,11 +7,11 @@ unit_groups as (
 renamed as (
     select 
         unit_group_id,
-        unit_group_name,
-        published_state,
-        instruction_type,
-        instructor_audience,
-        participant_audience,
+        lower(unit_group_name)              as unit_group_name,
+        lower(published_state)              as published_state,
+        lower(instruction_type)             as instruction_type,
+        lower(instructor_audience)          as instructor_audience,
+        lower(participant_audience)         as participant_audience,
 
         json_extract_path_text(
             properties,
