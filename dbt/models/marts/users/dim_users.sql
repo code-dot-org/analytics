@@ -28,28 +28,30 @@ final as (
         users.user_type,
         users.studio_person_id,
         users.is_urg,
-        users.gender,
         users.locale,
         users.birthday,
+        users_pii.is_ambassador,
+        users_pii.teacher_email,
+        users_pii.race_group    as race,
+        users_pii.gender_group  as gender,
+        users_pii.self_reported_state,
+        ug.country,
+        ug.us_intl,
+        ug.is_international,
+        users.cap_status,
+        users.cap_status_date,
+
+        -- aggs
         users.sign_in_count,
-        users.total_lines,     
+        users.total_lines,   
+
+        -- dates 
         users.current_sign_in_at,
         users.last_sign_in_at,
         users.created_at,
         users.updated_at,  
         users.deleted_at,   
-        users.purged_at,
-        users.cap_status,
-        users.cap_status_date,
-        users_pii.is_ambassador,
-        users_pii.teacher_email,
-        users_pii.races,
-        users_pii.race_group,
-        users_pii.gender_group,
-        users_pii.self_reported_state,
-        ug.country,
-        ug.us_intl,
-        ug.is_international
+        users.purged_at
 
     from users 
     left join school_infos 
