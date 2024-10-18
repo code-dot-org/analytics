@@ -27,9 +27,9 @@ school_association as (
 final as (
     select 
         -- student info 
-        students.user_id    as student_id,
+        students.user_id        as student_id,
         sa.school_id,
-        sy.school_year      as created_at_school_year, 
+        sy.school_year          as created_at_school_year, 
         students.is_urg,
         students.gender_group   as gender,
         students.race_group     as race,
@@ -37,6 +37,8 @@ final as (
         students.locale,
         students.country,
         students.us_intl,
+        students.cap_status,
+        students.cap_status_date,
 
         -- aggs 
         students.sign_in_count,
@@ -48,10 +50,8 @@ final as (
         students.created_at,
         students.updated_at,  
         students.deleted_at,   
-        students.purged_at,
-        students.cap_status,
-        students.cap_status_date
-
+        students.purged_at
+        
     from students 
     left join school_years  as sy 
         on students.created_at 
