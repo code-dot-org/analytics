@@ -7,7 +7,7 @@ stages as (
 renamed as (
     select 
         stage_id,
-        stage_name,
+        lower(stage_name)                   as stage_name,
         
         case 
             when is_lockable = 1 
