@@ -46,12 +46,18 @@ models:
       - name: teacher_id 
         description: UID for each teacher
 
-      - name: race
+      - name: races
+        description: raw value for race 
+
+      - name: gender
+        description: raw value for gender
+
+      - name: race_group
         description: race categorization column
         tags: 
           - contains_pii
       
-      - name: gender 
+      - name: gender_group
         description: gender categorization column
         tags: 
           - contains_pii

@@ -134,11 +134,11 @@ models:
       - name: created_at_school_year
         description: the school year in which the student account was created
           
-      - name: gender
-        description: the classified gender_group of a student based on their free-response input
+      - name: gender_group
+        description: the classified gender of a student based on their free-response input
 
-      - name: race
-        description: the classified race_group of a student based on free-response input
+      - name: race_group
+        description: the classified race of a student based on free-response input
 
       - name: country
         description: ""
