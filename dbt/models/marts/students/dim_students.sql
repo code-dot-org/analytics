@@ -31,9 +31,12 @@ final as (
         sa.school_id,
         sy.school_year      as created_at_school_year, 
         students.is_urg,
-        students.gender,
+        students.gender_group,
+        students.race_group,
         students.locale,
         students.birthday,
+        students.cap_status,
+        students.cap_status_date,
 
         -- aggs 
         students.sign_in_count,
@@ -45,9 +48,7 @@ final as (
         students.created_at,
         students.updated_at,  
         students.deleted_at,   
-        students.purged_at,
-        students.cap_status,
-        students.cap_status_date
+        students.purged_at
 
     from students 
     left join school_years  as sy 

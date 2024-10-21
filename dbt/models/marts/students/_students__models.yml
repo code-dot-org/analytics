@@ -134,8 +134,17 @@ models:
       - name: created_at_school_year
         description: the school year in which the student account was created
           
-      - name: gender
+      - name: gender_group
         description: the classified gender of a student based on their free-response input
+
+      - name: race_group
+        description: the classified race of a student based on free-response input
+
+      - name: country
+        description: ""
+
+      - name: us_intl
+        description: label to indicate whether a user country is us or global
       
       - name: is_urg
         description: flag to determine whether a student selected at least one of the following races- black, hispanic, hawaiian/ pacific islander, native american

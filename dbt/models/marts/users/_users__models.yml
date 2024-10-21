@@ -48,16 +48,12 @@ models:
 
       - name: races
         description: raw value for race 
-        tags: 
-          - contains_pii
+
+      - name: gender
+        description: raw value for gender
 
       - name: race_group
         description: race categorization column
-        tags: 
-          - contains_pii
-      
-      - name: gender 
-        description: raw value for gender
         tags: 
           - contains_pii
       
