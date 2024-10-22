@@ -24,8 +24,8 @@ transformed_ledger as (
             when exam= 'Computer Science A' then 'csa'
             end                                                                          as exam,
         cast(ai_code as varchar)                                                         as ai_code,
-        school_name                                                             as school_name,
-        city                                                                      as city,
+        lower(school_name)                                                             as school_name,
+        lower(city)                                                                      as city,
         state                                                                   as state,
         case 
             when state in (
@@ -39,14 +39,14 @@ transformed_ledger as (
             else null 
         end                                                                                 as country,
         case 
-            when country = 'US' then zip
+            when country = 'us' then zip
             else null
             end                                                                             as zip,
         case 
             when provider_syllabus = ''                                                     then null 
-            when provider_syllabus = 'Code.org + CMU CS Academy Sample Syllabus'            then 'Code.org + CMU CS Academy'
-            when provider_syllabus = 'Code.org Sample Syllabus'                             then 'Code.org' 
-            when provider_syllabus = 'Code.org Sample Syllabus (For Pilot Teachers Only)'   then 'Code.org' 
+            when provider_syllabus = 'Code.org + CMU CS Academy Sample Syllabus'            then 'code.org + cmu cs academy'
+            when provider_syllabus = 'Code.org Sample Syllabus'                             then 'code.org' 
+            when provider_syllabus = 'Code.org Sample Syllabus (For Pilot Teachers Only)'   then 'code.org' 
             end                                                                             as provider_syllabus
     from new_ledgers
 ),
@@ -56,7 +56,7 @@ national_group as (
         exam_year,
         school_year,
         exam,
-        'national'                                                                      as ledger_group,
+        'global'                                                                      as ledger_group,
         {{ pad_ai_code('ai_code') }}                                             as ai_code,
         school_name                                                             as school_name,
         city                                                                    as city,
@@ -80,8 +80,8 @@ cdo_audit_group as (
         provider_syllabus
     from transformed_ledger
     where provider_syllabus in (
-        'Code.org', 
-        'Code.org + CMU CS Academy'
+        'code.org', 
+        'code.org + cmu cs academy'
     )
 )
 

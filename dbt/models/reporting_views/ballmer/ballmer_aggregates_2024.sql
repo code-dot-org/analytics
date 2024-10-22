@@ -18,8 +18,9 @@ with heavy_user_schools as (
     select * from {{ref('dim_schools')}}
 )
 
-, pd_all_time as ( --this is currently set to filter to 2023-24
-    select * from {{ref('pd_all_time') }}
+, pd_all_time as (
+    select * from {{ref('csa_csp_pd_all_time') }}
+    where school_year = '2023-24'
 )
 
 , combined as (
@@ -146,7 +147,12 @@ SELECT * FROM csa_audit
     from query_join
 
     union all
-    select * from {{ref('pd_all_time')}}
+    select 
+    label,
+    ai_code,
+    school_name,
+    state
+    from pd_all_time
 )
 
 select * from final

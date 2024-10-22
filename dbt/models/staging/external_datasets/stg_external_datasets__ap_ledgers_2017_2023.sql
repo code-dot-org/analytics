@@ -22,20 +22,20 @@ with all_data as (
         {% endif %}
     {% endfor %}
 
-    --union all 
-
-    --select * from {{ ref('stg_external_datasets__ap_ledgers_2024') }}
 )
 
 select 
     exam_year,
     school_year,
     exam,
-    ledger_group,
+    case
+        when ledger_group = 'national' then 'global'
+        else ledger_group
+    end as ledger_group,
     {{ pad_ai_code('ai_code') }}    as ai_code,
-    school_name,
-    city,
+    lower(school_name) as school_name,
+    lower(city) as city,
     state,
-    country,
-    provider_syllabus
+    lower(country) as country,
+    lower(provider_syllabus) as provider_syllabus
 from all_data

@@ -28,8 +28,8 @@ all_data as (
         source,
         {{pad_school_id('nces_id')}}                                    as school_id,                                                       
         {{ pad_ai_code('ai_code') }}                                            as ai_code,
-        school_name                                                     as school_name,
-        city                                                             as city,
+        lower(school_name)                                                     as school_name,
+        lower(city)                                                             as city,
         state                                                            as state,
         {{ pad_zipcode('zip') }} as zip,
         row_number() over (

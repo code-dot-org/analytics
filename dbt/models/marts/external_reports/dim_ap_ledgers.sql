@@ -30,6 +30,15 @@ combined as (
         on all_ledgers.ai_code = crosswalk.ai_code
 )
 
-select * 
+select
+    exam_year,
+    school_year,
+    exam,
+    ledger_group,
+    ai_code,
+    school_name,
+    city,
+    state,
+    school_id
 from combined
 

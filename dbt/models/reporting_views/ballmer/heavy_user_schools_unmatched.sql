@@ -15,7 +15,6 @@ Long term recommendation to do this via fuzzy matching. For 2024, I did matching
 with bhus as (
     select * from {{ref('ballmer_heavy_user_schools')}}
     where school_year = '2023-24' 
-    and heavy_user_school_flag = 1
 ),
 
 schools as (
