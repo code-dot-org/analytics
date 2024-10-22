@@ -27,6 +27,8 @@
     case
         when length({{ zip }}) < 5 
         then lpad({{ zip }},5,0)
+        when length({{zip}}) = 8
+        then lpad({{zip}},9,0)
         else {{ zip }}
     end
 
