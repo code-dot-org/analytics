@@ -1,1 +1,0 @@
-{{ drop_vestigial_relations(dry_run=True) }}
