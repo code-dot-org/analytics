@@ -38,6 +38,10 @@ final as (
         students.cap_status,
         students.cap_status_date,
 
+        -- user geographic info
+        students.country,
+        students.us_intl,
+
         -- aggs 
         students.sign_in_count,
         students.total_lines,

@@ -148,9 +148,6 @@ models:
       
       - name: is_urg
         description: flag to determine whether a student selected at least one of the following races- black, hispanic, hawaiian/ pacific islander, native american
-      
-      - name: is_international 
-        description: 1 if last activity was outside the US, 0 otherwise
 
       - name: cap_status
         description: child account policy tag; only relevant for students (options are 'grace period', 'locked_out', 'permission_granted')
