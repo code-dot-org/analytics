@@ -2,6 +2,15 @@ with
 course_structure as (
     select *
     from {{ ref('dim_course_structure') }}
+    where 
+        course_name != 'other'
+        and 
+        (
+        participant_audience = 'teacher'
+        and instruction_type = 'self_paced'
+        )
+        and script_name not in ('alltheselfpacedplthings')
+        and course_name not like 'pd workshop activity%'
 ),
 
 user_levels as (
@@ -53,14 +62,6 @@ self_paced_scripts as (
             when cs.course_name in ('csf self paced pl')        then 'csf'
   			end                                                                         as course_name_implementation
     from course_structure cs
-    where 
-        (
-        cs.participant_audience = 'teacher'
-        and cs.instruction_type = 'self_paced'
-        and cs.published_state in ('stable', 'beta')
-        )
-        and cs.script_name not in ('alltheselfpacedplthings')
-        and cs.course_name not like 'pd workshop activity%'  -- csa's self-paced pl is asynchronous work for facilitator-led pd workshops
 )
 select
     ul.user_id                                                                          as teacher_id
