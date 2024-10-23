@@ -16,6 +16,9 @@ Logic: we can determine status based on three properties we can compute for ever
     - '101' (5) = 'active reacquired'   -- Active this year + NOT active last year + active in the past
     - '110' (6) = '<impossible status>' -- impossible for same reason as status (2)
     - '111' (7) = 'active retained'     -- active this year + active last year + (active ever before implied) 
+
+Change log:
+- 2024-10-23: Cory - adding a binary flag for is_active
 #}
 
 with 
@@ -134,11 +137,11 @@ final as (
             when status_code = '111' then 'active retained'
             else null 
         end as status,
-
-            -- (js): impossible = "i'm possible"
-            -- when status_code = '110' then '<impossible status>' 
-            -- when status_code = '010' then '<impossible status>'
         status_code,
+        case
+            when status in ('active new','active reacquired','active retained') then 1
+            else 0
+        end as is_active,
         school_started_at,
         active_courses
         from full_status

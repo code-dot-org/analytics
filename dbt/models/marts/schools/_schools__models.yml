@@ -32,6 +32,9 @@ models:
       
       - name: status
         description: active/inactive status of the school in the given school year
+
+      - name: is_active
+        description: binary indicator of whether the school is active or not
       
       - name: school_started_at
         description: time of first activity from an active section at this school in this school year
