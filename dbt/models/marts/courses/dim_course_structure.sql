@@ -227,12 +227,9 @@ combined as (
 
 , combined_with_order as (
     select *,
-    --row_number() over (partition by script_id order by stage_number, level_number) as row_n,
     dense_rank() over(
             partition by script_id 
             order by 
-                --script_name, 
-                --stage_id asc,
                 stage_number,
                 level_number)                                            as level_script_order
     from combined
