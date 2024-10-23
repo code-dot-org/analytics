@@ -257,3 +257,9 @@ macros:
     description: set 5-year cut off date value for use in marts (by school_year)
     docs:
       show: false
+
+  - name: drop_vestigial_check
+    description: check data warehouse for outdated relations that do not exist in the dbt project
+    docs:
+      show: false 
+      
