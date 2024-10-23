@@ -258,7 +258,7 @@ macros:
     docs:
       show: false
 
-  - name: drop_vestigial_check
+  - name: drop_vestigial_relations
     description: check data warehouse for outdated relations that do not exist in the dbt project
     docs:
       show: false 
