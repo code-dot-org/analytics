@@ -7,6 +7,7 @@ changelog:
         updated to reflect updates to analysis.course_structure by NZM
     - dataops-...
         updated to add distinct clause to final table*
+    -- 2024-10-23 - Cory - updated to fix level_script_order
 
 #}
 
@@ -151,13 +152,6 @@ combined as (
              then 1 else lsl.level_id 
         end                                                             as level_id,
 
-        dense_rank() over(
-            partition by sl.script_id 
-            order by 
-                lsl.level_id,
-                st.stage_number, 
-                sl.position)                                            as level_script_order,
-
         lev.level_name,
         lev.level_type,
         lev.mini_rubric,
@@ -230,6 +224,19 @@ combined as (
     
     left join contained_levels as col 
         on lsl.level_id = col.level_group_level_id )
+
+, combined_with_order as (
+    select *,
+    --row_number() over (partition by script_id order by stage_number, level_number) as row_n,
+    dense_rank() over(
+            partition by script_id 
+            order by 
+                --script_name, 
+                --stage_id asc,
+                stage_number,
+                level_number)                                            as level_script_order
+    from combined
+)
     
 select *
-from combined
+from combined_with_order
