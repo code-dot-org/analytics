@@ -1,8 +1,9 @@
 {%- macro drop_vestigial_relations(
   exclude_schemas=[],
-  dry_run=False,
-  raise_on_dry_run=False
+  dry_run=True,
+  raise_on_dry_run=True
   ) %}
+
   {%- if exclude_schemas is string %}
     {%- set exclude_schemas = [exclude_schemas] %}
   {%- elif exclude_schemas is not iterable %}
@@ -25,50 +26,44 @@
       {%- endif %}
     {%- endfor %}
 
-  {%- do log('Finding vestigial tables in these schemas:\n\t\t' ~ graph_schemas|join('\n\t\t'), info=True) %}
+    {%- do log('Finding vestigial tables in these schemas:\n\t\t' ~ graph_schemas|join('\n\t\t'), info=True) %}
 
     {%- call statement('get_vestigial_tables', fetch_result=True) %}
     with current_graph as (
-
       {%- for node in nodes_to_check %}
       select '{{ node.schema }}' as schema_name, '{{ node.name }}' as ref_name
       {%- if not loop.last %}
       union all{% endif %}
       {%- endfor %}
-
     ),
 
     current_tables as (
-
-      select
-        schemaname as schema_name,
-        tablename as ref_name,
+      select 
+        trim(table_schema) as schema_name,
+        trim(table_name) as ref_name,
         'table' as ref_type
-      from pg_catalog.pg_tables
-      where schemaname in (
+      from information_schema.tables
+      where table_schema in (
         {% for s in graph_schemas %}'{{ s }}'{% if not loop.last %},{% endif %}
         {% endfor -%})
-
+      and table_type = 'BASE TABLE'
     ),
 
     current_views as (
-
-      select
-        schemaname as schema_name,
-        viewname as ref_name,
+      select 
+        trim(table_schema) as schema_name,
+        trim(table_name) as ref_name,
         'view' as ref_type
-      from pg_catalog.pg_views
-      where schemaname in (
+      from information_schema.views
+      where table_schema in (
         {% for s in graph_schemas %}'{{ s }}'{% if not loop.last %},{% endif %}
         {% endfor -%})
-
     ),
 
     current_db as (
-
       select * from current_tables
-      union all select * from current_views
-
+      union all 
+      select * from current_views
     )
 
     select current_db.*
@@ -120,4 +115,5 @@
       {%- do log('No vestigial tables found', info=true) %}
     {%- endif %}
   {%- endif %}
+
 {%- endmacro %}
