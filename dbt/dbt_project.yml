@@ -63,13 +63,6 @@ models:
 
     +query_tag: dbt
     bind: false
-
-    admin:
-      tags:
-        - "exclude_from_production"
-      
-      docs:
-        show: false
     
     intermediate:
       tags:
