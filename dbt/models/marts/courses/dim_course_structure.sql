@@ -151,13 +151,6 @@ combined as (
              then 1 else lsl.level_id 
         end                                                             as level_id,
 
-        dense_rank() over(
-            partition by sl.script_id 
-            order by 
-                lsl.level_id,
-                st.stage_number, 
-                sl.position)                                            as level_script_order,
-
         lev.level_name,
         lev.level_type,
         lev.mini_rubric,
@@ -229,7 +222,56 @@ combined as (
         on plcl.parent_level_id = lsl.level_id 
     
     left join contained_levels as col 
-        on lsl.level_id = col.level_group_level_id )
-    
-select *
-from combined
+        on lsl.level_id = col.level_group_level_id
+),
+
+final as (
+    select 
+        course_id,
+        course_name_full,	
+        course_name,
+        is_self_paced,	
+        is_student_content,
+        is_pd_content,
+        is_active_student_course,	
+        script_id,	
+        script_name,	
+        is_standalone,	
+        unit,
+        stage_id,
+        stage_name,
+        stage_number,
+        relative_position,	
+        is_lockable,
+        is_unplugged,	
+        is_assessment,	
+        is_challenge,	
+        level_number,	
+        level_id,
+        dense_rank() over(
+                partition by script_id 
+                order by 
+                    stage_number, 
+                    level_number) as level_script_order,
+        level_name,
+        level_type,	
+        mini_rubric,
+        is_free_play,
+        project_template_level_name,	
+        is_submittable,
+        parent_level_kind,	
+        is_parent_level,	
+        level_group_level_id,	
+        is_group_level,
+        group_level_type,	
+        family_name,
+        version_year,	
+        published_state,	
+        instruction_type,
+        instructor_audience,	
+        participant_audience,	
+        updated_at              
+    from combined )
+
+select * 
+from final 
