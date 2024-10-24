@@ -271,7 +271,7 @@ final as (
         instructor_audience,	
         participant_audience,	
         updated_at              
-    from combined )
+    from combined where script_id is not null) -- excludes empty scripts
 
 select * 
 from final 
