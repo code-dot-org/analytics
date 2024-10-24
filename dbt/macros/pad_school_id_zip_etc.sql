@@ -6,7 +6,10 @@
     case
         when length({{ school_id }}) = 11 
         then lpad({{ school_id }},12,0)
+        when length({{school_id}}) < 8
+        then lpad({{ school_id}},8,0)
         else {{ school_id }}
+
     end
 
 {% endmacro %}
@@ -24,6 +27,8 @@
     case
         when length({{ zip }}) < 5 
         then lpad({{ zip }},5,0)
+        when length({{zip}}) = 8
+        then lpad({{zip}},9,0)
         else {{ zip }}
     end
 
