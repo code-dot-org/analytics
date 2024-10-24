@@ -13,6 +13,7 @@ sources:
       - name: foorm_submissions
       - name: level_sources
       - name: pd_applications
+      - name: pd_applications_status_logs
       - name: pd_attendances
       - name: pd_enrollments
       - name: pd_international_opt_ins
