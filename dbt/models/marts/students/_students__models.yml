@@ -185,18 +185,23 @@ models:
         description: the school year in which the activity occurred 
       
       - name: level_name
+        description: ""
       
       - name: level_type 
-      
+        description: ""
+
       - name: script_name
-      
+        description: ""
+
       - name: unit_name
         description: formerly known as script_name
       
       - name: course_name
-      
+        description: ""
+
       - name: lesson_name 
-      
+        description: ""
+        
       - name: section_id
         description: only populated if the student is in a section that school year
       
@@ -253,4 +258,4 @@ models:
         description: the number of minutes the student spent on that level on the particular date
     
     config:
-      tags: ['released'] #}
+      tags: ['released']
