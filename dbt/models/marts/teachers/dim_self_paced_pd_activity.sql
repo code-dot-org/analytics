@@ -15,7 +15,7 @@ course_structure as (
 
 user_levels as (
     select *
-    from {{ ref('stg_dashboard__user_levels') }}
+    from {{ ref('dim_user_levels') }}
 ),
 
 teachers as (
@@ -37,6 +37,7 @@ self_paced_scripts as (
     select distinct 
         cs.level_id
         , cs.script_id
+        , cs.level_script_id
         , cs.stage_id
         , cs.unit
         , cs.script_name
@@ -67,6 +68,7 @@ select
     ul.user_id                                                                          as teacher_id
     , ul.level_id
     , ul.script_id
+    , ul.level_script_id
     , sps.stage_id
     , sps.unit
     , sps.script_name
@@ -96,8 +98,7 @@ select
 from self_paced_scripts                                         as sps
 
 join user_levels                                                as ul
-    on sps.level_id = ul.level_id 
-    and sps.script_id = ul.script_id
+    on sps.level_script_id = ul.level_script_id 
 
 join levels                                                     as l 
     on ul.level_id = l.level_id

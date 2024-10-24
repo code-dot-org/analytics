@@ -46,6 +46,7 @@ combined as (
         -- user level id's 
         usl.level_id,
         usl.script_id,
+        cs.level_script_id,
         
         -- courses data 
         cs.course_name,
