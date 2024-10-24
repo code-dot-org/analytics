@@ -125,6 +125,10 @@ combined as (
             else 0 
         end                                                             as is_active_student_course,
 
+        -- surrogate key for level_script_id
+        {{ dbt_utils.generate_surrogate_key(['lev.level_id', 'sc.script_id']) }} as level_script_id,
+
+
         -- scripts
         sl.script_id,
         sc.script_name,
