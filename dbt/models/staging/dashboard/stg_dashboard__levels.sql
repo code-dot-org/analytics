@@ -7,8 +7,8 @@ levels as (
 final as (
     select 
         level_id,
-        name    as level_name,
-        type    as level_type,
+        lower(name)    as level_name,
+        lower(type)    as level_type,
         level_num,
         ideal_level_source_id,
         user_id,
@@ -38,9 +38,9 @@ final as (
             'submittable', 
             true)               as is_submittable,
             
-        audit_log,
-        notes,
-        properties,
+        lower(audit_log)        as audit_log,
+        lower(notes)            as notes,
+        lower(properties)       as properties,
         created_at,
         updated_at
     from levels)

@@ -19,10 +19,10 @@ final as (
         user_id,
 
         -- geos 
-        city,
-        state,
+        lower(city) as city,
+        upper(state) as state,
         postal_code,
-        country,
+        lower(country) as country,
         is_international,
         us_intl,
         
