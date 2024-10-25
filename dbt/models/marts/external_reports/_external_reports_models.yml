@@ -1,6 +1,51 @@
 version: 2
 
 models:
+  - name: dim_cs_access
+    description: |
+      This model contains information about whether or not a school has a computer science offering. There is one row per school/ access report year. Only public/charter high schools are included. 
+
+      **note**: this data is entirely from external datasets and does not contain any information regarding code.org usage. 
+    columns:
+      - name: access_report_year
+        description: "The 'Access Report Year' for which the data are applicable.  i.e. access_report_year = 2023 means the data is for the access report we released in 2023"
+        data_tests:
+          - not_null
+
+      - name: nces_school_id
+        description: "The unique identifier for the school as provided by the National Center for Education Statistics (NCES)."
+        data_tests:
+          - not_null
+
+      - name: state
+        description: "The state where the school is located."
+
+      - name: school_name
+        description: "The name of the school."
+
+      - name: grade_levels
+        description: "The grade levels offered by the school in human readable format, two chars per level: `elmihi`.  For example, if a school offers elemetary-only that will be `el____`.  If a school offers grades 6-12 that will be `__mihi`"
+        data_tests:
+          - accepted_values:
+              values:
+                [
+                  "el____",
+                  "elmi__",
+                  "el__hi",
+                  "elmihi",
+                  "__mi__",
+                  "__mihi",
+                  "____hi",
+                  "______",
+                ]
+
+      - name: school_type
+        description: "The type of school. Possible values are 'public' and 'charter'."
+
+      - name: teaches_cs
+        description: 1 if the school has been verified to be teaching CS (either in the current year or last school year)
+    config:
+      tags: ['released']
   - name: ap_school_level_exam_results_summary
     description: |
       
@@ -186,52 +231,7 @@ models:
     config:
       tags: ['released']
 
-  - name: ap_aicode_nces_crosswalk
-    description: "This model retrieves the most recent record for each distinct ai_code|nces_id pair from all the AI/NCES crosswalk datasets we've received from the college board. "
-    columns:
-      - name: ai_code
-        description: "The College Board AI (Attending Institution) code, padded to ensure consistent formatting."
-        data_tests:
-          - not_null
-          - test_string_length_in:
-              list_of_acceptable_lengths: "6"
-      - name: nces_id
-        description: "The National Center for Education Statistics (NCES) ID, padded to ensure consistent formatting."
-        data_tests:
-          - not_null
-          - test_string_length_in:
-              list_of_acceptable_lengths: "8, 12"
-
-      - name: most_recent_update_year
-        description: "This will show the exam year of the most recent for which we received crosswalk data. i.e. exam_year 2023 means the 2022-23 school year."
-        data_tests:
-          - not_null
-      - name: source
-        description: "The source of the AP crosswalk data. e.g. 'college board', 'by_hand_matching' etc.  "
-        data_tests:
-          - not_null
-      - name: school_name
-        description: "The name of the school _as given_ by the College Board - this might vary in spelling and/or capitalization with what you might find in our other NCES schools data."
-        data_tests:
-          - not_null
-      - name: city
-        description: "The city where the school is located."
-        data_tests:
-          - not_null
-      - name: state
-        description: "The state where the school is located."
-        data_tests:
-          - not_null
-      - name: zip
-        description: "The ZIP code of the school's location, padded to ensure consistent formatting."
-        data_tests:
-          - not_null
-
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['most_recent_update_year', 'ai_code', 'nces_id']
-
-  - name: ap_ledgers
+  - name: dim_ap_ledgers
     description: |
       The AP School Ledgers provided by the college board show for any given year the set of 1. National and 2. Code.org Audit schools who declared they are teaching either AP Computer Science A or AP Computer Science Principles.
 
@@ -260,7 +260,7 @@ models:
       - name: ai_code
         description: "The AI (Attending Institution) code, padded to ensure consistent formatting."
 
-      - name: nces_id
+      - name: school_id
         description: "The National Center for Education Statistics (NCES) ID associated with the school."
 
       - name: school_name

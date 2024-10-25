@@ -317,7 +317,7 @@ models:
         data_tests:
           - not_null
 
-      - name: nces_id
+      - name: school_id
         description: "The National Center for Education Statistics (NCES) ID, padded to ensure consistent formatting."
         data_tests:
           - not_null
@@ -353,9 +353,62 @@ models:
 
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ["exam_year", "ai_code", "nces_id"]
+          combination_of_columns: ["exam_year", "ai_code", "school_id"]
 
-  - name: stg_external_datasets__ap_ledgers
+  - name: stg_external_datasets__ap_ledgers_2017_2023
+    description: "Staging model that consolidates AP ledger data from multiple years, standardizing AI codes and including detailed information about exams, schools, and providers."
+    columns:
+      - name: exam_year
+        description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
+        data_tests:
+          - not_null
+
+      - name: school_year
+        description: "The academic year in which the AP exam took place. i.e. exam_year 2023 means the 2022-23 school year."
+        data_tests:
+          - not_null
+
+      - name: exam
+        description: "The specific AP exam for which the record applies.  This is normalized to one of (`csp` or `csa`)"
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["csp", "csa"]
+
+      - name: ledger_group
+        description: "The group or category of the ledger entry."
+        data_tests:
+          - not_null
+
+      - name: ai_code
+        description: "The AI (Attending Institution) code, padded to ensure consistent formatting."
+        data_tests:
+          - not_null
+          - test_string_length_in:
+              list_of_acceptable_lengths: "6"
+
+      - name: school_name
+        description: "The name of the school _as given_ by the College Board - this might vary in spelling and/or capitalization with what you might find in our other NCES schools data."
+
+      - name: city
+        description: "The city where the school is located."
+
+      - name: state
+        description: "The state where the school is located."
+
+      - name: country
+        description: "The country where the school is located."
+
+      - name: provider_syllabus
+        description: "The syllabus provided by the exam provider. Typically 'code.org' but sometimes e.g. 'CMU + code.org' or some listing with a collaborative partner."
+
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            ["exam_year", "exam", "ai_code", "ledger_group"]
+
+  
+  - name: stg_external_datasets__ap_ledgers_2024
     description: "Staging model that consolidates AP ledger data from multiple years, standardizing AI codes and including detailed information about exams, schools, and providers."
     columns:
       - name: exam_year
