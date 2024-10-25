@@ -59,8 +59,7 @@ left join user_levels                                               as ul
 	and ul.created_at between sy.started_at and sy.ended_at -- user activity for section participants (followers) after they were added to the section and in the same school year when the followers were added to the section
 
 left join course_structure                                          as cs 
-    on ul.script_id = cs.script_id  
-    and ul.level_id = cs.level_id 
+    on ul.level_script_id = cs.level_script_id  
 
 where fs.item_name = 'teacher_account'
 and fs.response_value = 'true'
