@@ -14,6 +14,7 @@
 with new_ledgers as (
     select * 
     from {{ ref('base_external_datasets__ap_ledgers_2024') }}
+    where ai_code is not null 
 ), 
 
 transformed_ledger as (
@@ -83,12 +84,17 @@ cdo_audit_group as (
         'code.org', 
         'code.org + cmu cs academy'
     )
-)
+),
 
-select *
-from cdo_audit_group
+final as (
+    select *
+    from cdo_audit_group
 
-union all 
+    union all 
 
-select *
-from national_group
+    select *
+    from national_group ) 
+
+select * 
+from final 
+where ai_code is null 
