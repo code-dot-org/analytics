@@ -353,7 +353,7 @@ models:
 
     data_tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ["exam_year", "ai_code", "nces_id"]
+          combination_of_columns: ["exam_year", "ai_code", "school_id"]
 
   - name: stg_external_datasets__ap_ledgers_2017_2023
     description: "Staging model that consolidates AP ledger data from multiple years, standardizing AI codes and including detailed information about exams, schools, and providers."
