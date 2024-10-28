@@ -1,1 +1,18 @@
 version: 2
+models: 
+  
+  - name: stg_analysis_pii__foorm_submissions_reshaped
+  
+  - name: stg_analysis_pii__statsig_events 
+    columns: 
+      - name: user_id
+      - name: stable_id
+      - name: custom_ids
+      - name: event_at 
+        description: timestampt of event occurence in statsig
+        
+      - name: event_name
+      - name: event_value 
+      - name: user_object 
+      - name: statsig_metadata
+      - name: company_metadata
