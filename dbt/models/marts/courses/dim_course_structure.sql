@@ -126,7 +126,9 @@ combined as (
         end                                                             as is_active_student_course,
 
         -- surrogate key for level_script_id
-        {{ dbt_utils.generate_surrogate_key(['lev.level_id', 'sc.script_id']) }} as level_script_id,
+        {{ dbt_utils.generate_surrogate_key(
+            ['lev.level_id', 
+             'sc.script_id']) }}                                        as level_script_id,
 
 
         -- scripts
@@ -252,6 +254,7 @@ final as (
         is_challenge,	
         level_number,	
         level_id,
+        level_script_id,
         dense_rank() over(
                 partition by script_id 
                 order by 
@@ -277,5 +280,5 @@ final as (
         updated_at              
     from combined where script_id is not null) -- excludes empty scripts
 
-select * 
-from final 
+select *
+from final
