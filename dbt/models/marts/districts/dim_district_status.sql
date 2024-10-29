@@ -57,6 +57,16 @@ teacher_active_courses as (
     from {{ref('int_active_sections')}}
 ),
 
+districts_enrolled as (
+    select * 
+    from {{ ref('stg_external_datasets__districts_enrolled') }}
+),
+
+districts_target as (
+    select * 
+    from {{ ref('stg_external_datasets__districts_target') }}
+),
+
 teacher_active_courses_with_sy as (
 
     select
@@ -150,11 +160,6 @@ full_status as (
 
 ), 
 
-districts_enrolled as (
-    select * 
-    from {{ ref('stg_external_datasets__districts_enrolled') }}
-),
-
 final as (
 
     select distinct
@@ -182,7 +187,10 @@ final as (
             when de_2.school_year_enrolled is not null then 1
             else 0 
         end                                                             as enrolled_this_year
-
+        , case
+            when dt.school_year is not null then 1
+            else 0
+        end                                                             as target_this_year
     from full_status                                                    as fs
     left join districts_enrolled                                        as de_1
         on fs.school_district_id = de_1.district_id 
@@ -190,6 +198,9 @@ final as (
     left join districts_enrolled                                        as de_2
         on fs.school_district_id = de_2.district_id 
         and fs.school_year = de_2.school_year_enrolled
+    left join districts_target                                        as dt
+        on fs.school_district_id = dt.district_id 
+        and fs.school_year = dt.school_year
     order by
         fs.school_district_id
         , fs.school_year
