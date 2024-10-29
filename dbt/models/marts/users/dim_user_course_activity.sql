@@ -8,15 +8,23 @@ Updated 1/24/24: Filtered out certain courses from "counting" toward a student's
 
 Updated 12/6/23:
 
+Updated 10/28/24: Added activity stats for users by course and school year: num_levels, num_unique_days, sum_time_spent
+
 1. Design:
     student_id int,
     school_year varchar(10),
     course_name varchar(3),
-    last_activity_at timestamp
+    last_activity_at timestamp,
+    num_levels  int,
+    num_unique_days int,
+    sum_time_spent  int
 
 2. Definitions:
     - a user is included in this table if they attempted a level of a given course within a given SY
     - this table is used to determine "active" students within a section and assigning a "section_status"
+    - num_levels: number of distinct levels of a course attempted by the student in the school year
+    - num_unique_days: number of distinct days in a school year when the student had activity 
+    - sum_time_spent: sum of time spent across programming levels of the course in the school year
 
 3. Sources:
     stg_dashboard__user_levels
@@ -30,10 +38,12 @@ Ref: dataops-316
 with 
 user_levels as (
     select 
+        user_level_id,
         user_id,
         level_id,
         script_id,
-        created_at
+        created_at,
+        time_spent
     from {{ ref('stg_dashboard__user_levels') }}
     where attempts > 0
 ),
@@ -66,7 +76,10 @@ combined as (
         u.country,
         cs.course_name,
         min(ul.created_at)                      as first_activity_at,
-		max(ul.created_at)                      as last_activity_at
+		max(ul.created_at)                      as last_activity_at,
+        count(distinct ul.user_level_id)        as num_levels,
+        count(distinct trunc(ul.created_at))    as num_unique_days,
+        sum(time_spent)                         as sum_time_spent
 
 	from user_levels ul 
     join users u
