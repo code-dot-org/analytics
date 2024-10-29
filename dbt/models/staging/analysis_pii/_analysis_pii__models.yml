@@ -12,19 +12,39 @@ models:
   - name: stg_analysis_pii__statsig_events 
     columns: 
       - name: user_id
+        description: statsig user_id with length ranging from 5 to 36 chars (and NULLs)
+
       - name: stable_id
       - name: custom_ids
+      
       - name: event_at 
         description: timestampt of event occurence in statsig
         
       - name: event_name
       - name: event_value 
       - name: country 
+        description: country value extracted from user_object
+      
       - name: user_type
+        description: user_type value extracted from company_metadata
+
       - name: lab_type
+        description: lab_type value extracted from company_metadata
+      
       - name: level_id
+        description: level_id value extracted from company_metadata
+      
       - name: script_id
+        description: script_id value extracted from company_metadata
+      
       - name: section_id
+        description: section_id value extracted from company_metadata
+
       - name: unit_id
+        description: unit_id value extracted from company_metadata
+
       - name: unit_name
+        description: unit_name value extracted from company_metadata
+
       - name: page_url
+        description: page_url value extracted from company_metadata
