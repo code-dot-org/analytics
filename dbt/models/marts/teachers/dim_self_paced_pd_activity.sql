@@ -69,7 +69,7 @@ self_paced_scripts as (
   			end                                                                         as course_name_implementation
     from course_structure cs
 )
-select
+select distinct
     ul.user_id                                                                          as teacher_id
     , t.us_intl
     , t.country
