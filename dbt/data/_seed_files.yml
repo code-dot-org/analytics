@@ -108,17 +108,30 @@ seeds:
       ```
 
   - name: seed_course_names
-  - name: seed_school_years
-  - name: seed_script_names
+
+  - name: seed_cs_state_grad_requirements
+    description: states that have passed CS grad requirements, current as of October 2024
+
   - name: seed_csf_plugged_stage_counts
     description: pulled manually from the output of what is currently in redshift
 
   - name: seed_csf_stages_for_completion
     description: pulled manually from the output of what is currently in redshift
   
-  - name: seed_training_school_years
+  - name: seed_districts_enrolled
+    description: districts enrolled in the district program, as of October 2024
   
+  - name: seed_hoc_internal_tutorials
+    description: reference list of Code.org HOC tutorials (differentiated from 3rd party) provided by Bethany on 2024-10-29
+  
+  - name: seed_school_years
+    description: calendar boundaries of school years
+
+  - name: seed_script_names
+
   - name: seed_state_abbreviations
     description: pulled manually from the output of what is currently in redshift
+
+  - name: seed_training_school_years
   
   - name: seed_workshop_state_zip_manual
