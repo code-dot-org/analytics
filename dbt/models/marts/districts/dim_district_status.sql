@@ -182,15 +182,15 @@ final as (
         , case 
             when de_1.school_year_enrolled is not null then 1 
             else 0 
-        end                                                             as enrolled
+        end                                                             as is_enrolled
         , case
             when de_2.school_year_enrolled is not null then 1
             else 0 
-        end                                                             as enrolled_this_year
+        end                                                             as is_enrolled_this_year
         , case
             when dt.school_year is not null then 1
             else 0
-        end                                                             as target_this_year
+        end                                                             as is_target_this_year
     from full_status                                                    as fs
     left join districts_enrolled                                        as de_1
         on fs.school_district_id = de_1.district_id 
@@ -207,4 +207,4 @@ final as (
 )
 
 select * 
-from final 
+from final
