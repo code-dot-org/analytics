@@ -4,11 +4,11 @@ statsig_events as (
         stable_id,	
         custom_ids,	
         timestamp   as event_at,
-        event_name,	
-        event_value,	
-        user_object,	
+        lower(event_name) as event_name,	
+        lower(event_value) as event_value,	
         
         -- extract SUPER field data
+        cast(user_object.country as varchar)        as country,	
         cast(company_metadata.user_type as varchar) as user_type,
         cast(company_metadata.lab_type as varchar)  as lab_type,
         cast(company_metadata.levelId as varchar)   as level_id,
@@ -28,9 +28,9 @@ renamed as (
         event_at,
         event_name,	
         event_value,	
-        user_object,	
 
         -- clean fields extracted from SUPER column
+        lower(trim(both '"' from country))     as country,	
         lower(trim(both '"' from user_type))   as user_type,
         lower(trim(both '"' from lab_type))    as lab_type,
         lower(trim(both '"' from level_id))    as level_id,

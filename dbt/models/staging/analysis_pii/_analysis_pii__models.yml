@@ -19,7 +19,7 @@ models:
         
       - name: event_name
       - name: event_value 
-      - name: user_object 
+      - name: country 
       - name: user_type
       - name: lab_type
       - name: level_id
