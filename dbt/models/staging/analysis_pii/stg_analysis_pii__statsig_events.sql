@@ -31,9 +31,9 @@ renamed as (
         user_object,	
 
         -- clean fields extracted from SUPER column
-        lower(trim(both '"' from user_type)   as user_type,
-        lower(trim(both '"' from lab_type)    as lab_type,
-        lower(trim(both '"' from level_id)    as level_id,
+        lower(trim(both '"' from user_type))   as user_type,
+        lower(trim(both '"' from lab_type))    as lab_type,
+        lower(trim(both '"' from level_id))    as level_id,
         lower(trim(both '"' from script_id))   as script_id,
         lower(trim(both '"' from section_id))  as section_id,
         lower(trim(both '"' from unit_id))     as unit_id,

@@ -2,6 +2,12 @@ version: 2
 models: 
   
   - name: stg_analysis_pii__foorm_submissions_reshaped
+    columns: 
+        - name: submission_id
+        - name: item_name
+        - name: matrix_item_name
+        - name: response_value
+        - name: response_text
   
   - name: stg_analysis_pii__statsig_events 
     columns: 
@@ -14,5 +20,11 @@ models:
       - name: event_name
       - name: event_value 
       - name: user_object 
-      - name: statsig_metadata
-      - name: company_metadata
+      - name: user_type
+      - name: lab_type
+      - name: level_id
+      - name: script_id
+      - name: section_id
+      - name: unit_id
+      - name: unit_name
+      - name: page_url
