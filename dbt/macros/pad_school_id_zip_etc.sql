@@ -33,3 +33,12 @@
     end
 
 {% endmacro %}
+
+{% macro pad_district_code(district_code) %}
+    case
+        when length({{ district_code }}) < 7
+        then lpad({{ district_code }},7,0)
+        else {{ district_code }}
+    end
+
+{% endmacro %}
