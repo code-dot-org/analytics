@@ -76,10 +76,10 @@ select
     , sps.level_name
     , sps.course_name
     , sps.course_name_implementation
-    , ul.created_at                                                                     as level_created_at
+    , ul.created_date                                                                   as level_created_dt
     , sy.school_year                                                                    as level_created_school_year
     , ul.best_result
-    , ul.time_spent
+    , ul.time_spent_minutes                                                             as time_spent
     , l.level_type
     -- , t.studio_person_id
     -- , t.gender
@@ -89,7 +89,7 @@ select
     , rank () 
         over (
             partition by ul.user_id 
-                order by ul.created_at asc)                     as touch_rank
+                order by ul.created_date asc)                     as touch_rank
     , sps.level_number
     , sps.level_script_order
     , sps.stage_number 
@@ -107,4 +107,6 @@ join teachers                                                   as t
     on ul.user_id = t.teacher_id
 
 join school_years                                               as sy
-    on ul.created_at between sy.started_at and sy.ended_at
+    on ul.created_date
+        between sy.started_at 
+            and sy.ended_at
