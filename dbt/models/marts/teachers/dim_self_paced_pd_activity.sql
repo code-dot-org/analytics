@@ -118,5 +118,5 @@ join school_years                                               as sy
 
 left join teacher_school_historical as tsh 
         on
-            t.teacher_id = t.teacher_id 
+            t.teacher_id = tsh.teacher_id 
             and ul.created_at between tsh.started_at and tsh.ended_at 
