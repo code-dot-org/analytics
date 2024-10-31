@@ -72,7 +72,7 @@ final as (
     left join user_geos as ug 
         on users.user_id = ug.user_id )
     left join state_abbreviations as sa
-        on lower(sa.state_name) = lower(ug.state)
+        on lower(sa.state_name) = ug.state_name
 
 select *
 from final 
