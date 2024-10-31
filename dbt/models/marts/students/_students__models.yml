@@ -140,7 +140,7 @@ models:
       - name: race_group
         description: the classified race of a student based on free-response input
       
-      - name: state_name
+      - name: state
         description: State value extracted from user's IP address
 
       - name: country
