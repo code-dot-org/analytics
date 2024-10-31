@@ -20,6 +20,7 @@ combined as (
         school_districts.school_district_state,
         school_districts.school_district_zip,
         school_districts.last_known_school_year_open,
+
         -- school aggregations
         count(distinct dim_schools.school_id) as num_schools,
         sum(dim_schools.is_stage_el) as num_schools_stage_el,
@@ -29,12 +30,15 @@ combined as (
         sum(dim_schools.is_title_i) as num_schools_title_i,
         sum(dim_schools.is_high_needs) as num_schools_high_needs,
         sum(dim_schools.total_students) as num_students,
+        sum(dim_schools.total_students_calculated) as num_students_calculated,
+        sum(dim_schools.total_students_no_tr_calculated) as num_students_no_tr_calculated,
         sum(dim_schools.total_frl_eligible_students) as num_students_frl_eligible,
-        sum(total_urg_students) as num_students_urg,
-        sum(total_urg__no_tr_students) as num_students_urg_no_tr,
-        
+        sum(dim_schools.total_urg_students) as num_students_urg,
+        sum(dim_schools.total_urg_no_tr_students) as num_students_urg_no_tr,
+
         -- calculations 
-        round(cast(num_students_urg as float) / num_students, 2) :: decimal(10, 4) as district_urg_percent,
+        round(cast(num_students_urg as float) / nullif(num_students_calculated, 0), 2) :: decimal(10, 4) as district_urg_percent,
+        round(cast(num_students_urg_no_tr as float) / nullif(num_students_no_tr_calculated, 0), 2) :: decimal(10, 4) as district_urg_no_tr_percent,
         round(cast(num_students_frl_eligible as float) / num_students, 2) :: decimal(10, 4) as district_frl_eligible_percent
     from dim_schools
     left join school_districts
