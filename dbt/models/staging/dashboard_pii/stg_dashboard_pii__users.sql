@@ -18,6 +18,10 @@ combined as (
     select 
         usr.* , 
         case 
+            when position('+amb' in email) > 0 then 1 
+            else 0 
+        end as is_ambassador,
+        case 
         
             when    sta.us_state_name is not null 
                 and sta.is_us_state = 1
@@ -42,16 +46,18 @@ renamed as (
         user_id,
         name,
         user_type,
+
         case when user_type = 'student' then user_id end            as student_id,
-        
+
         case when user_type = 'teacher' then user_id end            as teacher_id,
+
         case when user_type = 'teacher' then email else null end    as teacher_email, -- PII!
         
+        is_ambassador,
         birthday,
         datediff(year, birthday, current_date)  as age_years,
         races,
-        us_state_abbr                           as self_reported_state, -- entered originally by user
-
+        upper(us_state_abbr)                           as self_reported_state, -- entered originally by user
         case
             -- If races contains 'hispanic', return 'hispanic'
             when races like '%hispanic%' then 'hispanic'

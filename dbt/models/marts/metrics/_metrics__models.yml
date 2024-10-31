@@ -1,47 +1,62 @@
 version: 2
 
 models:
-  - name: fct_active_students_daily
-    description: this model represents a daily aggregation of the prototype active student metric (as defined in dim_active_students). Counts total active students by date. 
-    columns:
-    - name: date
-      description: "the date (day) of activity"
-      data_tests:
-        - not_null
-    - name: country
-      description: "the country of the users as determined by code.org geolocation"
-    - name: us_intl
-      description: "'us' if the `country` = 'United States', 'intl' if not (there are a handful of Nulls)"
-    - name: num_actives
-      description: the number of active students on given date, in given country
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - date
-            - country
-            - user_type_merged
 
-  - name: fct_active_students_monthly
+  ## Monthly Active Students
+  - name: fct_monthly_active_students
     description: this model represents a monthly aggregation of the prototype active student metric (as defined in dim_active_students). Counts total active students by month.
 
     columns:
-    - name: month_year
+    - name: activity_month
       description: "The month and year of activity, truncated/aggregated to first of the month. e.g. all data for January, 2022 is given as month_year = '2022-01-01' "
       data_tests:
         - not_null
+        
     - name: country
       description: "the country of the users as determined by code.org geolocation"
+    
     - name: us_intl
       description: "'us' if the `country` = 'United States', 'intl' if not (there are a handful of Nulls)"
-    - name: num_actives
+    
+    - name: num_active_students
       description: the number of active students on given month, in given country
+      data_tests:
+        - not_null 
+        
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - month_year
+            - activity_month
             - country
-            - user_type_merged
 
+  ## Yearly Active Students 
+  - name: fct_yearly_active_students
+    description: this model represents a school_year aggregation of the active student metric
+
+    columns:
+    - name: school_year
+      description: The school year of the activity data 
+      data_tests:
+        - not_null
+        
+    - name: country
+      description: "the country of the users as determined by code.org geolocation"
+    
+    - name: us_intl
+      description: "'us' if the `country` = 'United States', 'intl' if not (there are a handful of Nulls)"
+    
+    - name: num_active_students
+      description: the number of active students on given month, in given country
+      data_tests:
+        - not_null 
+        
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - school_year
+            - country
+
+  ## Weekly School Acquisitions
   - name: fct_weekly_school_acquisition_metrics
     description: |
       Weekly counts of school acquisitions by status (new, retained, reacquired, inactive, churn, market). These are the top line metrics we use to measure against our goals of active schools.   
@@ -86,7 +101,7 @@ models:
     config:
       tags: ['released']
 
-  # Monthly Accounts Created
+  ## Monthly Accounts Created
   - name: fct_monthly_accounts_created
     description: |
       Monthly count of total accounts created, segmented by country and user type (teacher and student).   
@@ -127,7 +142,7 @@ models:
     config:
       tags: ['released']
 
-  # Monthly Signed-In Users
+  ## Monthly Signed-In Users
   - name: fct_monthly_signed_in_users
     description: |
       Monthly count of users who signed in, segmented by user type and us/intl   
@@ -160,3 +175,23 @@ models:
           - not_null
     config:
       tags: ['released']
+
+  # - name: fct_active_students_daily
+  #   description: this model represents a daily aggregation of the prototype active student metric (as defined in dim_active_students). Counts total active students by date. 
+  #   columns:
+  #   - name: date
+  #     description: "the date (day) of activity"
+  #     data_tests:
+  #       - not_null
+  #   - name: country
+  #     description: "the country of the users as determined by code.org geolocation"
+  #   - name: us_intl
+  #     description: "'us' if the `country` = 'United States', 'intl' if not (there are a handful of Nulls)"
+  #   - name: num_actives
+  #     description: the number of active students on given date, in given country
+  #   data_tests:
+  #     - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #           - date
+  #           - country
+  #           - user_type_merged

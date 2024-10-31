@@ -2,6 +2,15 @@ with
 course_structure as (
     select *
     from {{ ref('dim_course_structure') }}
+    where 
+        course_name != 'other'
+        and 
+        (
+        participant_audience = 'teacher'
+        and instruction_type = 'self_paced'
+        )
+        and script_name not in ('alltheselfpacedplthings')
+        and course_name not like 'pd workshop activity%'
 ),
 
 user_levels as (
@@ -23,6 +32,11 @@ school_years as (
     select * 
     from {{ ref('int_school_years') }}
 ), 
+
+teacher_school_historical as (
+    select *
+    from {{ ref('int_teacher_schools_historical') }}
+),
 
 self_paced_scripts as (
     select distinct 
@@ -48,22 +62,17 @@ self_paced_scripts as (
   			when cs.script_name like 'self-paced-pl-microbit%'	then 'csd'
   			when cs.script_name like 'kodea-pd%'			    then 'csf'
             when cs.script_name like 'self-paced-pl-ai-101%'    then 'ai_teachers'
-            when cs.script_name like 'k5howaimakesdecisions'    then 'ai_k5'
+            when cs.script_name like 'k5howaimakesdecisions'    then 'csf'
+            when cs.script_name like '%getting%started%'        then 'csf'
             when cs.script_name like '%foundations%'            then 'foundations'
             when cs.course_name in ('csf self paced pl')        then 'csf'
   			end                                                                         as course_name_implementation
     from course_structure cs
-    where 
-        (
-        cs.participant_audience = 'teacher'
-        and cs.instruction_type = 'self_paced'
-        and cs.published_state in ('stable', 'beta')
-        )
-        and cs.script_name not in ('alltheselfpacedplthings')
-        and cs.course_name not like 'pd workshop activity%'  -- csa's self-paced pl is asynchronous work for facilitator-led pd workshops
 )
-select
+select distinct
     ul.user_id                                                                          as teacher_id
+    , t.us_intl
+    , t.country
     , ul.level_id
     , ul.script_id
     , sps.stage_id
@@ -82,7 +91,7 @@ select
     -- , t.gender
     -- , t.races
     -- , t.is_urg
-    , t.school_id
+    , tsh.school_id -- school at the time of self-paced activity
     , rank () 
         over (
             partition by ul.user_id 
@@ -106,3 +115,8 @@ join teachers                                                   as t
 
 join school_years                                               as sy
     on ul.created_at between sy.started_at and sy.ended_at
+
+left join teacher_school_historical as tsh 
+        on
+            t.teacher_id = tsh.teacher_id 
+            and ul.created_at between tsh.started_at and tsh.ended_at 

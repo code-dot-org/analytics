@@ -230,6 +230,10 @@ models:
       
       - name: is_international
         description: 1 if the most recent sign in from the teacher account was from outside the US, 0 otherwise 
+      
+      - name: is_ambassador
+        description: 1 is the teacher account is associated with a student participating in the ambassador program, 0 otherwise
+        
     config:
       tags: ['released']
 

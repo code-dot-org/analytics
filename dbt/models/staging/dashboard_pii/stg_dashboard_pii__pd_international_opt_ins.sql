@@ -6,7 +6,7 @@ international_opt_ins as (
 
 final as (
     select 
-        international_opt_in_id,
+        application_id,
         user_id                                                                                         as teacher_id,
         created_at                                                                                      as form_submitted_at,
         extract(year from created_at)                                                                   as cal_year,

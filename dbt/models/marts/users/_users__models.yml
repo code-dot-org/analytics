@@ -23,6 +23,7 @@ models:
         description: the school year in which the feedback was submitted 
     config:
       tags: ['released']
+
   - name: dim_users 
     description: |
       One row per user + user_geos + user pii. 
@@ -33,15 +34,17 @@ models:
         data_tests: 
           - not_null
 
-      # - name: user_type
-      #   description: student or teacher if NULL = fail
-      #       # - accepted_values:
-      #       #     values: ['teacher','student']
-      #   data_tests: 
-      #       - not_null
+      - name: user_type
+        description: student or teacher if NULL = fail
 
-      - name: us_state
-        description: user entered value extracted from json. values must be within contig. US else null 
+      - name: self_reported_state
+        description: user entered value extracted from json. values must be within the contiguous US else null
+
+      - name: country
+        description: Country value extracted from user's IP address
+
+      - name: state
+        description: State value extracted from user's IP address
 
       - name: student_id 
         description: UID for each student
@@ -51,16 +54,12 @@ models:
 
       - name: races
         description: raw value for race 
-        tags: 
-          - contains_pii
+
+      - name: gender
+        description: raw value for gender
 
       - name: race_group
         description: race categorization column
-        tags: 
-          - contains_pii
-      
-      - name: gender 
-        description: raw value for gender
         tags: 
           - contains_pii
       
@@ -73,7 +72,10 @@ models:
         description: child account policy tag; only relevant for students (options are 'grace period', 'locked_out', 'permission_granted')
           
       - name: cap_status_date
-        description: child account policy tag; 
+        description: child account policy tag
+      
+      - name: is_ambassador
+        description: 1 is the teacher account is associated with a student participating in the ambassador program, 0 otherwise
 
     config:
       tags: ['released']
@@ -87,16 +89,76 @@ models:
   #     - name: section_id 
   #       data_tests: 
   #         - not_null
-
-  # - name: dim_user_levels 
-  #   description: |
-  #     Adds more columns to the base user_levels table. 
-  #   columns:
-  #   - name: user_id
-  #     description: the unique user ID associated with the activity
-  #     data_tests:
-  #       - not_null
     
+
+  - name: dim_user_levels
+    description: |
+      This model is a log of all student- and teacher-course activity within a school year.   
+
+      Grain: user_id, level_id, script_id, activity_date
+    columns:
+    - name: user_id
+      description: unique ID for teacher or student
+
+    - name: user_type
+      description: student or teacher
+    
+    - name: school_year
+      description: the school year in which the course activity was in
+      data_tests:
+        - not_null 
+        
+    - name: course_name
+      description: the course associated with the individual user's activity in a given school year
+
+    - name: us_intl
+      description: label for us / intl 
+
+    - name: country
+      description: the country associated with the individual user's activity in a given school year
+    
+    - name: created_date 
+      description: date of the user level created 
+    
+    - name: first_activity_at
+      description: timestamp of the student's first activity within the given course and school year- this field is later used to determine when a section/school first started teaching
+    
+    - name: last_activity_at 
+      description: timestamp of the student's latest activity within the given course and school year
+
+  
+    config:
+      tags: ['released']
+
+  - name: dim_user_sign_ins
+    description: | 
+      This model captures sign in data per user at the grain of the date and aggregates total
+      number of sign_ins
+    
+    columns: 
+      - name: user_id
+        description: unique id of user 
+      
+      - name: user_type
+        description: whether user was a student, teacher, unknown  
+      
+      - name: country
+        description: country of user's sign in 
+      
+      - name: us_intl
+      
+      - name: school_year
+        description: school year of activity date 
+      
+      - name: sign_in_date
+        description: date of sign_in
+      
+      - name: total_sign_ins
+        description: number of sign in's for a given date 
+
+    config:
+      tags: ['released']
+      
   - name: dim_user_course_activity
     description: |
       This model is a log of all student- and teacher-course activity within a school year.   

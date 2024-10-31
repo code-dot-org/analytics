@@ -6,7 +6,8 @@ students as (
 ),
 
 school_years as (
-    select * from {{ref('int_school_years')}}
+    select * 
+    from {{ref('int_school_years')}}
 ),
 
 school_association as (
@@ -17,7 +18,7 @@ school_association as (
             partition by 
                 student_id 
             order by 
-                school_year desc)                               as row_num
+                school_year desc)   as row_num
 
     from {{ref('int_section_mapping')}}
     where school_id is not null
@@ -25,31 +26,42 @@ school_association as (
 
 final as (
     select 
-        students.user_id                                        as student_id,
+        -- student info 
+        students.user_id    as student_id,
         sa.school_id,
-        sy.school_year                                          as created_at_school_year, 
+        sy.school_year      as created_at_school_year, 
         students.is_urg,
-        students.gender,
+        students.gender_group,
+        students.race_group,
         students.locale,
         students.birthday,
+        students.cap_status,
+        students.cap_status_date,
+
+        -- user geographic info
+        students.country,
+        students.us_intl,
+
+        -- aggs 
         students.sign_in_count,
-        students.total_lines,     
+        students.total_lines,
+        
+        -- dates
         students.current_sign_in_at,
         students.last_sign_in_at,
         students.created_at,
         students.updated_at,  
         students.deleted_at,   
-        students.purged_at,
-        students.cap_status,
-        students.cap_status_date
+        students.purged_at
+
     from students 
-    left join school_years                                      as sy 
+    left join school_years  as sy 
         on students.created_at 
             between sy.started_at 
                 and sy.ended_at 
-    left join school_association                                as sa 
+    left join school_association    as sa 
         on sa.student_id = students.user_id
-        and sa.row_num = 1
-)
+        and sa.row_num = 1 )
+
 select * 
 from final 

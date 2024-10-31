@@ -1,4 +1,4 @@
-{# Ref: dataops-316 #}
+{# dataops-316 #}
 
 with
 student_section as (
