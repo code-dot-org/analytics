@@ -234,9 +234,9 @@ models:
       - name: is_ambassador
         description: 1 is the teacher account is associated with a student participating in the ambassador program, 0 otherwise
         
-      - name: state_name
+      - name: state
         description: State value extracted from user's IP address
-         
+
     config:
       tags: ['released']
 
