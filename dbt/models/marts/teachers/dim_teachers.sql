@@ -61,6 +61,7 @@ final as (
         teachers.race_group,
         teachers.gender_group,
         teachers.self_reported_state,
+        teachers.state,
         teachers.country,
         teachers.us_intl,
         teachers.is_international,

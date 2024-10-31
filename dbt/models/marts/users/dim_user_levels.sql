@@ -39,6 +39,7 @@ combined as (
         usl.user_id,
         usr.user_type,
         usr.self_reported_state,
+        usr.state,
         usr.country,
         usr.us_intl,
         usr.is_international,
