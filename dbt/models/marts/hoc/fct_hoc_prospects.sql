@@ -28,7 +28,7 @@ combined as (
     select 
         sy.school_year,
         pp.country,
-        sa.state_abbreviation,
+        sa.state_abbreviation as state,
         count(pp.prospect_id) as prospect_count
     from prospects as pp
     
