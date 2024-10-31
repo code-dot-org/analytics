@@ -67,6 +67,8 @@ combined as (
         school_stats_by_years.count_student_hp,
         school_stats_by_years.count_student_tr,
         school_stats_by_years.total_frl_eligible_students,
+        school_stats_by_years.total_urg_students,
+        school_stats_by_years.total_urg_no_tr_students,
         school_stats_by_years.urg_percent,
         school_stats_by_years.urg_no_tr_percent,
         school_stats_by_years.frl_eligible_percent,

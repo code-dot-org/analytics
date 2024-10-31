@@ -31,6 +31,7 @@ combined as (
         sum(dim_schools.total_students) as num_students,
         sum(dim_schools.total_frl_eligible_students) as num_students_frl_eligible,
         sum(total_urg_students) as num_students_urg,
+        sum(total_urg__no_tr_students) as num_students_urg_no_tr,
         
         -- calculations 
         round(cast(num_students_urg as float) / num_students, 2) :: decimal(10, 4) as district_urg_percent,
