@@ -20,7 +20,7 @@ final as (
 
         -- geos 
         lower(city) as city,
-        upper(state) as state,
+        lower(state) as state_name,
         postal_code,
         lower(country) as country,
         is_international,

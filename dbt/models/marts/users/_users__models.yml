@@ -43,7 +43,7 @@ models:
       - name: country
         description: Country value extracted from user's IP address
 
-      - name: state
+      - name: state_name
         description: State value extracted from user's IP address
 
       - name: student_id 
