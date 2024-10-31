@@ -43,7 +43,6 @@ final as (
         -- user geographic info
         users_pii.self_reported_state,
         ug.country,
-        ug.state,
         ug.us_intl,
         ug.is_international,
 
