@@ -2,11 +2,16 @@ with
 prospects as (
     select 
         prospect_id,
+        created_date,
+        date_trunc('week',created_date) as created_week,
+        date_trunc('month',created_date) as created_month,
         last_activity_at,
+
         case when lower(country) in (
             'united states', 
             'us', 
             'usa', 
+            'u.s.a',
             'united states of america')
             then 'us' else lower(country) 
             end as country,
@@ -26,10 +31,14 @@ school_years as (
 
 combined as (
     select 
+        pp.prospect_id,
+        pp.last_activity_at,
+        pp.created_date,
+        pp.created_week,
+        pp.created_month,
         sy.school_year,
         pp.country,
-        sa.state_abbreviation as state,
-        count(pp.prospect_id) as prospect_count
+        sa.state_abbreviation as state
     from prospects as pp
     
     left join state_abbr as sa 
@@ -39,9 +48,7 @@ combined as (
     join school_years as sy 
         on pp.last_activity_at
         between sy.started_at
-            and sy.ended_at
-    {{ dbt_utils.group_by(3) }} )
+            and sy.ended_at )
 
 select * 
 from combined
-order by 1,3 
