@@ -46,7 +46,7 @@ combined as (
         or lower(pp.state) = lower(sa.state_name)
     
     join school_years as sy 
-        on pp.last_activity_at
+        on pp.created_date
         between sy.started_at
             and sy.ended_at )
 

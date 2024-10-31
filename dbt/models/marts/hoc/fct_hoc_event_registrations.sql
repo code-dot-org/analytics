@@ -15,7 +15,7 @@ combined as (
     select 
         school_year,
         created_month,
-        created_week
+        created_week,
         country,
         state,
         count(prospect_id)  as num_prospects,
