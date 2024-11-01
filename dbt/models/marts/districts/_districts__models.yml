@@ -38,11 +38,17 @@ models:
       - name: num_students_frl_eligible
         description: the number of students who are eligible for free and reduced lunch in the district 
       - name: num_students_urg
-        description: the number of students from an underrepresented racial group (not white or asian) in the district
-      - name: district_urg_percent
-        description: the percent of students in the district who are from an underrepresented racial group (not white or asian)
-      - name: district_frl_eligible_percent
-        description: the percent of students in the district who are eligible for free and reduced lunch
+        description: the number of students from an underrepresented racial group, including "two or more races", across all schools in the district
+      - name: num_students_urg_no_tr
+        description: the number of students from an underrepresented racial group, excluding "two or more races", across all schools in the district
+      - name: urg_percent
+        description: the share of students with race reported who are from an underrepresented racial group; excludes "two or more races" from the calculation entirely
+      - name: urg_no_tr_numerator_percent
+        description: the share of students with race reported who are from an underrepresented racial group; excludes "two or more races" from the numerator only 
+      - name: urg_with_tr_percent
+        description: the share of students with race reported who are from an underrepresented racial group; includes "two or more races" in both the numerator and denominator
+      - name: frl_eligible_percent
+        description: the share of students in the district who are eligible for free and reduced lunch
     config:
       tags: ['released']
 
