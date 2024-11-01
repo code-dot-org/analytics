@@ -38,7 +38,7 @@ combined as (
 
         -- calculations 
         round(cast(num_students_urg as float) / nullif(num_students_calculated, 0), 2) :: decimal(10, 4) as district_urg_with_tr_percent,
-        round(cast(num_students_urg_no_tr as float) / nullif(num_students_no_tr_calculated, 0), 2) :: decimal(10, 4) as district_urg_no_tr_percent,
+        round(cast(num_students_urg_no_tr as float) / nullif(num_students_no_tr_calculated, 0), 2) :: decimal(10, 4) as district_urg_no_tr_numerator_percent,
         round(cast(num_students_urg_no_tr as float) / nullif(num_students_calculated, 0), 2) :: decimal(10, 4) as district_urg_percent,
         round(cast(num_students_frl_eligible as float) / num_students, 2) :: decimal(10, 4) as district_frl_eligible_percent
     from dim_schools

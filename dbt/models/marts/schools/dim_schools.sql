@@ -73,7 +73,7 @@ combined as (
         school_stats_by_years.total_students_no_tr_calculated,
         school_stats_by_years.urg_percent,
         school_stats_by_years.urg_with_tr_percent,
-        school_stats_by_years.urg_no_tr_percent,
+        school_stats_by_years.urg_no_tr_numerator_percent,
         school_stats_by_years.frl_eligible_percent,
         
         -- dates 
