@@ -12,7 +12,7 @@ foorm_simple_survey_submissions as (
 
 foorm_submissions_reshaped as (
     select * 
-    from {{ ref('stg_analysis__foorm_submissions_reshaped') }}
+    from {{ ref('stg_analysis_pii__foorm_submissions_reshaped') }}
 ),
 
 foorm_forms_reshaped as (

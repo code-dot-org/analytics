@@ -45,8 +45,8 @@ school_stats_by_years_adjusted as (
         is_grade_11,
         is_grade_12,
         is_grade_13,
-        virtual_status,
-        title_i_status,
+        lower(virtual_status) as virtual_status,
+        lower(title_i_status) as title_i_status,
 
         -- adjust for frl stop-gap logic
         nullif(

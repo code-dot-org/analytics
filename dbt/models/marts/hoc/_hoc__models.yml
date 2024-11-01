@@ -77,3 +77,15 @@ models:
       - name: country
     config:
       tags: ['released']
+
+  - name: fct_hoc_prospects
+    description: hoc prospects data from pardot modeled by available segments and school year
+    columns:
+      - name: school_year 
+        description: ""
+      - name: country
+        description: ""
+      - name: state
+        description: ""
+      - name: num_prospects
+        description: distinct count of prospect id's 

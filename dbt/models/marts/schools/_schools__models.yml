@@ -50,6 +50,11 @@ models:
         data_tests:
           - not_null
           - unique
+      - name: urg_percent
+        description: the total number of URG students, including those of two or more races / total number of students with reported race
+     
+      - name: urg_no_tr_percent
+        description: the total number of URG students, excluding those of two or more races / total number of students, also excluding those of two or more races
 
       - name: last_survey_year 
         description: the school year associated with the most recent information about this school from NCES

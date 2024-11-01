@@ -75,9 +75,11 @@ models:
         description: the number of active (has a section of 5+ students completing 1+ levels) teachers in that school year at that district
       - name: num_active_schools
         description: the number of active schools (has 1+ active teachers) in the district in that school year
-      - name: enrolled_this_year
+      - name: is_enrolled_this_year
         description: 1 if the district enrolled in our district program with a close date during this school year, 0 otherwise
-      - name: enrolled 
+      - name: is_enrolled 
         description: 1 if the district is enrolled in our district program (enrolled this school year or any year prior), 0 otherwise
+      - name: is_target_this_year
+        description: 1 if the district is a target district program this year, else 0
     config:
       tags: ['released']

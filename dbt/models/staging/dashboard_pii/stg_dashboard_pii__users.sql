@@ -57,7 +57,7 @@ renamed as (
         birthday,
         datediff(year, birthday, current_date)  as age_years,
         races,
-        us_state_abbr                           as self_reported_state, -- entered originally by user
+        upper(us_state_abbr)                           as self_reported_state, -- entered originally by user
         case
             -- If races contains 'hispanic', return 'hispanic'
             when races like '%hispanic%' then 'hispanic'

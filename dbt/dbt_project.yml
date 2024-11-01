@@ -63,13 +63,11 @@ models:
 
     +query_tag: dbt
     bind: false
-
+    
     intermediate:
       tags:
         - "int"
       +materialized: table
-      # +docs:
-      #   show: false
 
     marts:
       tags:

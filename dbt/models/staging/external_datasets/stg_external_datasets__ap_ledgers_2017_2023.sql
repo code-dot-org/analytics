@@ -10,30 +10,32 @@
     (3) repeat until you get a clean build passing all tests
 
 */
+
 with all_data as (
 
-    {% set years = ['2017_2021', '2022', '2023'] %} 
+    {% set years_base = ['2017_2021', '2022', '2023'] %} 
 
-    {% for year in years %}
+    {% for year in years_base %}
         select * from {{ ref('base_external_datasets__ap_ledgers_'~year) }}
         {% if not loop.last %}
             union all
         {% endif %}
     {% endfor %}
+
 )
 
 select 
     exam_year,
     school_year,
     exam,
-    ledger_group,
+    case
+        when ledger_group = 'national' then 'global'
+        else ledger_group
+    end as ledger_group,
     {{ pad_ai_code('ai_code') }}    as ai_code,
-    school_name,
-    city,
+    lower(school_name) as school_name,
+    lower(city) as city,
     state,
-    country,
-    provider_syllabus
+    lower(country) as country,
+    lower(provider_syllabus) as provider_syllabus
 from all_data
-
-
-

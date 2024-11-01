@@ -11,9 +11,9 @@ renamed as (
         created_at,
         updated_at,
         indexed_at,
-        city,
-        state,
-        lower(country) as country,
+        lower(city)     as city,
+        upper(state)    as state,
+        lower(country)  as country,
         postal_code
     from source
 )
