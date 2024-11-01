@@ -115,13 +115,13 @@ join teachers                                                   as t
     on ul.user_id = t.teacher_id
 
 join school_years                                               as sy
-    on ul.created_at 
+    on ul.created_date 
       between sy.started_at 
         and sy.ended_at
 
 left join teacher_school_historical as tsh 
         on
             t.teacher_id = tsh.teacher_id 
-            and ul.created_at 
+            and ul.created_date 
               between tsh.started_at 
                 and tsh.ended_at 
