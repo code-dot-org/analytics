@@ -50,12 +50,12 @@ models:
         data_tests:
           - not_null
           - unique
-          
+
       - name: urg_percent
         description: the share of students with race reported who are from an underrepresented racial group; excludes "two or more races" from the calculation entirely
       
       - name: urg_no_tr_numerator_percent
-        description: the share of students with race reported who are from an underrepresented racial group; excludes "two or more races" from the numerator only 
+        description: the share of students with race reported who are from an underrepresented racial group; excludes "two or more races" from the numerator only; used for AFE reporting 
       
       - name: urg_with_tr_percent
         description: the share of students with race reported who are from an underrepresented racial group; includes "two or more races" in both the numerator and denominator
