@@ -6,5 +6,4 @@ venv/
 /.vscode/
 ../.DS_Store/
 requirements.txt
-/python/
 /gx/
