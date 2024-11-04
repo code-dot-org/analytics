@@ -18,7 +18,7 @@ school_stats_by_years as (
                 partition by school_id 
                 order by school_year desc) as row_num
 
-    from {{ ref('stg_dashboard__school_stats_by_years') }}
+    from {{ ref('dim_school_stats_by_years') }}
 ),
 
 combined as (
@@ -67,38 +67,14 @@ combined as (
         school_stats_by_years.count_student_hp,
         school_stats_by_years.count_student_tr,
         school_stats_by_years.total_frl_eligible_students,
-
-        nullif(
-            sum(school_stats_by_years.count_student_am 
-                + school_stats_by_years.count_student_hi
-                + school_stats_by_years.count_student_bl
-                + school_stats_by_years.count_student_hp)
-            ,0) as total_urg_no_tr_students,
-
-        nullif(
-            sum(school_stats_by_years.count_student_am
-                + school_stats_by_years.count_student_hi
-                + school_stats_by_years.count_student_bl
-                + school_stats_by_years.count_student_hp
-                + school_stats_by_years.count_student_tr)
-            ,0) as total_urg_students,
-
-        nullif(
-            sum(school_stats_by_years.count_student_am  
-                + school_stats_by_years.count_student_as  
-                + school_stats_by_years.count_student_hi  
-                + school_stats_by_years.count_student_bl  
-                + school_stats_by_years.count_student_wh  
-                + school_stats_by_years.count_student_hp
-                + school_stats_by_years.count_student_tr)
-            ,0) as total_students_calculated,
-        
-        -- calculations 
-        total_urg_students / total_students_calculated::float as urg_percent,
-
-        total_urg_no_tr_students / total_students_calculated::float as urg_no_tr_percent,
-        
-        total_frl_eligible_students / total_students::float as frl_eligible_percent,
+        school_stats_by_years.total_urg_students,
+        school_stats_by_years.total_urg_no_tr_students,
+        school_stats_by_years.total_students_calculated,
+        school_stats_by_years.total_students_no_tr_calculated,
+        school_stats_by_years.urg_percent,
+        school_stats_by_years.urg_with_tr_percent,
+        school_stats_by_years.urg_no_tr_numerator_percent,
+        school_stats_by_years.frl_eligible_percent,
         
         -- dates 
         min(schools.created_at) as school_created_at,
@@ -112,7 +88,7 @@ combined as (
     left join school_districts
         on schools.school_district_id = school_districts.school_district_id
     
-    {{ dbt_utils.group_by(28) }}
+    {{ dbt_utils.group_by(36) }}
 )
 
 select *
