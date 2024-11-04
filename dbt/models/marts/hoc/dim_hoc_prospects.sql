@@ -2,9 +2,9 @@ with
 prospects as (
     select 
         prospect_id,
-        created_date,
-        date_trunc('week',created_date) as created_week,
-        date_trunc('month',created_date) as created_month,
+        created_at,
+        date_trunc('week',created_at) as created_week,
+        date_trunc('month',created_at) as created_month,
         last_activity_at,
 
         case when lower(country) in (
@@ -15,7 +15,8 @@ prospects as (
             'united states of america')
             then 'us' else lower(country) 
             end as country,
-        state 
+        state,
+        city
     from {{ ref('stg_external_datasets__pardot_prospects') }}
 ),
 
@@ -33,12 +34,13 @@ combined as (
     select 
         pp.prospect_id,
         pp.last_activity_at,
-        pp.created_date,
+        pp.created_at,
         pp.created_week,
         pp.created_month,
         sy.school_year,
         pp.country,
-        sa.state_abbreviation as state
+        sa.state_abbreviation as state,
+        pp.city
     from prospects as pp
     
     left join state_abbr as sa 
@@ -46,7 +48,7 @@ combined as (
         or lower(pp.state) = lower(sa.state_name)
     
     join school_years as sy 
-        on pp.created_date
+        on pp.created_at
         between sy.started_at
             and sy.ended_at )
 

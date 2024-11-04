@@ -18,10 +18,10 @@ combined as (
         created_week,
         country,
         state,
-        count(prospect_id)  as num_prospects,
-        null                as num_registrations
+        city,
+        count(prospect_id)  as num_registrations
     from prospects
-    {{ dbt_utils.group_by(5) }} 
+    {{ dbt_utils.group_by(6) }} 
 
     union all 
 
@@ -31,10 +31,11 @@ combined as (
         registered_month,
         country, 
         state,
-        null,
-        count(distinct form_id)
+        city,
+        count(distinct form_id) as num_registrations
     from registrations
-    {{ dbt_utils.group_by(5) }} )
+    {{ dbt_utils.group_by(6) }} )
 
 select *
 from combined
+order by school_year, country, state, city desc 
