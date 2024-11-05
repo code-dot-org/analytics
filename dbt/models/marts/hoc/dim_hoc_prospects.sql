@@ -3,6 +3,7 @@ prospects as (
     select 
         prospect_id,
         created_at,
+        date_trunc('year',created_at) as created_year,
         date_trunc('week',created_at) as created_week,
         date_trunc('month',created_at) as created_month,
         last_activity_at,
@@ -39,6 +40,7 @@ combined as (
         pp.created_at,
         pp.created_week,
         pp.created_month,
+        pp.created_year,
         sy.school_year,
         pp.country,
         sa.state_abbreviation as state,
