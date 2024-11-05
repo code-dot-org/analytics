@@ -78,6 +78,41 @@ models:
     config:
       tags: ['released']
 
+  - name: dim_hoc_prospects 
+    description: |
+      This model serves to combine and attribute Hour of Code data from Pardot 
+    columns: 
+      - name: prospect_id
+        description: unique id for a prospective registrant in pardot 
+        data_tests:
+          - not_null
+          - unique
+          
+      - name: last_activity_at
+        description: "" 
+      - name: last_submitted_at
+        description: dbt_form_submitted value in pardot 
+      - name: created_at
+        description: when the prospect was created in pardot 
+      - name: updated_at
+        description: ""
+      - name: created_week
+        description: ""
+      - name: created_month
+        description: ""
+      - name: school_year
+        description: school year associated with when the prospect was created 
+        data_tests:
+          - not_null 
+      - name: country
+        description: db_country value in pardot
+      - name: city
+        description: ""
+      - name: state
+        description: db_state transformed into state abbr value 
+      
+
+
   - name: fct_hoc_prospects
     description: hoc prospects data from pardot modeled by available segments and school year
     columns:

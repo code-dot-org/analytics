@@ -6,6 +6,7 @@ prospects as (
         date_trunc('week',created_at) as created_week,
         date_trunc('month',created_at) as created_month,
         last_activity_at,
+        last_submitted_at,
 
         case when lower(country) in (
             'united states', 
@@ -34,6 +35,7 @@ combined as (
     select 
         pp.prospect_id,
         pp.last_activity_at,
+        pp.last_submitted_at,
         pp.created_at,
         pp.created_week,
         pp.created_month,

@@ -32,7 +32,7 @@ renamed as (
         created_date        as created_at,
         updated_date        as updated_at,
         last_activity_at,
-        last_submitted as last_submitted_at
+        db_forms_submitted  as last_submitted_at
     from source )
 
 select *
