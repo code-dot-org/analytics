@@ -72,7 +72,8 @@ combined as (
         school_stats_by_years.total_students_calculated,
         school_stats_by_years.total_students_no_tr_calculated,
         school_stats_by_years.urg_percent,
-        school_stats_by_years.urg_no_tr_percent,
+        school_stats_by_years.urg_with_tr_percent,
+        school_stats_by_years.urg_no_tr_numerator_percent,
         school_stats_by_years.frl_eligible_percent,
         
         -- dates 
@@ -87,7 +88,7 @@ combined as (
     left join school_districts
         on schools.school_district_id = school_districts.school_district_id
     
-    {{ dbt_utils.group_by(35) }}
+    {{ dbt_utils.group_by(36) }}
 )
 
 select *

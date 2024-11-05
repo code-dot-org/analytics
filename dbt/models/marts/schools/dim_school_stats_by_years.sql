@@ -46,9 +46,11 @@ combined as (
         *,
 
         -- calculations 
-        total_urg_students / nullif(total_students_calculated,0)::float as urg_percent,
+        total_urg_students / nullif(total_students_calculated,0)::float as urg_with_tr_percent,
 
-        total_urg_no_tr_students / nullif(total_students_no_tr_calculated,0)::float as urg_no_tr_percent,
+        total_urg_no_tr_students / nullif(total_students_no_tr_calculated,0)::float as urg_percent,
+
+        total_urg_no_tr_students / nullif(total_students_calculated,0)::float as urg_no_tr_numerator_percent,
 
         total_frl_eligible_students / nullif(total_students,0)::float as frl_eligible_percent
 
