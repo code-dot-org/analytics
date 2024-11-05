@@ -1,9 +1,24 @@
--- version: 2.0 (JS)
--- 2024-08-30
+-- version: 2.1
 
 -- version: 3.0 (Natalia)
 -- 2024-10-01 
--- Made changes to include all users with activity in student-facing content
+    -- Made changes to include all users with activity in student-facing content
+-- 2024-08-30
+    -- Add indexes to improve table performance
+    -- Options:     {# sort=['student_id','script_id','level_id'], #}
+{{ 
+    config(
+        materialized = 'table',
+        on_configuration_change = 'continue',
+        indexes=[
+        {'columns': [
+            'student_id', 
+            'script_id',
+            'level_id'], 
+            'unique': True}
+        ]
+    )
+}}
 
 with 
 /*
@@ -24,6 +39,9 @@ user_levels as (
         created_date                        as activity_date,
         extract('month' from created_date)  as activity_month
     from {{ ref('dim_user_levels') }}
+    -- {% if is_incremental() %}
+    --     where updated_at > (select max(updated_at) from {{ this }})
+    -- {% endif %}
 ), 
 
 course_structure as (
