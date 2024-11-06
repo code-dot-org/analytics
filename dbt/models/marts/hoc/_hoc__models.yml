@@ -111,9 +111,7 @@ models:
       - name: state
         description: db_state transformed into state abbr value 
       
-
-
-  - name: fct_hoc_prospects
+  - name: fct_hoc_event_registrations
     description: hoc prospects data from pardot modeled by available segments and school year
     columns:
       - name: school_year 
@@ -122,5 +120,12 @@ models:
         description: ""
       - name: state
         description: ""
-      - name: num_prospects
-        description: distinct count of prospect id's 
+      - name: registered_year
+        description: year of registration date
+      - name: registered_month
+        description: month of registration date
+      - name: registered_week
+        description: week of registration date
+      
+      - name: num_registrations
+        description: distinct count of prospect id's & distinct found of form id's 
