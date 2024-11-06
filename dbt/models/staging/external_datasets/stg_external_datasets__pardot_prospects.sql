@@ -33,7 +33,7 @@ prospects as (
         -- dates
         created_date                            as registered_at,
         trunc(created_date)                     as registered_dt,
-        date_trunc('year',created_date)         as cal_year,
+        extract('year' from created_date)       as cal_year,
         updated_date                            as updated_at,
         last_activity_at
     from source 
