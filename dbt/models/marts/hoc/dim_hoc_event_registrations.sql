@@ -44,7 +44,7 @@ combined as (
     select 
         prospect_id,
         {# email, #}
-        cal_year,
+        cal_year::char(4),
         school_year,
         registered_dt,
         city,
@@ -60,9 +60,11 @@ final as (
         registered_dt,
         city,
         state,
-        country ,
+        country,
         count(distinct registration_id) as num_registrations
     from combined 
     {{ dbt_utils.group_by(6) }} )
 
-select * from final order by registered_dt desc 
+select *
+from final
+order by registered_dt desc 

@@ -1,24 +1,6 @@
 version: 2
 
 models:
-#   - name: fct_hoc_activity
-#     description: |
-#       commonly tracked hoc metrics by month, school year, and country
-
-#     columns:
-#       - name: month
-#       - name: school_year
-#       - name: country
-#         description: the country associated with the user's location
-#       - name: total_new_teacher_accounts
-#         description: the number of new teacher accounts created in the given month
-#       - name: total_new_student_accounts
-#         description: the number of new student accounts created in the given month
-#       - name: total_event_registrations
-#         description: the number of HoC events registered in the given month
-#       - name: total_hoc_hits
-#         description: the number of times an HoC activity was accessed 
-  
   - name: dim_hoc_starts
     description: |
       this model contains 1 row for every URL hit of an HoC activity, regardless of whether the user was signed in or the user was on a 3rd party site.   
@@ -53,79 +35,30 @@ models:
       tags: ['released']
  
   - name: dim_hoc_event_registrations 
-    description: this model has 1 row for every HoC event registered via our form. 
+    description: | 
+      This model has 1 row for every HoC event registered via our form and 1 row for every prospect 
+      in Pardot for the 2024 HOC year
     columns: 
-      - name: form_id
-        data_tests:
-          - unique
-          - not_null
-      - name: form_kind
-      - name: email
-        description: the email associated with the person registering the event
+
+      # may bring this in later
+      # - name: email
+      #   description: the email associated with the person registering the event
+      
       - name: cal_year
         description: the calendar year associated with the HoC year they are registering for
+      
       - name: school_year 
         description: the school year associated with the HoC year they are registering for
+      
       - name: registered_at 
         description: timestamp of when the registration form was submitted 
-      - name: event_type
-      - name: email_pref
-      - name: special_event_flag
-      - name: review
+      
+      - name: registered_dt 
+        description: registration date of registration form submitted or prospect created in pardot
       - name: city
       - name: state
       - name: country
+      - name: num_registrations
+        description: distinct count of form or prospect id's for a given day
     config:
       tags: ['released']
-
-  - name: dim_hoc_prospects 
-    description: |
-      This model serves to combine and attribute Hour of Code data from Pardot 
-    columns: 
-      - name: prospect_id
-        description: unique id for a prospective registrant in pardot 
-        data_tests:
-          - not_null
-          - unique
-          
-      - name: last_activity_at
-        description: "" 
-      - name: last_submitted_at
-        description: dbt_form_submitted value in pardot 
-      - name: created_at
-        description: when the prospect was created in pardot 
-      - name: updated_at
-        description: ""
-      - name: created_week
-        description: ""
-      - name: created_month
-        description: ""
-      - name: school_year
-        description: school year associated with when the prospect was created 
-        data_tests:
-          - not_null 
-      - name: country
-        description: db_country value in pardot
-      - name: city
-        description: ""
-      - name: state
-        description: db_state transformed into state abbr value 
-      
-  - name: fct_hoc_event_registrations
-    description: hoc prospects data from pardot modeled by available segments and school year
-    columns:
-      - name: school_year 
-        description: ""
-      - name: country
-        description: ""
-      - name: state
-        description: ""
-      - name: registered_year
-        description: year of registration date
-      - name: registered_month
-        description: month of registration date
-      - name: registered_week
-        description: week of registration date
-      
-      - name: num_registrations
-        description: distinct count of prospect id's & distinct found of form id's 
