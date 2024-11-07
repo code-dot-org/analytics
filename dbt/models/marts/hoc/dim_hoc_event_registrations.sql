@@ -65,5 +65,6 @@ final as (
         country
     from combined )
 
-select * 
+select school_year, count(distinct registration_id) as num_registrations
 from final
+group by 1 order by 1 desc 
