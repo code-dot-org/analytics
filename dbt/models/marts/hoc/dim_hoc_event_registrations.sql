@@ -64,7 +64,5 @@ final as (
         country
     from combined )
 
-select * -- registration_id, count(*)
+select *
 from final
--- group by registration_id
--- having count(*)>1
