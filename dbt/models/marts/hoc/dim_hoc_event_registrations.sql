@@ -27,6 +27,7 @@ hoc_form_registrations as (
 hoc_prospects as (
     select *
     from {{ ref('stg_external_datasets__pardot_prospects') }}
+    where school_year = '2024-25'
 ),
 
 combined as (
@@ -64,5 +65,5 @@ final as (
         country
     from combined )
 
-select *
+select * 
 from final
