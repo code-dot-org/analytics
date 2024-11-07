@@ -41,7 +41,8 @@ models:
     columns: 
       - name: registration_id
         description: |
-        "This model has 1 row for every HoC event registered via our form (2014 - 2023) or pardot (2024)"
+          This model has 1 row for every HoC event registered via our form (2014 - 2023) or pardot (2024)
+        
         data_tests:
           - not_null 
           - unique
