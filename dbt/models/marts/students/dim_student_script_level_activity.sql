@@ -33,6 +33,7 @@ course_structure as (
         script_id,
         script_name,
         level_id,
+        level_script_id,
         level_name,
         level_type,
         unit        as unit_name,
@@ -86,9 +87,8 @@ student_activity as (
     from user_levels as ul 
     
     left join course_structure as cs
-        on ul.level_id = cs.level_id
-        and ul.script_id = cs.script_id
-    
+        on ul.level_script_id = cs.level_script_id
+
     join school_years as sy
         on ul.activity_date 
             between sy.started_at 

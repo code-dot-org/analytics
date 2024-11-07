@@ -19,6 +19,11 @@ school_infos as (
     from {{ ref('stg_dashboard__school_infos') }}
 ),
 
+state_abbreviations as (
+    select * 
+    from {{ ref('seed_state_abbreviations') }}
+),
+
 final as (
     select 
         -- user info 
@@ -43,6 +48,7 @@ final as (
         -- user geographic info
         users_pii.self_reported_state,
         ug.country,
+        sa.state_abbreviation as state,
         ug.us_intl,
         ug.is_international,
 
@@ -64,7 +70,10 @@ final as (
     left join users_pii 
         on users.user_id = users_pii.user_id
     left join user_geos as ug 
-        on users.user_id = ug.user_id )
+        on users.user_id = ug.user_id 
+    left join state_abbreviations as sa
+        on lower(sa.state_name) = ug.state_name
+)
 
 select *
 from final 

@@ -40,6 +40,8 @@ final as (
 
         -- user geographic info
         students.country,
+        students.self_reported_state,
+        students.state,
         students.us_intl,
 
         -- aggs 
