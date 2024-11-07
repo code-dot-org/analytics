@@ -65,7 +65,5 @@ models:
       - name: city
       - name: state
       - name: country
-      - name: num_registrations
-        description: distinct count of form or prospect id's for a given day
     config:
       tags: ['released']
