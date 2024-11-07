@@ -55,16 +55,16 @@ combined as (
 
 final as (
     select 
+        registration_id,
         cal_year,
         school_year,
         registered_dt,
         city,
         state,
-        country,
-        count(distinct registration_id) as num_registrations
-    from combined 
-    {{ dbt_utils.group_by(6) }} )
+        country
+    from combined )
 
-select *
+select * -- registration_id, count(*)
 from final
-order by registered_dt desc 
+-- group by registration_id
+-- having count(*)>1
