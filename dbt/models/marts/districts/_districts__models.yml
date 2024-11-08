@@ -64,7 +64,7 @@ models:
       **inactive churn**: was "inactive" last school year and so far this school year    
       **market**: has never had a school considered "active" on code.org      
 
-      This model also contains information about those **enrolled** in our district program, and the particular school year in which they enrolled. If you see a single district with "enrolled this year" = 1 for multiple school years, this represents a suplicate in the source data, and warrants a fix in data collection. 
+      This model also contains information about those **enrolled** in our district program **as of 11/8/24**, and the particular school year in which they enrolled. If you see a single district with "enrolled this year" = 1 for multiple school years, this represents a suplicate in the source data, and warrants a fix in data collection. 
    
     columns:
       - name: school_district_id
