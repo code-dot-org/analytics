@@ -64,7 +64,7 @@ models:
       **inactive churn**: was "inactive" last school year and so far this school year    
       **market**: has never had a school considered "active" on code.org      
 
-      This model also contains information about those **enrolled** in our district program **as of 11/8/24**, and the particular school year in which they enrolled. If you see a single district with "enrolled this year" = 1 for multiple school years, this represents a suplicate in the source data, and warrants a fix in data collection. 
+      This model also contains information about those **enrolled** in our district program **as of 11/8/24**, and the particular school year and month in which they enrolled. If you see a single district with "enrolled this year" = 1 for multiple school years, this represents a duplicate in the source data, and warrants a fix in data collection. 
    
     columns:
       - name: school_district_id
@@ -87,5 +87,7 @@ models:
         description: 1 if the district is enrolled in our district program (enrolled this school year or any year prior), 0 otherwise
       - name: is_target_this_year
         description: 1 if the district is a target district program this year, else 0
+      - name: enrolled_at
+        description: month of enrollment in the district program
     config:
       tags: ['released']
