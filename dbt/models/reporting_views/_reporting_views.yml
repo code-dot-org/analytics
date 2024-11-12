@@ -2,6 +2,12 @@ models:
   - name: test_view_student_activity
     description: |
       Student activity for 2024 curriculum, view created for reporting, to be used in Tableau. 
+  - name: participating_student_all
+    description: |
+      Participating student counts for 2030 goals. Overall number.
+  - name: participatin_student_segments
+    description: |
+      Participating students counts for 2030 goals. Segmentations: ES/MS/HS and female/URG
     
     config:
       tags: ['reporting']
