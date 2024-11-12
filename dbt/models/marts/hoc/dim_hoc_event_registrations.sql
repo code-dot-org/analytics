@@ -12,7 +12,6 @@ renamed as (
         , hoc_year                                as cal_year
         , school_year
         , registered_at
-        , trunc(registered_at)                    as registered_dt
         , event_type
         , email_pref
         , special_event_flag
