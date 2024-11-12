@@ -1,2 +1,26 @@
 version: 2  
-          
+
+models:
+    - name: stg_public__international_partners_raw
+      description: this data is loaded to s3 via a file by global team
+      columns:
+        - name: partner_id 
+          data_tests:
+            - not_null
+
+    - name: stg_public__international_contact_info
+      description: this data is loaded to s3 via a file by global team
+      columns:
+        - name: partner_id 
+          data_tests:
+            - not_null
+
+    - name: stg_public__countries
+      description: this data is loaded to s3 via a file by global team
+      columns:
+        - name: intl_partner_id 
+          data_tests:
+            - not_null
+        - name: country_cd 
+          data_tests:
+            - not_null
