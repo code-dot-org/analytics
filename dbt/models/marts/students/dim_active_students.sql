@@ -58,7 +58,7 @@ school_years as (
 
 combined as (
     select 
-        student.user_id                             as student_id,
+        uni.user_id                             as student_id,
         
         usr.us_intl,
         usr.country,
