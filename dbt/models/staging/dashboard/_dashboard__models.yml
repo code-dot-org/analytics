@@ -154,15 +154,6 @@ models:
         data_tests: 
           - not_null 
           - unique
-  
-  
-  - name: stg_dashboard__scripts
-    description: Staging model for scripts data
-    columns:
-      - name: script_id
-        data_tests: 
-          - not_null 
-          - unique
 
   - name: stg_dashboard__sign_ins
     description: Staging model for sign_ins data
