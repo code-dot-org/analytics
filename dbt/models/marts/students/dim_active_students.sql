@@ -82,7 +82,7 @@ combined as (
             between sy.started_at
                 and sy.ended_at 
 
-    {{ dbt_utils.group_by(7) }} 
+    {{ dbt_utils.group_by(8) }} 
 ),
 
 final as (
