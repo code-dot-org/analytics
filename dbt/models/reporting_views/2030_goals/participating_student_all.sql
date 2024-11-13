@@ -4,9 +4,11 @@ Purpose: Used for establishing 2030 participating student goals for HS/MS/ES seg
 
 Description
 - Unique US students with 1+ day of any curriculum (not HOC)
+- Assumes 30% uplift for anonymous
 
 Future work:
 - Change to target area rather than curriculum mapping when course_structure is available
+- Replace 30% inflation factor with actual anonymous data once it's collected via statsig
 
 Edit log: 
 */
@@ -26,7 +28,7 @@ dssla as (
 
 select
     school_year,
-    count(distinct student_id)
+    count(distinct student_id) * 1.3
 from dssla
 group by school_year
 order by school_year desc

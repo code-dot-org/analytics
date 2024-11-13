@@ -6,9 +6,11 @@ Description
 - Unique US students with 1+ touchpoint of ES curriculum
 - Unique US students with 1+ touchpoint of MS curriculum
 - Unique US students with 5+ touchpoints of CSA/CSP or post-AP units for HS
+Assumes 40% uplift for anonymous students for ES
 
 Future work:
 - Change to target area rather than curriculum mapping when course_structure is available
+- Replace 40% uplift with anonymous student data when available from statsig
 
 Edit log: 
 */
@@ -68,11 +70,12 @@ dssla as (
     group by 1,2,3,4
 )
 
-select
+, calculated as (
+    select 
     school_year
     , count (distinct case when grade_band = 'HS' then days_per_student_course.student_id else null end ) n_students_HS
     , count (distinct case when grade_band = 'MS' then days_per_student_course.student_id else null end ) n_students_MS
-    , count (distinct case when grade_band = 'ES' then days_per_student_course.student_id else null end ) n_students_ES
+    , count (distinct case when grade_band = 'ES' then days_per_student_course.student_id else null end ) n_students_ES 
     , count (distinct case when grade_band = 'HS' and gender_group = 'f' then days_per_student_course.student_id else null end ) n_students_HS_f
     , count (distinct case when grade_band = 'HS' and gender_group in ('m','nb') then days_per_student_course.student_id else null end ) n_students_HS_not_f
     , count (distinct case when grade_band = 'HS' and race_group in ('hispanic','black','two_or_more_urg','american_indian','hawaiian') then days_per_student_course.student_id else null end ) n_students_HS_urg
@@ -87,4 +90,17 @@ select
     where 
         grade_band = 'ES' or grade_band = 'MS' or n_days_of_activity >= 5
     group by school_year
-    order by school_year desc
+)
+
+select
+    school_year
+    , n_students_HS
+    , cast(n_students_HS_f as decimal) / (n_students_HS_not_f + n_students_HS_f) * n_students_HS as n_students_HS_f_calculated
+    , cast(n_students_HS_urg as decimal) / (n_students_HS_not_urg + n_students_HS_urg) * n_students_HS as n_students_HS_urg_calculated
+    , n_students_MS
+    , cast(n_students_MS_f as decimal) / (n_students_MS_not_f + n_students_MS_f) * n_students_MS as n_students_MS_f_calculated
+    , cast(n_students_MS_urg as decimal) / (n_students_MS_not_urg + n_students_MS_urg) * n_students_MS as n_students_MS_urg_calculated
+    , n_students_ES * 1.4 as n_students_ES_adjusted
+from calculated
+where n_students_hs > 0
+order by school_year desc
