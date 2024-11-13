@@ -191,6 +191,10 @@ final as (
             when dt.school_year is not null then 1
             else 0
         end                                                             as is_target_this_year
+        , case
+            when de_2.school_year_enrolled is not null then de_2.month_closed
+            else null 
+        end                                                             as enrolled_at
     from full_status                                                    as fs
     left join districts_enrolled                                        as de_1
         on fs.school_district_id = de_1.district_id 
