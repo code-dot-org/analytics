@@ -201,6 +201,9 @@ combined as (
         coalesce(
             ug.participant_audience,
             sc.participant_audience)                                    as participant_audience,
+
+        sc.content_area,
+        sc.topic_tags,
         
         lev.updated_at                                                  as updated_at
 
@@ -277,6 +280,8 @@ final as (
         instruction_type,
         instructor_audience,	
         participant_audience,	
+        content_area,
+        topic_tags,
         updated_at              
     from combined where script_id is not null) -- excludes empty scripts
 
