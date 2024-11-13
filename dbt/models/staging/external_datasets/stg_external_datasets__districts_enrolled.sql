@@ -11,7 +11,8 @@ school_years as (
 )
 
 select 
-    de.*
+    de.district_id
+    , de.month_closed 
     , sy.school_year                                                as school_year_enrolled 
 from districts_enrolled                                             as de
 join school_years                                                   as sy
