@@ -1,6 +1,6 @@
 /* Author: Cory
 Date: 11/12/24
-Purpose: Used for establishing 2030 participating student goals for HS/MS/ES segments
+Purpose: Used for establishing 2030 participating student goals (overall)
 
 Description
 - Unique US students with 1+ day of any curriculum (not HOC)
