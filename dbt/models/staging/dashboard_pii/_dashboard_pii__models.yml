@@ -47,6 +47,11 @@ models:
   - name: stg_dashboard_pii__user_school_infos
     description: |
       Staging user school info data 
+    columns:
+      - name: user_school_info_id
+        data_tests:
+          - not_null
+          - unique 
 
   - name: stg_dashboard_pii__users 
     description: |

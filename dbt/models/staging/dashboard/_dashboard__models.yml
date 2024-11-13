@@ -24,6 +24,7 @@ models:
         data_tests:
           - unique
           - not_null
+
   - name: stg_dashboard__lti_feedbacks
     description: staging model for the user feedback on LTI
     columns: 
@@ -31,6 +32,7 @@ models:
         data_tests:
           - unique
           - not_null
+  
   - name: stg_dashboard__ai_tutor_interaction_feedbacks
     description: Staging model for the feedback table for AI Tutor
     columns: 
@@ -69,12 +71,20 @@ models:
       #     - not_null 
 
   - name: stg_dashboard__level_concept_difficulties
-    description: staging model for ""
+    description: staging model for level_concept_difficulties
+    columns:
+      - name: level_concept_difficulty_id
+        data_tests:
+          - not_null
 
   - name: stg_dashboard__user_proficiencies
     description: |
-      Staging model for ""
-
+      Staging model for user_proficiencies
+    columns:
+      - name: user_proficiency_id
+        data_tests:
+          - not_null
+          - unique
 
   - name: stg_dashboard__sections
     description: |
@@ -86,19 +96,15 @@ models:
           - not_null
           - unique
           
-  - name: stg_dashboard__section_instructors
-    description: |
-      Coteacher data 
-    columns: 
-      - name: instructor_id
-        description: coteacher id
-        data_tests:
-          - not_null
-      - name: section_id 
-        description: ""
-        data_tests:
-          - not_null
-
+  # - name: stg_dashboard__section_instructors
+  #   description: |
+  #     Staging model for section_instructors (coteachers)
+  #   data_tests:
+  #     - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #           - instructor_id
+  #           - section_id
+            
   - name: stg_dashboard__schools 
     description: |
       Staging model for core school data, where len(school_id)=11 we are applying a LPAD to maintain school length convention
@@ -107,6 +113,22 @@ models:
         data_tests: 
           - unique
           - not_null        
+  
+  - name: stg_dashboard__school_districts
+    description: Staging model for districts data
+    columns:
+      - name: school_district_id
+        data_tests: 
+          - not_null 
+          - unique
+
+  - name: stg_dashboard__school_infos
+    description: Staging model for school_infos data
+    columns:
+      - name: school_info_id
+        data_tests: 
+          - not_null 
+          - unique
 
   - name: stg_dashboard__school_stats_by_years
     description: |
@@ -116,10 +138,47 @@ models:
           combination_of_columns:
             - school_id
             - school_year
-    columns: 
-      - name: school_id
+
+  - name: stg_dashboard__scripts
+    description: Staging model for scripts data
+    columns:
+      - name: script_id
+        data_tests: 
+          - not_null 
+          - unique
+    
+  - name: stg_dashboard__script_levels
+    description: Staging model for scripts data
+    columns:
+      - name: script_level_id
+        data_tests: 
+          - not_null 
+          - unique
+  
+  
+  - name: stg_dashboard__scripts
+    description: Staging model for scripts data
+    columns:
+      - name: script_id
+        data_tests: 
+          - not_null 
+          - unique
+
+  - name: stg_dashboard__sign_ins
+    description: Staging model for sign_ins data
+    columns:
+      - name: sign_in_id
         data_tests:
           - not_null
+          - unique
+
+  - name: stg_dashboard__stages
+    description: staging model for stages data
+    data_tests: 
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - stage_id
+            - script_id
 
   - name: stg_dashboard__users
     description: |
@@ -138,7 +197,23 @@ models:
       
       - name: birthday
         description: an inexact date of birth for the user, calcuated as the date of account creation X years prior based on user reporting that their age is X.
-      
+  
+  - name: stg_dashboard__user_geos
+    description: staging model for user_geos data
+    columns: 
+      - name: user_id
+        data_tests:
+          - not_null
+          - unique
+
+  - name: stg_dashboard__unit_groups
+    description: staging model for unit_groups data
+    columns: 
+      - name: unit_group_id
+        data_tests:
+          - not_null
+          - unique
+
   - name: stg_dashboard__user_levels
     description: |
       Staging model for `user_levels` source data
@@ -148,3 +223,11 @@ models:
         data_tests:
           - unique
           - not_null
+  
+  - name: stg_dashboard__user_project_storage_ids
+    description: Staging model for user project storage ids
+    columns:
+      - name: user_project_storage_id
+        data_tests:
+          - not_null
+          - unique 

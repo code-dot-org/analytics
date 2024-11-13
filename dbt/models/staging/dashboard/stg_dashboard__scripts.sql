@@ -49,21 +49,26 @@ renamed as (
 
         created_at,
         updated_at
-    from scripts )
-    
-select 
-    *
-    , case 
-        when course_name in (
-            'csc',
-            'csf', 
-            'csd', 
-            'csa', 
-            'csp', 
-            'ai', 
-            'foundations of cs'
-        )
-        then 1 
-        else 0 
-    end                                                             as is_active_student_course
-from renamed
+    from scripts 
+),
+
+    final as (  
+    select 
+        *
+        , case 
+            when course_name in (
+                'csc',
+                'csf', 
+                'csd', 
+                'csa', 
+                'csp', 
+                'ai', 
+                'foundations of cs'
+            )
+            then 1 
+            else 0 
+        end                                                             as is_active_student_course
+    from renamed ) 
+
+select * 
+from final 
