@@ -15,6 +15,13 @@ user_levels as (
         sum(attempts)           as total_attempts,
         max(best_result)        as best_result
     from {{ ref('stg_dashboard__user_levels') }}    
+    
+    {% if is_incremental() %}
+    
+    where created_at > (select max(created_at) from {{ this }})
+    
+    {% endif %}
+    
     {{ dbt_utils.group_by(5) }}
 ),
 

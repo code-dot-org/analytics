@@ -8,17 +8,11 @@
     -- Options:     {# sort=['student_id','script_id','level_id'], #}
 {{ 
     config(
-        materialized = 'table',
-        on_configuration_change = 'continue',
-        indexes=[
-        {'columns': [
-            'student_id', 
-            'script_id',
-            'level_id'], 
-            'unique': True}
-        ]
-    )
+        materialized='table', 
+        dist='even',
+        sort='student_id') 
 }}
+
 
 with 
 /*
@@ -39,9 +33,12 @@ user_levels as (
         created_date                        as activity_date,
         extract('month' from created_date)  as activity_month
     from {{ ref('dim_user_levels') }}
-    -- {% if is_incremental() %}
-    --     where updated_at > (select max(updated_at) from {{ this }})
-    -- {% endif %}
+    
+    {% if is_incremental() %}
+    
+    where created_date > (select max(created_date) from {{ this }})
+    
+    {% endif %}
 ), 
 
 course_structure as (
