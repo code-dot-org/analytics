@@ -1,7 +1,6 @@
 -- fka: int_user_levels
 -- scope: capture user_level data in one model
 
-
 with 
 user_levels as (
     select 
@@ -16,7 +15,7 @@ user_levels as (
         sum(attempts)           as total_attempts,
         max(best_result)        as best_result
     from {{ ref('stg_dashboard__user_levels') }}    
-    {{ dbt_utils.group_by(6) }}
+    {{ dbt_utils.group_by(5) }}
 ),
 
 users as (
