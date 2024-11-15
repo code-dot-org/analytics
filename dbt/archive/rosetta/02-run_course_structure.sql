@@ -36,7 +36,8 @@ begin
 				when 
 						sl.script_id = '26'
 						and lsl.level_id = '14633' 
-				then '1' else lsl.level_id 
+				then '1' else lsl.level_id -- hard coded error correction, level_script_levels defines the first level of this script as id# 14,633 when user_levels defines this level as #1
+
 			end                                       as level_id,
 			le.name                                   as level_name,
 			sl.position                               as level_number,
