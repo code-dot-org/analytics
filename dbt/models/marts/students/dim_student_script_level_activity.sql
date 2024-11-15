@@ -6,13 +6,12 @@
 -- 2024-08-30
     -- Add indexes to improve table performance
     -- Options:     {# sort=['student_id','script_id','level_id'], #}
-{{ 
+{{
     config(
-        materialized='table', 
-        dist='even',
-        sort='student_id') 
+        materialized='incremental',
+        unique_key=['user_id','level_script_id','activity_date']
+    )
 }}
-
 
 with 
 /*

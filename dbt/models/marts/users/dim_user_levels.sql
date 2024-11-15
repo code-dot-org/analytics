@@ -1,6 +1,11 @@
 -- fka: int_user_levels
 -- scope: capture user_level data in one model
 
+{{config(
+    materialized='incremental',
+    unique_key=['user_id','level_script_id','created_date']
+)}}
+
 with 
 user_levels as (
     select 
