@@ -1,7 +1,6 @@
 -- fka: int_user_levels
 -- scope: capture user_level data in one model
 
-
 with 
 user_levels as (
     select 
@@ -11,14 +10,12 @@ user_levels as (
         {{ dbt_utils.generate_surrogate_key(
             ['level_id',
              'script_id']) }}   as level_script_id,
-        created_at,
         created_at::date        as created_date,
         sum(time_spent)         as time_spent_minutes,
         sum(attempts)           as total_attempts,
         max(best_result)        as best_result
     from {{ ref('stg_dashboard__user_levels') }}    
-    where created_at > {{ get_cutoff_date() }}
-    {{ dbt_utils.group_by(6) }}
+    {{ dbt_utils.group_by(5) }}
 ),
 
 users as (
@@ -74,7 +71,7 @@ combined as (
          on usl.level_script_id = cs.level_script_id
     
     join school_years as sy 
-        on usl.created_at
+        on usl.created_date
             between sy.started_at
                 and sy.ended_at )
 
