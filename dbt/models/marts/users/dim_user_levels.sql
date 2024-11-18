@@ -1,9 +1,11 @@
--- fka: int_user_levels
--- scope: capture user_level data in one model
+-- model: dim_user_levels 
+-- scope: 1 row per user, level, script, and day
+-- aggregate user level activity to date for each user
+
 
 {{config(
     materialized='incremental',
-    unique_key=['user_id','level_script_id','created_date']
+    unique_key=['user_id','level_id','script_id','created_date']
 )}}
 
 with 
