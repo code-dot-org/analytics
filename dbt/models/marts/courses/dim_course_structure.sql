@@ -63,6 +63,7 @@ student_course_names as (
     where participant_audience = 'student'
     and course_name not like '%self paced pl%'
     and course_name not in ('hoc', 'other')
+    {# and content_area like '%curriculum' #} -- pending data backfill
 ),
 
 script_names as (
@@ -73,9 +74,22 @@ script_names as (
 combined as (
     select distinct 
         -- courses
+        sc.content_area,
+        sc.course_name,
         ug.unit_group_id                                                as course_id,
         ug.unit_group_name                                              as course_name_full,
-        sc.course_name,
+        -- scripts
+        sc.topic_tags,
+
+        -- surrogate key for level_script_id
+        {{ dbt_utils.generate_surrogate_key(
+            ['lev.level_id', 
+             'sc.script_id']) }}                                        as level_script_id,
+
+        sl.script_id,
+        sc.script_name,
+        sc.is_standalone,
+        sc.unit,
 
         --flags
         case 
@@ -124,18 +138,6 @@ combined as (
             then 1 
             else 0 
         end                                                             as is_active_student_course,
-
-        -- surrogate key for level_script_id
-        {{ dbt_utils.generate_surrogate_key(
-            ['lev.level_id', 
-             'sc.script_id']) }}                                        as level_script_id,
-
-
-        -- scripts
-        sl.script_id,
-        sc.script_name,
-        sc.is_standalone,
-        sc.unit,
         
         -- stages
         st.stage_id,
@@ -202,8 +204,6 @@ combined as (
             ug.participant_audience,
             sc.participant_audience)                                    as participant_audience,
 
-        sc.content_area,
-        sc.topic_tags,
         
         lev.updated_at                                                  as updated_at
 
