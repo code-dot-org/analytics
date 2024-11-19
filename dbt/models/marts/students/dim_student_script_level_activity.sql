@@ -9,7 +9,7 @@
 {{
     config(
         materialized='incremental',
-        unique_key=['user_id','level_script_id','activity_date']
+        unique_key=['student_id','level_script_id','activity_date']
     )
 }}
 
@@ -26,17 +26,21 @@ with
 */
 user_levels as (
     select 
-        *,
-
-        -- dates 
+        user_id,
+        level_id,
+        script_id,
+        level_script_id,
+        time_spent_minutes,
+        total_attempts,
+        best_result,
         created_date                        as activity_date,
         extract('month' from created_date)  as activity_month
     from {{ ref('dim_user_levels') }}
-    
-    {% if is_incremental() %}
-    
-    where created_date > (select max(created_date) from {{ this }})
-    
+
+    {% if_incremental() %}
+
+    where created_date > (select max(activity_date) from {{this}} )
+
     {% endif %}
 ), 
 
@@ -70,6 +74,7 @@ student_activity as (
         ul.user_id,
         ul.level_id,
         ul.script_id,
+        ul.level_script_id,
         
         -- dates 
         sy.school_year,
@@ -119,8 +124,7 @@ student_activity as (
 
 section_mapping as (
     select *
-    from {{ ref('int_section_mapping') }}
-    
+    from {{ ref('int_section_mapping') }} 
     where student_id in (
         select user_id 
         from student_activity )
@@ -216,21 +220,20 @@ sections_combined as (
         sch.is_rural                as school_is_rural
 
         -- dates if need 
-
         -- sec.student_added_at,
         -- sec.student_removed_at,
         
-    from   sections   as sec    -- left join to keep unsectioned students
+    from   sections   as sec                -- left join to keep unsectioned students
     
-    left join teacher_status as tes  -- left join to avoid missing teachers without status 
+    left join teacher_status as tes         -- left join to avoid missing teachers without status 
         on tes.teacher_id   = sec.teacher_id 
         and tes.school_year = sec.school_year
     
-    left join school_status as sst  -- left join to keep sections without an NCES-associated school
+    left join school_status as sst          -- left join to keep sections without an NCES-associated school
         on  sec.school_id   = sst.school_id 
         and sec.school_year = sst.school_year 
     
-    left join schools    as sch     -- left join to keep sections without an NCES-associated school
+    left join schools    as sch             -- left join to keep sections without an NCES-associated school
         on sch.school_id = sec.school_id 
 
 ),

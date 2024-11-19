@@ -9,6 +9,18 @@
 )}}
 
 with 
+staging as (
+    
+    select *
+    from {{ ref('stg_dashboard__user_levels') }}
+
+    {% if is_incremental() %}
+    
+    where updated_at > (select max(created_date) from {{ this }})
+    
+    {% endif %}
+),
+
 user_levels as (
     select 
         user_id,
@@ -21,13 +33,7 @@ user_levels as (
         sum(time_spent)         as time_spent_minutes,
         sum(attempts)           as total_attempts,
         max(best_result)        as best_result
-    from {{ ref('stg_dashboard__user_levels') }}    
-    
-    {% if is_incremental() %}
-    
-    where created_at > (select max(created_at) from {{ this }})
-    
-    {% endif %}
+    from staging
     
     {{ dbt_utils.group_by(5) }}
 ),
