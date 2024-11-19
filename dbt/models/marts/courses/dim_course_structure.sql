@@ -236,6 +236,8 @@ combined as (
 
 final as (
     select 
+        content_area,
+        topic_tags,
         course_id,
         course_name_full,	
         course_name,
@@ -280,8 +282,6 @@ final as (
         instruction_type,
         instructor_audience,	
         participant_audience,	
-        content_area,
-        topic_tags,
         updated_at              
     from combined where script_id is not null) -- excludes empty scripts
 
