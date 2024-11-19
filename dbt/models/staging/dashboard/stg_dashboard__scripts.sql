@@ -31,8 +31,8 @@ final as (
         version_year,
         is_standalone,
         unit,
-        content_area,
-        topic_tags_list as topic_tags,
+        nullif(content_area,'')     as content_area,
+        nullif(topic_tags_list,'')  as topic_tags,
         created_at,
         updated_at
     from renamed )

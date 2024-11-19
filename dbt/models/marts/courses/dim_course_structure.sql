@@ -81,10 +81,6 @@ combined as (
         -- scripts
         sc.topic_tags,
 
-        -- surrogate key for level_script_id
-        {{ dbt_utils.generate_surrogate_key(
-            ['lev.level_id', 
-             'sc.script_id']) }}                                        as level_script_id,
 
         sl.script_id,
         sc.script_name,
@@ -204,6 +200,10 @@ combined as (
             ug.participant_audience,
             sc.participant_audience)                                    as participant_audience,
 
+        -- surrogate key for level_script_id
+        {{ dbt_utils.generate_surrogate_key(
+            ['lev.level_id', 
+             'sc.script_id']) }}                                        as level_script_id,
         
         lev.updated_at                                                  as updated_at
 
