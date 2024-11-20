@@ -37,6 +37,7 @@ vars:
   tomorrow: DATEADD('day',1,CURRENT_DATE())
   sample_base: base_schema_name__object
   sample_stg: stg_schema_name__object
+  dbt_date:time_zone: 'UTC'
 
   # ==================
   # Redshift vars
