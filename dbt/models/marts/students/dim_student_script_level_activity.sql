@@ -231,7 +231,6 @@ final as (
 
         -- activity dates
         sta.activity_date,
-        sta.activity_month,
         sta.activity_quarter, 
         
         -- curriculum content of the activity 
