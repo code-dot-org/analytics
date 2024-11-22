@@ -37,7 +37,7 @@ user_levels as (
         extract('month' from created_date)  as activity_month
     from {{ ref('dim_user_levels') }}
 
-    {% if_incremental() %}
+    {% if is_incremental() %}
 
     where created_date > (select max(activity_date) from {{this}} )
 
@@ -253,6 +253,7 @@ final as (
         sta.unit_name,
         sta.script_id,
         sta.script_name,
+        sta.level_script_id,
         sta.lesson_id,
         sta.lesson_name,
         sta.level_id,
