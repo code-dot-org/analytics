@@ -15,7 +15,7 @@ school_years as (
     from {{ ref('int_school_years') }}
 )
 
-select distinct 
+select 
     user_id                                     as student_id, 
     extract(year from basic_proficiency_at)     as cal_year,
     school_years.school_year                    as school_year,
