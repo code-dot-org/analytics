@@ -38,7 +38,8 @@ course_structure as (
         level_type,
         unit        as unit_name,
         stage_id    as lesson_id,
-        stage_name  as lesson_name
+        stage_name  as lesson_name,
+        published_state
     from {{ ref('dim_course_structure') }}
     
     where participant_audience = 'student' 
@@ -78,6 +79,7 @@ student_activity as (
         cs.unit_name,
         cs.lesson_id,
         cs.lesson_name,
+        cs.published_state,
 
         -- aggs
         ul.total_attempts,
@@ -149,6 +151,7 @@ schools as (
 users as (
     select 
         user_id, 
+        us_intl,
         is_international, 
         country,
         user_type
@@ -241,6 +244,7 @@ final as (
         sta.level_id,
         sta.level_name,
         sta.level_type,
+        sta.published_state,
 
         -- activity metrics
         sta.total_attempts,
@@ -248,6 +252,7 @@ final as (
         sta.time_spent_minutes,
 
         -- User characteristics
+        usr.us_intl,
         usr.is_international,
         usr.country,
         usr.user_type,
