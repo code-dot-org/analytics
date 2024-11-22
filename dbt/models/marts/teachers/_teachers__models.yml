@@ -16,8 +16,8 @@ models:
         description: the total number of levels within the script
       - name: avg_levels_attempted
         description: the average number of levels attempted by students associated with the teacher/ script/ cal year
-      - name: highest_level_attempted 
-        description: the highest level attempted out of all students associated with the teacher/ script/ cal year
+      - name: num_levels_attempted 
+        description: the highest number of levels attempted out of all students associated with the teacher/ script/ cal year
       - name: num_students_with_activity 
         description: the total number of students associated with the teacher/ cal year with any activity
     config:
