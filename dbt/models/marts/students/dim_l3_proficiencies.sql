@@ -3,6 +3,7 @@ with
 user_proficiencies as (
     select * 
     from {{ ref('stg_dashboard__user_proficiencies') }}
+    where basic_proficiency_at is not null
 ),
 
 students as ( 
@@ -26,4 +27,3 @@ join students
     on user_proficiencies.user_id = students.student_id
 join school_years 
     on user_proficiencies.basic_proficiency_at between school_years.started_at and school_years.ended_at
-where basic_proficiency_at is not null
