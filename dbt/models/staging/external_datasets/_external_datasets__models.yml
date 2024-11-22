@@ -585,18 +585,3 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             ["exam_year", "ai_code", "exam", "demographic_group", "score_of"]
-
-  - name: stg_external_datasets__pardot_prospects
-    description: staging seed file of pardot export data 
-    columns: 
-      - name: prospect_id
-      - name: company
-      - name: last_activity_at
-      - name: campaign
-      - name: country
-      - name: state
-      - name: source
-      - name: referrer
-      - name: created_date
-      - name: updated_date
-      - name: last_submitted

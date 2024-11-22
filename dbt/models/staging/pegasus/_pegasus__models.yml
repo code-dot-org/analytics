@@ -1,3 +1,10 @@
 version: 2
-  
-          
+
+models:
+
+  - name: stg_pegasus__user_storage_ids 
+    description: user storage ids from pegasus legacy system
+    columns: 
+      - name: storage_id 
+        data_tests:
+          - not_null
