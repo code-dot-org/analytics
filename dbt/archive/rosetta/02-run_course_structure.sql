@@ -1,7 +1,3 @@
--- updated: 2024-11-18
--- req: dataops-1055
--- auth: js
-
 CREATE OR REPLACE PROCEDURE public.run_course_structure()
  LANGUAGE plpgsql
 AS $$
@@ -70,12 +66,10 @@ begin
                         	lower(le.properties), 
                         	'project_template_level_name', 
                         	true)                               as project_template_level_name,
-			
 			json_extract_path_text(
 				lower(le.properties), 
 				'submittable', 
 				true)                               as submittable,
-			
 			case
 				when sl.assessment = 1 
 				then 1 else 0 end                   as assessment,
@@ -83,15 +77,19 @@ begin
 			case
 				when sc.name like 'devices-20__' 
 						then 'csd'
+				
 				when sc.name like '%hello%' 
 						then 'hoc'
+				
 				when sc.name like 'microbit%' 
 						then 'csd'
+				
 				when json_extract_path_text(
 						lower(sc.properties), 
 						'curriculum_umbrella', 
 						true) = '' 
 						then 'other' 
+				
 				else lower(json_extract_path_text(
 						lower(sc.properties), 
 						'curriculum_umbrella', 
@@ -104,6 +102,7 @@ begin
 				order by
 						stage_number,
 						sl.position)                  as level_script_order,
+
 
 			coalesce(
 				json_extract_path_text(
@@ -158,18 +157,6 @@ begin
 		     case
                 when col.level_group_level_id is not null 
 				then 'Y' else 'N' end                   as is_group_level,
-
-       		nullif(
-				json_extract_path_text(
-					sc.properties, 
-						'content_area', true),'') 	as content_area,
-			
-			nullif(
-				replace(replace(replace(
-					json_extract_path_text(
-						sc.properties, 
-						'topic_tags', true)
-						,'[',''),']',''),'"',''),'') as topic_tags, 
 			
 			le.updated_at                             	as updated_at
 	
