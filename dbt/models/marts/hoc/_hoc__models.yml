@@ -38,7 +38,7 @@ models:
       This model has 1 row for every HoC event registered via our form and 1 row for every prospect 
       in Pardot for the 2024 HOC year
     columns: 
-      - name: registration_id
+      - name: form_id
         description: |
           This model has 1 row for every HoC event registered via our form (2014 - 2023) or pardot (2024)
         
@@ -59,8 +59,6 @@ models:
       - name: registered_at 
         description: timestamp of when the registration form was submitted 
       
-      - name: registered_dt 
-        description: registration date of registration form submitted or prospect created in pardot
       - name: city
       - name: state
       - name: country
