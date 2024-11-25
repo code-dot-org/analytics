@@ -3,6 +3,7 @@ with
 hoc_activity as (
     select * 
     from {{ ref('stg_pegasus_pii__hoc_activity') }}
+    where hoc_start_id is not NULL
 ),
 
 school_years as (
@@ -21,7 +22,7 @@ final as (
         , hoc_activity.started_at
         , sy.school_year_int                                                as cal_year 
         , sy.school_year
-        -- , hoc_activity.referer
+        --, hoc_activity.referer
         , hoc_activity.company
         , hoc_activity.tutorial
         , case
@@ -42,4 +43,4 @@ final as (
         on hoc_activity.tutorial = it.tutorial_codes )
 
 select *
-from final 
+from final
