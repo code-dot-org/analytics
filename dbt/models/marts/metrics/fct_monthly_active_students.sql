@@ -14,10 +14,10 @@ school_years as (
 
 first_active_month as (
     select 
-        student_id,
+        student_id, school_year,
         min(activity_month) as first_activity_month 
     from active_students
-    group by student_id 
+    group by student_id, school_year
 ),
 
 combined as (
@@ -48,7 +48,7 @@ final as (
     from combined                   as com
     left join first_active_month    as fam 
         on com.student_id = fam.student_id 
-        and com.activity_month = fam.first_activity_month
+        and com.school_year = fam.school_year
     
     {{ dbt_utils.group_by(4) }} 
 ),
@@ -60,12 +60,12 @@ rolling_final as (
         us_intl,
         country,
         num_active_students,
-        sum(num_active_students) over(
+        sum(num_active_students_ytd) over(
             partition by 
                 school_year,
                 us_intl,
                 country 
-            order by activity_month 
+            order by activity_month
             rows between unbounded preceding 
                      and current row) as num_active_students_ytd 
     from final 
