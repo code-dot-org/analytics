@@ -31,11 +31,16 @@ final as (
         version_year,
         is_standalone,
         unit,
-        nullif(content_area,'')     as content_area,
-        nullif(topic_tags_list,'')  as topic_tags,
+        case 
+        when course_name = 'hoc' 
+            then 'hoc'                                      -- If course_name is HOC, content area is HOC too
+        when nullif(content_area,'') is null then 'other'   -- If content area is null then 'other' to align with course_name
+        else nullif(content_area,'') 
+            end as content_area,
+        nullif(topic_tags_list,'')   as topic_tags,
         created_at,
         updated_at
     from renamed )
 
-select * 
+select *  
 from final 
