@@ -12,5 +12,17 @@ models:
   - name: stg_pegasus_pii__hoc_activity
     description: |
       Staging model for `hoc_activity` source data
+    columns:
+      - name: hoc_start_id
+      - name: referer
+      - name: company
+      - name: tutorial
+      - name: started_at 
+        description: coalesce(started_at, pixel_started_at, pixel_finished_at)
+      - name: country_code
+      - name: state_code
+      - name: city
+      - name: country
+      - name: state
   
           
