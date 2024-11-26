@@ -50,8 +50,10 @@ combined as (
         cs.level_script_id,
         
         -- courses data 
+        cs.content_area,
         cs.course_name,
         cs.is_active_student_course,
+        cs.topic_tags,
 
         -- aggs 
         usl.time_spent_minutes,
