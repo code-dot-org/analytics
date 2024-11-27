@@ -47,7 +47,7 @@ course_structure as (
         published_state
     from {{ ref('dim_course_structure')}}
     where 
-    content_area ilike 'curriculum%'    -- student-facing curriculum
+    content_area like 'curriculum%'    -- student-facing curriculum
     or content_area in ('hoc')          -- HOC activities 
     
  ),
