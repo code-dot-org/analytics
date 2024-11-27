@@ -22,6 +22,9 @@ models:
       description: the number of active students on given month, in given country
       data_tests:
         - not_null 
+    
+    - name: num_active_students_ytd
+      description: the number of unique students as a rolling total for each school year
         
     data_tests:
       - dbt_utils.unique_combination_of_columns:
