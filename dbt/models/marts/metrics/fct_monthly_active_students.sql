@@ -7,14 +7,10 @@ active_students as (
     from {{ ref('dim_active_students') }}
 ),
 
-school_years as (
-    select * 
-    from {{ref('int_school_years') }}
-),
-
 first_active_month as (
     select 
-        student_id, school_year,
+        student_id, 
+        school_year,
         min(activity_month) as first_activity_month 
     from active_students
     group by student_id, school_year
@@ -22,16 +18,17 @@ first_active_month as (
 
 combined as (
     select 
-        sy.school_year,
-        activity_month,
-        us_intl,
-        country,
-        student_id
-    from active_students 
-    join school_years as sy 
-        on active_students.activity_date 
-            between sy.started_at
-                and sy.ended_at 
+        acs.school_year,
+        acs.activity_month,
+        acs.us_intl,
+        acs.country,
+        acs.student_id
+        
+    from active_students    as acs 
+    left join first_active_month as fam 
+         on acs.student_id  = fam.student_id 
+        and acs.school_year = fam.school_year
+        and acs.activity_month >= fam.first_activity_month
 ),
 
 final as (
