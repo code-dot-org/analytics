@@ -67,6 +67,7 @@ combined as (
         usr.is_urg,
 
         uni.activity_date,
+        extract(year from uni.activity_date)   as cal_year,
         sy.school_year,
 
         max(uni.has_user_level_activity)       as has_user_level_activity,
@@ -81,7 +82,7 @@ combined as (
             between sy.started_at
                 and sy.ended_at 
 
-    {{ dbt_utils.group_by(7) }} 
+    {{ dbt_utils.group_by(8) }} 
 ),
 
 final as (

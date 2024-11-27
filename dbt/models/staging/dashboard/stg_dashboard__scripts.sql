@@ -1,69 +1,47 @@
 with
 scripts as (
-    select * 
+    select 
+        *,
+        {{ clean_json_array('topic_tags') }} as topic_tags_cleaned
     from {{ ref('base_dashboard__scripts') }}
 ),
 
 renamed as (
-    select
-        script_id,
-        lower(script_name)              as script_name,
+    select *,
+        listagg(distinct topic_tags_cleaned) within group(order by topic_tags_cleaned asc) as topic_tags_list
+    from scripts 
+    {{ dbt_utils.group_by(21)}}
+),
+
+final as (
+    select 
+        script_id, 
+        script_name,
         wrapup_video_id,
         user_id,
         login_required,
-        lower(new_name)                 as new_name,
-        lower(family_name)              as family_name,
-        lower(published_state)          as published_state,
-        lower(instruction_type)         as instruction_type,
-        lower(instructor_audience)      as instructor_audience,
-        lower(participant_audience)     as participant_audience,
-
-        -- json extraction fields 
+        new_name,
+        family_name,
+        published_state,
+        instruction_type,
+        instructor_audience,
+        participant_audience,
+        course_name,
+        supported_locales,
+        version_year,
+        is_standalone,
+        unit,
         case 
-            when json_extract_path_text(
-                properties, 
-                'curriculum_umbrella') = ''                         then 'other'
-            else lower(
-                json_extract_path_text(
-                    properties, 
-                    'curriculum_umbrella',
-                true))
-        end as course_name,
-        
-        json_extract_path_text(
-            properties, 
-            'supported_locales')    as supported_locales,
-        
-        json_extract_path_text(
-            properties,
-            'version_year')         as version_year,
-        
-        json_extract_path_text(
-            properties,
-            'is_course')            as is_standalone,
-        
-        regexp_replace(
-            script_name,
-            '((-)+\\d{4})',
-            '')                     as unit,
-
+        when course_name = 'hoc' 
+            then 'hoc'                                      -- If course_name is HOC, content area is HOC too
+        when content_area is null then 'other'  -- If content area is null  then 'other' to align with course_name
+        when content_area = ''   then 'other'   -- If content area is empty then 'other' to align with course_name
+        else content_area
+            end as content_area,
+        nullif(topic_tags_list,'')   as topic_tags,
         created_at,
         updated_at
-    from scripts )
-    
-select 
-    *
-    , case 
-        when course_name in (
-            'csc',
-            'csf', 
-            'csd', 
-            'csa', 
-            'csp', 
-            'ai', 
-            'foundations of cs'
-        )
-        then 1 
-        else 0 
-    end                                                             as is_active_student_course
-from renamed
+    from renamed )
+
+select *  
+from final 
