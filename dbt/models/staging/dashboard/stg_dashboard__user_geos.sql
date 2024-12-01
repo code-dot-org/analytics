@@ -35,7 +35,7 @@ final as (
         lower(city) as city,
         lower(state) as state_name,
         postal_code,
-        coalesce(iso_country, country) as country,
+        coalesce(iso_country, lower(country)) as country,
         is_international,
         us_intl,
         
