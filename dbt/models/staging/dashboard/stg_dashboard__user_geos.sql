@@ -9,14 +9,22 @@ user_geos as (
         case when country = 'united states' then 'us'
              when country <> 'united states' then 'intl'
              else null 
-        end as us_intl,
+        end as us_intl
     from {{ ref('base_dashboard__user_geos') }}
 ),
 
-country_name_manual_changes as (
+country_standardizations as (
     select *
     from {{ref('seed_country_standardizations')}}
-)
+),
+
+combined as (
+    select *
+    from user_geos
+    left join country_standardizations
+        on user_geos.country = country_standardizations.country_user_geos
+    where row_number = 1
+),
 
 final as (
     select
@@ -27,7 +35,7 @@ final as (
         lower(city) as city,
         lower(state) as state_name,
         postal_code,
-        ifnull(cnmc.iso_country, user_geos.country),
+        coalesce(iso_country, country) as country,
         is_international,
         us_intl,
         
@@ -35,10 +43,7 @@ final as (
         created_at,
         updated_at,
         indexed_at
-    from user_geos
-    join country_name_manual_changes cnmc
-        on user_geos.country = cnmc.country_user_goes
-    where row_number = 1
+    from combined
 )
 
 select *
