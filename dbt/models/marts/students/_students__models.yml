@@ -139,6 +139,9 @@ models:
 
       - name: race_group
         description: the classified race of a student based on free-response input
+      
+      - name: state
+        description: State value extracted from user's IP address
 
       - name: country
         description: ""
@@ -257,5 +260,31 @@ models:
       - name: time_spent_minutes 
         description: the number of minutes the student spent on that level on the particular date
     
+    config:
+      tags: ['released']
+  
+  - name: dim_l3_proficiencies
+    description: |
+      This model has a row for every time a student reaches L3 proficiency within CSF levels. This proficiency threshold is set by our curriculum team per script. There may be multiple rows per student, since they can reach L3 proficiency multiple times.  
+
+    columns:
+      - name: student_id
+        description: unique ID for individual student user
+        data_tests:
+          - not_null
+          - unique
+    
+      - name: cal_year
+        description: the calendar year in which the student reached L3 proficiency. 
+          
+      - name: school_year
+        description: the school year in which the student reached L3 proficiency.
+
+      - name: country
+        description: the country associated with the student's IP address. 
+      
+      - name: l3_proficiency_at
+        description: timestamp of when the student reached L3 proficiency. 
+
     config:
       tags: ['released']

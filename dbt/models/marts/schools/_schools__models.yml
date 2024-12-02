@@ -51,6 +51,15 @@ models:
           - not_null
           - unique
 
+      - name: urg_percent
+        description: the share of students with race reported who are from an underrepresented racial group; excludes "two or more races" from the calculation entirely
+      
+      - name: urg_no_tr_numerator_percent
+        description: the share of students with race reported who are from an underrepresented racial group; excludes "two or more races" from the numerator only; used for AFE reporting 
+      
+      - name: urg_with_tr_percent
+        description: the share of students with race reported who are from an underrepresented racial group; includes "two or more races" in both the numerator and denominator
+      
       - name: last_survey_year 
         description: the school year associated with the most recent information about this school from NCES
       

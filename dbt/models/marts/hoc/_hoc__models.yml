@@ -1,30 +1,11 @@
 version: 2
 
 models:
-#   - name: fct_hoc_activity
-#     description: |
-#       commonly tracked hoc metrics by month, school year, and country
-
-#     columns:
-#       - name: month
-#       - name: school_year
-#       - name: country
-#         description: the country associated with the user's location
-#       - name: total_new_teacher_accounts
-#         description: the number of new teacher accounts created in the given month
-#       - name: total_new_student_accounts
-#         description: the number of new student accounts created in the given month
-#       - name: total_event_registrations
-#         description: the number of HoC events registered in the given month
-#       - name: total_hoc_hits
-#         description: the number of times an HoC activity was accessed 
-  
   - name: dim_hoc_starts
     description: |
       this model contains 1 row for every URL hit of an HoC activity, regardless of whether the user was signed in or the user was on a 3rd party site.   
           
       note-- if you'd like to explore only signed-in hoc usage, you can use use dim_student_script_level_activity
-
     columns:
       - name: hoc_start_id
         data_tests: 
@@ -40,7 +21,7 @@ models:
       - name: company 
       - name: tutorial
       - name: is_third_party
-        description: 1 if the URL hit was from a third party site with pixel tracking, 0 otherwise
+        description: 1 if the tutorial matches to our manually maintained list of Code.org HOC tutorials. Last updated 11/25/24 for the 2024 HOC year. 
       - name: city
         description: the city associated with the user's location
       - name: country 
@@ -53,39 +34,33 @@ models:
       tags: ['released']
  
   - name: dim_hoc_event_registrations 
-    description: this model has 1 row for every HoC event registered via our form. 
+    description: | 
+      This model has 1 row for every HoC event registered via our form and 1 row for every prospect 
+      in Pardot for the 2024 HOC year
     columns: 
       - name: form_id
+        description: |
+          This model has 1 row for every HoC event registered via our form (2014 - 2023) or pardot (2024)
+        
         data_tests:
+          - not_null 
           - unique
-          - not_null
-      - name: form_kind
-      - name: email
-        description: the email associated with the person registering the event
+          
+      # may bring this in later
+      # - name: email
+      #   description: the email associated with the person registering the event
+      
       - name: cal_year
         description: the calendar year associated with the HoC year they are registering for
+      
       - name: school_year 
         description: the school year associated with the HoC year they are registering for
+      
       - name: registered_at 
         description: timestamp of when the registration form was submitted 
-      - name: event_type
-      - name: email_pref
-      - name: special_event_flag
-      - name: review
+      
       - name: city
       - name: state
       - name: country
     config:
       tags: ['released']
-
-  - name: fct_hoc_prospects
-    description: hoc prospects data from pardot modeled by available segments and school year
-    columns:
-      - name: school_year 
-        description: ""
-      - name: country
-        description: ""
-      - name: state
-        description: ""
-      - name: num_prospects
-        description: distinct count of prospect id's 

@@ -1,20 +1,20 @@
 -- fka: int_user_levels
 -- scope: capture user_level data in one model
 
-
 with 
 user_levels as (
     select 
         user_id,
         level_id,
         script_id,
-        created_at,
-        created_at::date    as created_date,
-        sum(time_spent)     as time_spent_minutes,
-        sum(attempts)       as total_attempts,
-        max(best_result)    as best_result
+        {{ dbt_utils.generate_surrogate_key(
+            ['level_id',
+             'script_id']) }}   as level_script_id,
+        created_at::date        as created_date,
+        sum(time_spent)         as time_spent_minutes,
+        sum(attempts)           as total_attempts,
+        max(best_result)        as best_result
     from {{ ref('stg_dashboard__user_levels') }}    
-    where created_at > {{ get_cutoff_date() }}
     {{ dbt_utils.group_by(5) }}
 ),
 
@@ -39,6 +39,7 @@ combined as (
         usl.user_id,
         usr.user_type,
         usr.self_reported_state,
+        usr.state,
         usr.country,
         usr.us_intl,
         usr.is_international,
@@ -46,10 +47,13 @@ combined as (
         -- user level id's 
         usl.level_id,
         usl.script_id,
+        cs.level_script_id,
         
         -- courses data 
+        cs.content_area,
         cs.course_name,
         cs.is_active_student_course,
+        cs.topic_tags,
 
         -- aggs 
         usl.time_spent_minutes,
@@ -66,11 +70,10 @@ combined as (
         on usl.user_id = usr.user_id
     
     join course_structure as cs 
-         on usl.script_id = cs.script_id
-        and usl.level_id  = cs.level_id 
+         on usl.level_script_id = cs.level_script_id
     
     join school_years as sy 
-        on usl.created_at
+        on usl.created_date
             between sy.started_at
                 and sy.ended_at )
 
