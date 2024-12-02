@@ -10,7 +10,7 @@ course_structure as (
         and instruction_type = 'self_paced'
         )
         and script_name not in ('alltheselfpacedplthings')
-        and course_name not like 'pd workshop activity%'
+        and content_area like '%self_paced_pl%'
 ),
 
 user_levels as (
@@ -52,6 +52,8 @@ self_paced_scripts as (
         , cs.level_number
         , cs.level_script_order
         , cs.course_name
+        , cs.content_area
+        , cs.topic_tags
         , case 
             when cs.script_name ilike 'k5-onlinepd%' 		    then 'csf'
 			when cs.script_name like 'self-paced-pl-k5%'	    then 'csf'
@@ -83,6 +85,8 @@ select distinct
     , sps.stage_name
     , sps.level_name
     , sps.course_name
+    , sps.content_area
+    , sps.topic_tags
     , sps.course_name_implementation
     , ul.created_date                                                                   as level_created_dt
     , sy.school_year                                                                    as level_created_school_year
