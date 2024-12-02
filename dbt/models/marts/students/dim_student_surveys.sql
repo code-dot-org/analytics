@@ -41,12 +41,12 @@ combined as (
              when survey_name like '%pulse%'        then 'pulse'
              when survey_name like '%end of unit%'  then 'end of unit'
              else null end        as survey_type,
-
+        sc.script_name,
+        {# survey_question_id, #}
         lower(cl.level_name)            as question_name,
         lower(col.contained_level_type) as question_type,
         lower(col.contained_level_text) as question_text,
         col.contained_level_position    as question_position,
-        sc.script_name,
         cs.course_name,
         cs.unit, 
         cs.content_area,
@@ -75,14 +75,5 @@ combined as (
 
     where gl.level_name like '%survey%' )
 
-select survey_type, count(distinct survey_name) as num_surveys
-from combined 
-group by 1 
-order by 2 desc 
-
--- analysis.user_surveys
--- Pulse: 114
--- Pre: 23
--- Post: 29 
--- End of Unit: 78
--- NULL: 6
+select * 
+from combined
