@@ -288,3 +288,52 @@ models:
 
     config:
       tags: ['released']
+
+  - name: dim_student_surveys 
+    descripton: |
+      This model compiles all data related to scripts, courses and levels to determine surveys 
+    
+    columns: 
+      - name: survey_name 
+        description: the name of the group_level associated with the script 
+        data_tests:
+          - not_null
+        
+      - name: survey_type
+        description: type of survey based on the group_level and script
+        data_tests: 
+            - accepted_values:
+                values: ['pre', 'post', 'pulse','end of unit',null]
+        
+      - name: script_name
+        description: name of script assoicated with the group_level 
+        data_tests:
+          - not_null
+      
+      - name: question_name 
+        description: name of the contained_level associated with the script 
+      
+      - name: question_type
+        description: type of contained_level associated with the script 
+
+      - name: question_text 
+        description: contained_level_text
+      
+      - name: question_position
+        description: contained_level_position
+
+      - name: course_name
+        description: ""
+      
+      - name: unit 
+        description: ""
+
+      - name: content_area 
+        description: ""
+
+      - name: topic_tags
+        description: ""
+
+      - name: version_year 
+        description: "" 
+
