@@ -29,6 +29,11 @@ final as (
             when it.is_internal is null then 1
             else 0
             end as is_third_party
+        , case 
+            when tutorial in ('tynkerapp','carnegie_accelerate')
+            then 1
+            else 0
+            end as is_flagged_for_quality
         , hoc_activity.city
         , hoc_activity.country
         , hoc_activity.state
