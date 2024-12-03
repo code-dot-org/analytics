@@ -8,8 +8,8 @@ Edit log:
 Description of qualifying students
 - Unique US students with 1+ touchpoint of ES curriculum + 40% uplift
 - Unique US students with 1+ touchpoint of MS curriculum
-- Unique US students with 5+ touchpoints of CSA/CSP or post-AP units for HS
-- Total US students = Total unique known students (including 1-5 day HS) + 40% uplift for ES
+- Unique US students with 5+ touchpoints of CSA/CSP or standalone units for HS
+- Total US students = Total unique known students (including 1-4 day HS) + (ES * 40% to account for anonymous)
 */
 
 with participating as (
@@ -27,10 +27,7 @@ with participating as (
     where 
         user_type = 'student' and
         country = 'united states' and 
-        course_name in
-            ('csf','csc k-5',
-            'csd','6-8 special topics','csc 6-8',
-            'csa','csp','9-12 special topics','foundations of cs') and
+        content_area <> 'hoc' and
         activity_date >= '2019-07-01' --starting with 2019-20 school year
 )
 

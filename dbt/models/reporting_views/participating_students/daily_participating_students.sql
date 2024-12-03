@@ -24,10 +24,7 @@ with participating as (
     where 
         user_type = 'student' and
         country = 'united states' and 
-        course_name in
-            ('csf','csc k-5',
-            'csd','6-8 special topics','csc 6-8',
-            'csa','csp','9-12 special topics','foundations of cs') and
+        content_area <> 'hoc' and
         activity_date >= '2019-07-01' --starting with 2019-20 school year
     group by 1,2
 )
@@ -90,7 +87,7 @@ with participating as (
             rows between unbounded preceding 
                      and current row) as n_students_es_cumulative
     from participating_counts
-    left join all_counts   
+    full outer join all_counts   
         on participating_counts.qualifying_date = all_counts.qualifying_date
 )
 
