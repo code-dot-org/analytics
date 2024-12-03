@@ -47,6 +47,28 @@ combined as (
         lower(col.contained_level_type) as question_type,
         lower(col.contained_level_text) as question_text,
         col.contained_level_position    as question_position,
+        {# case 
+            when cl.level_type = 'multi'
+            then json_extract_path_text(
+                json_extract_array_element_text(
+                    json_extract_path_text(
+                        cl.properties, 
+                        'questions'), 
+                        0, 
+                        true),
+                        text)
+            when cl.level_type = 'free_response'
+            then json_extract_path_text(cl.properties, 'long_instructions')
+            when cl.level_type = 'external'
+            then json_extract_path_text(cl.properties, 'markdown')
+        end as questions, #}
+        case 
+            when cl.level_type = 'multi'
+            then json_array_length(json_extract_path_text(cl.properties, 'answers'))
+            when cl.level_type = 'free_response' then 1
+            when cl.level_type = 'external' then 0
+        end as num_response_options,
+
         cs.course_name,
         cs.unit, 
         cs.content_area,
