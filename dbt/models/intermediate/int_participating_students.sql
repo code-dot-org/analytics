@@ -17,7 +17,6 @@ dssla as (
         activity_date,
         content_area,
         course_name,
-        unit_name,
         country,
         user_type
     from {{ref('dim_student_script_level_activity')}}
@@ -37,14 +36,11 @@ dssla as (
         when dssla.content_area  = 'curriculum_9_12' then 'HS'
         else NULL
         end grade_band
-    , case when dssla.course_name like '%special topics' then unit_name
-        else course_name 
-        end as course_or_unit
-    , dssla.course_name as course_name
+    , course_name
     , activity_date
-    , row_number() over (partition by student_id, school_year, course_or_unit, grade_band order by activity_date asc) as day_order
+    , row_number() over (partition by student_id, school_year, course_name, grade_band order by activity_date asc) as day_order
     from dssla 
-    group by 1,2,3,4,5,6
+    group by 1,2,3,4,5
 )
 
 , qualifying_day_ES_MS as (
@@ -52,7 +48,7 @@ dssla as (
         school_year,
         student_id,
         grade_band,
-        course_or_unit,
+        course_name,
         activity_date as qualifying_date
     from
         days_per_student_course
@@ -66,7 +62,7 @@ dssla as (
         school_year,
         student_id,
         grade_band,
-        course_or_unit,
+        course_name,
         activity_date as qualifying_date
     from
         days_per_student_course

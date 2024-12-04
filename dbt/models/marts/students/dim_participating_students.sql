@@ -2,16 +2,18 @@
 Date: 11/30/24
 Purpose: Used for establishing 2030 participating student goals
 Description:
-This dim file creates a row for each student, grade band, course_or_module and then the qualifying date (1 day for ES, 5 days for HS)
-NOTE: int_participating_students can have multiple rows for a given student, school_year, and grade band. This file cannot - we show only their first qualifying date 
+This dim file creates a row for each student, grade band, school year and then the qualifying date (1 day for ES, 5 days for HS)
+NOTE: int_participating_students can have multiple rows for a given student, school_year, and grade band. This file cannot
+
+Description of qualifying criteria
+- ES: Unique US students with 1+ touchpoint of ES curriculum + 40% uplift based on assumption of anonymous/signed-out usage
+- MS: Unique US students with 1+ touchpoint of MS curriculum
+- HS: Unique US students with 5+ touchpoints of CSA/CSP or standalone units for HS
+- Total US students = Total unique known students (including 1-5 day HS) + ES *1.4
+
 
 Edit log: 
 
-Description
-- Unique US students with 1+ touchpoint of ES curriculum + 40% uplift
-- Unique US students with 1+ touchpoint of MS curriculum
-- Unique US students with 5+ touchpoints of CSA/CSP or standalone units for HS
-- Total US students = Total unique known students (including 1-5 day HS) + ES *1.4
 */
 
 with
