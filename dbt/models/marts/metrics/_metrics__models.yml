@@ -178,7 +178,7 @@ models:
           - not_null
     config:
       tags: ['released']
-
+  
   # - name: fct_active_students_daily
   #   description: this model represents a daily aggregation of the prototype active student metric (as defined in dim_active_students). Counts total active students by date. 
   #   columns:
