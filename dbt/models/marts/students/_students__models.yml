@@ -324,6 +324,9 @@ models:
       - name: question_position
         description: contained_level_position
 
+      - name: survey_question_id 
+        description: surrogate to associate survey questions to answers 
+
       - name: course_name
         description: ""
       

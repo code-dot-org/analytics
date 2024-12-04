@@ -7,7 +7,31 @@ contained_levels as (
 ),
 
 levels as (
-    select * 
+    select *,  
+    {# case
+	    when level_type = 'multi' 	
+        then json_extract_path_text(
+            json_extract_array_element_text(
+                json_extract_path_text(
+                    properties, 'questions'), 0, true),'text')
+
+        when level_type = 'freeresponse' 	
+        then json_extract_path_text(
+                properties, 
+                'long_instructions')
+
+        when level_type = 'external'		
+        then json_extract_path_text(
+                properties, 
+                'markdown')
+        end 	as questions, #}
+        
+        case 
+        when level_type = 'multi' then json_array_length(json_extract_path_text(properties, 'answers'))
+        when level_type = 'freeresponse' 	then 1 
+        when level_type = 'external'		then 0 
+        end 	as num_response_options
+
     from {{ ref('stg_dashboard__levels') }}
 ),
 
@@ -40,13 +64,21 @@ combined as (
              when survey_name like '%post%'         then 'post'
              when survey_name like '%pulse%'        then 'pulse'
              when survey_name like '%end of unit%'  then 'end of unit'
-             else null end        as survey_type,
+             else null end              as survey_type,
         sc.script_name,
-        {# survey_question_id, #}
+
         lower(cl.level_name)            as question_name,
         lower(col.contained_level_type) as question_type,
         lower(col.contained_level_text) as question_text,
         col.contained_level_position    as question_position,
+        cl.num_response_options,
+        
+        -- surrogate key for survey_question_id, #}
+        {{ dbt_utils.generate_surrogate_key(
+            ['gl.level_id', 
+             'cl.level_id']) }}                                        as survey_question_id,
+        
+        cs.level_script_id,
         cs.course_name,
         cs.unit, 
         cs.content_area,
@@ -75,5 +107,5 @@ combined as (
 
     where gl.level_name like '%survey%' )
 
-select * 
+select *
 from combined
