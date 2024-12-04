@@ -113,6 +113,8 @@ models:
       - name: has_project_activity
         description: "`0|1` flag indicating whether there was any project activity for the user on the given day (1 for yes, 0 for no)."
         data_type: "integer"
+    config:
+      tags: ['released']
 
     data_tests:
       - dbt_utils.unique_combination_of_columns:
