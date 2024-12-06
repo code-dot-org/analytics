@@ -23,7 +23,7 @@ statsig_events as (
 renamed as (
     select 
         user_id,
-        -- stable_id,	
+        stable_id,	
         custom_ids,	
         event_at,
         event_name,	
