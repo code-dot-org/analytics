@@ -7,7 +7,14 @@ contained_levels as (
 ),
 
 levels as (
-    select * 
+    select 
+        *,          
+        case 
+            when level_type = 'multi' then json_array_length(json_extract_path_text(properties, 'answers'))
+            when level_type = 'freeresponse' 	then 1 
+            when level_type = 'external'		then 0 
+        end 	as num_response_options
+
     from {{ ref('stg_dashboard__levels') }}
 ),
 
@@ -40,35 +47,16 @@ combined as (
              when survey_name like '%post%'         then 'post'
              when survey_name like '%pulse%'        then 'pulse'
              when survey_name like '%end of unit%'  then 'end of unit'
-             else null end        as survey_type,
+             else null end              as survey_type,
         sc.script_name,
-        {# survey_question_id, #}
+
         lower(cl.level_name)            as question_name,
         lower(col.contained_level_type) as question_type,
         lower(col.contained_level_text) as question_text,
         col.contained_level_position    as question_position,
-        {# case 
-            when cl.level_type = 'multi'
-            then json_extract_path_text(
-                json_extract_array_element_text(
-                    json_extract_path_text(
-                        cl.properties, 
-                        'questions'), 
-                        0, 
-                        true),
-                        text)
-            when cl.level_type = 'free_response'
-            then json_extract_path_text(cl.properties, 'long_instructions')
-            when cl.level_type = 'external'
-            then json_extract_path_text(cl.properties, 'markdown')
-        end as questions, #}
-        case 
-            when cl.level_type = 'multi'
-            then json_array_length(json_extract_path_text(cl.properties, 'answers'))
-            when cl.level_type = 'free_response' then 1
-            when cl.level_type = 'external' then 0
-        end as num_response_options,
-
+        cl.num_response_options,
+        
+        cs.level_script_id,
         cs.course_name,
         cs.unit, 
         cs.content_area,
@@ -97,5 +85,5 @@ combined as (
 
     where gl.level_name like '%survey%' )
 
-select * 
+select *
 from combined

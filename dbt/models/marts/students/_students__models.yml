@@ -113,6 +113,8 @@ models:
       - name: has_project_activity
         description: "`0|1` flag indicating whether there was any project activity for the user on the given day (1 for yes, 0 for no)."
         data_type: "integer"
+    config:
+      tags: ['released']
 
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -321,6 +323,9 @@ models:
       
       - name: question_position
         description: contained_level_position
+
+      - name: survey_question_id 
+        description: surrogate to associate survey questions to answers 
 
       - name: course_name
         description: ""
