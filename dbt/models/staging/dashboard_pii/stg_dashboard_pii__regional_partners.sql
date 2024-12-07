@@ -6,12 +6,11 @@ with regional_partners as (
 select
     regional_partner_id
     , regional_partner_group
-    , regional_partner_name
+    , lower(regional_partner_name)      as regional_partner_name
     , is_urban
-    , attention
-    , street
-    , apartment_or_suite
-    , city
+    , lower(street)                     as address
+    , lower(apartment_or_suite)         as apt_num
+    , lower(city)                       as city
     , state
     , zip_code
     , created_at
