@@ -1,6 +1,22 @@
 version: 2
 
-models:
+models: 
+  - name: int_application_status_times
+    description: |
+      For every application to PD, this model gives the # days spent in each application status until they are in a final state (e.g. accepted, withdrawn, declined)
+    columns:
+      - name: pd_application_id
+      - name: days_in_pending
+        description: the number of days the application was in the status of "pending"
+      - name: days_in_unreviewed
+        description: the number of days the application was in the status of "unreviewed"
+      - name: days_in_incomplete
+        description: the number of days the application was in the status of "incomplete"
+      - name: days_in_pending_space_availability
+        description: the number of days the application was in the status of "pending space availability"
+      - name: days_in_awaiting_admin_approval
+        description: the number of days the application was in the status of "awaiting admin approval"
+        
   - name: int_ap_agg_exam_results_union_agg_school_level
     description: |
       This intermediate model unions together:
