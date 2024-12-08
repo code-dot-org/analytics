@@ -36,7 +36,6 @@ scripts as (
 course_structure as (
     select * 
     from {{ ref('dim_course_structure') }}
-    where course_name in ('csa','csd','csp')
 ),
 
 combined as (
