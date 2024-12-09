@@ -7,15 +7,30 @@ contained_levels as (
 ),
 
 levels as (
-    select 
-        *,          
+    select *,    
+
         case 
             when level_type = 'multi' then json_array_length(json_extract_path_text(properties, 'answers'))
             when level_type = 'freeresponse' 	then 1 
             when level_type = 'external'		then 0 
-        end 	as num_response_options
+        end 	as num_response_options,
+
+        case 
+            when level_type = 'multi' then json_extract_path_text(properties,'answers') 
+            else null 
+        end as response_options 
 
     from {{ ref('stg_dashboard__levels') }}
+),
+
+level_sources as (
+    select * 
+    from {{ ref('stg_dashboard_pii__level_sources') }}
+),
+
+level_sources_free_responses as (
+    select * 
+    from {{ ref('stg_dashboard__level_sources_free_responses') }}
 ),
 
 script_levels as (
@@ -36,25 +51,33 @@ scripts as (
 course_structure as (
     select * 
     from {{ ref('dim_course_structure') }}
-    where course_name in ('csa','csd','csp')
 ),
 
 combined as (
     select 
+        gl.level_id                     as group_level_id,
         lower(gl.level_name)            as survey_name,
-        case when survey_name like '%pre%' 
-              and survey_name not like '%preview%'  then 'pre'
-             when survey_name like '%post%'         then 'post'
-             when survey_name like '%pulse%'        then 'pulse'
-             when survey_name like '%end of unit%'  then 'end of unit'
-             else null end              as survey_type,
+        
+        case 
+            when survey_name like '%pre%' 
+             and survey_name not like '%preview%'  then 'pre'
+            when survey_name like '%post%'         then 'post'
+            when survey_name like '%pulse%'        then 'pulse'
+            when survey_name like '%end of unit%'  then 'end of unit'
+            else null end              as survey_type,
+        
         sc.script_name,
-
+        cl.level_id                     as contained_level_id,
         lower(cl.level_name)            as question_name,
         lower(col.contained_level_type) as question_type,
         lower(col.contained_level_text) as question_text,
         col.contained_level_position    as question_position,
+
         cl.num_response_options,
+        cl.response_options,
+
+        cola.answer_number,
+        cola.answer_text,
         
         cs.level_script_id,
         cs.course_name,
@@ -69,6 +92,9 @@ combined as (
 
     join levels             as cl -- contained levels 
     on col.contained_level_id = cl.level_id
+
+    -- left join contained_level_answers as cola 
+    -- on cl.level_id = cola.level_id 
     
     join levels_script_levels   as lsl 
     on gl.level_id = lsl.level_id
@@ -86,4 +112,4 @@ combined as (
     where gl.level_name like '%survey%' )
 
 select *
-from combined
+from combined 

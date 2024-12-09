@@ -37,13 +37,13 @@ final as (
             properties, 
             'submittable', 
             true)               as is_submittable,
-            
+        
         lower(audit_log)        as audit_log,
         lower(notes)            as notes,
         lower(properties)       as properties,
         created_at,
         updated_at
-    from levels)
+    from levels )
 
 select * 
 from final 
