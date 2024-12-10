@@ -20,7 +20,7 @@
 with unpivoted_data as (
     -- NOTE: these should be unionable because we're pivoting around the same set of 5 columns. i.e. the width of the base tables shouldn't matter as long as the first 5 columns are the same.
     
-    {% set years = ['2017_2022', '2023'] %} 
+    {% set years = ['2017_2022', '2023','2024'] %} 
 
     {% for year in years %}
         {{ unpivot_big_table('base_external_datasets__ap_agg_exam_results_'~year, 5)}}
@@ -30,6 +30,7 @@ with unpivoted_data as (
     {% endfor %}
 
 )
+
 , normalized_values AS (
     SELECT
 

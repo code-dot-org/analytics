@@ -2,7 +2,7 @@
     case
         when {{ exam_name }} in ('csa','Computer Sci A','COMSCA') then 'csa'
         when {{ exam_name }} in ('csp','Computer Sci Prin','COMSCP') then 'csp'
-        when {{ exam_name }} in ('sum_csa_csp') then 'sum_csa_csp'
+        when {{ exam_name }} in ('sum_csa_csp','COMSCP or COMSCA') then 'sum_csa_csp'
         else 'UNEXPECTED exam_name: ''' || {{exam_name }} || '''. SEE macro - ap_norm_exam_subject'
     end
 {% endmacro %}
@@ -43,7 +43,7 @@ case
     when {{ demographic_group_raw }} in ('hp','native_hawaiian_other_pacific_islander','pacific_islander','nhpi') then 'hawaiian'
     when {{ demographic_group_raw }} in ('tr','two_or_more_races','twomore') then 'two_or_more'
     when {{ demographic_group_raw }} in ('other', 'other_race_ethnicity','other_race') then 'other_race'
-    when {{ demographic_group_raw }} in ('race_ethnicity_no_response','race_no_response','no_response') then 'race_no_response'
+    when {{ demographic_group_raw }} in ('race_ethnicity_no_response','race_no_response','no_response','noresponse') then 'race_no_response'
     when {{ demographic_group_raw }} in ('other_gender','gender_another') then 'other_gender'
     when {{ demographic_group_raw }} in ('overall','total') then 'total'
     else {{ demographic_group_raw }} -- default: return the raw - if unrecognized this will fail loudly when processed by by next case-when
@@ -94,16 +94,19 @@ end as demographic_category
     case 
         when {{ exam_group }} in ('cdo_audit')                         then {{exam_group}}
         when {{ exam_group }} in ('national')                          then {{exam_group}}
-        when {{ exam_group }} in ('csa pd all time','csa_all_time_pd') then 'csa pd all time'
-        when {{ exam_group }} in ('csp pd all time','csp_all_time_pd') then 'csp pd all time'
-        when {{ exam_group }} in ('csp_users','csa_users')             then {{exam_group}} -- heavy users
+        when {{ exam_group }} in ('csa pd all time','csa_all_time_pd') then 'csa_pd_all_time'
+        when {{ exam_group }} in ('csp pd all time','csp_all_time_pd') then 'csp_pd_all_time'
+        when {{ exam_group }} in ('csa_users','csa_heavy')             then 'csa_heavy_users' -- heavy users
+        when {{ exam_group }} in ('csp_users','csp_heavy')             then 'csp_heavy_users' -- heavy users
         when {{ exam_group }} in ('csp_users_and_audit','csp_ballmer') then 'csp_users_and_audit' -- heavy+audit = "Ballmer"
         when {{ exam_group }} in ('csa_ballmer')                       then 'csa_users_and_audit' -- heavy+audit = "Ballmer"
 
         -- AFE REPORTS
         when {{ exam_group }} in 
             ('2019_and_2020_AFE','2019_AFE','2020_AFE')                then {{exam_group}} -- AFE teacher signup cohorts
-        when {{ exam_group }} in ('csp_users_afe','csa_users_afe')     then {{exam_group}} -- AFE eligible schools (started 2023)
+        when {{ exam_group }} in ('csa_users_afe','csa_afe_eligible')  then 'csa_afe_eligible_schools' -- AFE eligible schools (started 2023)
+        when {{ exam_group }} in ('csp_users_afe','csp_afe_eligible')  then 'csp_afe_eligible_schools' -- AFE eligible schools (started 2023)
+
 
         -- other PD and regional partner stuff --
         when {{ exam_group }} in (
