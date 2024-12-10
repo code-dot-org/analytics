@@ -6,6 +6,12 @@ contained_levels as (
     from {{ ref('stg_dashboard__contained_levels') }}
 ),
 
+contained_levels_answers as (
+    select distinct 
+        level_id, answer_number, answer_text
+    from {{ ref('stg_dashboard__contained_level_answers') }}
+),
+
 levels as (
     select 
         *,    
@@ -13,13 +19,7 @@ levels as (
             when level_type = 'multi' then json_array_length(json_extract_path_text(properties, 'answers'))
             when level_type = 'freeresponse' 	then 1 
             when level_type = 'external'		then 0 
-        end 	as num_response_options,
-
-        case 
-            when level_type = 'multi' then json_extract_path_text(properties,'answers') 
-            else null 
-        end as response_options 
-
+        end 	as num_response_options 
     from {{ ref('stg_dashboard__levels') }}
 ),
 
@@ -64,7 +64,9 @@ combined as (
         col.contained_level_position    as question_position,
 
         cl.num_response_options,
-        cl.response_options,
+        
+        cola.answer_number,     -- response position
+        cola.answer_text,       -- response_text
         
         cs.level_script_id,
         cs.course_name,
@@ -79,6 +81,9 @@ combined as (
 
     join levels             as cl -- contained levels 
     on col.contained_level_id = cl.level_id
+
+    left join contained_levels_answers as cola 
+    on cl.level_id = cola.level_id  
     
     join levels_script_levels   as lsl 
     on gl.level_id = lsl.level_id

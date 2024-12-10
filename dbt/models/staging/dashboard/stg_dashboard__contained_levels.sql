@@ -6,7 +6,7 @@ contained_levels as (
 
 renamed as (
     select 
-        contained_levels_id,
+        contained_levels_id, -- unique id from db not to be mistake for FK contained_level_id
         level_group_level_id,
         contained_level_id,
         lower(contained_level_type)             as contained_level_type,
