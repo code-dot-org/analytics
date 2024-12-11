@@ -64,7 +64,7 @@ with participating as (
     --, total_counts.n_students as n_students
     , round(total_counts.n_students + n_students_ES * 0.4)::int as n_students_adj
     , n_students_HS
-    , cast(n_students_HS_f as decimal) / (n_students_HS_not_f + n_students_HS_f) * n_students_HS as n_students_HS_f_calc
+    , round(cast(n_students_HS_f as decimal) / (n_students_HS_not_f + n_students_HS_f) * n_students_HS)::int as n_students_HS_f_calc
     , cast(n_students_HS_urg as decimal) / (n_students_HS_not_urg + n_students_HS_urg) * n_students_HS as n_students_HS_urg_calc
     , n_students_MS
     , cast(n_students_MS_f as decimal) / (n_students_MS_not_f + n_students_MS_f) * n_students_MS as n_students_MS_f_calc
