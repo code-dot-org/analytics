@@ -70,7 +70,7 @@ with participating as (
     , round(cast(n_students_MS_f as decimal) / (n_students_MS_not_f + n_students_MS_f) * n_students_MS)::int as n_students_MS_f_calc
     , round(cast(n_students_MS_urg as decimal) / (n_students_MS_not_urg + n_students_MS_urg) * n_students_MS)::int as n_students_MS_urg_calc
     --, n_students_ES
-    , n_students_ES * 1.4 as n_students_ES_adj
+    , round(n_students_ES * 1.4)::int as n_students_ES_adj
     from category_counts
     join total_counts
         on category_counts.school_year = total_counts.school_year
