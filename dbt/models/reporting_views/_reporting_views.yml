@@ -5,3 +5,24 @@ models:
     
     config:
       tags: ['reporting']
+
+  - name: view_course_utilization_units
+    description: |
+      Activity by student and unit, used for the Course Utilization Tableau dashboard. 
+    
+    config:
+      tags: ['reporting', 'tableau']
+
+  - name: view_course_utilization_unit_combinations
+    description: |
+      Combination of units engaged with by each section, used for the Course Utilization Tableau dashboard, Unit Combinations viz. 
+    
+    config:
+      tags: ['reporting', 'tableau']
+
+  - name: view_course_utilization_by_script_level
+    description: |
+      Activity by section, script and level, used for the Course Utilization Tableau dashboard, Course Utilization by Script, Stage, Level viz. 
+    
+    config:
+      tags: ['reporting', 'tableau']
