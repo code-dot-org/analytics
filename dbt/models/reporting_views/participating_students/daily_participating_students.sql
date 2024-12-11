@@ -98,7 +98,7 @@ with participating as (
         (n_students_cumulative + round(0.4 * n_students_es_cumulative))::int as n_students_adj_cumulative,
         n_students_hs_cumulative,
         n_students_ms_cumulative,
-        n_students_es_cumulative * 1.4 as n_students_es_adj_cumulative
+        round(n_students_es_cumulative * 1.4)::int as n_students_es_adj_cumulative
     from 
         calculations
 )
