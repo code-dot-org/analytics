@@ -14,12 +14,13 @@ contained_levels_answers as (
 
 levels as (
     select 
-        *,    
+        *,   
         case 
             when level_type = 'multi' then json_array_length(json_extract_path_text(properties, 'answers'))
             when level_type = 'freeresponse' 	then 1 
             when level_type = 'external'		then 0 
         end 	as num_response_options 
+
     from {{ ref('stg_dashboard__levels') }}
 ),
 
@@ -58,15 +59,14 @@ combined as (
         
         sc.script_name,
         cl.level_id                     as contained_level_id,
-        lower(cl.level_name)            as question_name,
-        lower(col.contained_level_type) as question_type,
-        lower(col.contained_level_text) as question_text,
+        cl.level_name                   as question_name,
+        cl.level_type                   as question_type,
         col.contained_level_position    as question_position,
-
-        cl.num_response_options,
+        col.contained_level_text        as question_text,
         
-        cola.answer_number,     -- response position
-        cola.answer_text,       -- response_text
+        cl.num_response_options,
+        cola.answer_text        as response_option,
+        cola.answer_number      as response_position,
         
         cs.level_script_id,
         cs.course_name,
@@ -101,4 +101,4 @@ combined as (
     where gl.level_name like '%survey%' )
 
 select *
-from combined 
+from combined
