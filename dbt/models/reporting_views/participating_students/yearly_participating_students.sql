@@ -62,7 +62,7 @@ with participating as (
 , final as (select
     category_counts.school_year
     --, total_counts.n_students as n_students
-    , total_counts.n_students + n_students_ES * 0.4 as n_students_adj
+    , round(total_counts.n_students + n_students_ES * 0.4)::int as n_students_adj
     , n_students_HS
     , cast(n_students_HS_f as decimal) / (n_students_HS_not_f + n_students_HS_f) * n_students_HS as n_students_HS_f_calc
     , cast(n_students_HS_urg as decimal) / (n_students_HS_not_urg + n_students_HS_urg) * n_students_HS as n_students_HS_urg_calc
