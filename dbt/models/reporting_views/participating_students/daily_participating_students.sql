@@ -95,6 +95,16 @@ with participating as (
     select
         school_year,
         qualifying_date,
+        date_part(week, qualifying_date)::int week_number,
+        decode (date_part(dayofweek, qualifying_date),
+                     0, 'sun',
+                     1, 'mon',
+                     2, 'tue',
+                     3, 'wed',
+                     4, 'thu',
+                     5, 'fri',
+                     6, 'sat')
+        day_of_the_week,
         (n_students_cumulative + round(0.4 * n_students_es_cumulative))::int as n_students_adj_cumulative,
         n_students_hs_cumulative,
         n_students_ms_cumulative,
