@@ -67,7 +67,7 @@ with participating as (
     , round(cast(n_students_HS_f as decimal) / (n_students_HS_not_f + n_students_HS_f) * n_students_HS)::int as n_students_HS_f_calc
     , round(cast(n_students_HS_urg as decimal) / (n_students_HS_not_urg + n_students_HS_urg) * n_students_HS)::int as n_students_HS_urg_calc
     , n_students_MS
-    , cast(n_students_MS_f as decimal) / (n_students_MS_not_f + n_students_MS_f) * n_students_MS as n_students_MS_f_calc
+    , round(cast(n_students_MS_f as decimal) / (n_students_MS_not_f + n_students_MS_f) * n_students_MS)::int as n_students_MS_f_calc
     , cast(n_students_MS_urg as decimal) / (n_students_MS_not_urg + n_students_MS_urg) * n_students_MS as n_students_MS_urg_calc
     --, n_students_ES
     , n_students_ES * 1.4 as n_students_ES_adj
