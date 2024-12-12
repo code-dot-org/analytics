@@ -48,6 +48,7 @@ combined as (
     select 
         gl.level_id                     as group_level_id,
         lower(gl.level_name)            as survey_name,
+        cs.level_script_id,
         
         case 
             when survey_name like '%pre%' 
@@ -61,6 +62,7 @@ combined as (
         cl.level_id                     as contained_level_id,
         cl.level_name                   as question_name,
         cl.level_type                   as question_type,
+        col.contained_level_page        as question_page,
         col.contained_level_position    as question_position,
         col.contained_level_text        as question_text,
         
@@ -68,7 +70,6 @@ combined as (
         cola.answer_text        as response_option,
         cola.answer_number      as response_position,
         
-        cs.level_script_id,
         cs.course_name,
         cs.unit, 
         cs.content_area,
@@ -82,7 +83,7 @@ combined as (
     join levels             as cl -- contained levels 
     on col.contained_level_id = cl.level_id
 
-    left join contained_levels_answers as cola 
+    join contained_levels_answers as cola 
     on cl.level_id = cola.level_id  
     
     join levels_script_levels   as lsl 
