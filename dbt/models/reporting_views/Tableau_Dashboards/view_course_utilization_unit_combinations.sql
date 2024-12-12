@@ -31,5 +31,4 @@ select
 from student_activity sa
 where 
  sa.topic_tags not like '%survey%'  
- and sa.content_area like 'curriculum_6_8'
 {{ dbt_utils.group_by(6) }} 

@@ -53,5 +53,4 @@ select
 
 from student_activity sa
 left join schools ss on sa.school_id = ss.school_id
-where sa.content_area like 'curriculum_6_8'
     {{ dbt_utils.group_by(15) }} -- grouping instead of select distinct to deduplicate records with better performance

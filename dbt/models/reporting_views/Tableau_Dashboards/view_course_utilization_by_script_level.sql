@@ -35,6 +35,7 @@ school_years as (
     select distinct
     cs.script_id
     , cs.script_name
+    , cs.version_year
     , cs.topic_tags
     , cs.stage_name as lesson_name
     , cs.stage_number as lesson_number
@@ -46,13 +47,13 @@ school_years as (
         from {{ ref('dim_course_structure')}} cs
     where 
         cs.content_area not in ('hoc')
-    and cs.content_area like 'curriculum_6_8'
 ))
 
 
 select
 sa.*
 , cs.script_name
+, cs.version_year
 , cs.lesson_name
 , cs.lesson_number 
 , cs.lesson_number_name
@@ -63,5 +64,4 @@ from student_activity sa
 join course_structure cs 
         on sa.script_id = cs.script_id
         and sa.level_id = cs.level_id
-where sa.content_area like 'curriculum_6_8'
-    {{ dbt_utils.group_by(19) }} -- grouping instead of select distinct to deduplicate records with better performance
+    {{ dbt_utils.group_by(20) }} -- grouping instead of select distinct to deduplicate records with better performance
