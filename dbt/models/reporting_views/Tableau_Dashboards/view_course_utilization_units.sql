@@ -12,11 +12,13 @@ school_years as (
 
 , student_activity as (
     select sa.*
+    , sy.started_at as sy_start_at
     from {{ ref('dim_student_script_level_activity') }} sa
     join school_years sy on sa.school_year = sy.school_year -- limit to selected school years
     where 
     user_type = 'student'
     and content_area not in ('hoc')
+    and sa.topic_tags is not null -- limiting to create a small extract to enable publishing
 )
 
 
@@ -36,7 +38,10 @@ school_years as (
 
 select
   sa.student_id
-, date_trunc('week',sa.activity_date) week_activity_date
+, case 
+    when date_trunc('week',sa.activity_date) < sa.sy_start_at then sa.sy_start_at -- if the start of the week falls before the start of the school year, then the start of the school year 
+    else date_trunc('week',sa.activity_date) 
+    end week_activity_date
 , sa.content_area
 , sa.course_name
 , sa.unit_name

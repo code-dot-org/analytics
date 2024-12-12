@@ -16,6 +16,7 @@ school_years as (
     where 
     user_type = 'student'
     and content_area not in ('hoc')
+    and sa.topic_tags is not null -- limiting to create a small extract to enable publishing
 )
 
 

@@ -26,8 +26,9 @@ school_years as (
     from {{ ref('dim_student_script_level_activity') }} sa
     join school_years sy on sa.school_year = sy.school_year -- limit to selected school years
     where 
-    user_type = 'student'
-    and content_area not in ('hoc')
+    sa.user_type = 'student'
+    and sa.content_area not in ('hoc', 'other')
+    and sa.topic_tags is not null -- limiting to create a small extract to enable publishing
         {{ dbt_utils.group_by(12) }} -- grouping instead of select distinct to deduplicate records with better performance
 )
 
@@ -46,7 +47,7 @@ school_years as (
     , cs.level_number || ' - ' || cs.level_name as level_number_name
         from {{ ref('dim_course_structure')}} cs
     where 
-        cs.content_area not in ('hoc')
+        cs.content_area not in ('hoc', 'other')
 ))
 
 
