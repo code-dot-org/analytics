@@ -308,7 +308,7 @@ models:
                 values: ['pre', 'post', 'pulse','end of unit',null]
         
       - name: script_name
-        description: name of script assoicated with the group_level 
+        description: name of script associated with the group_level 
         data_tests:
           - not_null
       
