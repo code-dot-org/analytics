@@ -66,7 +66,7 @@ combined as (
         
         cl.num_response_options,
         cola.answer_text        as response_option,
-        cola.answer_number      as response_position,
+        cola.answer_number,    
         
         cs.level_script_id,
         cs.course_name,
