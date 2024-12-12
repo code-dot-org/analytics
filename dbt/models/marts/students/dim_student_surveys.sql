@@ -2,7 +2,14 @@
 
 with 
 contained_levels as (
-    select * 
+    select *,
+        row_number() over(
+            partition by 
+                level_group_level_id,
+                contained_level_page
+            order by 
+                contained_level_page, 
+                contained_level_position asc) as question_number
     from {{ ref('stg_dashboard__contained_levels') }}
 ),
 
@@ -47,6 +54,14 @@ course_structure as (
 combined as (
     select 
         gl.level_id                     as group_level_id,
+        cs.content_area,
+        cs.course_name,
+        cs.script_id,
+        cs.script_name,
+        cs.unit, 
+        cs.topic_tags,
+        cs.version_year,
+        col.level_group_level_id        as survey_level_id,
         lower(gl.level_name)            as survey_name,
         cs.level_script_id,
         
@@ -58,23 +73,17 @@ combined as (
             when survey_name like '%end of unit%'  then 'end of unit'
             else null end              as survey_type,
         
-        sc.script_name,
         cl.level_id                     as contained_level_id,
         cl.level_name                   as question_name,
         cl.level_type                   as question_type,
         col.contained_level_page        as question_page,
         col.contained_level_position    as question_position,
+        col.question_number,
         col.contained_level_text        as question_text,
         
         cl.num_response_options,
         cola.answer_text,       
-        cola.answer_number,    
-        
-        cs.course_name,
-        cs.unit, 
-        cs.content_area,
-        cs.topic_tags,
-        cs.version_year
+        cola.answer_number
 
     from contained_levels   as col 
     join levels             as gl -- group levels 
