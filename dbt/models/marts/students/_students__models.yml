@@ -293,7 +293,7 @@ models:
 
   - name: dim_student_surveys 
     descripton: |
-      This model compiles all data related to scripts, courses and levels to determine surveys 
+      This model contains the survey questionnaires for surveys included in our curriculum, by arranging them as surveys, survey questions, and possible answers. Because there is not a straightforward way to identify surveys as such, only level groups that contain the word survey are included in the model. 
     
     columns: 
       - name: survey_name 
