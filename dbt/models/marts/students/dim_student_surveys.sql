@@ -67,8 +67,8 @@ combined as (
         col.contained_level_text        as question_text,
         
         cl.num_response_options,
-        cola.answer_text        as response_option,
-        cola.answer_number      as response_position,
+        cola.answer_text,       
+        cola.answer_number,    
         
         cs.course_name,
         cs.unit, 
