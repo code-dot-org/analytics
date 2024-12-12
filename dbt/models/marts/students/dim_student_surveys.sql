@@ -49,6 +49,7 @@ scripts as (
 course_structure as (
     select * 
     from {{ ref('dim_course_structure') }}
+    where content_area <> 'other'
 ),
 
 combined as (
