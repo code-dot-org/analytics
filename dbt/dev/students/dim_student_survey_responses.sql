@@ -56,8 +56,8 @@ combined as (
     on ss.script_id = ul.script_id 
     and ss.contained_level_id = ul.level_id 
 
-    -- left join level_sources as ls 
-    -- on ul.level_source_id = ls.level_source_id
+    left join level_sources as ls 
+    on ul.level_source_id = ls.level_source_id
 
     left join free_responses as fr 
     on ls.level_source_id = fr.level_source_id

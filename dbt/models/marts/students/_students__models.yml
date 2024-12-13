@@ -296,22 +296,45 @@ models:
       This model contains the survey questionnaires for surveys included in our curriculum, by arranging them as surveys, survey questions, and possible answers. Because there is not a straightforward way to identify surveys as such, only level groups that contain the word survey are included in the model. 
     
     columns: 
+      - name: group_level_id
+        description: id of the group level 
+        data_tests:
+          - not_null 
+      
+      - name: content_area
+        description: ""
+
+      - name: course_name
+      - name: script_id
+      - name: script_name
+      - name: unit 
+      - name: topic_tags 
+
+      - name: topic_tags
+        description: ""
+
+      - name: version_year 
+        description: ""
+      
+      - name: survey_level_id
+        description: the level_group_level_id of the survey 
+
       - name: survey_name 
         description: the name of the group_level associated with the script 
         data_tests:
           - not_null
+
+      - name: level_script_id 
+        description: FK for level and script joins 
         
       - name: survey_type
         description: type of survey based on the group_level and script
         data_tests: 
             - accepted_values:
                 values: ['pre', 'post', 'pulse','end of unit',null]
-        
-      - name: script_name
-        description: name of script associated with the group_level 
-        data_tests:
-          - not_null
-      
+      - name: contained_level_id 
+        description: "" 
+
       - name: question_name 
         description: name of the contained_level associated with the script 
       
@@ -321,24 +344,20 @@ models:
       - name: question_text 
         description: contained_level_text
       
-      - name: question_position
-        description: contained_level_position
+      - name: question_number 
+        description: rank order of contained_level_text and page 
 
-      - name: survey_question_id 
-        description: surrogate to associate survey questions to answers 
-
-      - name: course_name
-        description: ""
+      - name: question_text 
+        description: contained_level_text 
       
-      - name: unit 
+      - name: num_response_options 
+        description: | 
+        Count of response options for each question by type 
+
+      - name: answer_text 
         description: ""
 
-      - name: content_area 
+      - name: answer_number 
         description: ""
-
-      - name: topic_tags
-        description: ""
-
-      - name: version_year 
-        description: "" 
+        
 
