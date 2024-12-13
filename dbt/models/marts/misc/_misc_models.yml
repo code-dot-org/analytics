@@ -157,3 +157,26 @@ models:
         description: 1 if the ambassador indicated they took csd, 0 otherwise 
     config:
       tags: ['released']
+
+  - name: dim_country_reference
+    description: |
+      this model provides ISO reference data at the country level to easily create standard regional groupings
+    columns: 
+      - name: iso2
+        description: 2-digit ISO code for the country
+        data_tests:
+          - not_null
+      - name: country
+        description: standardized country names (as of 2024)
+        data_tests:
+          - not_null 
+      - name: region
+        description: top-level region (e.g., americas)
+        data_tests:
+          - not_null
+      - name: subregion
+        description: lower-level region (e.g., latin america)
+        data_tests:
+          - not_null
+    config:
+      tags: ['released']
