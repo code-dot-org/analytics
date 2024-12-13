@@ -5,8 +5,7 @@ contained_levels as (
     select *,
         row_number() over(
             partition by 
-                level_group_level_id,
-                contained_level_page
+                level_group_level_id
             order by 
                 contained_level_page, 
                 contained_level_position asc) as question_number
@@ -77,8 +76,6 @@ combined as (
         cl.level_id                     as contained_level_id,
         cl.level_name                   as question_name,
         cl.level_type                   as question_type,
-        col.contained_level_page        as question_page,
-        col.contained_level_position    as question_position,
         col.question_number,
         col.contained_level_text        as question_text,
         
