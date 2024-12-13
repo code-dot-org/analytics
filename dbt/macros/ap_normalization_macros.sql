@@ -94,8 +94,8 @@ end as demographic_category
     case 
         when {{ exam_group }} in ('cdo_audit')                         then {{exam_group}}
         when {{ exam_group }} in ('national')                          then {{exam_group}}
-        when {{ exam_group }} in ('csa pd all time','csa_all_time_pd') then 'csa_pd_all_time'
-        when {{ exam_group }} in ('csp pd all time','csp_all_time_pd') then 'csp_pd_all_time'
+        when {{ exam_group }} in ('csa pd all time','csa_all_time_pd') then 'csa pd all time'
+        when {{ exam_group }} in ('csp pd all time','csp_all_time_pd') then 'csp pd all time'
         when {{ exam_group }} in ('csa_users','csa_heavy')             then 'csa_heavy_users' -- heavy users
         when {{ exam_group }} in ('csp_users','csp_heavy')             then 'csp_heavy_users' -- heavy users
         when {{ exam_group }} in ('csp_users_and_audit','csp_ballmer') then 'csp_users_and_audit' -- heavy+audit = "Ballmer"
