@@ -16,6 +16,11 @@ internal_tutorials as (
     from {{ ref('seed_hoc_internal_tutorials') }}
 ),
 
+country_metadata as (
+    select * 
+    from {{ref('dim_country_reference')}}
+),
+
 final as (
     select 
         hoc_activity.hoc_start_id
@@ -34,18 +39,21 @@ final as (
             then 1
             else 0
             end as is_flagged_for_quality
-        , hoc_activity.city
+        , lower(hoc_activity.city) as city
         , hoc_activity.country
-        , hoc_activity.state
+        , country_metadata.iso2 as country_code
+        , lower(hoc_activity.state) as state
         , hoc_activity.state_code
-        , hoc_activity.country_code
     from hoc_activity 
     join school_years                                                       as sy 
         on hoc_activity.started_at 
             between sy.started_at 
             and sy.ended_at
     left join internal_tutorials                                            as it
-        on hoc_activity.tutorial = it.tutorial_codes )
+        on hoc_activity.tutorial = it.tutorial_codes 
+    left join country_metadata 
+        on hoc_activity.country = country_metadata.country
+)
 
 select *
 from final

@@ -109,6 +109,9 @@ seeds:
 
   - name: seed_course_names
 
+  - name: seed_country_iso_metadata
+    description: country-level categorizations and metadata provided by the global team, used primarily for creating regional groupings and segmentations
+  
   - name: seed_cs_state_grad_requirements
     description: states that have passed CS grad requirements, current as of October 2024
 
