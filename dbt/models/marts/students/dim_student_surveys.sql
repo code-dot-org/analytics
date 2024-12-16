@@ -3,7 +3,7 @@
 with 
 contained_levels as (
     select *,
-        row_number() over(
+        dense_rank() over(
             partition by 
                 level_group_level_id
             order by 

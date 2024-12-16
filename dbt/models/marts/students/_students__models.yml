@@ -292,7 +292,7 @@ models:
       tags: ['released']
 
   - name: dim_student_surveys 
-    descripton: |
+    description: |
       This model contains the survey questionnaires for surveys included in our curriculum, by arranging them as surveys, survey questions, and possible answers. Because there is not a straightforward way to identify surveys as such, only level groups that contain the word survey are included in the model. 
     
     columns: 
@@ -352,7 +352,7 @@ models:
       
       - name: num_response_options 
         description: | 
-        Count of response options for each question by type 
+          Count of response options for each question by type 
 
       - name: answer_text 
         description: ""
