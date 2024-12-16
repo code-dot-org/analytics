@@ -12,14 +12,14 @@ school_districts as (
     from {{ ref('stg_dashboard__school_districts') }}
 ),
 
-rp_mappings as (
-    select * 
-    from {{ ref('stg_dashboard_pii__pd_regional_partner_mappings') }}
-),
-
 regional_partners as (
     select * 
     from {{ ref('dim_regional_partners') }}
+),
+
+rp_mappings as (
+    select * 
+    from {{ ref('stg_dashboard_pii__pd_regional_partner_mappings') }}
 ),
 
 combined as (
@@ -68,7 +68,7 @@ combined as (
             )
         )
     left join regional_partners 
-        on rp_mappings.regional_partner_id = regional_partners.regional_partner_id
+        on regional_partners.regional_partner_id = rp_mappings.regional_partner_id
     where dim_schools.school_district_id is not null 
     {{ dbt_utils.group_by(8) }}
 )
