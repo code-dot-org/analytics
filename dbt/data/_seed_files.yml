@@ -109,7 +109,7 @@ seeds:
 
   - name: seed_course_names
 
-  - name: seed_cs_state_grad_requirements
+  - name: seed_cs_state_grad_requirement
     description: states that have passed CS grad requirements, current as of October 2024
 
   - name: seed_csf_plugged_stage_counts
