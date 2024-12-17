@@ -1,11 +1,11 @@
-/* Created 12/09/24: Section actitity for each  Script, Lesson and Level for student-facing curriculum for the three most recent school years (current and two prior) for Course Utilization dashboard in Tableau
+/* Created 12/09/24: Section activity for each  Script, Lesson, and Level for student-facing curriculum for the two most recent school years (current and prior) for Course Utilization dashboard in Tableau
 */
 
 with
 school_years as (
     select * 
     from {{ref('int_school_years')}} 
-    where sysdate-(365*1) < ended_at and sysdate > started_at -- three most recent school years (current and two prior), to change the number of years, change the multiplier
+    where sysdate-(365*1) < ended_at and sysdate > started_at -- two most recent school years (current and prior), to change the number of years, change the multiplier
 )
 
 
@@ -28,7 +28,7 @@ school_years as (
     where 
     sa.user_type = 'student'
     and sa.content_area not in ('hoc', 'other')
-    and sa.topic_tags is not null -- limiting to create a small extract to enable publishing
+    -- and sa.topic_tags is not null -- limiting to create a small extract to enable publishing
         {{ dbt_utils.group_by(12) }} -- grouping instead of select distinct to deduplicate records with better performance
 )
 
