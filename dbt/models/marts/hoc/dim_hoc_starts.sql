@@ -34,8 +34,8 @@ final as (
             then 1
             else 0
             end as is_flagged_for_quality
-        , lower(hoc_activity.city)                                   as city
-        , lower(hoc_activity.country)                                as country
+        , hoc_activity.city                                  as city
+        , hoc_activity.country                                as country
         , hoc_activity.state
         , hoc_activity.state_code
         --, hoc_activity.country_code
