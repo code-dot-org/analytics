@@ -97,4 +97,4 @@ final as (
 
 select * 
 from final 
-where ai_code is null 
+where ai_code is not null 
