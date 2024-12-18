@@ -52,7 +52,8 @@ course_structure as (
     select  
         course_name, 
         level_id, 
-        script_id 
+        script_id, 
+        level_type
     from {{ ref('dim_course_structure') }}
     where is_active_student_course = 1
 ),
@@ -78,6 +79,18 @@ combined as (
         min(ul.created_at)                      as first_activity_at,
 		max(ul.created_at)                      as last_activity_at,
         count(distinct ul.user_level_id)        as num_levels,
+        count (distinct 
+                case 
+                    when cs.level_type in (
+                        'curriculumreference'
+                        , 'standalonevideo'
+                        , 'freeresponse'
+                        , 'external'
+                        , 'externallink'
+                        , 'map'
+                        , 'levelgroup')
+                        then null 
+                    else ul.user_level_id end )      as num_levels_course_progress, -- levels that count for course progress because they indicate on-platform activity. Used for 6-12 curriculum
         count(distinct trunc(ul.created_at))    as num_unique_days,
         sum(time_spent)                         as sum_time_spent
 
