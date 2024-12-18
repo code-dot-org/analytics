@@ -67,9 +67,9 @@ combined as (
     left join free_responses as lsfr 
     on ls.level_sources_id = lsfr.level_sources_free_response_id
 
-    left join answer_texts  as ant 
-    on  ss.contained_level_id = ant.contained_level_answers_id
-    and lsfr.data = ant.answer_number
+    -- left join answer_texts  as ant 
+    -- on  ss.contained_level_id = ant.contained_level_answers_id
+    -- and lsfr.data = ant.answer_number
 
     join users              as usr 
     on ul.user_id = usr.user_id 
@@ -79,5 +79,16 @@ combined as (
         between sy.started_at 
             and sy.ended_at )
 
-select *
+select 
+    survey_name, 
+    course_name, 
+    survey_type, 
+    question_number, question_text,
+    answer_number, answer_text, 
+    count(distinct student_id) as num_student_responses
 from combined
+where script_name = 'csd3-2024' 
+    -- and version_year = '2024'
+    and survey_type = 'end of unit'
+group by 
+    1,2,3,4,5,6,7
