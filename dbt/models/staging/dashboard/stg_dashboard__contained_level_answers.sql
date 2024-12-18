@@ -1,6 +1,7 @@
 with 
 contained_level_answers as (
     select 
+        contained_level_answers_id,
         level_id,
         answer_number,
         answer_text,

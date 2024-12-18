@@ -24,6 +24,7 @@ models:
         data_tests:
           - unique
           - not_null
+
   - name: stg_dashboard__lti_feedbacks
     description: staging model for the user feedback on LTI
     columns: 
@@ -31,6 +32,7 @@ models:
         data_tests:
           - unique
           - not_null
+
   - name: stg_dashboard__ai_tutor_interaction_feedbacks
     description: Staging model for the feedback table for AI Tutor
     columns: 
@@ -75,6 +77,9 @@ models:
     description: |
       Staging model for ""
 
+  - name: stg_dashboard__level_sources_free_responses
+    description: |
+      Staging model for level source free responses data.
 
   - name: stg_dashboard__sections
     description: |

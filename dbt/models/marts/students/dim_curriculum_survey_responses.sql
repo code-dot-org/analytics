@@ -51,8 +51,9 @@ combined as (
             when ss.question_type = 'multi' 
             then ant.answer_text
             
-            when ss.question_type = 'freeresponse' 
-            then fr.data -- coalesce(ls.data,fr.data)
+            when ss.question_type = 'freeresponse'
+            then coalesce(lsfr.data,ls.data) 
+            
         end as answer_response -- answer chosen or written by student 
 
     from student_surveys    as ss 
@@ -63,12 +64,12 @@ combined as (
     left join level_sources as ls 
     on ul.level_source_id = ls.level_sources_id
 
-    left join free_responses as fr 
-    on ls.level_sources_id = fr.level_sources_free_responses_id
+    left join free_responses as lsfr 
+    on ls.level_sources_id = lsfr.level_sources_free_response_id
 
     left join answer_texts  as ant 
     on  ss.contained_level_id = ant.contained_level_answers_id
-    -- and ls.data = ant.answer_number
+    and lsfr.data = ant.answer_number
 
     join users              as usr 
     on ul.user_id = usr.user_id 
@@ -76,18 +77,7 @@ combined as (
     join school_years       as sy 
     on ul.created_at 
         between sy.started_at 
-            and sy.ended_at 
-)
+            and sy.ended_at )
 
 select *
 from combined
-
-/* testing survey */
-where 
-    course_name = 'csd'
-    and unit = 'csd1'
-    and survey_type = 'pre'
-    and version_year = '2024'
-
-    and school_year = '2024-25'
-    -- and question_number = 25

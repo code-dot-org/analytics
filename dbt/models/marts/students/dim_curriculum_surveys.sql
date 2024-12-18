@@ -1,4 +1,4 @@
--- model: dim_student_surveys 
+-- model: dim_curriculum_surveys
 
 with 
 contained_levels as (
@@ -14,7 +14,7 @@ contained_levels as (
 
 contained_levels_answers as (
     select distinct 
-        contained_level_answers_id, answer_number, answer_text
+        level_id, answer_number, answer_text
     from {{ ref('stg_dashboard__contained_level_answers') }}
 ),
 
@@ -90,8 +90,8 @@ combined as (
     join levels             as cl -- contained levels 
     on col.contained_level_id = cl.level_id
 
-    left join contained_levels_answers as cola 
-    on col.contained_level_id = cola.contained_level_answers_id  
+    join contained_levels_answers as cola 
+    on cl.level_id = cola.level_id  
     
     join levels_script_levels   as lsl 
     on gl.level_id = lsl.level_id
@@ -110,3 +110,11 @@ combined as (
 
 select *
 from combined
+
+/* testing survey */
+-- where 
+--     course_name = 'csd'
+--     and unit = 'csd1'
+--     and survey_type = 'pre'
+--     and version_year = '2024'
+    -- and question_number = 25

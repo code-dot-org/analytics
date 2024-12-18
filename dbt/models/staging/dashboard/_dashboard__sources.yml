@@ -24,6 +24,7 @@ sources:
       - name: level_concept_difficulties
       - name: level_sources
       - name: level_sources_multi_types
+      - name: level_sources_free_responses 
       - name: levels
       - name: levels_script_levels
       - name: lti_feedbacks
