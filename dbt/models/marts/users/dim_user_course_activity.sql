@@ -113,4 +113,3 @@ combined as (
 
 select *
 from combined
-where school_year = '2023-24'
