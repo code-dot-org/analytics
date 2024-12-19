@@ -50,7 +50,9 @@ user_levels as (
 
 course_structure as (
     select  
+        content_area,
         course_name, 
+        topic_tags,
         level_id, 
         script_id, 
         level_type
@@ -75,7 +77,9 @@ combined as (
         sy.school_year,
         u.us_intl,
         u.country,
+        cs.content_area,
         cs.course_name,
+        cs.topic_tags,
         min(ul.created_at)                      as first_activity_at,
 		max(ul.created_at)                      as last_activity_at,
         count(distinct ul.user_level_id)        as num_levels,
@@ -105,7 +109,8 @@ combined as (
             between sy.started_at 
                 and sy.ended_at
                 
-    {{ dbt_utils.group_by(6) }} )
+    {{ dbt_utils.group_by(8) }} )
 
 select *
 from combined
+where school_year = '2023-24'
