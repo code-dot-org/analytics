@@ -6,7 +6,7 @@ source as (
 
 renamed as (
     select
-        id              as level_sources_free_responses_id,
+        id              as level_sources_free_response_id,
         level_id,
         md5,
         data,

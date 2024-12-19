@@ -90,7 +90,7 @@ combined as (
     join levels             as cl -- contained levels 
     on col.contained_level_id = cl.level_id
 
-    join contained_levels_answers as cola 
+    left join contained_levels_answers as cola 
     on cl.level_id = cola.level_id  
     
     join levels_script_levels   as lsl 
@@ -108,5 +108,21 @@ combined as (
 
     where gl.level_name like '%survey%' )
 
-select *
+select * 
 from combined
+
+/* testing script:
+select 
+    survey_name, 
+    course_name, 
+    survey_type, 
+    question_type, question_number, question_text,
+    answer_number, answer_text
+from combined
+where script_name = 'csd3-2024' 
+    -- and version_year = '2024'
+    and survey_type = 'end of unit'
+group by 
+    1,2,3,4,5,6,7,8
+order by question_number, answer_number asc 
+*/

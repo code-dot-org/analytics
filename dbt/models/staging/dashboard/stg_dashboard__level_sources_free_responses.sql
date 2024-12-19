@@ -6,6 +6,7 @@ level_sources_free_responses as (
 
 renamed as (
     select 
+        level_sources_free_response_id,
         level_id, 
         data,
         created_at,

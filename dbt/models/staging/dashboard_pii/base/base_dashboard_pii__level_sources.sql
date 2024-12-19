@@ -6,10 +6,12 @@ source as (
 
 renamed as (
     select 
-        id as level_sources_id,
+        id as level_source_id,
         level_id,
+        data,
         created_at,
         updated_at
+    from source 
 )
 
 select * 
