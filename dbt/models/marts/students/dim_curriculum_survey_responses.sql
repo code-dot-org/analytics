@@ -13,7 +13,7 @@ level_sources as (
 
 user_levels as (
     select * 
-    from {{ ref('stg_dashboard__user_levels' )}} -- option: add level_source_id to dim_user_levels 
+    from {{ ref('stg_dashboard__user_levels' )}}
 ),
 
 users as (
@@ -46,11 +46,28 @@ combined as (
         usr.gender,
         usr.races,
         usr.is_urg,
+
+        ss.group_level_id,
+        ss.content_area,
+        ss.course_name,
+        ss.script_id,
+        ss.script_name,
+        ss.unit, 
+        ss.topic_tags,
+        ss.version_year,
+        ss.survey_level_id,
+        ss.survey_name,
+        ss.survey_type,
+        ss.contained_level_id,
+        ss.question_name,
+        ss.question_type,
+        ss.question_number,
+        ss.question_text,
         
-        ss.*,
+        ant.answer_number,
         case 
             when ss.question_type = 'multi' 
-            then ss.answer_text
+            then ant.answer_text
             
             when ss.question_type = 'freeresponse'
             then coalesce(lsfr.data,ls.data) 
@@ -59,12 +76,16 @@ combined as (
 
     from student_surveys    as ss 
 
-    left join user_levels   as ul 
+    join user_levels   as ul 
      on ul.script_id    = ss.script_id 
-    and ul.level_id     = ss.survey_level_id 
+    and ul.level_id     = ss.contained_level_id 
 
     left join level_sources as ls 
-    on ul.level_source_id = ls.level_source_id
+     on ul.level_source_id = ls.level_source_id
+    
+    left join answer_texts as ant
+     on ls.level_id = ant.level_id 
+    and ls.data = ant.answer_number 
 
     left join free_responses as lsfr 
     on ul.level_source_id = lsfr.level_sources_free_response_id
@@ -79,21 +100,3 @@ combined as (
 
 select * 
 from combined 
-
-/* testing script:
-select 
-    survey_name, 
-    -- course_name, 
-    -- survey_type, 
-    question_type, question_number, question_text,
-    answer_number, answer_text, answer_response,
-    count(distinct student_id) as num_student_responses
-from combined
-where script_name = 'csd3-2024' 
-    -- and version_year = '2024'
-    and survey_type = 'end of unit'
-    and contained_level_id = 48463
-group by 
-    1,2,3,4,5,6,7
-order by question_number, answer_number asc 
-*/

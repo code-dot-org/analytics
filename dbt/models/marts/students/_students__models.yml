@@ -360,4 +360,9 @@ models:
       - name: answer_number 
         description: ""
         
-
+  - name: dim_curriculum_survey_responses
+    description: |
+      This model connects user level activity to student surveys to show distrubition and 
+      dimensionality of curriculum surveys.
+    # columns:
+    #   - name: 
