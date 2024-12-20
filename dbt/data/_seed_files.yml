@@ -109,6 +109,9 @@ seeds:
 
   - name: seed_course_names
 
+  - name: seed_country_iso_metadata
+    description: country-level categorizations and metadata provided by the global team, used primarily for creating regional groupings and segmentations
+  
   - name: seed_cs_state_grad_requirement
     description: states that have passed CS grad requirements, current as of October 2024
 
@@ -122,8 +125,8 @@ seeds:
     description: districts enrolled in the district program, as of October 2024
   
   - name: seed_districts_target
-    description: | 
-      This data is exported fron Hubspot on a monthly basis to compile a list of target districts. Data last exported: December 2024.
+    description: This data is exported fron Hubspot on a monthly basis to compile a list of target districts. Data last exported December 2024.
+
   - name: seed_hoc_internal_tutorials
     description: reference list of Code.org HOC tutorials (differentiated from 3rd party) provided by Bethany on 2024-10-29
   

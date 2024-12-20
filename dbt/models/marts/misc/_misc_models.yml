@@ -157,3 +157,50 @@ models:
         description: 1 if the ambassador indicated they took csd, 0 otherwise 
     config:
       tags: ['released']
+
+  - name: dim_country_reference
+    description: |
+      this model provides country-level metadata provided by the global team, primarily used for creating standard regional groupings
+    columns: 
+      - name: iso2
+        description: 2-letter ISO2 country code
+        data_tests:
+          - not_null
+          - unique
+      - name: country
+        description: Country name as defined by ISO2
+        data_tests:
+          - not_null 
+          - unique
+      - name: region
+        description: High-level region as defined by the Global team
+        data_tests:
+          - not_null
+      - name: subregion
+        description: Subregion as defined by the Global team
+        data_tests:
+          - not_null
+      - name: iso_region
+        description: Region as defined in the ISO country classification
+        data_tests:
+          - not_null
+      - name: iso_subregion
+        description: Subregion as defined in the ISO country classification
+        data_tests:
+          - not_null
+      - name: worldbank_code
+        description: 3-letter country code used by Worldbank. NULL for countries / regions not used in the Worldbank data. XXA and XXB substituted for Taiwan and Vatican city
+        data_tests:
+          - unique
+      - name: population
+        description: Country population in 2022. Data source is https://data.worldbank.org/indicator/sp.pop.totl. Data for Taiwan and Vatican city supplied manually. In case of unavailable data, population is set as 1.
+        data_tests:
+          - not_null
+      - name: income_group
+        description: Country income group categorization according to Worldbank (as of December 2024)
+      - name: primary_language
+        description: Defined by global team from the languages available in the Code.org platform as of December 2024. In case of multilingual countries, one of the languages selected as primary for reporting simplicity. In case the country's language is not used on the Code.org platform, the primary foreign language is indicated in the brackets (e.g. "other (French)" means the country has a different primary language, but French is the most widely spoken foreign language)
+        data_tests:
+          - not_null
+    config:
+      tags: ['released']

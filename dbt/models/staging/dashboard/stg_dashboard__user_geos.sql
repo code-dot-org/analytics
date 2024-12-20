@@ -22,7 +22,7 @@ final as (
         lower(city) as city,
         lower(state) as state_name,
         postal_code,
-        lower(country) as country,
+        {{ country_normalization('country')}} as country,
         is_international,
         us_intl,
         
