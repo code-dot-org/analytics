@@ -24,8 +24,8 @@ country_metadata as (
 final as (
     select 
         hoc_activity.hoc_start_id
-        , hoc_activity.started_at
-        , sy.school_year_int                                                as cal_year 
+        , hoc_activity.started_at                                            as started_at
+        , extract(year from hoc_activity.started_at)                                           as cal_year 
         , sy.school_year
         --, hoc_activity.referer
         , hoc_activity.company
@@ -39,11 +39,19 @@ final as (
             then 1
             else 0
             end as is_flagged_for_quality
+<<<<<<< HEAD
         , lower(hoc_activity.city) as city
         , hoc_activity.country
         , country_metadata.iso2 as country_code
         , lower(hoc_activity.state) as state
         , hoc_activity.state_code
+=======
+        , hoc_activity.city                                  as city
+        , hoc_activity.country                                as country
+        , hoc_activity.state
+        , hoc_activity.state_code
+        --, hoc_activity.country_code
+>>>>>>> f0aa4082f82fe42bd6dc10f8d1d44cd692db7ff2
     from hoc_activity 
     join school_years                                                       as sy 
         on hoc_activity.started_at 
