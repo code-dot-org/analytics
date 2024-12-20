@@ -22,8 +22,8 @@ seeds:
     description: districts enrolled in the district program, as of October 2024
   
   - name: seed_districts_target
-    description: districts that are active targets for the district program, as of 2024-10-29
-
+    description: | 
+      This data is exported fron Hubspot on a monthly basis to compile a list of target districts. Data last exported: December 2024.
   - name: seed_hoc_internal_tutorials
     description: reference list of Code.org HOC tutorials (differentiated from 3rd party) provided by Bethany on 2024-10-29
   
