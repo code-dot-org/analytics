@@ -31,6 +31,7 @@ final as (
         updated_at,
         indexed_at
     from user_geos
+    where row_number = 1
 )
 
 select *
