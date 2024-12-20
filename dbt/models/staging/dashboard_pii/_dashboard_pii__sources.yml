@@ -5,6 +5,7 @@ sources:
     database: dashboard
     schema: dashboard_production_pii
     tables:
+      - name: course_offerings_pd_workshops
       - name: foorm_forms
       - name: foorm_libraries
       - name: foorm_library_questions

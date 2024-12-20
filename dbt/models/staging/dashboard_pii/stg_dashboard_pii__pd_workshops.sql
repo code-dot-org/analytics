@@ -14,27 +14,48 @@ select
     , organizer_id
     , sy.school_year
     , extract('year' from pdw.started_at)                               as cal_year
-    , location_name
-    , location_address
+    , lower(location_name)                                              as location_name
+    , lower(location_address)                                           as location_address
     , case 
         when course = 'CS Principles' then 'csp'
         when course = 'CS Discoveries' then 'csd'
         when course = 'Computer Science A' then 'csa'
         when course = 'CS Fundamentals' then 'csf'
-        else 'other'
+        else lower(course)
       end                                                               as course_name
-    , subject
+    , case 
+        when course = 'CS Principles' then '9_12'
+        when course = 'CS Discoveries' then '6_8'
+        when course = 'Computer Science A' then '9_12'
+        when course = 'CS Fundamentals' then 'k_5'
+        when course = 'Foundations of CS' then '9_12'
+        else null
+      end                                                               as grade_band
+    , case 
+        when lower(course) = 'build your own workshop' then 1 else 0 
+    end                                                                 as is_byow
+    , lower(subject)                                                    as subject
     , capacity
     , section_id
     , pdw.started_at
     , pdw.ended_at
+    -- , case 
+    --     when datediff(day, pdw.started_at, pdw.ended_at) > 0 
+    --     then datediff(day, pdw.started_at, pdw.ended_at)
+    --     else null 
+    -- end                                                                 as num_days
+    -- , case 
+    --     when datediff(day, pdw.started_at, pdw.ended_at) = 0
+    --     then datediff(hour, pdw.started_at, pdw.ended_at)
+    --     else datediff(day, pdw.started_at, pdw.ended_at) * 8
+    -- end                                                                 as num_hours
     , created_at
     , updated_at
     , processed_at
     , regional_partner_id
-    , is_on_map
-    , is_funded
-    , funding_type
+    -- , is_on_map
+    -- , is_funded
+    -- , funding_type
     , module
 from pd_workshops                                           as pdw
 join school_years                                           as sy

@@ -16,6 +16,7 @@ select
     , extract('year' from pds.started_at)                                                       as cal_year
     , pds.started_at
     , pds.ended_at
+    , datediff(hour, pds.started_at, pds.ended_at)                                               as num_hours
     , pds.created_at
     , pds.updated_at
 from pd_sessions                                                                                as pds
