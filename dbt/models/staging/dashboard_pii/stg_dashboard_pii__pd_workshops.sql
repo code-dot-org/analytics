@@ -28,7 +28,6 @@ select
         when course = 'CS Discoveries' then '6_8'
         when course = 'Computer Science A' then '9_12'
         when course = 'CS Fundamentals' then 'k_5'
-        when course = 'Foundations of CS' then '9_12'
         else null
       end                                                               as grade_band
     , case 

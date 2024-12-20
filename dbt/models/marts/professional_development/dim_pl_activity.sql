@@ -69,14 +69,7 @@ pd_workshops as (
         , organizer_id
         , school_year
         , course_name
-        , case 
-            when course_name = 'csf' then 'k_5'
-            when course_name = 'csc' then 'k_5'
-            when course_name = 'csd' then '6_8'
-            when course_name = 'csp' then '9_12'
-            when course_name = 'csa' then '9_12'
-        else null
-        end as grade_band
+        , grade_band
         , subject
         , regional_partner_id 
         , is_byow
