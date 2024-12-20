@@ -14,9 +14,9 @@ hoc_starts as (
         tutorial,
         coalesce(started_at, pixel_started_at, pixel_finished_at)   as started_at,
         state_code,
-        city,
+        lower(city) as city,
         {{ country_normalization('country') }}  as country,
-        state
+        lower(state) as state
     from
         {{ ref('base_pegasus_pii__hoc_activity') }}
     {% if is_incremental() %}

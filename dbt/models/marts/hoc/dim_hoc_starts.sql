@@ -39,18 +39,11 @@ final as (
             then 1
             else 0
             end as is_flagged_for_quality
-        , lower(hoc_activity.city) as city
-        , hoc_activity.country
+        , city
+        , hoc_activity.country as country
         , country_metadata.iso2 as country_code
-        , lower(hoc_activity.state) as state
-        , hoc_activity.state_code
-
-
-        , hoc_activity.city                                  as city
-        , hoc_activity.country                                as country
         , hoc_activity.state
         , hoc_activity.state_code
-        --, hoc_activity.country_code
      from hoc_activity 
     join school_years                                                       as sy 
         on hoc_activity.started_at 
