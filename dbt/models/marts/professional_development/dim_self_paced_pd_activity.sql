@@ -90,6 +90,7 @@ select distinct
     , sps.course_name_implementation
     , ul.created_date                                                                   as level_created_dt
     , sy.school_year                                                                    as level_created_school_year
+    , extract('year' from ul.created_date)                                              as level_created_cal_year 
     , ul.best_result
     , ul.time_spent_minutes                                                             as time_spent
     , l.level_type
