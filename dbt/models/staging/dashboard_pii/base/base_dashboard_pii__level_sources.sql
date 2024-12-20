@@ -11,7 +11,7 @@ renamed as (
         data,
         created_at,
         updated_at
-    from source 
+    from source
 )
 
 select * 
