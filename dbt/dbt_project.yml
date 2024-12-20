@@ -78,6 +78,7 @@ models:
       tags:
         - "reporting"
       +materialized: view
+      +schema: reporting
 
     staging:
       tags:
