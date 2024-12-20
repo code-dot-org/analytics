@@ -362,7 +362,7 @@ models:
         
   - name: dim_curriculum_survey_responses
     description: |
-      This model connects user level activity to student surveys to show distrubition and 
+      This model includes user answers to level-based curriculum survey questions, organized by curriculum and survey details. 
       dimensionality of curriculum surveys.
     # columns:
     #   - name: 
