@@ -2,18 +2,36 @@
 
 with 
 student_surveys as (
-    select * 
+    select distinct 
+        group_level_id,
+        content_area,
+        course_name,
+        script_id,
+        script_name,
+        unit, 
+        topic_tags,
+        version_year,
+        survey_level_id,
+        survey_name,
+        survey_type,
+        contained_level_id,
+        question_name,
+        question_type,
+        question_number,
+        question_text
     from {{ ref('dim_curriculum_surveys') }}
-),
-
-level_sources as (
-    select * 
-    from {{ ref('stg_dashboard_pii__level_sources') }}
 ),
 
 user_levels as (
     select * 
     from {{ ref('stg_dashboard__user_levels' )}}
+    where level_id in (select contained_level_id from student_surveys)
+),
+
+level_sources as (
+    select * 
+    from {{ ref('stg_dashboard_pii__level_sources') }}
+    where level_source_id in (select level_source_id from user_levels)
 ),
 
 users as (
@@ -27,7 +45,10 @@ free_responses as (
 ),
 
 answer_texts as (
-    select *
+    select distinct 
+        level_id,
+        answer_number,
+        answer_text
     from {{ ref('stg_dashboard__contained_level_answers') }}
 ),
 
@@ -40,7 +61,9 @@ combined as (
     select 
         ul.user_id as student_id,
         ul.created_at,
+        
         sy.school_year,
+        
         usr.country,
         usr.us_intl,
         usr.gender,
@@ -77,18 +100,18 @@ combined as (
     from student_surveys    as ss 
 
     join user_levels   as ul 
-     on ul.script_id    = ss.script_id 
-    and ul.level_id     = ss.contained_level_id 
+     on ss.script_id            = ul.script_id
+    and ss.contained_level_id   = ul.level_id
 
     left join level_sources as ls 
      on ul.level_source_id = ls.level_source_id
-    
-    left join answer_texts as ant
-     on ls.level_id = ant.level_id 
-    and ls.data = ant.answer_number 
 
     left join free_responses as lsfr 
     on ul.level_source_id = lsfr.level_sources_free_response_id
+
+    left join answer_texts as ant
+    on ls.level_id = ant.level_id
+    and ls.data = ant.answer_number
 
     join users              as usr 
     on ul.user_id = usr.user_id 

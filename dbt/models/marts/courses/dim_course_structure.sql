@@ -174,7 +174,7 @@ combined as (
             when col.level_group_level_id is not null 
             then 1 else 0 
         end                                                             as is_group_level,
-        col.contained_level_type                                        as group_level_type,
+        -- col.contained_level_type                                        as group_level_type,
 
         coalesce(
             ug.family_name,
@@ -275,7 +275,7 @@ final as (
         is_parent_level,	
         level_group_level_id,	
         is_group_level,
-        group_level_type,	
+        -- group_level_type,	
         family_name,
         version_year,	
         published_state,	
@@ -283,7 +283,8 @@ final as (
         instructor_audience,	
         participant_audience,	
         updated_at              
-    from combined where script_id is not null) -- excludes empty scripts
+    from combined 
+    where script_id is not null) -- excludes empty scripts
 
 select *
 from final

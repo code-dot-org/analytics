@@ -67,10 +67,11 @@ contained_levels_answers as (
         cl.num_response_options,
         cola.answer_text,       
         cola.answer_number
+
         from course_structure cs
-        
         join contained_levels   as col 
     	on cs.level_id  = col.level_group_level_id
+        -- and cs.group_level_type = col.contained_level_type
     	
     	join levels             as cl -- contained levels 
     	on col.contained_level_id = cl.level_id
