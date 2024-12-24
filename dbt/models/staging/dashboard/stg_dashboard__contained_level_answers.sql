@@ -7,7 +7,5 @@ contained_level_answers as (
         is_correct
     from {{ ref('base_dashboard__contained_level_answers') }} )
 
-select * 
+select *
 from contained_level_answers
-
- 
