@@ -106,6 +106,14 @@ models:
       - name: school_id
         data_tests:
           - not_null
+  - name: stg_dashboard__user_geos
+    description: |
+      Staging model for `user_geos` source data
+    columns: 
+      - name: user_id
+        description: unique id for for each user
+        data_tests:
+          - not_null
 
   - name: stg_dashboard__users
     description: |
