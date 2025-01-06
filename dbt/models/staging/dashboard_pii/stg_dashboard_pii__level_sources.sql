@@ -8,6 +8,7 @@ final as (
     select 
         level_source_id,
         level_id,
+        data,
         created_at,
         updated_at
     from level_sources )

@@ -1,0 +1,251 @@
+iso2,"country",region,subregion,iso_region,iso_subregion,worldbank_code,population,income_group,primary_language
+AF,"afghanistan",apac,south asia,apac,south asia,AFG,41128771,04_low income,other
+AX,"åland islands",emea,northern europe,europe/central asia,europe,,1,,swedish
+AL,"albania",emea,southern europe,europe/central asia,europe,ALB,2777689,02_upper middle income,albanian
+DZ,"algeria",emea,north africa,mena,north africa,DZA,44903225,03_lower middle income,arabic
+AS,"american samoa",apac,oceania,apac,oceania,ASM,44273,01_high income,english (non usa)
+AD,"andorra",emea,southern europe,europe/central asia,europe,AND,79824,01_high income,catalan
+AO,"angola",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,AGO,35588987,03_lower middle income,portuguese
+AI,"anguilla",amer,caribbean,americas,caribbean,,1,,english (non usa)
+AQ,"antarctica",other,antarctica,none,antarctica,,1,,other
+AG,"antigua and barbuda",amer,caribbean,americas,caribbean,ATG,93763,01_high income,english (non usa)
+AR,"argentina",amer,latin america,americas,latin america,ARG,46234830,02_upper middle income,spanish
+AM,"armenia",emea,caucasus,europe/central asia,caucasus,ARM,2780469,02_upper middle income,armenian
+AW,"aruba",amer,caribbean,americas,caribbean,ABW,106445,01_high income,dutch
+AU,"australia",apac,oceania,apac,oceania,AUS,26005540,01_high income,english (non usa)
+AT,"austria",emea,western europe,europe/central asia,europe,AUT,9041851,01_high income,german
+AZ,"azerbaijan",emea,caucasus,europe/central asia,caucasus,AZE,10141756,02_upper middle income,azerbaijani
+BS,"bahamas",amer,caribbean,americas,caribbean,BHS,409984,01_high income,english (non usa)
+BH,"bahrain",emea,middle east,mena,middle east,BHR,1472233,01_high income,arabic
+BD,"bangladesh",apac,south asia,apac,south asia,BGD,171186372,03_lower middle income,other
+BB,"barbados",amer,caribbean,americas,caribbean,BRB,281635,01_high income,english (non usa)
+BY,"belarus",emea,eastern europe,europe/central asia,europe,BLR,9228071,02_upper middle income,russian
+BE,"belgium",emea,western europe,europe/central asia,europe,BEL,11685814,01_high income,french
+BZ,"belize",amer,latin america,americas,latin america,BLZ,405272,02_upper middle income,english (non usa)
+BJ,"benin",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,BEN,13352864,03_lower middle income,french
+BM,"bermuda",amer,caribbean,americas,caribbean,BMU,63532,01_high income,english (non usa)
+BT,"bhutan",apac,south asia,apac,south asia,BTN,782455,03_lower middle income,other
+BO,"bolivia",amer,latin america,americas,latin america,BOL,12224110,03_lower middle income,spanish
+BQ,"bonaire, sint eustatius, and saba",amer,caribbean,americas,caribbean,,1,,dutch
+BA,"bosnia and herzegovina",emea,southern europe,europe/central asia,europe,BIH,3233526,02_upper middle income,bosnian
+BW,"botswana",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,BWA,2630296,02_upper middle income,english (non usa)
+BV,"bouvet island",other,antarctica,none,antarctica,,1,,other
+BR,"brazil",amer,latin america,americas,latin america,BRA,215313498,02_upper middle income,portuguese
+IO,"british indian ocean territory",apac,south asia,apac,south asia,,1,,english (non usa)
+VG,"british virgin islands",amer,caribbean,americas,caribbean,VGB,31305,01_high income,english (non usa)
+BN,"brunei darussalam",apac,southeast asia,apac,southeast asia,BRN,449002,01_high income,other
+BG,"bulgaria",emea,eastern europe,europe/central asia,europe,BGR,6465097,02_upper middle income,bulgarian
+BF,"burkina faso",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,BFA,22673762,04_low income,french
+BI,"burundi",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,BDI,12889576,04_low income,french
+CV,"cabo verde",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,CPV,593149,03_lower middle income,portuguese
+KH,"cambodia",apac,southeast asia,apac,southeast asia,KHM,16767842,03_lower middle income,other
+CM,"cameroon",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,CMR,27914536,03_lower middle income,french
+CA,"canada",amer,north america,americas,north america,CAN,38929902,01_high income,english (non usa)
+KY,"cayman islands",amer,caribbean,americas,caribbean,CYM,68706,01_high income,english (non usa)
+CF,"central african republic",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,CAF,5579144,04_low income,french
+TD,"chad",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,TCD,17723315,04_low income,french
+CL,"chile",amer,latin america,americas,latin america,CHL,19603733,01_high income,spanish
+CN,"china",apac,northeast asia,apac,northeast asia,CHN,1412175000,02_upper middle income,chinese (simplified)
+CX,"christmas island",apac,southeast asia,apac,southeast asia,,1,,english (non usa)
+CC,"cocos (keeling) islands",apac,southeast asia,apac,southeast asia,,1,,english (non usa)
+CO,"colombia",amer,latin america,americas,latin america,COL,51874024,02_upper middle income,spanish
+KM,"comoros",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,COM,836774,03_lower middle income,other
+CD,"congo, democratic republic of",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,COD,99010212,04_low income,french
+CG,"congo, republic of",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,COG,5970424,03_lower middle income,french
+CK,"cook islands",apac,oceania,apac,oceania,,1,,english (non usa)
+CR,"costa rica",amer,latin america,americas,latin america,CRI,5180829,02_upper middle income,spanish
+CI,"côte d'ivoire",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,CIV,28160542,03_lower middle income,french
+HR,"croatia",emea,southern europe,europe/central asia,europe,HRV,3855600,01_high income,croatian
+CU,"cuba",amer,latin america,americas,latin america,CUB,11212191,02_upper middle income,spanish
+CW,"curaçao",amer,caribbean,americas,caribbean,CUW,149996,01_high income,dutch
+CY,"cyprus",emea,southern europe,europe/central asia,europe,CYP,1251488,01_high income,greek
+CZ,"czechia",emea,eastern europe,europe/central asia,europe,CZE,10672118,01_high income,czech
+DK,"denmark",emea,northern europe,europe/central asia,europe,DNK,5903037,01_high income,danish
+DJ,"djibouti",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,DJI,1120849,03_lower middle income,french
+DM,"dominica",amer,latin america,americas,latin america,DMA,72737,02_upper middle income,english (non usa)
+DO,"dominican republic",amer,latin america,americas,latin america,DOM,11228821,02_upper middle income,spanish
+EC,"ecuador",amer,latin america,americas,latin america,ECU,18001000,02_upper middle income,spanish
+EG,"egypt",emea,north africa,mena,north africa,EGY,110990103,03_lower middle income,arabic
+SV,"el salvador",amer,latin america,americas,latin america,SLV,6336392,02_upper middle income,spanish
+GQ,"equatorial guinea",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,GNQ,1674908,02_upper middle income,spanish
+ER,"eritrea",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,ERI,3684032,04_low income,other
+EE,"estonia",emea,northern europe,europe/central asia,europe,EST,1348840,01_high income,estonian
+SZ,"eswatini",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,SWZ,1201670,03_lower middle income,english (non usa)
+ET,"ethiopia",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,ETH,123379924,04_low income,other
+FK,"falkland islands",amer,latin america,americas,latin america,,1,,english (non usa)
+FO,"faroe islands",emea,northern europe,europe/central asia,europe,FRO,53090,01_high income,other
+FJ,"fiji",apac,oceania,apac,oceania,FJI,929766,02_upper middle income,english (non usa)
+FI,"finland",emea,northern europe,europe/central asia,europe,FIN,5556106,01_high income,finnish
+FR,"france",emea,western europe,europe/central asia,europe,FRA,67971311,01_high income,french
+GF,"french guiana",amer,latin america,americas,latin america,,1,,french
+PF,"french polynesia",apac,oceania,apac,oceania,PYF,306279,01_high income,french
+TF,"french southern territories",other,antarctica,none,antarctica,,1,,french
+GA,"gabon",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,GAB,2388992,02_upper middle income,french
+GM,"gambia",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,GMB,2705992,04_low income,english (non usa)
+GE,"georgia",emea,caucasus,europe/central asia,caucasus,GEO,3712502,02_upper middle income,other (russian)
+DE,"germany",emea,western europe,europe/central asia,europe,DEU,83797985,01_high income,german
+GH,"ghana",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,GHA,33475870,03_lower middle income,english (non usa)
+GI,"gibraltar",emea,southern europe,europe/central asia,europe,GIB,32649,01_high income,spanish
+GR,"greece",emea,southern europe,europe/central asia,europe,GRC,10426919,01_high income,greek
+GL,"greenland",emea,northern europe,europe/central asia,europe,GRL,56661,01_high income,danish
+GD,"grenada",amer,caribbean,americas,caribbean,GRD,125438,02_upper middle income,english (non usa)
+GP,"guadeloupe",amer,caribbean,americas,caribbean,,1,,french
+GU,"guam",apac,oceania,apac,oceania,GUM,171774,01_high income,english (non usa)
+GT,"guatemala",amer,latin america,americas,latin america,GTM,17357886,02_upper middle income,spanish
+GG,"guernsey",emea,northern europe,europe/central asia,europe,,1,,english (non usa)
+GN,"guinea",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,GIN,13859341,03_lower middle income,french
+GW,"guinea-bissau",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,GNB,2105566,04_low income,portuguese
+GY,"guyana",amer,latin america,americas,latin america,GUY,808726,01_high income,english (non usa)
+HT,"haiti",amer,latin america,americas,latin america,HTI,11584996,03_lower middle income,french
+HM,"heard island and mcdonald islands",apac,antarctica,apac,antarctica,,1,,other
+HN,"honduras",amer,latin america,americas,latin america,HND,10432860,03_lower middle income,spanish
+HK,"hong kong",apac,northeast asia,apac,northeast asia,HKG,7346100,01_high income,other (chinese - cantonese)
+HU,"hungary",emea,eastern europe,europe/central asia,europe,HUN,9643048,01_high income,hungarian
+IS,"iceland",emea,northern europe,europe/central asia,europe,ISL,382003,01_high income,icelandic
+IN,"india",apac,south asia,apac,south asia,IND,1417173173,03_lower middle income,indian languages
+ID,"indonesia",apac,southeast asia,apac,southeast asia,IDN,275501339,02_upper middle income,bahasa indonesian
+IR,"iran",emea,middle east,mena,middle east,IRN,88550570,03_lower middle income,farsi
+IQ,"iraq",emea,middle east,mena,middle east,IRQ,44496122,02_upper middle income,arabic
+IE,"ireland",emea,northern europe,europe/central asia,europe,IRL,5127170,01_high income,english (non usa)
+IM,"isle of man",emea,northern europe,europe/central asia,europe,IMN,84519,01_high income,english (non usa)
+IL,"israel",emea,middle east,mena,middle east,ISR,9557500,01_high income,hebrew
+IT,"italy",emea,southern europe,europe/central asia,europe,ITA,58940425,01_high income,italian
+JM,"jamaica",amer,caribbean,americas,caribbean,JAM,2827377,02_upper middle income,english (non usa)
+JP,"japan",apac,northeast asia,apac,northeast asia,JPN,125124989,01_high income,japanese
+JE,"jersey",emea,northern europe,europe/central asia,europe,CHI,174079,01_high income,english (non usa)
+JO,"jordan",emea,middle east,mena,middle east,JOR,11285869,03_lower middle income,arabic
+KZ,"kazakhstan",emea,central asia,europe/central asia,central asia,KAZ,19621972,02_upper middle income,kazak
+KE,"kenya",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,KEN,54027487,03_lower middle income,english (non usa)
+KI,"kiribati",apac,oceania,apac,oceania,KIR,131232,03_lower middle income,english (non usa)
+XK,"kosovo",emea,southern europe,europe/central asia,europe,XKX,1761985,02_upper middle income,albanian
+KW,"kuwait",emea,middle east,mena,middle east,KWT,4268873,01_high income,arabic
+KG,"kyrgyzstan",emea,central asia,europe/central asia,central asia,KGZ,6974900,03_lower middle income,kyrgyz
+LA,"laos",apac,southeast asia,apac,southeast asia,LAO,7529475,03_lower middle income,other
+LV,"latvia",emea,northern europe,europe/central asia,europe,LVA,1879383,01_high income,latvian
+LB,"lebanon",emea,middle east,mena,middle east,LBN,5489739,03_lower middle income,arabic
+LS,"lesotho",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,LSO,2305825,03_lower middle income,english (non usa)
+LR,"liberia",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,LBR,5302681,04_low income,english (non usa)
+LY,"libya",emea,north africa,mena,north africa,LBY,6812341,02_upper middle income,arabic
+LI,"liechtenstein",emea,western europe,europe/central asia,europe,LIE,39327,01_high income,german
+LT,"lithuania",emea,northern europe,europe/central asia,europe,LTU,2831639,01_high income,lithuanian
+LU,"luxembourg",emea,western europe,europe/central asia,europe,LUX,653103,01_high income,german
+MO,"macao",apac,northeast asia,apac,northeast asia,MAC,695168,01_high income,other (chinese - cantonese)
+MG,"madagascar",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,MDG,29611714,04_low income,french
+MW,"malawi",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,MWI,20405317,04_low income,english (non usa)
+MY,"malaysia",apac,southeast asia,apac,southeast asia,MYS,33938221,02_upper middle income,malay
+MV,"maldives",apac,south asia,apac,south asia,MDV,523787,02_upper middle income,other
+ML,"mali",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,MLI,22593590,04_low income,french
+MT,"malta",emea,southern europe,europe/central asia,europe,MLT,531113,01_high income,italian
+MH,"marshall islands",apac,oceania,apac,oceania,MHL,41569,02_upper middle income,english (non usa)
+MQ,"martinique",amer,caribbean,americas,caribbean,,1,,french
+MR,"mauritania",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,MRT,4736139,03_lower middle income,arabic
+MU,"mauritius",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,MUS,1262523,02_upper middle income,english (non usa)
+YT,"mayotte",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,,1,,french
+MX,"mexico",amer,latin america,americas,latin america,MEX,127504125,02_upper middle income,spanish
+FM,"micronesia, federated states of",apac,oceania,apac,oceania,FSM,114164,03_lower middle income,english (non usa)
+MD,"moldova, republic of",emea,eastern europe,europe/central asia,europe,MDA,2538894,02_upper middle income,other (russian)
+MC,"monaco",emea,western europe,europe/central asia,europe,MCO,36469,01_high income,french
+MN,"mongolia",apac,northeast asia,apac,northeast asia,MNG,3398366,03_lower middle income,mongolian
+ME,"montenegro",emea,southern europe,europe/central asia,europe,MNE,617213,02_upper middle income,serbian
+MS,"montserrat",amer,caribbean,americas,caribbean,,1,,english (non usa)
+MA,"morocco",emea,north africa,mena,north africa,MAR,37457971,03_lower middle income,arabic
+MZ,"mozambique",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,MOZ,32969518,04_low income,portuguese
+MM,"myanmar",apac,southeast asia,apac,southeast asia,MMR,54179306,03_lower middle income,other
+NA,"namibia",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,NAM,2567012,02_upper middle income,english (non usa)
+NR,"nauru",apac,oceania,apac,oceania,NRU,12668,01_high income,english (non usa)
+NP,"nepal",apac,south asia,apac,south asia,NPL,30547580,03_lower middle income,other
+NL,"netherlands",emea,western europe,europe/central asia,europe,NLD,17700982,01_high income,dutch
+NC,"new caledonia",apac,oceania,apac,oceania,NCL,269220,01_high income,french
+NZ,"new zealand",apac,oceania,apac,oceania,NZL,5124100,01_high income,english (non usa)
+NI,"nicaragua",amer,latin america,americas,latin america,NIC,6948392,03_lower middle income,spanish
+NE,"niger",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,NER,26207977,04_low income,french
+NG,"nigeria",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,NGA,218541212,03_lower middle income,english (non usa)
+NU,"niue",apac,oceania,apac,oceania,,1,,english (non usa)
+NF,"norfolk island",apac,oceania,apac,oceania,,1,,english (non usa)
+KP,"north korea",apac,northeast asia,apac,northeast asia,PRK,26069416,04_low income,other
+MK,"north macedonia",emea,southern europe,europe/central asia,europe,MKD,2057679,02_upper middle income,macedonian
+MP,"northern mariana islands",apac,oceania,apac,oceania,MNP,49551,01_high income,english (non usa)
+NO,"norway",emea,northern europe,europe/central asia,europe,NOR,5457127,01_high income,norwegian
+OM,"oman",emea,middle east,mena,middle east,OMN,4576298,01_high income,arabic
+PK,"pakistan",apac,south asia,apac,south asia,PAK,235824862,03_lower middle income,urdu
+PW,"palau",apac,oceania,apac,oceania,PLW,18055,02_upper middle income,english (non usa)
+PS,"palestine",emea,middle east,mena,middle east,PSE,5043612,02_upper middle income,arabic
+PA,"panama",amer,latin america,americas,latin america,PAN,4408581,01_high income,spanish
+PG,"papua new guinea",apac,oceania,apac,oceania,PNG,10142619,03_lower middle income,english (non usa)
+PY,"paraguay",amer,latin america,americas,latin america,PRY,6780744,02_upper middle income,spanish
+PE,"peru",amer,latin america,americas,latin america,PER,34049588,02_upper middle income,spanish
+PH,"philippines",apac,southeast asia,apac,southeast asia,PHL,115559009,03_lower middle income,filipino
+PN,"pitcairn",apac,oceania,apac,oceania,,1,,english (non usa)
+PL,"poland",emea,eastern europe,europe/central asia,europe,POL,36821749,01_high income,polish
+PT,"portugal",emea,southern europe,europe/central asia,europe,PRT,10409704,01_high income,portuguese
+PR,"puerto rico",amer,latin america,americas,latin america,PRI,3221789,01_high income,spanish
+QA,"qatar",emea,middle east,mena,middle east,QAT,2695122,01_high income,arabic
+RE,"réunion",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,,1,,french
+RO,"romania",emea,eastern europe,europe/central asia,europe,ROU,19047009,01_high income,romanian
+RU,"russia",emea,eastern europe,europe/central asia,europe,RUS,144236933,02_upper middle income,russian
+RW,"rwanda",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,RWA,13776698,04_low income,english (non usa)
+BL,"saint barthélemy",amer,caribbean,americas,caribbean,,1,,french
+SH,"saint helena, ascension, and tristan da cunha",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,,1,,english (non usa)
+KN,"saint kitts and nevis",amer,caribbean,americas,caribbean,KNA,47657,01_high income,english (non usa)
+LC,"saint lucia",amer,caribbean,americas,caribbean,LCA,179857,02_upper middle income,english (non usa)
+MF,"saint martin",amer,caribbean,americas,caribbean,MAF,31791,01_high income,french
+PM,"saint pierre and miquelon",amer,north america,americas,north america,,1,,french
+VC,"saint vincent and the grenadines",amer,caribbean,americas,caribbean,VCT,103948,02_upper middle income,english (non usa)
+WS,"samoa",apac,oceania,apac,oceania,WSM,222382,03_lower middle income,english (non usa)
+SM,"san marino",emea,southern europe,europe/central asia,europe,SMR,33660,01_high income,italian
+ST,"são tomé and príncipe",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,STP,227380,03_lower middle income,portuguese
+SA,"saudi arabia",emea,middle east,mena,middle east,SAU,36408820,01_high income,arabic
+SN,"senegal",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,SEN,17316449,03_lower middle income,french
+RS,"serbia",emea,southern europe,europe/central asia,europe,SRB,6664449,02_upper middle income,serbian
+SC,"seychelles",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,SYC,119878,01_high income,english (non usa)
+SL,"sierra leone",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,SLE,8605718,04_low income,english (non usa)
+SG,"singapore",apac,southeast asia,apac,southeast asia,SGP,5637022,01_high income,english (non usa)
+SX,"sint maarten",amer,caribbean,americas,caribbean,SXM,42848,01_high income,dutch
+SK,"slovakia",emea,eastern europe,europe/central asia,europe,SVK,5431752,01_high income,slovak
+SI,"slovenia",emea,southern europe,europe/central asia,europe,SVN,2111986,01_high income,other
+SB,"solomon islands",apac,oceania,apac,oceania,SLB,724273,03_lower middle income,english (non usa)
+SO,"somalia",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,SOM,17597511,04_low income,other
+ZA,"south africa",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,ZAF,59893885,02_upper middle income,english (non usa)
+GS,"south georgia and the south sandwich islands",other,antarctica,none,antarctica,,1,,english (non usa)
+KR,"south korea",apac,northeast asia,apac,northeast asia,KOR,51628117,01_high income,korean
+SS,"south sudan",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,SSD,10913164,04_low income,english (non usa)
+ES,"spain",emea,southern europe,europe/central asia,europe,ESP,47778340,01_high income,spanish
+LK,"sri lanka",apac,south asia,apac,south asia,LKA,22181000,03_lower middle income,tamil
+SD,"sudan",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,SDN,46874204,04_low income,arabic
+SR,"suriname",amer,latin america,americas,latin america,SUR,618040,02_upper middle income,dutch
+SJ,"svalbard and jan mayen",emea,northern europe,europe/central asia,europe,,1,,norwegian
+SE,"sweden",emea,northern europe,europe/central asia,europe,SWE,10486941,01_high income,swedish
+CH,"switzerland",emea,western europe,europe/central asia,europe,CHE,8775760,01_high income,german
+SY,"syria",emea,middle east,mena,middle east,SYR,22125249,04_low income,arabic
+TW,"taiwan",apac,northeast asia,apac,northeast asia,XXB,23213962,01_high income,chinese (traditional)
+TJ,"tajikistan",emea,central asia,europe/central asia,central asia,TJK,9952787,03_lower middle income,other (russian)
+TZ,"tanzania",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,TZA,65497748,03_lower middle income,english (non usa)
+TH,"thailand",apac,southeast asia,apac,southeast asia,THA,71697030,02_upper middle income,thai
+TL,"timor-leste",apac,southeast asia,apac,southeast asia,TLS,1341296,03_lower middle income,portuguese
+TG,"togo",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,TGO,8848699,04_low income,french
+TK,"tokelau",apac,oceania,apac,oceania,,1,,english (non usa)
+TO,"tonga",apac,oceania,apac,oceania,TON,106858,02_upper middle income,english (non usa)
+TT,"trinidad and tobago",amer,caribbean,americas,caribbean,TTO,1531044,01_high income,english (non usa)
+TN,"tunisia",emea,north africa,mena,north africa,TUN,12356117,03_lower middle income,arabic
+TR,"türkiye",emea,southern europe,europe/central asia,europe,TUR,84979913,02_upper middle income,turkish
+TM,"turkmenistan",emea,central asia,europe/central asia,central asia,TKM,6430770,02_upper middle income,other (russian)
+TC,"turks and caicos islands",amer,caribbean,americas,caribbean,TCA,45703,01_high income,english (non usa)
+TV,"tuvalu",apac,oceania,apac,oceania,TUV,11312,02_upper middle income,english (non usa)
+VI,"u.s. virgin islands",amer,caribbean,americas,caribbean,VIR,105413,01_high income,english (non usa)
+UG,"uganda",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,UGA,47249585,04_low income,english (non usa)
+UA,"ukraine",emea,eastern europe,europe/central asia,europe,UKR,38000000,03_lower middle income,ukrainian
+AE,"united arab emirates",emea,middle east,mena,middle east,ARE,9441129,01_high income,arabic
+GB,"united kingdom",emea,northern europe,europe/central asia,europe,GBR,66971395,01_high income,english (non usa)
+US,"united states",united states,united states,none,north america,USA,333287557,01_high income,english (usa)
+UM,"united states minor outlying islands",apac,oceania,apac,oceania,,1,,english (non usa)
+UY,"uruguay",amer,latin america,americas,latin america,URY,3422794,01_high income,spanish
+UZ,"uzbekistan",emea,central asia,europe/central asia,central asia,UZB,35648100,03_lower middle income,uzbek
+VU,"vanuatu",apac,oceania,apac,oceania,VUT,326740,03_lower middle income,english (non usa)
+VA,"vatican city",emea,southern europe,europe/central asia,europe,XXA,764,01_high income,italian
+VE,"venezuela",amer,latin america,americas,latin america,VEN,28301696,03_lower middle income,spanish
+VN,"vietnam",apac,southeast asia,apac,southeast asia,VNM,98186856,03_lower middle income,vietnamese
+WF,"wallis and futuna",apac,oceania,apac,oceania,,1,,french
+EH,"western sahara",emea,north africa,mena,north africa,,1,,arabic
+YE,"yemen",emea,middle east,mena,middle east,YEM,33696614,04_low income,arabic
+ZM,"zambia",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,ZMB,20017675,03_lower middle income,english (non usa)
+ZW,"zimbabwe",emea,sub-saharan africa,sub-saharan africa,sub-saharan africa,ZWE,16320537,03_lower middle income,english (non usa)

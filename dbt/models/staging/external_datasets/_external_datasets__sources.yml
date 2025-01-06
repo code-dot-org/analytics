@@ -30,6 +30,10 @@ sources:
 
       # aggregate AP exam results
       
+      - name: ap_agg_exam_results_2024
+        description: "Raw aggregated exam results from 2024. This is a load of the data from the College Board with the addtion of a few additional empty columns."
+
+
       - name: stg_ap_agg_exam_results_raw_2023
         description: "Raw aggregated exam results from 2023. This is more or less a direct copy of data .csv provided by the college board.  See S3 ap_data bucket."
 
