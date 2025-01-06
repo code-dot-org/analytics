@@ -297,7 +297,7 @@ models:
     
     columns: 
       - name: group_level_id
-        description: id of the group level 
+        description: id of the group level associated to the survey 
         data_tests:
           - not_null 
       
@@ -305,10 +305,19 @@ models:
         description: ""
 
       - name: course_name
+        description: ""
+
       - name: script_id
+        description: ""
+
       - name: script_name
+        description: ""
+
       - name: unit 
+        description: "" 
+
       - name: topic_tags 
+        description: "" 
 
       - name: topic_tags
         description: ""
@@ -332,6 +341,7 @@ models:
         data_tests: 
             - accepted_values:
                 values: ['pre', 'post', 'pulse','end of unit',null]
+
       - name: contained_level_id 
         description: "" 
 
@@ -359,10 +369,95 @@ models:
 
       - name: answer_number 
         description: ""
-        
+
+    config:
+      tags: ['released']
+
   - name: dim_curriculum_survey_responses
     description: |
       This model includes user answers to level-based curriculum survey questions, organized by curriculum and survey details. 
       dimensionality of curriculum surveys.
-    # columns:
-    #   - name: 
+    columns:
+      - name: student_id 
+        description: ""
+        data_tests:
+          - not_null
+
+      - name: created_at
+        description: timestamp of associated activity to survey response 
+      
+      - name: school_year 
+        description: "" 
+
+      - name: country
+        description: "" 
+      - name: us_intl
+        description: "" 
+
+      - name: gender
+        description: "" 
+
+      - name: races
+        description: "" 
+
+      - name: is_urg 
+        description: "" 
+
+      - name: group_level_id
+        description: id of the group level associated to the survey 
+        data_tests:
+          - not_null 
+
+      - name: content_area
+        description: "" 
+
+      - name: course_name
+        description: "" 
+
+      - name: script_id
+        description: "" 
+
+      - name: script_name
+        description: "" 
+
+      - name: unit
+        description: "" 
+
+      - name: topic_tags
+        description: "" 
+
+      - name: version_year
+        description: "" 
+
+      - name: survey_level_id 
+        description: contained level_id of survey 
+        
+      - name: survey_name
+        description: "" 
+
+      - name: survey_type
+        description: "" 
+
+      - name: contained_level_id
+        description: "" 
+
+      - name: question_name
+        description: "" 
+
+      - name: question_type
+        description: "" 
+
+      - name: question_number 
+        description: "" 
+
+      - name: question_text 
+        description: "" 
+
+      - name: answer_number 
+        description: "" 
+
+      - name: answer_response
+        description: "" 
+    
+    config:
+      tags: ['released']
