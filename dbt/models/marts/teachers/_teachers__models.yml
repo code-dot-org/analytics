@@ -1,6 +1,7 @@
 version: 2
 
 models: 
+  
   - name: dim_global_trained_teacher_script_progress
     description: This model contains various aggregations on the teacher/script/year level to measure student progress by particular scripts YoY for a given global trained teacher. 
     columns: 
@@ -170,5 +171,61 @@ models:
           combination_of_columns:
             - school_year
             - teacher_id
+    config:
+      tags: ['released']
+    
+  - name: dim_active_teachers
+    description: |
+      One row per teacher / activity date for every date a teacher had activity, where "activity" is defined by the following events tracked in Statsig (and their activity type classifications): 
+        curriculum catalog visited (light)    
+        level activity (light)     
+        lesson overview page visited (moderate)   
+        unit overview page visited by teacher (moderate)     
+        lesson resource link visited (moderate)         
+        teacher viewing student work (moderate)      
+        section setup completed (moderate)     
+        section curriculum assigned (moderate)            
+        section progress viewed (moderate) 
+        teacher viewing student work (heavy)  
+        level feedback submitted (heavy)   
+        rubric activity (heavy)  
+    columns: 
+      - name: teacher_id
+        description: unique ID for the teacher with the activity
+        data_tests: 
+          - not_null
+
+      - name: activity_date
+        description: the date on which the teacher had activity
+        data_tests: 
+          - not_null
+      
+      - name: school_year
+        description: the school year associated with the activity date, used for aggregation
+        data_tests: 
+          - not_null
+
+      - name: cal_year 
+        description: the calendar year associated with the activity date, used for aggregation
+        data_tests: 
+          - not_null
+      
+      - name: has_light_activity
+        description: 1 if the teacher did any event considered "light" on the activity date, 0 otherwise
+      
+      - name: has_moderate_activity
+        description: 1 if the teacher did any event considered "moderate" on the activity date, 0 otherwise
+      
+      - name: has_heavy_activity
+        description: 1 if the teacher did any event considered "heavy" on the activity date, 0 otherwise
+
+      - name: events_touched
+        description: comma separated list of events the teacher did on the activity date
+
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - teacher_id
+            - activity_date
     config:
       tags: ['released']

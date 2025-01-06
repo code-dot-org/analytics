@@ -52,7 +52,7 @@ activity_levels as (
                 'teacher viewing student work',
                 'section setup completed',
                 'section curriculum assigned',
-                'teacher viewing student work'
+                'section progress viewed'
             )
             then 1
             else 0
@@ -60,7 +60,7 @@ activity_levels as (
 
         case
             when event_name in (
-                'section progress viewed',
+                'teacher viewing student work',
                 'level feedback submitted',
                 'rubric activity'
             )
