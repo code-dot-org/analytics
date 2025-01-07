@@ -84,6 +84,12 @@ models:
         - "staging"
       +materialized: view
 
+      amplitude:
+        base: 
+          tags:
+            - "base"
+          materialized: ephemeral
+
       external_datasets:
         base:
       +docs:
@@ -107,6 +113,14 @@ models:
         tags:
           - "contains_pii"
 
+      pegasus:
+        base:
+          tags:
+            - "base"
+          +materialized: ephemeral
+        +docs:
+          show: false
+      
       pegasus_pii:
         tags:
           - "contains_pii"
@@ -116,26 +130,6 @@ models:
           +materialized: ephemeral
         +docs:
           show: false
-
-      pegasus:
-        base:
-          tags:
-            - "base"
-          +materialized: ephemeral
-        +docs:
-          show: false
-
-      amplitude:
-        base: 
-          tags:
-            - "base"
-          materialized: ephemeral
-
-        external_datasets:
-        base:
-          tags:
-            - "base"
-          +materialized: view
 
 seeds:
   +docs:
