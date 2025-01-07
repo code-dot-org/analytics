@@ -1,22 +1,7 @@
 version: 2
 
 models: 
-  # - name: stg_dashboard__course_scripts
-  #   description: staging model for course_scripts source data
-  #   columns:
-  #     - name: course_script_id
-  #       description: unique id for each course and script combination
-  #       data_tests: 
-  #         - unique
-  #         - not_null
-  #     - name: course_id 
-  #       description: unique id for each course
-  #       data_tests: 
-  #         - not_null
-  #     - name: script_id 
-  #       description: unique id for each script
-  #       data_tests: 
-  #         - not_null
+
   - name: stg_dashboard__new_feature_feedbacks
     description: staging model for the feedback table for new features (unclear which new feature this is for- check with PMs)
     columns: 
@@ -24,6 +9,7 @@ models:
         data_tests:
           - unique
           - not_null
+
   - name: stg_dashboard__lti_feedbacks
     description: staging model for the user feedback on LTI
     columns: 
@@ -31,6 +17,7 @@ models:
         data_tests:
           - unique
           - not_null
+
   - name: stg_dashboard__ai_tutor_interaction_feedbacks
     description: Staging model for the feedback table for AI Tutor
     columns: 
@@ -74,7 +61,6 @@ models:
   - name: stg_dashboard__user_proficiencies
     description: |
       Staging model for ""
-
 
   - name: stg_dashboard__sections
     description: |
@@ -120,6 +106,14 @@ models:
       - name: school_id
         data_tests:
           - not_null
+  - name: stg_dashboard__user_geos
+    description: |
+      Staging model for `user_geos` source data
+    columns: 
+      - name: user_id
+        description: unique id for for each user
+        data_tests:
+          - not_null
 
   - name: stg_dashboard__users
     description: |
@@ -148,3 +142,14 @@ models:
         data_tests:
           - unique
           - not_null
+
+  - name: stg_dashboard__level_sources_free_responses 
+    description: |
+      Staging model for level sources free_responses
+    columns: 
+      - name: level_id 
+        description: associated level to free_responses
+        data_tests:
+          - not_null 
+      - name: data 
+        description: contains free responses answers 
