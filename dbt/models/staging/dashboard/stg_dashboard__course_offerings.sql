@@ -20,7 +20,7 @@ renamed as (
         
         -- header,
         -- image,
-        lower(cs_topic)                     as cs_topic
+        lower(cs_topic)                     as cs_topic,
         --lower(school_subject)           as school_subject,
         --device_compatibility,
         --description,
