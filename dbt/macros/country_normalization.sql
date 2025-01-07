@@ -12,8 +12,8 @@
         when lower({{raw_country_name }}) in ('republic of the congo','congo republic') then 'congo, republic of'
         when lower({{raw_country_name }}) in ('ivory coast','cote d''ivoire') then 'côte d''ivoire'
         when lower({{raw_country_name }}) in ('czech republic') then 'czechia'
-        when lower({{raw_country_name }}) in ('swaziland') then 'eswatini',
-        when lower({{raw_country_name }}) in ('falkland islands (islas malvinas)') then 'falkland islands',
+        when lower({{raw_country_name }}) in ('swaziland') then 'eswatini'
+        when lower({{raw_country_name }}) in ('falkland islands (islas malvinas)') then 'falkland islands'
         when lower({{raw_country_name }}) in ('the gambia') then 'gambia'
         when lower({{raw_country_name }}) in ('iran, islamic republic of') then 'iran'
         when lower({{raw_country_name }}) in ('hashemite kingdom of jordan') then 'jordan'
@@ -24,7 +24,7 @@
         when lower({{raw_country_name }}) in ('federated states of micronesia','micronesia') then 'micronesia, federated states of'
         when lower({{raw_country_name }}) in ('republic of moldova','moldova') then 'moldova, republic of'
         when lower({{raw_country_name }}) in ('principality of monaco') then 'monaco'
-        when lower({{raw_country_name }}) in ('myanmar [burma]','republic of the union of myanmar',' myanmar (burma)') then 'myanmar'
+        when lower({{raw_country_name }}) in ('myanmar [burma]','republic of the union of myanmar','myanmar (burma)') then 'myanmar'
         when lower({{raw_country_name }}) in ('the netherlands') then 'netherlands'
         when lower({{raw_country_name }}) in ('korea, democratic people''s republic of') then 'north korea'
         when lower({{raw_country_name }}) in ('macedonia','macedonia (fyrom)') then 'north macedonia'
@@ -45,6 +45,7 @@
         when lower({{raw_country_name }}) in ('tanzania, united republic of') then 'tanzania'
         when lower({{raw_country_name }}) in ('democratic republic of timor-leste','east timor','timor leste') then 'timor-leste'
         when lower({{raw_country_name }}) in ('turkey') then 'türkiye'
+        when lower({{raw_country_name }}) in ('northern ireland') then 'united kingdom'
         when lower({{raw_country_name }}) in ('u.s. minor outlying islands') then 'united states minor outlying islands'
         when lower({{raw_country_name }}) in ('us virgin islands') then 'u.s. virgin islands'
         when {{raw_country_name}} = '' then NULL
