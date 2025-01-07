@@ -75,8 +75,7 @@ models:
       +materialized: table
 
     reporting_views:
-      tags:
-        - "reporting"
+      +tags: ['exclude_from_ci','reporting']
       +materialized: view
       +schema: reporting
 
