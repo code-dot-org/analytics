@@ -48,7 +48,7 @@ pl_with_engagement as (
             else 0 
         end as includes_facilitated,
 
-        listagg(pl_activity.topic, ',') within group (order by pl_activity.teacher_id, pl_activity.school_year, pl_activity.grade_band) as topics_touched
+        listagg(distinct pl_activity.topic, ', ') within group (order by pl_activity.teacher_id, pl_activity.school_year, pl_activity.grade_band) as topics_touched
     from pl_activity 
     join school_years on pl_activity.school_year = school_years.school_year
     group by 1,2,3,4,5,6
@@ -59,16 +59,22 @@ select
     case 
         when act_1.teacher_id is not null or act_2.teacher_id is not null then 1 
         else 0  
-    end as implemented
+    end as implemented,
+    case 
+        when act_1.teacher_id is not null and act_2.teacher_id is not null then 1 
+        when act_2.teacher_id is not null and act_3.teacher_id is not null then 1
+        else 0 
+    end as sustained
 from pl_with_engagement pl
 left join active_teachers_sy_int act_1
     on pl.teacher_id = act_1.teacher_id 
     and pl.school_year_int = act_1.school_year_int
 left join active_teachers_sy_int act_2
-    on pl.teacher_id = act_1.teacher_id 
-    and pl.school_year_int + 1 = act_1.school_year_int
-
-
+    on pl.teacher_id = act_2.teacher_id 
+    and pl.school_year_int + 1 = act_2.school_year_int
+left join active_teachers_sy_int act_3
+    on pl.teacher_id = act_3.teacher_id 
+    and pl.school_year_int + 2 = act_3.school_year_int
 
 
 

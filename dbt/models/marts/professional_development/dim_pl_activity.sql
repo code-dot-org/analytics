@@ -11,7 +11,7 @@ self_paced_activity as (
             when content_area = 'self_paced_pl_6_8' then '6_8'
             when content_area = 'self_paced_pl_9_12' then '9_12'
             when content_area = 'skills_focused_self_paced_pl' then 'skills_focused'
-            else null 
+            else 'other' 
         end                               as grade_band,
         -- , min(level_created_dt)             as first_activity_at
         -- , max(level_created_dt)             as last_activity_at
@@ -69,7 +69,6 @@ pd_workshops as (
         , organizer_id
         , school_year
         , course_name
-        , grade_band
         , subject
         , regional_partner_id 
         , is_byow
@@ -86,14 +85,41 @@ course_offerings_pd_workshops as (
     from {{ ref('stg_dashboard_pii__course_offerings_pd_workshops') }}
 ),
 
+course_structure as (
+    select 
+        *,
+        case 
+            when content_area = 'curriculum_k_5' then 'k_5'
+            when content_area = 'curriculum_6_8' then '6_8'
+            when content_area = 'curriculum_9_12' then '9_12'
+            when content_area = 'self_paced_pl_k_5' then 'k_5'
+            when content_area = 'self_paced_pl_6_8' then '6_8'
+            when content_area = 'self_paced_pl_9_12' then '9_12'
+            when content_area = 'skills_focused_self_paced_pl' then 'skills_focused'
+            else 'other' 
+        end                               as grade_band
+    from {{ ref('dim_course_structure') }}
+    where content_area != 'other'
+),
+
 regional_partners as (
     select * 
     from {{ ref('dim_regional_partners') }}
 ),
 
-pl_grade_band_mappings as (
+course_scripts as (
     select * 
-    from {{ ref('stg_external_datasets__pl_grade_band_mappings') }}
+    from {{ ref('stg_dashboard__course_scripts') }}
+),
+
+content_area_mapping as (
+    select distinct 
+        wco.course_offering_id,
+        cs.grade_band
+    from course_offerings_pd_workshops wco 
+    join course_offerings co 
+        on wco.course_offering_id = co.course_offering_id 
+    left join course_structure cs on co.key = cs.family_name
 ),
 
 facilitated_pd as (
@@ -107,16 +133,12 @@ facilitated_pd as (
         districts.regional_partner_id                   as district_regional_partner_id,
         pdw.is_byow,
         case 
-            when pdw.course_name = 'build your own workshop' 
-            then co.display_name
+            when pdw.course_name = 'build your own workshop' then co.display_name
             else pdw.course_name
         end                                             as topic,
-        coalesce(mappings.grade_band, pdw.grade_band)   as grade_band,
+        coalesce(cam.grade_band, cs.grade_band)         as grade_band,
         tsh.school_id,
         schools.school_district_id,
-        -- pdw.subject,
-        -- co.display_name
-        --co.cs_topic,
         cast(null as bigint)                            as num_levels,
         sum(pds.num_hours)                              as num_hours
 
@@ -125,12 +147,14 @@ join pd_sessions pds
     on pda.pd_session_id = pds.pd_session_id
 join pd_workshops pdw
     on pds.pd_workshop_id = pdw.pd_workshop_id
+left join course_structure cs 
+    on pdw.course_name = cs.course_name
 left join course_offerings_pd_workshops copw 
     on pdw.pd_workshop_id = copw.pd_workshop_id
+left join content_area_mapping cam 
+    on copw.course_offering_id = cam.course_offering_id
 left join course_offerings co 
     on copw.course_offering_id = co.course_offering_id
-left join pl_grade_band_mappings mappings 
-    on co.display_name = mappings.topic
 left join teacher_schools_historical tsh
     on pda.teacher_id = tsh.teacher_id
     and pda.school_year = tsh.started_at_sy
@@ -152,8 +176,6 @@ self_paced_pd as (
         districts.regional_partner_id       as district_regional_partner_id,
         cast(null as bigint)                as is_byow,
         spa.topic,
-        -- , spa.first_activity_at
-        -- , spa.last_activity_at
         spa.grade_band,
         tsh.school_id,
         schools.school_district_id,

@@ -8,7 +8,7 @@ base as (
 renamed as (
     select 
         id                                  as course_offering_id,
-        -- key,
+        key,
         lower(display_name)                 as display_name,
         -- created_at,
         -- updated_at,
