@@ -42,6 +42,7 @@ pd_attendances as (
         , teacher_id
         , school_year
     from {{ ref('stg_dashboard_pii__pd_attendances') }}
+    where teacher_id is not null
 ),
 
 pd_sessions as (
