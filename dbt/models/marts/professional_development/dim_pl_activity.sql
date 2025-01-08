@@ -35,16 +35,6 @@ districts as (
     from {{ ref('dim_districts') }}
 ),
 
-pd_enrollments as (
-    select 
-        pd_enrollment_id
-        , pd_workshop_id
-        , teacher_id
-        , enrolled_at
-    from {{ ref('stg_dashboard_pii__pd_enrollments') }}
-    where teacher_id is not null
-),
-
 pd_attendances as (
     select 
         pd_attendance_id
@@ -126,9 +116,9 @@ facilitated_pd as (
     select distinct 
         pda.teacher_id,
         pdw.school_year,
-        'facilitated'                                   as pd_type,
-        pdw.pd_workshop_id,
-        pdw.organizer_id,
+        'facilitated'                                   as pl_type,
+        pdw.pd_workshop_id                              as pl_workshop_id,
+        pdw.organizer_id                                as pl_organizer_id,
         pdw.regional_partner_id                         as workshop_regional_partner_id,
         districts.regional_partner_id                   as district_regional_partner_id,
         pdw.is_byow,
@@ -169,9 +159,9 @@ self_paced_pd as (
     select distinct
         spa.teacher_id,
         spa.school_year,
-        spa.pd_type,
-        cast(null as bigint)                as pd_workshop_id,
-        cast(null as bigint)                as organizer_id,
+        spa.pd_type                         as pl_type,
+        cast(null as bigint)                as pl_workshop_id,
+        cast(null as bigint)                as pl_organizer_id,
         cast(null as bigint)                as workshop_regional_partner_id,
         districts.regional_partner_id       as district_regional_partner_id,
         cast(null as bigint)                as is_byow,

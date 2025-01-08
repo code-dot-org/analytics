@@ -1,7 +1,7 @@
 with 
 
 pl_activity as ( 
-    select * 
+    select *
     from {{ ref('dim_pl_activity') }}
 ),
 
@@ -50,7 +50,8 @@ pl_with_engagement as (
 
         listagg(distinct pl_activity.topic, ', ') within group (order by pl_activity.teacher_id, pl_activity.school_year, pl_activity.grade_band) as topics_touched
     from pl_activity 
-    join school_years on pl_activity.school_year = school_years.school_year
+    join school_years 
+        on pl_activity.school_year = school_years.school_year
     group by 1,2,3,4,5,6
 )
 
