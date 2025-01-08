@@ -75,14 +75,20 @@ models:
       +materialized: table
 
     reporting_views:
-      tags:
-        - "reporting"
+      +tags: ['exclude_from_ci','reporting']
       +materialized: view
+      +schema: reporting
 
     staging:
       tags:
         - "staging"
       +materialized: view
+
+      amplitude:
+        base: 
+          tags:
+            - "base"
+          materialized: ephemeral
 
       external_datasets:
         base:
@@ -107,6 +113,14 @@ models:
         tags:
           - "contains_pii"
 
+      pegasus:
+        base:
+          tags:
+            - "base"
+          +materialized: ephemeral
+        +docs:
+          show: false
+      
       pegasus_pii:
         tags:
           - "contains_pii"
@@ -116,26 +130,6 @@ models:
           +materialized: ephemeral
         +docs:
           show: false
-
-      pegasus:
-        base:
-          tags:
-            - "base"
-          +materialized: ephemeral
-        +docs:
-          show: false
-
-      amplitude:
-        base: 
-          tags:
-            - "base"
-          materialized: ephemeral
-
-        external_datasets:
-        base:
-          tags:
-            - "base"
-          +materialized: view
 
 seeds:
   +docs:
