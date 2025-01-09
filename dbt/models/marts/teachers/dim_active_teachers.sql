@@ -6,15 +6,17 @@ school_years as (
 ),
 
 teachers as (
-    select teacher_id 
+    select 
+        teacher_id,
+        us_intl
     from {{ ref('dim_teachers') }}
 ),
 
 statsig_events as (
     select * 
-    from {{ ref('stg_analysis_pii__statsig_events') }}
-    where user_id in (select teacher_id from teachers)
-    and event_name in (
+    from {{ ref('stg_analysis_pii__statsig_events') }} statsig_events
+    join teachers on statsig_events.user_id = teachers.teacher_id
+    where event_name in (
         'curriculum catalog visited',
         'level activity',
         'lesson overview page visited',
@@ -33,6 +35,7 @@ statsig_events as (
 activity_levels as (
     select 
         user_id                                 as teacher_id,
+        us_intl,
         trunc(event_at)                         as activity_date,
         event_name,
         case
@@ -69,11 +72,12 @@ activity_levels as (
         end                                     as has_heavy_activity
 
     from statsig_events
-    group by 1,2,3,4
+    group by 1,2,3,4,5
 )
 
-select distinct
+select
     teacher_id, 
+    us_intl,
     activity_date,
     school_years.school_year,
     extract(year from activity_date)                 as cal_year,
@@ -119,4 +123,4 @@ select distinct
 from activity_levels 
 join school_years 
     on activity_levels.activity_date between school_years.started_at and school_years.ended_at
-group by 1,2,3,4
+group by 1,2,3,4,5
