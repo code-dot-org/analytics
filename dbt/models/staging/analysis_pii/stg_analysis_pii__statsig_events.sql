@@ -18,12 +18,13 @@ statsig_events as (
         cast(company_metadata.unitName as varchar)  as unit_name,
         cast(company_metadata.pageUrl as varchar)   as page_url 
     from {{ ref('base_analysis_pii__statsig_events') }} 
+    where event_at >= '2024-11-06' -- exclude the two october dates
 ),
 
 renamed as (
     select 
         user_id,
-        -- stable_id,	
+        stable_id,	
         custom_ids,	
         event_at,
         event_name,	
