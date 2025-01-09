@@ -6,7 +6,6 @@ models:
       this model contains 1 row for every URL hit of an HoC activity, regardless of whether the user was signed in or the user was on a 3rd party site.   
           
       note-- if you'd like to explore only signed-in hoc usage, you can use use dim_student_script_level_activity
-
     columns:
       - name: hoc_start_id
         data_tests: 
@@ -18,11 +17,12 @@ models:
         description: the calendar year associated with the HoC activity    
       - name: school_year
         description: the school year associated with the HoC activity 
-      - name: referer 
       - name: company 
       - name: tutorial
       - name: is_third_party
-        description: 1 if the URL hit was from a third party site with pixel tracking, 0 otherwise
+        description: 1 if the tutorial matches to our manually maintained list of Code.org HOC tutorials. Last updated 11/25/24 for the 2024 HOC year. 
+      - name: is_flagged_for_quality
+        description: 1 if we have concerns about the quality of the external data being sent to us by the third-party pixel
       - name: city
         description: the city associated with the user's location
       - name: country 

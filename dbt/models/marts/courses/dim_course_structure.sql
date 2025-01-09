@@ -63,6 +63,7 @@ student_course_names as (
     where participant_audience = 'student'
     and course_name not like '%self paced pl%'
     and course_name not in ('hoc', 'other')
+    {# and content_area like '%curriculum' #} -- pending data backfill
 ),
 
 script_names as (
@@ -73,9 +74,18 @@ script_names as (
 combined as (
     select distinct 
         -- courses
+        sc.content_area,
+        sc.course_name,
         ug.unit_group_id                                                as course_id,
         ug.unit_group_name                                              as course_name_full,
-        sc.course_name,
+        -- scripts
+        sc.topic_tags,
+
+
+        sl.script_id,
+        sc.script_name,
+        sc.is_standalone,
+        sc.unit,
 
         --flags
         case 
@@ -124,18 +134,6 @@ combined as (
             then 1 
             else 0 
         end                                                             as is_active_student_course,
-
-        -- surrogate key for level_script_id
-        {{ dbt_utils.generate_surrogate_key(
-            ['lev.level_id', 
-             'sc.script_id']) }}                                        as level_script_id,
-
-
-        -- scripts
-        sl.script_id,
-        sc.script_name,
-        sc.is_standalone,
-        sc.unit,
         
         -- stages
         st.stage_id,
@@ -176,7 +174,7 @@ combined as (
             when col.level_group_level_id is not null 
             then 1 else 0 
         end                                                             as is_group_level,
-        col.contained_level_type                                        as group_level_type,
+        -- col.contained_level_type                                        as group_level_type,
 
         coalesce(
             ug.family_name,
@@ -201,6 +199,11 @@ combined as (
         coalesce(
             ug.participant_audience,
             sc.participant_audience)                                    as participant_audience,
+
+        -- surrogate key for level_script_id
+        {{ dbt_utils.generate_surrogate_key(
+            ['lev.level_id', 
+             'sc.script_id']) }}                                        as level_script_id,
         
         lev.updated_at                                                  as updated_at
 
@@ -233,6 +236,8 @@ combined as (
 
 final as (
     select 
+        content_area,
+        topic_tags,
         course_id,
         course_name_full,	
         course_name,
@@ -270,7 +275,7 @@ final as (
         is_parent_level,	
         level_group_level_id,	
         is_group_level,
-        group_level_type,	
+        -- group_level_type,	
         family_name,
         version_year,	
         published_state,	
@@ -278,7 +283,8 @@ final as (
         instructor_audience,	
         participant_audience,	
         updated_at              
-    from combined where script_id is not null) -- excludes empty scripts
+    from combined 
+    where script_id is not null) -- excludes empty scripts
 
 select *
 from final

@@ -4,6 +4,8 @@
 -- version: 3.0 (Natalia)
 -- 2024-10-01 
 -- Made changes to include all users with activity in student-facing content
+-- 2024-11-27 
+-- Made changes to include fields content_area and topic_tags to classify curriculum (source:dim_user_levels)
 
 with 
 /*
@@ -24,10 +26,12 @@ user_levels as (
         created_date                        as activity_date,
         extract('month' from created_date)  as activity_month
     from {{ ref('dim_user_levels') }}
+
 ), 
 
 course_structure as (
-    select
+    select distinct
+        content_area,
         course_name,
         course_id,
         script_id,
@@ -38,12 +42,15 @@ course_structure as (
         level_type,
         unit        as unit_name,
         stage_id    as lesson_id,
-        stage_name  as lesson_name
-    from {{ ref('dim_course_structure') }}
+        stage_name  as lesson_name,
+        topic_tags,
+        published_state
+    from {{ ref('dim_course_structure')}}
+    where 
+    content_area like 'curriculum%'    -- student-facing curriculum
+    or content_area in ('hoc')          -- HOC activities 
     
-    where participant_audience = 'student' 
-    -- Note: filter out data we don't want or need as early as possible. If we keep it around, it will be continuously processed as it is referenced in other queries.
-),
+ ),
 
 school_years as (
     select * 
@@ -71,6 +78,7 @@ student_activity as (
             when ul.activity_month in ( 4,   5,  6 )  then 'Q4'
         end as activity_quarter, 
 
+        cs.content_area,
         cs.course_name,
         cs.level_name,
         cs.level_type,
@@ -78,6 +86,8 @@ student_activity as (
         cs.unit_name,
         cs.lesson_id,
         cs.lesson_name,
+        cs.published_state,
+        cs.topic_tags,
 
         -- aggs
         ul.total_attempts,
@@ -86,7 +96,7 @@ student_activity as (
 
     from user_levels as ul 
     
-    left join course_structure as cs
+    join course_structure as cs  -- Changed to join to keep only student-facing content
         on ul.level_script_id = cs.level_script_id
 
     join school_years as sy
@@ -137,8 +147,8 @@ sections as (
     3. Teachers and Schools
         a. Use student_id to connect to sections
         b. Use teacher, school_id for statuses
-        c. select * that shit
-        d. almost forgot user_geo info 
+        c. select *
+        d. user_geo info 
 */
 
 schools as (
@@ -149,6 +159,7 @@ schools as (
 users as (
     select 
         user_id, 
+        us_intl,
         is_international, 
         country,
         user_type
@@ -232,6 +243,7 @@ final as (
         sta.activity_quarter, 
         
         -- curriculum content of the activity 
+        sta.content_area,
         sta.course_name,
         sta.unit_name,
         sta.script_id,
@@ -241,6 +253,8 @@ final as (
         sta.level_id,
         sta.level_name,
         sta.level_type,
+        sta.published_state,
+        sta.topic_tags,
 
         -- activity metrics
         sta.total_attempts,
@@ -248,6 +262,7 @@ final as (
         sta.time_spent_minutes,
 
         -- User characteristics
+        usr.us_intl,
         usr.is_international,
         usr.country,
         usr.user_type,

@@ -1,7 +1,108 @@
 models: 
-  - name: test_view_student_activity
+  - name: afe_template_sy2024_25
     description: |
-      Student activity for 2024 curriculum, view created for reporting, to be used in Tableau. 
+      used for AFE's engagement reporting, following their template, to be used in Tableau. 
     
     config:
       tags: ['reporting']
+
+  - name: view_course_utilization_units
+    description: |
+      Activity by student and unit, used for the Course Utilization Tableau dashboard. 
+    
+    config:
+      tags: ['reporting', 'tableau']
+
+  - name: view_course_utilization_unit_combinations
+    description: |
+      Combination of units engaged with by each section, used for the Course Utilization Tableau dashboard, Unit Combinations viz. 
+    
+    config:
+      tags: ['reporting', 'tableau']
+
+  - name: view_course_utilization_by_script_level
+    description: |
+      Activity by section, script and level, used for the Course Utilization Tableau dashboard, Course Utilization by Script, Stage, Level viz. 
+    
+    config:
+      tags: ['reporting', 'tableau']
+
+## Daily participating students
+  - name: daily_participating_students
+    description: |
+      Daily count of participating students as defined by 2030 goals. "participating" students have 5+ days of content in a HS course or standalone unit or 1+ day of content in a MS or ES course
+    columns:
+      - name: school_year
+        description: school year in format YYYY-YY
+        data_tests:
+          - not_null
+      - name: qualifying_date
+        description: date at which that student met the qualifying criteria
+        data_tests:
+          - not_null
+      - name: n_students_adj_cumulative
+        description: cumulative counts as of that school year for all students with 1+ touchpoints of content, adjusted up to account for 40% anonymous usage in elementary
+        data_tests:
+          - not_null
+      - name: n_students_hs_cumulative
+        description: cumulative counts as of that school year
+        data_tests:
+          - not_null
+      - name: n_students_ms_cumulative
+        description: cumulative counts as of that school year
+        data_tests:
+          - not_null
+      - name: n_students_es_adj_cumulative
+        description: cumulative counts as of that school year. ES numbers are adjusted up 40% to account for anonymous usage. 
+        data_tests:
+          - not_null
+    config:
+      tags: ['released','reporting']
+
+  ## Yearly participating students
+  - name: yearly_participating_students
+    description: |
+      Annual calculations of participating students as defined by 2030 goals. "participating" students have 5+ days of content in a HS course or standalone unit or 1+ day of content in a MS or ES course
+    columns:
+      - name: school_year
+        description: school year in format YYYY-YY
+        data_tests:
+          - not_null
+      - name: n_students_adj
+        description: cumulative counts as of that school year; all students with 1+ non-HOC content day + 40% uplift for elementary
+        data_tests:
+          - not_null
+      - name: n_students_HS
+        description: cumulative counts as of that school year
+        data_tests:
+          - not_null
+      - name: n_students_MS
+        description: cumulative counts as of that school year
+        data_tests:
+          - not_null
+      - name: n_students_ES_adj
+        description: cumulative counts as of that school year. ES numbers are adjusted up 40% to account for anonymous usage. 
+        data_tests:
+          - not_null
+      - name: n_students_HS_f_calc
+        description: imputation of number of female students, based on self-reported data for HS
+        data_tests:
+          - not_null
+      - name: n_students_HS_urg_calc
+        description: imputation of number of URG students, based on self-reported data for HS
+        data_tests:
+          - not_null
+      - name: n_students_MS_f_calc
+        description: imputation of number of female students, based on self-reported data for HS
+        data_tests:
+          - not_null
+      - name: n_students_MS_urg_calc
+        description: imputation of number of URG students, based on self-reported data for HS
+        data_tests:
+          - not_null
+    config:
+      tags: ['released']
+
+
+  - name: testing 
+    
