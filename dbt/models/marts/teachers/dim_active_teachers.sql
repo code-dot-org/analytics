@@ -6,7 +6,7 @@ school_years as (
 ),
 
 teachers as (
-    select 
+    select distinct
         teacher_id,
         us_intl
     from {{ ref('dim_teachers') }}
@@ -22,7 +22,6 @@ statsig_events as (
         'lesson overview page visited',
         'unit overview page visited by teacher',
         'lesson resource link visited',
-        'teacher viewing student work',
         'section setup completed',
         'section curriculum assigned',
         'teacher viewing student work',
@@ -52,7 +51,6 @@ activity_levels as (
                 'lesson overview page visited',
                 'unit overview page visited by teacher',
                 'lesson resource link visited',
-                'teacher viewing student work',
                 'section setup completed',
                 'section curriculum assigned',
                 'section progress viewed'
