@@ -174,7 +174,7 @@ models:
     config:
       tags: ['released']
     
-  - name: dim_active_teachers
+  - name: dim_daily_teacher_activity
     description: |
       One row per teacher / activity date for every date a teacher had activity, where "activity" is defined by the following events tracked in Statsig (and their activity type classifications): 
         curriculum catalog visited (light)    
