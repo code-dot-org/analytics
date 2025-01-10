@@ -4,6 +4,8 @@ models:
   - name: stg_analysis_pii__foorm_submissions_reshaped
     columns: 
         - name: submission_id
+          data_tests: 
+            - not_null 
         - name: item_name
         - name: matrix_item_name
         - name: response_value

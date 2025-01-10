@@ -184,10 +184,30 @@ models:
   - name: int_parent_levels_child_levels
     description: |
       Mapping parent and child level ids
+    columns: 
+        - name: parent_level_id
+          data_tests:
+            - not_null 
+        - name: child_level_id
+          data_tests:
+            - not_null 
+        - name: is_parent_level
+        - name: parent_level_kind 
+        - name: position 
 
   - name: int_teacher_schools_historical
     description: |
       All historical school associations made by teachers-- for a given school year, it takes their most recent school selection
+    columns: 
+      - name: teacher_id
+        data_tests: 
+          - not_null
+          - unique  
+      - name: started_at_sy
+      - name: started_at
+      - name: ended_at 
+      - name: school_info_id 
+      - name: school_id 
 
   - name: int_school_weeks
     description: |
@@ -198,3 +218,26 @@ models:
             - school_year
             - iso_week
             - school_year_week
+
+  - name: int_school_years 
+    description: Staging model for school_years 
+    columns: 
+      - name: school_year
+        data_tests:
+          - not_null 
+          - unique 
+      - name: school_year_int
+      - name: started_at
+      - name: ended_at 
+      - name: school_year_long 
+
+  - name: int_participating_students
+    description: Intermediate model for participating students 
+    columns: 
+        - name: school_year
+        - name: student_id 
+          data_tests: 
+            - not_null 
+        - name: grade_band
+        - name: course_name
+        - name: qualifying_date 

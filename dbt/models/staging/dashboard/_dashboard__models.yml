@@ -2,22 +2,6 @@ version: 2
 
 models: 
 
-  - name: stg_dashboard__new_feature_feedbacks
-    description: staging model for the feedback table for new features (unclear which new feature this is for- check with PMs)
-    columns: 
-      - name: feedback_id
-        data_tests:
-          - unique
-          - not_null
-
-  - name: stg_dashboard__lti_feedbacks
-    description: staging model for the user feedback on LTI
-    columns: 
-      - name: feedback_id
-        data_tests:
-          - unique
-          - not_null
-
   - name: stg_dashboard__ai_tutor_interaction_feedbacks
     description: Staging model for the feedback table for AI Tutor
     columns: 
@@ -36,6 +20,32 @@ models:
         description: the notes inputed by the user submitting feedback
       - name: created_at
         description: timestamp for when the feedback was submitted 
+  
+  - name: stg_dashboard__course_scripts
+    description: Staging model for course_scripts data 
+    columns: 
+      - name: course_script_id
+        data_tests:
+          - not_null
+          - unique
+  
+      - name: course_id
+      - name: script_id
+      - name: position
+      - name: experiment_name
+      - name: default_script_id
+  
+  - name: stg_dashboard__census_summaries
+    description: Staging model for census_summaries data 
+    columns: 
+      - name: level_id
+        data_tests:
+          - not_null
+          - unique
+      
+      - name: answer_number
+      - name: answer_text
+      - name: is_correct
 
   - name: stg_dashboard__followers
     description: |
@@ -54,19 +64,30 @@ models:
       #   description: fk for follower section
       #   data_tests:
       #     - not_null 
+  
 
   - name: stg_dashboard__level_concept_difficulties
-    description: staging model for ""
-
-  - name: stg_dashboard__sections
-    description: |
-      Staging model for `sections` source data
+    description: staging model for level_conccept_difficulties
     columns: 
-      - name: section_id 
-        description: unique id for each section
-        data_tests: 
-          - not_null
+      - name: level_concept_difficulty_id
+        data_tests:
+          - not_null:
+  
+  - name: stg_dashboard__lti_feedbacks
+    description: staging model for the user feedback on LTI
+    columns: 
+      - name: feedback_id
+        data_tests:
           - unique
+          - not_null
+
+  - name: stg_dashboard__new_feature_feedbacks
+    description: staging model for the feedback table for new features (unclear which new feature this is for- check with PMs)
+    columns: 
+      - name: feedback_id
+        data_tests:
+          - unique
+          - not_null
 
   - name: stg_dashboard__parent_levels_child_levels
     description: Staging model for parent levels child levels 
@@ -79,19 +100,6 @@ models:
           - not_null 
       - name: is_parent_level
       - name: parent_level_kind
-          
-  - name: stg_dashboard__section_instructors
-    description: |
-      Coteacher data 
-    columns: 
-      - name: instructor_id
-        description: coteacher id
-        data_tests:
-          - not_null
-      - name: section_id 
-        description: ""
-        data_tests:
-          - not_null
 
   - name: stg_dashboard__school_districts
     description: |
@@ -146,6 +154,19 @@ models:
         data_tests: 
           - unique
           - not_null
+  
+  - name: stg_dashboard__school_stats_by_years
+    description: |
+      Staging model for `school_stats_by_years` source data
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - school_id
+            - school_year
+    columns: 
+      - name: school_id
+        data_tests:
+          - not_null
 
   - name: stg_dashboard__script_levels
     description: | 
@@ -199,6 +220,29 @@ models:
       - name: unit
       - name: content_area
       - name: topic_tags
+  
+  - name: stg_dashboard__sections
+    description: |
+      Staging model for `sections` source data
+    columns: 
+      - name: section_id 
+        description: unique id for each section
+        data_tests: 
+          - not_null
+          - unique
+
+  - name: stg_dashboard__section_instructors
+    description: |
+      Coteacher data 
+    columns: 
+      - name: instructor_id
+        description: coteacher id
+        data_tests:
+          - not_null
+      - name: section_id 
+        description: ""
+        data_tests:
+          - not_null
 
   - name: stg_dashboard__sign_ins 
     description: |
@@ -236,18 +280,7 @@ models:
       - name: created_at
       - name: updated_at
 
-  - name: stg_dashboard__school_stats_by_years
-    description: |
-      Staging model for `school_stats_by_years` source data
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - school_id
-            - school_year
-    columns: 
-      - name: school_id
-        data_tests:
-          - not_null
+
 
   - name: stg_dashboard__unit_groups
     description: |
@@ -371,9 +404,7 @@ models:
       - name: created_at
       - name: updated_at
   
-  - name: stg_dashboard__user_proficiencies
-    description: |
-      Staging model for ""
+
   - name: stg_dashboard__level_sources_free_responses 
     description: |
       Staging model for level sources free_responses
@@ -385,7 +416,7 @@ models:
       - name: data 
         description: contains free responses answers 
 
- - name: stg_dashboard__user_project_storage_ids 
+  - name: stg_dashboard__user_project_storage_ids 
     description: |
       Staging model for user project id data 
     columns: 
