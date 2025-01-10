@@ -13,7 +13,7 @@ crosswalk as (
 exam_results as (
     select * 
     from {{ ref('stg_external_datasets__ap_school_level_exam_results') }}
-),
+)
 
 combined as (
     select 

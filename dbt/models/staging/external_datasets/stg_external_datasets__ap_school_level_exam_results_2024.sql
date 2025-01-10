@@ -69,9 +69,9 @@ with unpivoted_data as (
         analysis_school_type,
         exam,
         -- comment out orginal and raw columns from final, but useful for testing
-        orig_col_name,
-        demographic_group_raw,
-        score_category_raw,
+        --orig_col_name,
+        --demographic_group_raw,
+        --score_category_raw,
         demographic_group,
         demographic_category,
         score_category,
