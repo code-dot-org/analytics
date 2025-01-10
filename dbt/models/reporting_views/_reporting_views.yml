@@ -104,5 +104,7 @@ models:
       tags: ['released']
 
 
-  - name: testing 
-    
+  - name: bhus_urg_over_time
+    description: ""
+    config:
+      tags: ['reporting', 'tableau']
