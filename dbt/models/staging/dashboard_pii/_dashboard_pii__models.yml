@@ -1,6 +1,10 @@
 version: 2
 
 models:
+  - name: stg_dashboard_pii__pd_applications_status_logs
+    description: |
+      Records time in each status by application id
+      
   - name: stg_dashboard_pii__projects
     description: |
       Records of all user's projects 

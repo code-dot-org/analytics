@@ -12,6 +12,16 @@ school_districts as (
     from {{ ref('stg_dashboard__school_districts') }}
 ),
 
+regional_partners as (
+    select * 
+    from {{ ref('dim_regional_partners') }}
+),
+
+rp_mappings as (
+    select * 
+    from {{ ref('stg_dashboard_pii__pd_regional_partner_mappings') }}
+),
+
 combined as (
     select
         school_districts.school_district_id,
@@ -20,6 +30,10 @@ combined as (
         school_districts.school_district_state,
         school_districts.school_district_zip,
         school_districts.last_known_school_year_open,
+
+        --regional partner association 
+        rp_mappings.regional_partner_id,
+        regional_partners.regional_partner_name,
 
         -- school aggregations
         count(distinct dim_schools.school_id) as num_schools,
@@ -44,8 +58,19 @@ combined as (
     from dim_schools
     left join school_districts
         on dim_schools.school_district_id = school_districts.school_district_id 
+    left join rp_mappings 
+        on (
+            school_districts.school_district_zip = rp_mappings.zip_code 
+            or (
+                rp_mappings.zip_code is null 
+                and 
+                school_districts.school_district_state = rp_mappings.state
+            )
+        )
+    left join regional_partners 
+        on regional_partners.regional_partner_id = rp_mappings.regional_partner_id
     where dim_schools.school_district_id is not null 
-    {{ dbt_utils.group_by(6) }}
+    {{ dbt_utils.group_by(8) }}
 )
 
 select *
