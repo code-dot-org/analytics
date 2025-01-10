@@ -60,11 +60,6 @@ models:
         description: fk for individual student user
         data_tests:
           - not_null
-      # - name: section_id
-      #   description: fk for follower section
-      #   data_tests:
-      #     - not_null 
-  
 
   - name: stg_dashboard__level_concept_difficulties
     description: staging model for level_conccept_difficulties
@@ -280,8 +275,6 @@ models:
       - name: created_at
       - name: updated_at
 
-
-
   - name: stg_dashboard__unit_groups
     description: |
       Staging model for unit groups data 
@@ -316,7 +309,7 @@ models:
       - name: user_type
         description: the type of acount the user created. value is either 'student' or 'teacher'
         data_tests:
-            - not_null 
+          - not_null 
       
       - name: user_id
         description: the unique id for this user
@@ -338,7 +331,8 @@ models:
           - not_null
 
   - name: stg_dashboard__user_proficiencies
-    description:
+    description: |
+      Staging model for user_proficiencies data 
     columns: 
       - name: user_proficiency_id
         data_tests:

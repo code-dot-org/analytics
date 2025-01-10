@@ -33,6 +33,7 @@ models:
         description: UID for each user
         data_tests: 
           - not_null
+          - unique
 
       - name: user_type
         description: student or teacher if NULL = fail
@@ -94,11 +95,13 @@ models:
   - name: dim_user_levels
     description: |
       This model is a log of all student- and teacher-course activity within a school year.   
-
       Grain: user_id, level_id, script_id, activity_date
+
     columns:
     - name: user_id
       description: unique ID for teacher or student
+      data_tests:
+        - not_null
 
     - name: user_type
       description: student or teacher
@@ -138,7 +141,9 @@ models:
     columns: 
       - name: user_id
         description: unique id of user 
-      
+        data_tests:
+          - not_null 
+
       - name: user_type
         description: whether user was a student, teacher, unknown  
       
@@ -167,6 +172,8 @@ models:
     columns:
     - name: user_id
       description: unique ID for teacher or student
+      data_tests:
+        - not_null 
 
     - name: user_type
       description: student or teacher
