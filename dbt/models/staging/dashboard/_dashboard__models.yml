@@ -31,7 +31,7 @@ models:
       - name: user_id
         description: unique identifier for users who submitted feedback
       - name: thumbs_up
-        description: 1 if the user selected thumbs up, 0 if user selected thumbs down, null if not selected
+        description: 1 if the user selected thumbs up 0 if user selected thumbs down null if not selected
       - name: details
         description: the notes inputed by the user submitting feedback
       - name: created_at
@@ -58,10 +58,6 @@ models:
   - name: stg_dashboard__level_concept_difficulties
     description: staging model for ""
 
-  - name: stg_dashboard__user_proficiencies
-    description: |
-      Staging model for ""
-
   - name: stg_dashboard__sections
     description: |
       Staging model for `sections` source data
@@ -71,6 +67,18 @@ models:
         data_tests: 
           - not_null
           - unique
+
+  - name: stg_dashboard__parent_levels_child_levels
+    description: Staging model for parent levels child levels 
+    columns: 
+      - name: parent_level_id
+        data_tests: 
+          - not_null
+      - name: child_level_id
+        data_tests:
+          - not_null 
+      - name: is_parent_level
+      - name: parent_level_kind
           
   - name: stg_dashboard__section_instructors
     description: |
@@ -85,14 +93,148 @@ models:
         data_tests:
           - not_null
 
+  - name: stg_dashboard__school_districts
+    description: |
+      Staging model for school districts data 
+    columns: 
+      - name: school_district_id
+        data_tests:
+          - not_null
+          - unique
+      - name: school_district_name
+      - name: school_district_city
+      - name: school_district_state
+      - name: school_district_zip
+      - name: last_known_school_year_open
+        description: last reported school year for district
+      - name: created_at
+      - name: updated_at
+  
+  - name: stg_dashboard_school_infos 
+    description: |
+      Staging school infos data 
+    columns: 
+      - name: school_info_id
+        data_tests:
+          - not_null 
+          - unique 
+
+      - name: country
+      - name: school_type
+      - name: country
+      - name: school_type
+      - name: zip
+      - name: state
+      - name: school_district_id
+      - name: school_district_other
+      - name: school_district_name
+      - name: school_id
+        data_tests:
+          - not_null
+      - name: school_other
+      - name: school_name
+      - name: full_address
+      - name: created_at
+      - name: updated_at
+      - name: validation_type
+
   - name: stg_dashboard__schools 
     description: |
-      Staging model for core school data, where len(school_id)=11 we are applying a LPAD to maintain school length convention
+      Staging model for core school data where len(school_id)=11 we are applying a LPAD to maintain school length convention
     columns:
       - name: school_id 
         data_tests: 
           - unique
-          - not_null        
+          - not_null
+
+  - name: stg_dashboard__script_levels
+    description: | 
+      Staging model for script_levels 
+    columns:
+      - name: script_level_id 
+        data_tests:
+          - not_null
+          - unique
+      - name: script_id
+        data_tests:
+          - not_null 
+      - name: chapter
+      - name: stage_id
+      - name: position
+      - name: seed_key
+      - name: activity_section_id 
+      - name: activity_section_position
+      - name: is_assessment
+      - name: is_named_level
+      - name: is_bonus
+      - name: created_at
+      - name: updated_at 
+
+  - name: stg_dashboard__scripts
+    description: |
+      Staging scripts data 
+    columns: 
+      - name: script_id
+        data_tests:
+          - not_null 
+          - unique 
+      - name: script_name
+      - name: created_at
+      - name: updated_at 
+      - name: wrapup_video_id
+      - name: user_id
+        data_tests: 
+          - not_null 
+      - name: login_required
+      - name: new_name
+      - name: family_name
+      - name: published_state
+      - name: instruction_type
+      - name: instructor_audience
+      - name: participant_audience
+      - name: course_name 
+      - name: supported_locales
+      - name: version_year
+      - name: is_standalone
+      - name: unit
+      - name: content_area
+      - name: topic_tags
+
+  - name: stg_dashboard__sign_ins 
+    description: |
+      Staging model for sign_ins data 
+    columns: 
+      - name: sign_in_id
+        data_tests:
+          - not_null 
+    
+      - name: user_id
+        data_tests: 
+          - not_null 
+
+      - name: sign_in_at
+      - name: sign_in_count
+
+  - name: stg_dashboard__stages
+    description: |
+      Staging model for stages data 
+    columns: 
+      - name: stage_id
+        data_tests:
+          - not_null
+      - name: stage_name
+      - name: script_id
+        data_tests:
+          - not_null 
+      - name: lesson_group_id
+      - name: absolute_position
+      - name: relative_position
+      - name: is_lockable
+      - name: has_lesson_plan
+      - name: key
+      - name: is_unplugged
+      - name: created_at
+      - name: updated_at
 
   - name: stg_dashboard__school_stats_by_years
     description: |
@@ -106,6 +248,25 @@ models:
       - name: school_id
         data_tests:
           - not_null
+
+  - name: stg_dashboard__unit_groups
+    description: |
+      Staging model for unit groups data 
+    columns: 
+      - name: unit_group_id
+        data_tests:
+          - not_null
+          - unique
+
+      - name: unit_group_name
+      - name: properties
+      - name: created_at
+      - name: updated_at
+      - name: published_state
+      - name: instruction_type
+      - name: instructor_audience
+      - name: participant_audience 
+
   - name: stg_dashboard__user_geos
     description: |
       Staging model for `user_geos` source data
@@ -131,7 +292,7 @@ models:
           - unique
       
       - name: birthday
-        description: an inexact date of birth for the user, calcuated as the date of account creation X years prior based on user reporting that their age is X.
+        description: an inexact date of birth for the user calcuated as the date of account creation X years prior based on user reporting that their age is X.
       
   - name: stg_dashboard__user_levels
     description: |
@@ -143,6 +304,76 @@ models:
           - unique
           - not_null
 
+  - name: stg_dashboard__user_proficiencies
+    description:
+    columns: 
+      - name: user_proficiency_id
+        data_tests:
+          - not_null
+          - unique 
+
+      - name: user_id
+        data_tests:
+          - not_null
+
+      - name: last_progress_at
+      - name: sequencing_d1_count
+      - name: sequencing_d2_count
+      - name: sequencing_d3_count
+      - name: sequencing_d4_count
+      - name: sequencing_d5_count
+      - name: debugging_d1_count
+      - name: debugging_d2_count
+      - name: debugging_d3_count
+      - name: debugging_d4_count
+      - name: debugging_d5_count
+      - name: repeat_loops_d1_count
+      - name: repeat_loops_d2_count
+      - name: repeat_loops_d3_count
+      - name: repeat_loops_d4_count
+      - name: repeat_loops_d5_count
+      - name: repeat_until_while_d1_count
+      - name: repeat_until_while_d2_count
+      - name: repeat_until_while_d3_count
+      - name: repeat_until_while_d4_count
+      - name: repeat_until_while_d5_count
+      - name: for_loops_d1_count
+      - name: for_loops_d2_count
+      - name: for_loops_d3_count
+      - name: for_loops_d4_count
+      - name: for_loops_d5_count
+      - name: events_d1_count
+      - name: events_d2_count
+      - name: events_d3_count
+      - name: events_d4_count
+      - name: events_d5_count
+      - name: variables_d1_count
+      - name: variables_d2_count
+      - name: variables_d3_count
+      - name: variables_d4_count
+      - name: variables_d5_count
+      - name: functions_d1_count
+      - name: functions_d2_count
+      - name: functions_d3_count
+      - name: functions_d4_count
+      - name: functions_d5_count
+      - name: functions_with_params_d1_count
+      - name: functions_with_params_d2_count
+      - name: functions_with_params_d3_count
+      - name: functions_with_params_d4_count
+      - name: functions_with_params_d5_count
+      - name: conditionals_d1_count
+      - name: conditionals_d2_count
+      - name: conditionals_d3_count
+      - name: conditionals_d4_count
+      - name: conditionals_d5_count
+      - name: basic_proficiency_at
+      - name: created_at
+      - name: updated_at
+  
+  - name: stg_dashboard__user_proficiencies
+    description: |
+      Staging model for ""
   - name: stg_dashboard__level_sources_free_responses 
     description: |
       Staging model for level sources free_responses
@@ -153,3 +384,15 @@ models:
           - not_null 
       - name: data 
         description: contains free responses answers 
+
+ - name: stg_dashboard__user_project_storage_ids 
+    description: |
+      Staging model for user project id data 
+    columns: 
+      - name: user_project_storage_id 
+        data_tests:
+          - unique
+      
+      - name: user_id 
+        data_tests: 
+          - not_null

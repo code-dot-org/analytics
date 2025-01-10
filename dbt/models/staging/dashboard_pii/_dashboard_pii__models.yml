@@ -1,56 +1,255 @@
 version: 2
 
 models:
-  - name: stg_dashboard_pii__projects
-    description: |
-      Records of all user's projects 
+  - name: stg_dashboard_pii__foorm_simple_survey_forms
+    description: Staging model for foorm simple survey forms
+    columns: 
+      - name: foorm_simple_survey_form_id
+        data_tests:
+          - not_null
+          - unique
+      - name: path
+      - name: kind
+      - name: form_name
+      - name: form_version
+      - name: created_at
+      - name: updated_at
+      
+  - name: stg_dashboard_pii__foorm_simple_survey_submissions
+    description: Staging model for foorm simple survey submissions
+    columns: 
+      - name:  foorm_simple_survey_submission_id
+        data_tests:
+          - not_null 
+          - unique 
+      - name: foorm_submission_id 
+        data_tests:
+          - not_null 
+      - name: user_id
+      - name: simple_survey_form_id
+      - name: misc_form_path
+      - name: created_at
+      - name: updated_at
 
-  - name: stg_dashboard_pii__level_sources
-    description: |
-      Bringing in these data for level source mapping
-    
-  - name: stg_dashboard_pii__pd_applications
-    description: |
-      Staging pd applications data 
+  - name: stg_dashboard_pii__level_sources 
+    description: Staging model for level_sources data 
+    columns: 
+      - name: level_source_id
+        data_tests:
+          - not_null 
+          - unique
+      - name: level_id
+      - name: data 
+      - name: created_at
+      - name: updated_at
 
-  - name: stg_dashboard_pii__pd_attendances
-    description: |
-      Staging pd attendances data 
+  - name: stg_dashboard_pii__pd_applications 
+    description: Stagind model for PD applications 
+    columns: 
+      - name: pd_application_id 
+        data_tests:
+          - not_null 
+      - name: user_id
+        data_tests:
+          - not_null 
+      - name: type
+      - name: application_year
+      - name: application_type
+      - name: regional_partner_id
+      - name: status
+      - name: locked_at
+      - name: created_at
+      - name: udpated_at
+      - name: course
+      - name: response_scores
+      - name: application_guid
+      - name: accepted_at
+      - name: status_timestamp_change_log
+      - name: applied_at
 
-  - name: stg_dashboard_pii__pd_enrollments
-    description: |
-      Staging pd enrollments data 
+  - name: stg_dashboard_pii__pd_attendances 
+    description: Staging model for PD attendances 
+    columns: 
+      - name: pd_attendance_id 
+        data_tests:
+          - not_null 
+          - unique 
+
+      - name: pd_session_id
+      - name: teacher_id
+      - name: created_at
+      - name: updated_at
+      - name: pd_enrollment_id
+      - name: marked_by_user_id
+  
+  - name: stg_dashboard_pii__pd_enrollments 
+    description: Staging model for PD enrollments 
+    columns: 
+      - name: pd_enrollment_id 
+        data_tests:
+          - not_null 
+          - unique 
+      - name: pd_workshop_id
+      - name: name
+      - name: created_at
+      - name: updated_at
+      - name: school
+      - name: code
+      - name: user_id
+      - name: suvery_sent_at
+      - name: completed_survey_id
+      - name: school_info_id
+      - name: application_id 
 
   - name: stg_dashboard_pii__pd_international_opt_ins
     description: |
-      Staging pd_intl_opt_in data 
+      Staging pd international opt-ins data
+    columns:
+      - name: application_id
+        data_tests:
+          - not_null
+      - name: user_id
+        data_tests:
+          - not_null
+      - name: form_data
+      - name: created_at
+      - name: updated_at
 
-  # - name: stg_dashboard_pii__regional_partner_mappings
-  #   description: staging regional partner mapping data 
+  - name: stg_dashboard_pii__regional_partners 
+    description: Staging model for regional partners data 
+    columns: 
+      - name: regional_partner_id
+        data_tests:
+          - not_null 
+          - unique
+      - name: regional_partner_group
+      - name: regional_partner_name
+      - name: is_urban
+      - name: attention
+      - name: street
+      - name: apartment_or_suite
+      - name: city
+      - name: state
+      - name: zip_code
+      - name: created_at
+      - name: updated_at
+      - name: is_active
 
+  - name: stg_dashboard_pii__pd_workshops_facilitators
+    description: Staging model for PD workshop facilitators data
+    columns:
+      - name: pd_workshop_id
+        data_tests:
+          - not_null
+          - unique
+      - name: user_id
+        data_tests:
+          - not_null
+  
   - name: stg_dashboard_pii__pd_sessions
-    description: |
-      Staging pd session data 
+    description: Staging model for PD sessions data 
+    columns: 
+      - name: pd_session_id
+        data_tests:
+          - not_null
+          - unique
+      - name: pd_workshop_id
+      - name: started_at
+      - name: ended_at
+      - name: created_at
+      - name: updated_at
+      - name: code 
 
-  - name: stg_dashboard_pii__pd_workshop_facilitators
-    description: |
-      Staging pd workshop facilitator data 
-  
   - name: stg_dashboard_pii__pd_workshops
-    description: |
-      Staging pd workshops data 
-  
-  - name: stg_dashboard_pii__regional_partners
-    description: |
-      Staging regional partner data
+    description: Staging PD workshops data
+    columns: 
+      - name: pd_workshop_id
+        data_tests:
+          - not_null 
+          - unique
+      - name: organizer_id
+      - name: location_name
+      - name: location_address
+      - name: processed_location
+      - name: course
+      - name: subject
+      - name: capacity
+      - name: section_id
+      - name: started_at
+      - name: ended_at
+      - name: created_at
+      - name: updated_at
+      - name: processed_at
+      - name: regional_partner_id
+      - name: is_on_map
+      - name: is_funded
+      - name: funding_type
+      - name: module
 
-  - name: stg_dashboard_pii__user_school_infos
-    description: |
-      Staging user school info data 
-
+  - name: stg_dashboard_pii__projects 
+    description: |  
+      Staging model for projects data 
+    columns: 
+      - name: project_id
+      - name: storage_id
+      - name: project_type
+      - name: value
+      - name: state
+      - name: remix_parent_id
+      - name: abuse_score
+      - name: is_standalone
+      - name: is_skip_content_moderation
+      - name: published_at
+      - name: created_at
+      - name: updated_at
+      - name: is_valid
+    
   - name: stg_dashboard_pii__users 
     description: |
       Staging user pii data 
     columns:
-        - name: self_reported_state
-          description: user-entered state value, normalized 
+      - name: user_id
+        data_tests: 
+          - not_null 
+          - unique
+      - name: name 
+      - name: user_type
+      - name: student_id
+        description: if user is a student, populate this field 
+      - name: teacher_id
+        description: if user is a teacher, populate this field 
+      
+      - name: teacher_email
+        description: email of teacher (PII)
+
+      - name: is_ambassador
+      - name: birthday
+      - name: age_years
+      - name: races
+      - name: self_reported_state
+        description: user-entered state value, normalized 
+      - name: race_group
+      - name: gender
+      - name: gender_group
+        description: categorizes reported values into gender groups
+        
+  - name: stg_dashboard_pii__user_school_infos
+    description: |
+      Staging user school info data 
+    columns:
+      - name: user_school_info_id
+        data_tests:
+          - not_null
+          - unique
+      - name: user_id
+        data_tests:
+          - not_null 
+      - name: started_at
+      - name: ended_at
+        description: ended_at data, otherwise future date
+      - name: school_info_id
+        data_tests:
+          - not_null 
+      - name: last_confirmation_at
+      - name: created_at
+      - name: updated_at

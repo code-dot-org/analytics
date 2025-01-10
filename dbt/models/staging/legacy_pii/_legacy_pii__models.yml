@@ -5,4 +5,17 @@ models:
   - name: stg_legacy_pii__international_partners
     description: |
       Seed file for international partners hosted in s3 (contains pii)
-    
+    columns: 
+      - name: partner_id
+        data_tests: 
+          - not_null 
+          
+      - name: partner_name
+      - name: partner_type
+      - name: country_code
+      - name: country_name
+      - name: alt_country_name
+      - name: region
+      - name: workshop_organizers 
+      - name: contact_name
+      - name: contact_email 
