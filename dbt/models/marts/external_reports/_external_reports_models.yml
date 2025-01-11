@@ -46,6 +46,7 @@ models:
         description: 1 if the school has been verified to be teaching CS (either in the current year or last school year)
     config:
       tags: ['released']
+
   - name: ap_school_level_exam_results_summary
     description: |
       
@@ -64,13 +65,11 @@ models:
       - The College Board gives us results aggregated at the school level **if the number of students taking the exam at that school is ≥ 10**. 
       - For all schools with **fewer than 10 students** an aggregate report is created with a `school_name` = "less than 10 aggregate".
 
-
     columns:
       - name: exam_year
         description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
         data_tests:
           - not_null
-          
 
       - name: ai_code
         description: "The College Board's AI (Attending Institution) code, padded to ensure consistent formatting."
@@ -100,8 +99,6 @@ models:
         description: "The calculated percentage of students passing the AP exam (passrate) of this group. It is simply dividing `num_taking / num_passing` values you see in this record"
     config:
         tags: ['released']
-   
-
 
   - name: ap_agg_exam_results_summary
     description: |

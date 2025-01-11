@@ -1,3 +1,10 @@
 version: 2
   
-          
+models:
+  - name: stg_pegasus__user_storage_ids 
+    description: User storage id associatons for projects 
+    data_tests: 
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - storage_id
+            - user_id 

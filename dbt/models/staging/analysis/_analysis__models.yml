@@ -1,1 +1,20 @@
 version: 2
+
+models:
+
+    - name: stg_analysis__foorm_forms_reshaped
+      description: Staging model for foorms data reshaped 
+      columns: 
+        - name: form_id
+          data_tests:
+            - not_null
+        - name: form_name
+        - name: form_version
+        - name: item_type
+        - name: item_name
+        - name: item_text
+        - name: matrix_item_name
+        - name: matrix_item_header 
+        - name: is_facilitator_specific
+        - name: response_options
+        - name: num_response_options 

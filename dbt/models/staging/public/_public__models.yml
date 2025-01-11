@@ -1,2 +1,12 @@
 version: 2  
-          
+
+models:
+  - name: stg_public_countries
+    description: country naming data for cross-reference
+  
+  - name: stg_public__international_contact_information
+    description: international partner contact info
+
+  - name: stg_public__international_partners_raw
+    description: international partners information
+    

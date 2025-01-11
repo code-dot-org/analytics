@@ -586,17 +586,94 @@ models:
           combination_of_columns:
             ["exam_year", "ai_code", "exam", "demographic_group", "score_of"]
 
-  - name: stg_external_datasets__pardot_prospects
-    description: staging seed file of pardot export data 
+  # - name: stg_external_datasets__pardot_prospects
+  #   description: staging seed file of pardot export data 
+  #   columns: 
+  #     - name: prospect_id
+  #     - name: company
+  #     - name: last_activity_at
+  #     - name: campaign
+  #     - name: country
+  #     - name: state
+  #     - name: source
+  #     - name: referrer
+  #     - name: created_date
+  #     - name: updated_date
+  #     - name: last_submitted
+
+  - name: stg_external_datasets__districts_target
+    description: |
+      This model collects districts target data from a seed file,
+      exported from Hubspot.
     columns: 
-      - name: prospect_id
-      - name: company
-      - name: last_activity_at
-      - name: campaign
-      - name: country
+      - name: district_name
+        description: ""
+      
+      - name: district_id 
+        description: district id, transformed as a varchar(12)
+        data_tests:
+          - not_null
+      
       - name: state
-      - name: source
-      - name: referrer
-      - name: created_date
-      - name: updated_date
-      - name: last_submitted
+        description: "" 
+
+      - name: school_year
+        description: ""
+        data_tests:
+          - not_null 
+    
+  - name: stg_external_datasets__districts_enrolled
+    description: |
+      This model collects districts target data from a seed file, 
+      exported from Hubspot.
+    columns: 
+      - name: district_id
+        description: district id, constrained to varchar(12)
+        data_tests:
+          - not_null
+        
+      - name: month_closed
+        description: month of district enrollment
+      - name: school_year
+        description: ""
+      - name: school_year_enrolled
+        description: school year associated with enrollment date (month_closed)
+  
+  - name: stg_external_datasets__cs_state_grad_requirement 
+    description: |
+      This model stages CS state grad requirement data for US states
+    columns: 
+      - name: state
+      - name: state_abbr
+      - name: year_of_adoption
+      - name: year_of_implementation
+
+  - name: stg_external_datasets__ambassador_apps
+    description: |
+      This model stages CS ambassador seed data 
+    columns: 
+      - name: cohort_num
+      - name: created_dt
+      - name: teacher_email
+      - name: cdo_teacher
+      - name: teacher_first_name
+      - name: teacher_last_name
+      - name: teacher_email_school
+      - name: teacher_email_cdo
+      - name: teacher_email_alt
+      - name: state
+      - name: taught_csp
+      - name: taught_csa
+      - name: taught_csd 
+      - name: ambassador_first_name
+      - name: ambassador_last_name
+      - name: ambassador_email
+      - name: ambassador_email_receive_comms
+      - name: ambassador_email_alt
+      - name: ambassador_grade
+      - name: parent_email
+      - name: school_name
+      - name: courses_taken
+      - name: took_csp
+      - name: took_csa
+      - name: took_csd

@@ -1,13 +1,54 @@
 version: 2
 
 models: 
-  - name: stg_pegasus_pii__forms
-    description: |
-      Staging model for 'forms' source data
-
   - name: stg_pegasus_pii__form_geos
     description: |
       Staging model for 'form_geos' source data
+    columns:
+      - name: form_geo_id
+        description: unique identifier for form and geo data 
+        data_tests: 
+          - not_null
+          - unique 
+
+      - name: form_id
+      - name: created_at
+      - name: updated_at 
+      - name: city 
+      - name: state
+      - name: country
+      - name: postal code 
+
+  - name: stg_pegasus_pii__forms
+    description: |
+      Staging model for 'forms' source data
+    columns: 
+      - name: form_id 
+        data_tests:
+          - not_null 
+
+      - name: source_id
+        data_tests: 
+          - not_null
+    
+      - name: email
+      - name: form_kind 
+      - name: created_at
+      - name: updated_at 
+      - name: indexed_at 
+      - name: review
+      - name: reviewed_by
+      - name: reviewed_at 
+      - name: processed_at
+      - name: notified_at 
+      - name: user_id 
+        data_tests:
+          - not_null
+      
+      - name: parent_id 
+      - name: location_country_code 
+      - name: form_data_text
+      - name: processed_data_text 
 
   - name: stg_pegasus_pii__hoc_activity
     description: |
@@ -17,12 +58,36 @@ models:
       - name: referer
       - name: company
       - name: tutorial
+      
       - name: started_at 
         description: coalesce(started_at, pixel_started_at, pixel_finished_at)
+      - name: pixel_started_at
+      - name: pixel_finished_at
       - name: country_code
       - name: state_code
       - name: city
       - name: country
       - name: state
-  
-          
+
+  - name: stg_pegasus_pii__storage_apps 
+    description: | 
+      Staging model for storage apps data 
+    columns: 
+      - name: project_id 
+        data_tests: 
+          - not_null 
+      
+      - name: storage_id
+        data_tests: 
+          - not_null
+      
+      - name: updated_at
+      - name: updated_ip
+      - name: state
+      - name: created_at
+      - name: abuse_score
+      - name: project_type
+      - name: published_at
+      - name: standalone
+      - name: remix_parent_id 
+      - name: skip_content_moderation    

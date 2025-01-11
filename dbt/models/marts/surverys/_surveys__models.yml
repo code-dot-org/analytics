@@ -1,0 +1,173 @@
+version: 2
+
+models:
+  - name: dim_curriculum_surveys 
+    description: |
+      This model contains the survey questionnaires for surveys included in our curriculum, by arranging them as surveys, survey questions, and possible answers. Because there is not a straightforward way to identify surveys as such, only level groups that contain the word survey are included in the model. 
+    
+    columns: 
+      - name: group_level_id
+        description: id of the group level associated to the survey 
+        data_tests:
+          - not_null 
+      
+      - name: content_area
+        description: ""
+
+      - name: course_name
+        description: ""
+
+      - name: script_id
+        description: ""
+
+      - name: script_name
+        description: ""
+
+      - name: unit 
+        description: "" 
+
+      - name: topic_tags 
+        description: "" 
+
+      - name: topic_tags
+        description: ""
+
+      - name: version_year 
+        description: ""
+      
+      - name: survey_level_id
+        description: the level_group_level_id of the survey 
+
+      - name: survey_name 
+        description: the name of the group_level associated with the script 
+        data_tests:
+          - not_null
+
+      - name: level_script_id 
+        description: FK for level and script joins 
+        
+      - name: survey_type
+        description: type of survey based on the group_level and script
+        data_tests: 
+            - accepted_values:
+                values: ['pre', 'post', 'pulse','end of unit',null]
+
+      - name: contained_level_id 
+        description: "" 
+
+      - name: question_name 
+        description: name of the contained_level associated with the script 
+      
+      - name: question_type
+        description: type of contained_level associated with the script 
+
+      - name: question_text 
+        description: contained_level_text
+      
+      - name: question_number 
+        description: rank order of contained_level_text and page 
+
+      - name: question_text 
+        description: contained_level_text 
+      
+      - name: num_response_options 
+        description: | 
+          Count of response options for each question by type 
+
+      - name: answer_text 
+        description: ""
+
+      - name: answer_number 
+        description: ""
+
+    config:
+      tags: ['released']
+
+  - name: dim_curriculum_survey_responses
+    description: |
+      This model includes user answers to level-based curriculum survey questions, organized by curriculum and survey details. 
+      dimensionality of curriculum surveys.
+    columns:
+      - name: student_id 
+        description: ""
+        data_tests:
+          - not_null
+
+      - name: created_at
+        description: timestamp of associated activity to survey response 
+      
+      - name: school_year 
+        description: "" 
+
+      - name: country
+        description: "" 
+      - name: us_intl
+        description: "" 
+
+      - name: gender
+        description: "" 
+
+      - name: races
+        description: "" 
+
+      - name: is_urg 
+        description: "" 
+
+      - name: group_level_id
+        description: id of the group level associated to the survey 
+        data_tests:
+          - not_null 
+
+      - name: content_area
+        description: "" 
+
+      - name: course_name
+        description: "" 
+
+      - name: script_id
+        description: "" 
+
+      - name: script_name
+        description: "" 
+
+      - name: unit
+        description: "" 
+
+      - name: topic_tags
+        description: "" 
+
+      - name: version_year
+        description: "" 
+
+      - name: survey_level_id 
+        description: contained level_id of survey 
+        
+      - name: survey_name
+        description: "" 
+
+      - name: survey_type
+        description: "" 
+
+      - name: contained_level_id
+        description: "" 
+
+      - name: question_name
+        description: "" 
+
+      - name: question_type
+        description: "" 
+
+      - name: question_number 
+        description: "" 
+
+      - name: question_text 
+        description: "" 
+
+      - name: answer_number 
+        description: "" 
+
+      - name: answer_response
+        description: "" 
+    
+    config:
+      tags: ['released']
