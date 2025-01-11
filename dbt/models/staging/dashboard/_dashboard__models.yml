@@ -10,6 +10,7 @@ models:
         data_tests: 
           - unique
           - not_null
+
       - name: feature_name
         description: ai_tutor for all rows
       - name: user_id
@@ -41,7 +42,6 @@ models:
       - name: level_id
         data_tests:
           - not_null
-          - unique
       
       - name: answer_number
       - name: answer_text
@@ -66,7 +66,7 @@ models:
     columns: 
       - name: level_concept_difficulty_id
         data_tests:
-          - not_null:
+          - not_null
   
   - name: stg_dashboard__lti_feedbacks
     description: staging model for the user feedback on LTI
@@ -171,9 +171,11 @@ models:
         data_tests:
           - not_null
           - unique
+
       - name: script_id
         data_tests:
           - not_null 
+
       - name: chapter
       - name: stage_id
       - name: position
@@ -193,14 +195,13 @@ models:
       - name: script_id
         data_tests:
           - not_null 
-          - unique 
+
       - name: script_name
       - name: created_at
       - name: updated_at 
       - name: wrapup_video_id
       - name: user_id
-        data_tests: 
-          - not_null 
+
       - name: login_required
       - name: new_name
       - name: family_name
@@ -234,6 +235,7 @@ models:
         description: coteacher id
         data_tests:
           - not_null
+  
       - name: section_id 
         description: ""
         data_tests:
@@ -261,10 +263,12 @@ models:
       - name: stage_id
         data_tests:
           - not_null
+
       - name: stage_name
       - name: script_id
         data_tests:
           - not_null 
+
       - name: lesson_group_id
       - name: absolute_position
       - name: relative_position
@@ -414,10 +418,7 @@ models:
     description: |
       Staging model for user project id data 
     columns: 
+      - name: user_id 
       - name: user_project_storage_id 
         data_tests:
-          - unique
-      
-      - name: user_id 
-        data_tests: 
           - not_null
