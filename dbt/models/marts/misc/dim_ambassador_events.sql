@@ -54,9 +54,9 @@ select
             end
     end as event_type,
     coalesce(to_timestamp(eis.event_date, 'YYYY-MM-DD HH24:MI:SS'), date_trunc('day', asm.section_created_dt)) as event_date,
-    eis.total_participants as survey_total_participants,
-    eis.num_pre_enrollment as survey_num_pre_enrollment,
-    eis.num_post_enrollment as survey_num_post_enrollment,
+    cast(eis.total_participants as int) as survey_total_participants,
+    cast(eis.num_pre_enrollment as int) as survey_num_pre_enrollment,
+    cast(eis.num_post_enrollment as int) as survey_num_post_enrollment,
     case 
         when eis.num_pre_enrollment is not null and eis.num_post_enrollment is not null
         then 1 
