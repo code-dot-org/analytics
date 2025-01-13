@@ -26,7 +26,7 @@ section_course_list as (
 event_impact_survey as ( 
     select *
     from (select 
-            foorm_submission_id, user_id, school_year, item_name, response_text
+            foorm_submission_id, user_id, code_studio_name, email, school_year, item_name, response_text
             from {{ ref('dim_foorms') }}
             where form_name = 'surveys/teachers/cs_ambassador_event')
     pivot(max(response_text) for item_name in (
@@ -40,10 +40,12 @@ event_impact_survey as (
 )
 
 select 
-    asm.user_id,
-    asm.code_studio_name,
-    asm.email,
-    asm.school_year,
+    coalesce(eis.user_id, asm.user_id) as user_id,
+    coalesce(eis.code_studio_name, asm.code_studio_name) as code_studio_name,
+    coalesce(eis.email, asm.email) as email,
+    coalesce(eis.school_year, asm.school_year) as school_year,
+    case 
+        when eis.user_id is not null then 1 else 0 end as is_survey,
     case 
         when eis.event_type = 'experience cs (in code studio)' then 'experience_cs'
         when eis.event_type = 'connect with cs (not in code studio)' then 'connect with cs'
@@ -72,7 +74,7 @@ left join section_course_list               as scl
     on asm.user_id = scl.user_id 
     and asm.school_year = scl.school_year
 
-left join event_impact_survey               as eis
+full join event_impact_survey               as eis
     on asm.user_id = eis.user_id
     and asm.school_year = eis.school_year
 
