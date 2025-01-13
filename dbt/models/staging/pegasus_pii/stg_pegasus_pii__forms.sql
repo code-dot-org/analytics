@@ -43,5 +43,29 @@ forms as (
     from {{ ref('base_pegasus_pii__forms') }}
 )
 
-select * 
+select
+    form_id,
+    form_category,
+    hoc_year,
+    email,
+    name,
+    form_kind,
+    created_at,
+    updated_at,
+    indexed_at,
+    review,
+    reviewed_by,
+    reviewed_at,
+    processed_at,
+    notified_at,
+    user_id,
+    parent_id,
+    location_country_code,
+    city,
+    state,
+    {{ country_normalization('country')}} as country,
+    event_type,
+    email_pref,
+    special_event_flag
 from forms  
+

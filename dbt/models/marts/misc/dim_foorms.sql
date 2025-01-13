@@ -28,7 +28,11 @@ foorm_surveys as (
     fsss.foorm_submission_id,
     fsss.user_id,
     fsss.created_at,
-    fsr.item_name,
+    case 
+        when fsr.item_name = 'pre_enrollment' then 'num_pre_enrollment'
+        when fsr.item_name = 'post_enrollment' then 'num_post_enrollment'
+        else fsr.item_name
+    end as item_name,
     fsr.matrix_item_name,
     fsr.response_value,
     fsr.response_text,

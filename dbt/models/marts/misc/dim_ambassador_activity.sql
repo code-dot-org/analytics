@@ -35,10 +35,11 @@ select distinct
     fs.user_id
     , fs.code_studio_name
     , fs.email
+    , fs.school_year                         
     , s.section_id
     , s.section_name
     , s.created_at                                                  as section_created_dt
-    , sy.school_year                 
+    , sy.school_year                                                as section_activity_school_year              
     , f.student_id 
     , cs.course_name
     , cs.script_name 
