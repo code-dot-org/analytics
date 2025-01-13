@@ -17,6 +17,7 @@
 
 
 */
+
 with unpivoted_data as (
 
     {% set years = ['2024'] %} 
@@ -28,15 +29,19 @@ with unpivoted_data as (
         {% endif %}
     {% endfor %}
 )
-,normalized_values as (
+
+, normalized_values as (
     select
-        exam_year,
-        country,
+        exam_year                 as exam_year,
+        {{country_normalization('country')}}           as country,
         lpad(ai_code, 6, '0')   as ai_code,
         high_school             as high_school_name,
         state_abbr            as state,
-        analysis_school_type,
-        exam,
+        --lower(ap_school_type) as ap_school_type,
+        lower(analysis_school_type) as analysis_school_type,
+
+        -- Macro noramlizes exam name
+        {{ ap_norm_exam_subject('exam') }} as exam,
 
         orig_col_name, --keep for sanity checking, remove from final output
 
@@ -58,6 +63,7 @@ with unpivoted_data as (
         orig_value              as num_students
     from unpivoted_data
 )
+
 , final as (
     select
         exam_year,
@@ -65,8 +71,6 @@ with unpivoted_data as (
         ai_code,
         high_school_name,
         state,
-        --ap_school_type,
-        analysis_school_type,
         exam,
         -- comment out orginal and raw columns from final, but useful for testing
         --orig_col_name,

@@ -31,12 +31,12 @@ with unpivoted_data as (
 ,normalized_values as (
     select
         examyr4                 as exam_year,
-        country_descr           as country,
+        {{country_normalization('country_descr')}}           as country,
         lpad(ai_code, 6, '0')   as ai_code,
         high_school             as high_school_name,
         state_abbrev            as state,
-        ap_school_type,
-        analysis_school_type,
+        lower(ap_school_type) as ap_school_type,
+        lower(analysis_school_type) as analysis_school_type,
 
         -- Macro noramlizes exam name
         {{ ap_norm_exam_subject('subject_nm') }} as exam,

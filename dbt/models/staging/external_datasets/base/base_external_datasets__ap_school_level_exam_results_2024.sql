@@ -42,7 +42,7 @@
 
 with ap_data AS (
     select * 
-    from {{source('external_datasets','ap_school_results_2024')}}
+    from {{source('external_datasets','ap_exam_results_school_level_2024')}}
 )
 
 select *
