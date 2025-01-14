@@ -204,3 +204,38 @@ models:
           - not_null
     config:
       tags: ['released']
+  
+  - name: dim_ambassador_events
+    description: |
+      this model provides information about every ambassador-led event, including the ambassador's responses in the event impact survey and/or their associated students' activity in the platform. 
+    columns: 
+      - name: user_id
+        description: unique ID for the ambassador's teacher account
+        data_tests:
+          - not_null
+      - name: code_studio_name
+        description: the name in code studio for the ambassador's teacher account
+      - name: email
+        description: the email associated with the ambassador's teacher account; this is PII and should not be shared externally without a privacy review. 
+      - name: school_year
+        description: the school year associated with when the ambassador filled out the registration survey
+      - name: event_type
+        description: experience_cs or connect_with_cs; this is the event type the ambassador entered via the impact survey or, if they have >0 sections, it is labeled as experience_cs
+      - name: event_date
+        description: the event date as entered via the event impact survey, or in the case of no survey response, the date the first section was created
+      - name: survey_total_participants
+        description: the total number of participants at their event as entered on the event impact survey
+      - name: survey_num_pre_enrollment
+        description: the number of students indicating intent to enroll in CS at the start of the event
+      - name: survey_num_post_enrollment
+        description: the number of students indicating intent to enroll in CS at the end of the event
+      - name: impact_eval_flag
+        description: 1 if both pre and post enrollment numbers were reported and can be used to evaluate program impact, 0 otherwise
+      - name: num_sections
+        description: the number of sections associated with the ambassador's teacher account in that school year
+      - name: num_students_in_section
+        description: the number of students associated with the ambassador's sections in that school year
+      - name: courses_touched
+        description: the courses associated with the student activity in the ambassador's sections in that school year. Note that if the students in their section are doing courses outside of the ambassador's event, there is no way to differentiate this activity and it would count as a course here. 
+    config:
+      tags: ['released']
