@@ -34,7 +34,7 @@ select
     exam, 
     demographic_category,
     demographic_group,
-    
+    max(num_schools) as num_schools, --every school+score+group combo has the number of schools that apply. Max will be 1 for individual schools and NN for the "less than 10 aggregate"
     sum(
         case 
             when score_of in (1,2,3,4,5) then num_students 
