@@ -13,7 +13,7 @@ crosswalk as (
 exam_results as (
     select * 
     from {{ ref('int_ap_school_level_results') }}
-)
+),
 
 combined as (
     select 
@@ -30,10 +30,11 @@ select
     school_id,
     high_school_name,
     state,
+    country,
     exam, 
     demographic_category,
     demographic_group,
-    max(num_schools) as num_schools, --every school+score+group combo has the number of schools that apply.  Max will be 1 for individual schools and NN for the "less than 10 aggregate"
+    
     sum(
         case 
             when score_of in (1,2,3,4,5) then num_students 
@@ -53,9 +54,8 @@ select
         ), 
         0
     )                                                                               as pct_passing --prevent division by 0
-
 from combined
-{{dbt_utils.group_by(8)}}
+{{dbt_utils.group_by(9)}}
 order by
     exam_year, 
     ai_code

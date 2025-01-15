@@ -64,7 +64,7 @@ with unpivoted_data as (
 , final as (
     select
         exam_year,
-        country,
+        {{country_normalization('country')}} as country,
         ai_code,
         high_school_name,
         state,
