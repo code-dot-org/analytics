@@ -67,7 +67,7 @@ with unpivoted_data as (
 , final as (
     select
         exam_year,
-        {{country_normalization('country')}} as country,
+        country,
         case --removing ai_code for the multi-school aggregate
             when num_schools > 1 then NULL
             else ai_code
