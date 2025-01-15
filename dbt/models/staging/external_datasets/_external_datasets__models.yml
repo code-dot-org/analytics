@@ -492,7 +492,6 @@ models:
       - name: ai_code
         description: "The AI (Attending Institution) code, padded to ensure consistent formatting."
         data_tests:
-          - not_null
           - test_string_length_in:
               list_of_acceptable_lengths: "6"
 
@@ -613,7 +612,6 @@ models:
       - name: ai_code
         description: "The AI (Attending Institution) code, padded to ensure consistent formatting."
         data_tests:
-          - not_null
           - test_string_length_in:
               list_of_acceptable_lengths: "6"
 

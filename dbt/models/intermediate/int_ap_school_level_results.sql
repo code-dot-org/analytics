@@ -32,10 +32,17 @@ results_2024 as (
         , num_schools
         , num_students
     from {{ref('stg_external_datasets__ap_school_level_exam_results_2024') }} 
+), 
+
+unioned as
+(
+    select * from 
+    results_2024
+    union 
+    select * from 
+    results_2022_2023
 )
 
-select * from 
-results_2024
-union 
-select * from 
-results_2022_2023
+select *
+from unioned
+
