@@ -41,7 +41,7 @@ agg_exam_results as (
         score_of, 
         sum(num_students)   as num_students
 
-    from {{ ref('stg_external_datasets__ap_school_level_exam_results') }}
+    from {{ ref('int_ap_school_level_results') }}
     {{ dbt_utils.group_by(10) }}
 )
 , final as (

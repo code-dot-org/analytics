@@ -53,6 +53,9 @@ sources:
 
       - name: stg_ap_school_level_exam_results_raw_2023
         description: "AP school-level exam results for 2023"
+      
+      - name: ap_exam_results_school_level_2024
+        description: "AP school-level exam results for 2024"
 
       # ap ledgers
       - name: stg_ap_ledgers_raw_2017_2021
