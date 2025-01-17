@@ -33,7 +33,7 @@ pl_with_engagement as (
         pl_activity.grade_band,
         pl_activity.school_id,
         pl_activity.school_district_id,
-        sum(pl_activity.num_hours) as total_hours,
+        sum(coalesce(pl_activity.num_hours,0)) as total_hours,
         sum(coalesce(pl_activity.num_levels,0)) as total_levels,
 
         case 
