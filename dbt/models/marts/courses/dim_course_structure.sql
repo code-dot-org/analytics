@@ -4,9 +4,11 @@ auth: nzm
 notes:
 changelog:
     - dataops-668: 
-        updated to reflect updates to analysis.course_structure by NZM
+        updated to reflect updates to analysis.course_structure by Natalia
     - dataops-...
         updated to add distinct clause to final table*
+    - 01/17/2025 - Natalia
+        updated to define is_active_student_content based on content_area field like 'curriculum%' 
 
 #}
 
@@ -60,10 +62,9 @@ parent_levels_child_levels as (
 student_course_names as (
     select distinct course_name
     from {{ ref('stg_dashboard__scripts') }}
-    where participant_audience = 'student'
-    and course_name not like '%self paced pl%'
+    where 
+        content_area like 'curriculum%' 
     and course_name not in ('hoc', 'other')
-    {# and content_area like '%curriculum' #} -- pending data backfill
 ),
 
 script_names as (
