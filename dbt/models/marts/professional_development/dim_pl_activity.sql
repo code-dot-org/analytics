@@ -167,7 +167,7 @@ self_paced_pd as (
         cast(null as bigint)                as workshop_regional_partner_id,
         districts.regional_partner_id       as district_regional_partner_id,
         null                                as workshop_subject,
-        null                                as workshop_started_at,
+        cast(null as timestamp)             as workshop_started_at,
         cast(null as bigint)                as is_byow,
         spa.topic,
         spa.grade_band,
