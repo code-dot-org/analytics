@@ -12,7 +12,7 @@ self_paced_activity as (
         course_name_implementation        as topic,
         'self_paced'                      as pd_type,
         replace(replace(content_area, '_self_paced_pl', ''), 'self_paced_pl_', '') as grade_band,
-        count(distinct level_script_id)   as num_levels 
+        count(distinct level_script_id)   as num_levels
     from {{ ref('dim_self_paced_pd_activity') }}
     {{ dbt_utils.group_by(5) }}
 ),
@@ -166,6 +166,8 @@ self_paced_pd as (
         cast(null as bigint)                as pl_organizer_id,
         cast(null as bigint)                as workshop_regional_partner_id,
         districts.regional_partner_id       as district_regional_partner_id,
+        null                                as workshop_subject,
+        null                                as workshop_started_at,
         cast(null as bigint)                as is_byow,
         spa.topic,
         spa.grade_band,
