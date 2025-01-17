@@ -75,12 +75,17 @@ course_offerings_pd_workshops as (
 ),
 
 course_structure as (
-    select distinct
-        course_name,
-        content_area,
-        replace(replace(replace(content_area, 'curriculum_', ''), '_self_paced_pl', ''), 'self_paced_pl_', '') as grade_band
+    select *
+        , replace(replace(replace(content_area, 'curriculum_', ''), '_self_paced_pl', ''), 'self_paced_pl_', '') as grade_band
     from {{ ref('dim_course_structure') }}
     where content_area != 'other'
+),
+
+course_grade_band as (
+    select distinct
+        course_name,
+        grade_band
+    from course_structure
 ),
 
 regional_partners as (
@@ -120,7 +125,7 @@ facilitated_pd as (
             when pdw.course_name = 'build your own workshop' then co.display_name
             else pdw.course_name
         end                                             as topic,
-        coalesce(cam.grade_band, cs.grade_band)         as grade_band,
+        coalesce(cam.grade_band, cg.grade_band)         as grade_band,
         tsh.school_id,
         schools.school_district_id,
         cast(null as bigint)                            as num_levels,
@@ -131,8 +136,8 @@ join pd_sessions pds
     on pda.pd_session_id = pds.pd_session_id
 join pd_workshops pdw
     on pds.pd_workshop_id = pdw.pd_workshop_id
-left join course_structure cs 
-    on pdw.course_name = cs.course_name
+left join course_grade_band cg 
+    on pdw.course_name = cg.course_name
 left join course_offerings_pd_workshops copw 
     on pdw.pd_workshop_id = copw.pd_workshop_id
 left join content_area_mapping cam 
