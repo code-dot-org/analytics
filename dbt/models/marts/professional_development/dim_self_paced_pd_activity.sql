@@ -54,23 +54,24 @@ self_paced_scripts as (
         , cs.course_name
         , cs.content_area
         , cs.topic_tags
-        , case 
-            when cs.script_name ilike 'k5-onlinepd%' 		    then 'csf'
-			when cs.script_name like 'self-paced-pl-k5%'	    then 'csf'
-  			when cs.script_name like 'self-paced-pl-csd%'	    then 'csd'
-  			when cs.script_name like 'self-paced-pl-csp%'	    then 'csp'
-  			when cs.script_name like 'self-paced-pl-csc%'	    then 'csc'
-			when cs.script_name like 'self-paced-pl-aiml%'      then 'csd'
-  			when cs.script_name like 'self-paced-pl-physical%'	then 'csd'
-  			when cs.script_name like 'self-paced-pl-microbit%'	then 'csd'
-  			when cs.script_name like 'kodea-pd%'			    then 'csf'
-            when cs.script_name like 'self-paced-pl-ai-101%'    then 'ai_teachers'
-            when cs.script_name like 'k5howaimakesdecisions'    then 'csf'
-            when cs.script_name like '%getting%started%'        then 'csf'
-            when cs.script_name like '%foundations%'            then 'foundations'
-            when cs.course_name in ('csf self paced pl')        then 'csf'
-            else 'other'
-  			end                                                                         as course_name_implementation
+        , replace(cs.course_name, 'self-paced pl - ','') as course_name_implementation
+        -- , case 
+        --     when cs.script_name ilike 'k5-onlinepd%' 		    then 'csf'
+		-- 	when cs.script_name like 'self-paced-pl-k5%'	    then 'csf'
+  		-- 	when cs.script_name like 'self-paced-pl-csd%'	    then 'csd'
+  		-- 	when cs.script_name like 'self-paced-pl-csp%'	    then 'csp'
+  		-- 	when cs.script_name like 'self-paced-pl-csc%'	    then 'csc'
+		-- 	when cs.script_name like 'self-paced-pl-aiml%'      then 'csd'
+  		-- 	when cs.script_name like 'self-paced-pl-physical%'	then 'csd'
+  		-- 	when cs.script_name like 'self-paced-pl-microbit%'	then 'csd'
+  		-- 	when cs.script_name like 'kodea-pd%'			    then 'csf'
+        --     when cs.script_name like 'self-paced-pl-ai-101%'    then 'ai_teachers'
+        --     when cs.script_name like 'k5howaimakesdecisions'    then 'csf'
+        --     when cs.script_name like '%getting%started%'        then 'csf'
+        --     when cs.script_name like '%foundations%'            then 'foundations'
+        --     when cs.course_name in ('csf self paced pl')        then 'csf'
+        --     else 'other'
+  		-- 	end                                                                         as course_name_implementation
     from course_structure cs
 )
 select distinct
