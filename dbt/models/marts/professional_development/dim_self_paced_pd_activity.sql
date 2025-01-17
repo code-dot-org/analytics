@@ -69,6 +69,7 @@ self_paced_scripts as (
             when cs.script_name like '%getting%started%'        then 'csf'
             when cs.script_name like '%foundations%'            then 'foundations'
             when cs.course_name in ('csf self paced pl')        then 'csf'
+            else 'other'
   			end                                                                         as course_name_implementation
     from course_structure cs
 )

@@ -6,9 +6,7 @@ self_paced_activity as (
         level_created_school_year         as school_year,
         course_name_implementation        as topic,
         'self_paced'                      as pd_type,
-        replace(replace(content_area, '_self_paced_pl', ''), 'self_paced_pl', '') as grade_band,
-        -- , min(level_created_dt)             as first_activity_at
-        -- , max(level_created_dt)             as last_activity_at
+        replace(replace(content_area, '_self_paced_pl', ''), 'self_paced_pl_', '') as grade_band,
         count(distinct level_script_id)   as num_levels 
     from {{ ref('dim_self_paced_pd_activity') }}
     {{ dbt_utils.group_by(5) }}
@@ -54,7 +52,8 @@ pd_workshops as (
         , organizer_id
         , school_year
         , course_name
-        , subject
+        , subject as workshop_subject
+        , started_at as workshop_started_at
         , regional_partner_id 
         , is_byow
     from {{ ref('stg_dashboard_pii__pd_workshops') }}
@@ -108,6 +107,8 @@ facilitated_pd as (
         pdw.organizer_id                                as pl_organizer_id,
         pdw.regional_partner_id                         as workshop_regional_partner_id,
         districts.regional_partner_id                   as district_regional_partner_id,
+        pdw.workshop_subject,
+        pdw.workshop_started_at,
         pdw.is_byow,
         case 
             when pdw.course_name = 'build your own workshop' then co.display_name
@@ -139,7 +140,7 @@ left join schools
     on tsh.school_id = schools.school_id
 left join districts
     on schools.school_district_id = districts.school_district_id
-{{ dbt_utils.group_by(13) }}
+{{ dbt_utils.group_by(15) }}
 ),
 
 self_paced_pd as (

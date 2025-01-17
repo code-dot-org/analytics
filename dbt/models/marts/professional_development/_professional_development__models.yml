@@ -16,11 +16,15 @@ models:
       - name: pl_workshop_id
         description: the workshop associated with the facilitated activity
       - name: pl_organizer_id
-        description: unique ID for the organizer (if this organizer is a regional partner, they will also have a regional_partner_id)
+        description: the user id associated with the organizer of the workshop (if this organizer is a regional partner, they will also have a regional_partner_id)
       - name: workshop_regional_partner_id
         description: the ID of the regional partner who hosted the workshop
       - name: district_regional_partner_id
         description: the ID of the regional partner associated with the district of the teacher's school
+      - name: workshop_subject
+        description: the subject of the workshop the teacher attended, as recorded by the organizer
+      - name: workshop_started_at
+        description: the date the workshop was scheduled to start, as recorded by the organizer
       - name: is_byow
         description: 1 if the workshop attended is "build your own workshop", 0 otherwise
       - name: topic 
@@ -34,7 +38,7 @@ models:
       - name: num_levels
         description: the number of self-paced levels the teacher touched, null for facilitated PL engagement
       - name: num_hours
-        description: the number of hours of training the teacher attended, calculated as the sum of all PL session durations that they have an attendance record for
+        description: the number of hours of training the teacher attended, calculated as the sum of all PL session durations that they have an attendance record for. This does not account for asynchronous work. 
   
   - name: dim_pl_engagement
     description: |
