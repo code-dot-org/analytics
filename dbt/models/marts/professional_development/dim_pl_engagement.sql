@@ -67,7 +67,7 @@ select
     pl.total_levels,
     pl.pl_engagement_level,
     pl.includes_facilitated,
-    pl.topics_touched
+    pl.topics_touched,
     case 
         when act_1.teacher_id is not null or act_2.teacher_id is not null then 1 
         else 0  
