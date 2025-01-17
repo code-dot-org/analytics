@@ -34,7 +34,7 @@ pl_with_engagement as (
         pl_activity.school_id,
         pl_activity.school_district_id,
         sum(pl_activity.num_hours) as total_hours,
-        sum(pl_activity.num_levels) as total_levels,
+        sum(coalesce(pl_activity.num_levels,0)) as total_levels,
 
         case 
             when coalesce(sum(pl_activity.num_hours), 0) = 0 and coalesce(sum(pl_activity.num_levels), 0) < 37 then 'low'
