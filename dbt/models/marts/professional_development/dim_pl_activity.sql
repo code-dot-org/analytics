@@ -6,13 +6,7 @@ self_paced_activity as (
         level_created_school_year         as school_year,
         course_name_implementation        as topic,
         'self_paced'                      as pd_type,
-        case 
-            when content_area = 'self_paced_pl_k_5' then 'k_5'
-            when content_area = 'self_paced_pl_6_8' then '6_8'
-            when content_area = 'self_paced_pl_9_12' then '9_12'
-            when content_area = 'skills_focused_self_paced_pl' then 'skills_focused'
-            else 'other' 
-        end                               as grade_band,
+        replace(replace(content_area, '_self_paced_pl', ''), 'self_paced_pl', '') as grade_band,
         -- , min(level_created_dt)             as first_activity_at
         -- , max(level_created_dt)             as last_activity_at
         count(distinct level_script_id)   as num_levels 
@@ -77,18 +71,10 @@ course_offerings_pd_workshops as (
 ),
 
 course_structure as (
-    select 
-        *,
-        case 
-            when content_area = 'curriculum_k_5' then 'k_5'
-            when content_area = 'curriculum_6_8' then '6_8'
-            when content_area = 'curriculum_9_12' then '9_12'
-            when content_area = 'self_paced_pl_k_5' then 'k_5'
-            when content_area = 'self_paced_pl_6_8' then '6_8'
-            when content_area = 'self_paced_pl_9_12' then '9_12'
-            when content_area = 'skills_focused_self_paced_pl' then 'skills_focused'
-            else 'other' 
-        end                               as grade_band
+    select distinct
+        course_name,
+        content_area,
+        replace(replace(replace(content_area, 'curriculum_', ''), '_self_paced_pl', ''), 'self_paced_pl_', '') as grade_band
     from {{ ref('dim_course_structure') }}
     where content_area != 'other'
 ),

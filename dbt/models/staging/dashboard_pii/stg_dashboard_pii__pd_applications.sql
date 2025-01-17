@@ -8,7 +8,7 @@ select
     pd_application_id
     , application_guid
     , teacher_id
-    , application_type
+    , lower(application_type)                                           as application_type 
     , left(application_year,4)                                          as cal_year
     , left(application_year,5) + substring(application_year, 8, 3)      as school_year  
     , regional_partner_id
