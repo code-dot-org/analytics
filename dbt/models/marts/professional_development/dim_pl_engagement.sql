@@ -57,7 +57,17 @@ pl_with_engagement as (
 )
 
 select 
-    pl.*, 
+    pl.teacher_id,
+    pl.us_intl,
+    pl.school_year,
+    pl.grade_band,
+    pl.school_id,
+    pl.school_district_id,
+    pl.total_hours,
+    pl.total_levels,
+    pl.pl_engagement_level,
+    pl.includes_facilitated,
+    pl.topics_touched
     case 
         when act_1.teacher_id is not null or act_2.teacher_id is not null then 1 
         else 0  
