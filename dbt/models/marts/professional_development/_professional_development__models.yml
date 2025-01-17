@@ -3,7 +3,7 @@ version: 2
 models: 
   - name: dim_pl_activity
     description: |
-      this model has a row for every teacher who touches self-paced or attends facilitated PL for a particular topic (or course) in a given school year. 
+      this model has one record for every teacher who starts self-paced or attends facilitated PL for a particular topic (or course) in a given school year. 
     columns: 
       - name: teacher_id
         data_tests:
