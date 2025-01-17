@@ -1,5 +1,10 @@
 with 
 
+teachers as (
+    select * 
+    from {{ ref('dim_teachers') }}
+),
+
 self_paced_activity as ( 
     select 
         teacher_id,
@@ -101,6 +106,7 @@ content_area_mapping as (
 facilitated_pd as (
     select distinct 
         pda.teacher_id,
+        teachers.us_intl,
         pdw.school_year,
         'facilitated'                                   as pl_type,
         pdw.pd_workshop_id                              as pl_workshop_id,
@@ -136,16 +142,19 @@ left join course_offerings co
 left join teacher_schools_historical tsh
     on pda.teacher_id = tsh.teacher_id
     and pda.school_year = tsh.started_at_sy
+left join teachers 
+    on pda.teacher_id = teachers.teacher_id
 left join schools 
     on tsh.school_id = schools.school_id
 left join districts
     on schools.school_district_id = districts.school_district_id
-{{ dbt_utils.group_by(15) }}
+{{ dbt_utils.group_by(16) }}
 ),
 
 self_paced_pd as (
     select distinct
         spa.teacher_id,
+        teachers.us_intl,
         spa.school_year,
         spa.pd_type                         as pl_type,
         cast(null as bigint)                as pl_workshop_id,
@@ -164,6 +173,8 @@ self_paced_pd as (
     left join teacher_schools_historical tsh
         on spa.teacher_id = tsh.teacher_id
         and spa.school_year = tsh.started_at_sy 
+    left join teachers 
+        on spa.teacher_id = teachers.teacher_id
     left join schools 
         on tsh.school_id = schools.school_id
     left join districts

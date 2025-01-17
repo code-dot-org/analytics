@@ -9,6 +9,8 @@ models:
         data_tests:
           - not_null
         description: unique ID for the teacher 
+      - name: us_intl
+        description: georgaphic association of the teacher's account
       - name: school_year 
         description: the school year associated with the teacher's PL activity or attendance
       - name: pl_type

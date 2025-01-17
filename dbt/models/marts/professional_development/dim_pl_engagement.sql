@@ -28,6 +28,7 @@ active_teachers_sy_int as (
 pl_with_engagement as (
     select 
         pl_activity.teacher_id,
+        pl_activity.us_intl,
         pl_activity.school_year,
         school_years.school_year_int,
         pl_activity.grade_band,
@@ -52,7 +53,7 @@ pl_with_engagement as (
     from pl_activity 
     join school_years 
         on pl_activity.school_year = school_years.school_year
-    group by 1,2,3,4,5,6
+    group by 1,2,3,4,5,6,7
 )
 
 select 
