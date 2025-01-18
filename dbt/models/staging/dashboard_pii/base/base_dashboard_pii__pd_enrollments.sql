@@ -2,27 +2,27 @@ with
 source as (
     select * 
     from {{ source('dashboard_pii', 'pd_enrollments') }}
-    where not deleted_at
+    where deleted_at is null
 ),
 
 renamed as (
     select
-        id as pd_enrollment_id,
-        pd_workshop_id,
-        name,
+        id                                          as pd_enrollment_id
+        , pd_workshop_id
+        , name
         -- first_name,
         -- last_name,
         -- email,
-        created_at,
-        updated_at,
-        school,
-        code,
-        user_id,
-        survey_sent_at,
-        completed_survey_id,
-        school_info_id,
-        -- properties,
-        application_id
+        , created_at                                as enrolled_at
+        , updated_at
+        , school                                    as user_entered_school
+        , code
+        , user_id                                   as teacher_id                   
+        , survey_sent_at                            as survey_sent_dt
+        , completed_survey_id           
+        , school_info_id
+        , properties
+        , application_id
     from source
 )
 
