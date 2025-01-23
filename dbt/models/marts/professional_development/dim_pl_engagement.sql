@@ -69,13 +69,13 @@ select
     pl.includes_facilitated,
     pl.topics_touched,
     case 
-        when act_1.teacher_id is not null or act_2.teacher_id is not null then 1.0 
-        else 0.0  
+        when act_1.teacher_id is not null or act_2.teacher_id is not null then 1.00 
+        else 0.00  
     end as implemented,
     case 
-        when act_1.teacher_id is not null and act_2.teacher_id is not null then 1.0 
-        when act_2.teacher_id is not null and act_3.teacher_id is not null then 1.0
-        else 0.0 
+        when act_1.teacher_id is not null and act_2.teacher_id is not null then 1.00 
+        when act_2.teacher_id is not null and act_3.teacher_id is not null then 1.00
+        else 0.00
     end as sustained
 from pl_with_engagement pl
 left join active_teachers_sy_int act_1
