@@ -1,0 +1,74 @@
+version: 2
+
+models: 
+  - name: dim_pl_activity
+    description: |
+      this model has one record for every teacher who starts self-paced or attends facilitated PL for a particular topic (or course) in a given school year. 
+    columns: 
+      - name: teacher_id
+        data_tests:
+          - not_null
+        description: unique ID for the teacher 
+      - name: us_intl
+        description: georgaphic association of the teacher's account
+      - name: school_year 
+        description: the school year associated with the teacher's PL activity or attendance
+      - name: pl_type
+        description: facilitated or self-paced; note that some facilitated workshops include self-paced components, and that teacher would have rows for both self-paced and facilitated activity
+      - name: pl_workshop_id
+        description: the workshop associated with the facilitated activity
+      - name: pl_organizer_id
+        description: the user id associated with the organizer of the workshop (if this organizer is a regional partner, they will also have a regional_partner_id)
+      - name: workshop_regional_partner_id
+        description: the ID of the regional partner who hosted the workshop
+      - name: district_regional_partner_id
+        description: the ID of the regional partner associated with the district of the teacher's school
+      - name: workshop_subject
+        description: the subject of the workshop the teacher attended, as recorded by the organizer
+      - name: workshop_started_at
+        description: the date the workshop was scheduled to start, as recorded by the organizer
+      - name: is_byow
+        description: 1 if the workshop attended is "build your own workshop", 0 otherwise
+      - name: topic 
+        description: the topic (in the case of BYOW) or course name (in the case of non-BYOW or self-paced) associated with the PL activity
+      - name: grade_band 
+        description: the grade band associated with the topic
+      - name: school_id 
+        description: the school_id associated with the teacher's code.org account 
+      - name: school_district_id 
+        description: the school district id associated with the teacher's school in their account
+      - name: num_levels
+        description: the number of self-paced levels the teacher touched, null for facilitated PL engagement
+      - name: num_hours
+        description: the number of hours of training the teacher attended, calculated as the sum of all PL session durations that they have an attendance record for. This does not account for asynchronous work. 
+  
+  - name: dim_pl_engagement
+    description: |
+        this model has a row for every teacher who engages in any PL within a given grade band in a given school year and assigns an engagement level to their record. This model also is used to measure impact and effectiveness of PL engagement (implementation and sustained implementation)
+    columns: 
+      - name: teacher_id
+        data_tests:
+          - not_null
+      - name: school_year 
+        description: the school year associated with the PL engagement 
+      - name: grade_band
+        description: the grade band associated with the topics/ courses of the PL engagement
+      - name: school_id 
+        description: the school_id associated with the teacher's code.org account 
+      - name: school_district_id 
+        description: the school district id associated with the teacher's school in their account
+      - name: total_hours 
+        description: the total number of hours the teacher spent at a facilitated training for that grade band
+      - name: total_levels 
+        description: the total number of levels the teacher touched of self-paced PL associated with that grade band 
+      - name: pl_engagement_level 
+        description: low (< 37 levels touched and 0 facilitated hours), medium (between 1 and 8 facilitated hours or between 37 - 65 levels touched), or high (>8 facilitated hours or > 65 levels touched)
+      - name: includes_facilitated 
+        description: 1 if the teacher did any amount of facilitated training for that grade band in that school year , 0 otherwise
+      - name: topics_touched
+        description: comma separated list of topics (or courses) touched in that school year/ grade band
+      - name: implemented 
+        description: 1 if the teacher was an in-classroom teacher either in that same school year as training or the following school year
+      - name: sustained
+        description: 1 if the teacher was n in-classroom teacher for the year after implementing
+    

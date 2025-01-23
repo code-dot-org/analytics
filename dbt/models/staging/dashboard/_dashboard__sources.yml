@@ -11,6 +11,7 @@ sources:
       - name: census_submissions
       - name: contained_level_answers
       - name: contained_levels
+      - name: course_offerings
       - name: census_summaries
       - name: course_scripts
       - name: courses
