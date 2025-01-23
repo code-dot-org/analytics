@@ -3,7 +3,7 @@ version: 2
 models: 
   - name: dim_pl_activity
     description: |
-      this model has one record for every teacher who starts self-paced or attends facilitated PL for a particular topic (or course) in a given school year. 
+      this model has one record for every teacher who starts self-paced or attends facilitated PL for a particular topic (or course) in a given school year. If a teacher attends a facilitated PL associated with multiple topics, they will have one row for each topic. This grain is meant to allow for topic-level aggregations and analysis across facilitated and self-paced PL. 
     columns: 
       - name: teacher_id
         data_tests:
@@ -24,9 +24,9 @@ models:
       - name: district_regional_partner_id
         description: the ID of the regional partner associated with the district of the teacher's school
       - name: workshop_subject
-        description: the subject of the workshop the teacher attended, as recorded by the organizer
+        description: if facilitated, the subject of the workshop the teacher attended, as recorded by the organizer
       - name: workshop_started_at
-        description: the date the workshop was scheduled to start, as recorded by the organizer
+        description: if facilitated, the date the workshop was scheduled to start, as recorded by the organizer
       - name: is_byow
         description: 1 if the workshop attended is "build your own workshop", 0 otherwise
       - name: topic 
@@ -44,7 +44,7 @@ models:
   
   - name: dim_pl_engagement
     description: |
-        this model has a row for every teacher who engages in any PL within a given grade band in a given school year and assigns an engagement level to their record. This model also is used to measure impact and effectiveness of PL engagement (implementation and sustained implementation)
+        this model has a row for every teacher who engages in any PL within a given *grade band* in a given school year and assigns an engagement level to their record. This model also is used to measure impact and effectiveness of PL engagement (implementation and sustained implementation). It's important to note that, at this grain level, self-paced and facilitated activity are *combined* to create a single row for a teacher's PL engagement in a given school year and grade band. Their engagement level is defined by thresholds for both facilitated hours and self-paced levels- be sure to check the column-specific documentation for more details. 
     columns: 
       - name: teacher_id
         data_tests:
