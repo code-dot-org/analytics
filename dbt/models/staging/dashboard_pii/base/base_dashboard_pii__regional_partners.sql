@@ -2,7 +2,7 @@ with
 source as (
     select * 
     from {{ source('dashboard_pii', 'regional_partners') }}
-    where not deleted_at
+    where deleted_at is null
 ),
 
 renamed as (
@@ -21,7 +21,7 @@ renamed as (
         -- notes,
         created_at,
         updated_at,
-        -- properties,
+        properties,
         is_active
     from source
 )
