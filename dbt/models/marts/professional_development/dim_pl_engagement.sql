@@ -45,8 +45,8 @@ pl_with_engagement as (
         end as pl_engagement_level,
 
         case 
-            when sum(pl_activity.num_hours) > 0 then 1 
-            else 0 
+            when sum(pl_activity.num_hours) > 0 then true 
+            else false
         end as includes_facilitated,
 
         listagg(distinct pl_activity.topic, ', ') within group (order by pl_activity.teacher_id, pl_activity.school_year, pl_activity.grade_band) as topics_touched
@@ -69,13 +69,13 @@ select
     pl.includes_facilitated,
     pl.topics_touched,
     case 
-        when act_1.teacher_id is not null or act_2.teacher_id is not null then 1 
-        else 0  
+        when act_1.teacher_id is not null or act_2.teacher_id is not null then 1.0 
+        else 0.0  
     end as implemented,
     case 
-        when act_1.teacher_id is not null and act_2.teacher_id is not null then 1 
-        when act_2.teacher_id is not null and act_3.teacher_id is not null then 1
-        else 0 
+        when act_1.teacher_id is not null and act_2.teacher_id is not null then 1.0 
+        when act_2.teacher_id is not null and act_3.teacher_id is not null then 1.0
+        else 0.0 
     end as sustained
 from pl_with_engagement pl
 left join active_teachers_sy_int act_1
