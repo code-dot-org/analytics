@@ -31,7 +31,10 @@ agg_exam_results as (
         'college board' as source,
         exam_year, 
         null                as pd_year,
-        'cdo_audit'         as reporting_group, -- in theory this should be run through the macro that normalizes these values
+        case 
+            when exam = 'csp' then 'csp_audit'
+            when exam = 'csa' then 'csa_audit'
+        end  as reporting_group, 
         null                as rp_id,
         exam, 
         demographic_category, 
