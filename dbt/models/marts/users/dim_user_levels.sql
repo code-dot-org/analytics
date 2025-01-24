@@ -12,11 +12,11 @@ user_levels as (
              'script_id']) }}   as level_script_id,
         created_at::date        as created_date,
         case 
-            when is_language_supported = 1 then selected_langauge
+            when is_locale_supported = 1 then selected_locale
             else 'en-US'
-        end                     as activity_language,
-        selected_language,
-        is_language_supported,
+        end                     as activity_locale,
+        selected_locale,
+        is_locale_supported,
         sum(time_spent)         as time_spent_minutes,
         sum(attempts)           as total_attempts,
         max(best_result)        as best_result

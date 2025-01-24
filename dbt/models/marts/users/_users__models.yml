@@ -126,11 +126,11 @@ models:
     - name: last_activity_at 
       description: timestamp of the student's latest activity within the given course and school year
     
-    - name: langauge_selected
-      description: the language selected by the user at the time of their activity 
+    - name: locale_selected
+      description: the locale selected by the user at the time of their activity 
     
-    - name: is_language_supported
-      description: 1 if the selected language is supported by the script at the time of their activity, 0 otherwise 
+    - name: is_locale_supported
+      description: 1 if the selected locale is supported by the script at the time of their activity, 0 otherwise 
 
   
     config:
