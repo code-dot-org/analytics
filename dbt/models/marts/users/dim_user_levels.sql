@@ -11,11 +11,17 @@ user_levels as (
             ['level_id',
              'script_id']) }}   as level_script_id,
         created_at::date        as created_date,
+        case 
+            when is_locale_supported = 1 then selected_locale
+            else 'en-US'
+        end                     as activity_locale,
+        selected_locale,
+        is_locale_supported,
         sum(time_spent)         as time_spent_minutes,
         sum(attempts)           as total_attempts,
         max(best_result)        as best_result
     from {{ ref('stg_dashboard__user_levels') }}    
-    {{ dbt_utils.group_by(5) }}
+    {{ dbt_utils.group_by(8) }}
 ),
 
 users as (
@@ -44,6 +50,11 @@ combined as (
         usr.us_intl,
         usr.is_international,
 
+        --locale data
+        usl.is_locale_supported,
+        usl.selected_locale,
+        usl.activity_locale,
+        
         -- user level id's 
         usl.level_id,
         usl.script_id,
