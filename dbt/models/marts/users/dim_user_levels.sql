@@ -50,10 +50,10 @@ combined as (
         usr.us_intl,
         usr.is_international,
 
-        --language data
-        usl.is_language_supported,
-        usl.selected_language,
-        usl.activity_language,
+        --locale data
+        usl.is_locale_supported,
+        usl.selected_locale,
+        usl.activity_locale,
         
         -- user level id's 
         usl.level_id,
