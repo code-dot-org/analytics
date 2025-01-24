@@ -12,8 +12,8 @@ user_levels as (
              'script_id']) }}   as level_script_id,
         created_at::date        as created_date,
         case 
-            when is_language_supported = false then 'en-US'
-            else language_selected
+            when is_language_supported = 1 then 'en-US'
+            else selected_language
         end                     as activity_language,
         selected_language,
         is_language_supported,

@@ -10,7 +10,11 @@ user_levels as (
     select 
         *,
         json_extract_path_text(properties, 'locale', true) as selected_language,
-        json_extract_path_text(properties, 'locale_supported', true) as is_language_supported
+        case 
+            when json_extract_path_text(properties, 'locale_supported', true) = 'true' then 1
+            when json_extract_path_text(properties, 'locale_supported', true) = 'false' then 0
+            else null
+        end as is_language_supported
     from {{ ref('base_dashboard__user_levels') }}
 
     {% if is_incremental() %}
