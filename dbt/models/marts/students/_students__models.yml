@@ -261,6 +261,9 @@ models:
       
       - name: time_spent_minutes 
         description: the number of minutes the student spent on that level on the particular date
+
+      - name: activity_langauge 
+        description: the language of the particular level the student attempted-- this is deduced from their selected language and whether or not that language is supported by that script at the time of activity. Only available from 12/24. 
     
     config:
       tags: ['released']
