@@ -33,7 +33,7 @@ with unpivoted_data as (
         examyr4                 as exam_year,
         {{country_normalization('country_descr')}}           as country,
         lpad(ai_code, 6, '0')   as ai_code,
-        high_school             as high_school_name,
+        lower(high_school)             as high_school_name,
         state_abbrev            as state,
         lower(ap_school_type) as ap_school_type,
         lower(analysis_school_type) as analysis_school_type,

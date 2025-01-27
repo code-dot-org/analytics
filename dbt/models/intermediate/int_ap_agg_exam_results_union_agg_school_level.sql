@@ -45,6 +45,7 @@ agg_exam_results as (
         sum(num_students)   as num_students
 
     from {{ ref('int_ap_school_level_results') }}
+    where (reporting_group != 'csa_audit' or exam_year != '2022') --we didn't have a CSA offering for 2022, so results are not comparable
     {{ dbt_utils.group_by(10) }}
 )
 , final as (
