@@ -261,6 +261,9 @@ models:
       
       - name: time_spent_minutes 
         description: the number of minutes the student spent on that level on the particular date
+
+      - name: activity_locale 
+        description: the locale of the particular level the student attempted-- this is deduced from their selected locale and whether or not that locale is supported by that script at the time of activity (will be en-US otherwise). Only available from 12/24. 
     
     config:
       tags: ['released']
