@@ -134,3 +134,8 @@ models:
 seeds:
   +docs:
     show: false
+
+  cdo_analytics: 
+    seed_districts_target:
+      +column_types:
+        district_id: varchar(20)
