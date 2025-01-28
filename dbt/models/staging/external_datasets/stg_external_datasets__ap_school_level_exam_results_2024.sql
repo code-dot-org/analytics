@@ -17,29 +17,31 @@
 
 
 */
+
 with unpivoted_data as (
 
-    {% set years = ['2022', '2023'] %} 
+    {% set years = ['2024'] %} 
 
     {% for year in years %}
-        {{ unpivot_big_table('base_external_datasets__ap_school_level_exam_results_'~year, 8)}}
+        {{ unpivot_big_table('base_external_datasets__ap_school_level_exam_results_'~year, 7)}}
         {% if not loop.last %}
             union all
         {% endif %}
     {% endfor %}
 )
-,normalized_values as (
+
+, normalized_values as (
     select
-        examyr4                 as exam_year,
-        {{country_normalization('country_descr')}}           as country,
+        exam_year                 as exam_year,
+        {{country_normalization('country')}}           as country,
         lpad(ai_code, 6, '0')   as ai_code,
-        lower(high_school)             as high_school_name,
-        state_abbrev            as state,
-        lower(ap_school_type) as ap_school_type,
+        high_school             as high_school_name,
+        state_abbr            as state,
+        --lower(ap_school_type) as ap_school_type,
         lower(analysis_school_type) as analysis_school_type,
 
         -- Macro noramlizes exam name
-        {{ ap_norm_exam_subject('subject_nm') }} as exam,
+        {{ ap_norm_exam_subject('exam') }} as exam,
 
         orig_col_name, --keep for sanity checking, remove from final output
 
@@ -61,6 +63,7 @@ with unpivoted_data as (
         orig_value              as num_students
     from unpivoted_data
 )
+
 , final as (
     select
         exam_year,
@@ -71,13 +74,11 @@ with unpivoted_data as (
         end as ai_code,
         high_school_name,
         state,
-        ap_school_type,
-        analysis_school_type,
         exam,
         -- comment out orginal and raw columns from final, but useful for testing
-        -- orig_col_name,
-        -- demographic_group_raw,
-        -- score_category_raw,
+        --orig_col_name,
+        --demographic_group_raw,
+        --score_category_raw,
         demographic_group,
         demographic_category,
         score_category,
