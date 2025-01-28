@@ -10,7 +10,7 @@ rp_mappings as (
     from {{ ref('stg_dashboard_pii__pd_regional_partner_mappings') }}
 )
 
-select 
+select distinct
     regional_partners.regional_partner_id
     , regional_partners.regional_partner_name
     --, regional_partners.is_urban  # questioning the accuracy of this field
