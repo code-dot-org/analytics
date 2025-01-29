@@ -19,7 +19,14 @@ with all_data as (
         {% endif %}
     {% endfor %}
 )
-select *
+select 
+    access_report_year,
+    {{ pad_school_id('nces_school_id') }} as nces_school_id,
+    state,
+    school_name,
+    grade_levels,
+    school_type,
+    teaches_cs_final
 from all_data
 where state not in ('AS', 'GU', 'MP', 'PR', 'VI') -- exclude territories
 and teaches_cs_final not in ('unknown', 'E', 'flag') -- exclude schools with unknown CS status
