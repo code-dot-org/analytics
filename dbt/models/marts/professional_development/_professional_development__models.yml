@@ -41,7 +41,9 @@ models:
         description: the number of self-paced levels the teacher touched, null for facilitated PL engagement
       - name: num_hours
         description: the number of hours of training the teacher attended, calculated as the sum of all PL session durations that they have an attendance record for. This does not account for asynchronous work. 
-  
+    config:
+      tags: ['released']
+
   - name: dim_pl_engagement
     description: |
         this model has a row for every teacher who engages in any PL within a given grade band in a given school year and assigns an engagement level to their record. This model also is used to measure impact and effectiveness of PL engagement (implementation and sustained implementation)
@@ -71,4 +73,5 @@ models:
         description: 1 if the teacher was an in-classroom teacher either in that same school year as training or the following school year
       - name: sustained
         description: 1 if the teacher was n in-classroom teacher for the year after implementing
-    
+    config:
+      tags: ['released']
