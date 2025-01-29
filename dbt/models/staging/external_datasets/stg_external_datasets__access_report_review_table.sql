@@ -26,7 +26,22 @@ select
     school_name,
     grade_levels,
     school_type,
-    teaches_cs_final
+    doe,
+    provider_ib,
+    provider_ap,
+    provider_teals,
+    provider_bootup,
+    provider_cambridge,
+    provider_cyber,
+    all_providers,
+    survey,
+    staff_entry,
+    last_year,
+    override,
+    nces_data,
+    teaches_cs_final,
+    filenames,
+    notes
 from all_data
 where state not in ('AS', 'GU', 'MP', 'PR', 'VI') -- exclude territories
 and teaches_cs_final not in ('unknown', 'E', 'flag') -- exclude schools with unknown CS status
