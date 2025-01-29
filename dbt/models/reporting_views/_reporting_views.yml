@@ -27,6 +27,15 @@ models:
     config:
       tags: ['reporting', 'tableau']
 
+
+  - name: view_student_course_participation
+    description: |
+      Students starting a course in a school year for Course Participation dashboard in Tableau. Includes student-facing curriculum, along with sdtuent demographics and school characteristics.
+   
+    config:
+      tags: ['reporting', 'tableau']
+
+
 ## Daily participating students
   - name: daily_participating_students
     description: |
