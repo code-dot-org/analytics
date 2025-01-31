@@ -49,19 +49,35 @@ unioned as (
     select * from user_levels
     union all 
     select * from projects 
-), 
+),
+
+sections as (
+    select *
+    from {{ref('int_section_mapping')}}
+    where school_id is not null
+),
+
+schools as (
+    select 
+        school_id,
+        state,
+        school_district_id
+    from {{ref('dim_schools')}}
+),
 
 school_years as (
     select * 
     from {{ ref('int_school_years') }}
-),
+), 
 
 combined as (
-    select 
+    select distinct
         uni.user_id                             as student_id,
         
         usr.us_intl,
         usr.country,
+        --schools.school_district_id,
+        schools.state,
 
         usr.is_female,
         usr.is_urg,
@@ -81,19 +97,29 @@ combined as (
         on uni.activity_date 
             between sy.started_at
                 and sy.ended_at 
+    
+    left join 
+        sections 
+        on
+            uni.user_id = sections.student_id
+            and sy.school_year = sections.school_year
+            and uni.activity_date 
+                between sections.student_added_at and sections.student_removed_at
 
-    {{ dbt_utils.group_by(8) }} 
+    left join schools
+        on sections.school_id = schools.school_id
+
+    {{ dbt_utils.group_by(9) }} 
 ),
 
 final as (
     select 
-        *, 
-        1 as is_active_student
-
+        *
     from combined 
     where coalesce(
             has_project_activity,
-            has_user_level_activity) = 1 )
+            has_user_level_activity) = 1 
+)
 
 select * 
 from final
