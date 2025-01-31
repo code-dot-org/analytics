@@ -269,3 +269,6 @@ select
     coalesce(num_passing,0)                                                                                 as num_passing,
     coalesce(pct_passing,0)                                                                                 as pct_passing
 from final
+where exam in ('csa','csp')
+and reporting_group in ('csp_pd_alltime','csa_pd_alltime','national','csp_audit','csa_audit','csp_users','csa_users','csa_users_and_audit','csp_users_and_audit',
+'csa_afe_eligible_schools','csp_afe_eligible_schools')

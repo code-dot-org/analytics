@@ -39,15 +39,18 @@
         when lower({{raw_country_name }}) in ('collectivity of saint martin') then 'saint martin'
         when lower({{raw_country_name }}) in ('st vincent and grenadines') then 'saint vincent and the grenadines'
         when lower({{raw_country_name }}) in ('sao tome and principe') then 'são tomé and príncipe'
+        when lower({{raw_country_name }}) in ('sint maarten (dutch part)') then 'sint maarten'
         when lower({{raw_country_name }}) in ('slovak republic') then 'slovakia'
-        when lower({{raw_country_name }}) in ('republic of korea', 'korea, republic of') then 'south korea'
+        when lower({{raw_country_name }}) in ('republic of korea', 'korea, republic of','korea, south (rok)') then 'south korea'
         when lower({{raw_country_name }}) in ('syrian arab republic') then 'syria'
         when lower({{raw_country_name }}) in ('tanzania, united republic of') then 'tanzania'
         when lower({{raw_country_name }}) in ('democratic republic of timor-leste','east timor','timor leste') then 'timor-leste'
-        when lower({{raw_country_name }}) in ('turkey') then 'türkiye'
+        when lower({{raw_country_name }}) in ('turkey','turkiye') then 'türkiye'
         when lower({{raw_country_name }}) in ('northern ireland') then 'united kingdom'
+        when lower({{raw_country_name }}) in ('us','u.s.') then 'united states'
         when lower({{raw_country_name }}) in ('u.s. minor outlying islands') then 'united states minor outlying islands'
         when lower({{raw_country_name }}) in ('us virgin islands') then 'u.s. virgin islands'
+        when lower({{raw_country_name }}) in ('viet nam') then 'vietnam'
         when {{raw_country_name}} = '' then NULL
         else lower({{raw_country_name }})
     end

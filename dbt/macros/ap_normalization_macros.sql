@@ -61,7 +61,7 @@ end as demographic_category
 
 
 /*
-    Categorize the score categroty (detail or total) and then score_of (1-5)
+    Categorize the score category (detail or total) and then score_of (1-5)
     score_of is NULL in the case that category is 'total' -- this is a defensive measure against
     naive summing with certain aggregations.  the sum-of-num-students with scores 1-5 should equal the total.
     Thus we categorize total differently, and make score_of null so the students are not double-counted.
@@ -92,12 +92,14 @@ end as demographic_category
 {% macro ap_norm_exam_group(exam_group) %}
 
     case 
-        when {{ exam_group }} in ('cdo_audit')                         then {{exam_group}}
+        --when {{ exam_group }} in ('cdo_audit')                         then {{exam_group}}
         when {{ exam_group }} in ('national')                          then {{exam_group}}
-        when {{ exam_group }} in ('csa pd all time','csa_all_time_pd') then 'csa pd all time'
-        when {{ exam_group }} in ('csp pd all time','csp_all_time_pd') then 'csp pd all time'
-        when {{ exam_group }} in ('csa_users','csa_heavy')             then 'csa_heavy_users' -- heavy users
-        when {{ exam_group }} in ('csp_users','csp_heavy')             then 'csp_heavy_users' -- heavy users
+        when {{ exam_group }} in ('rp all time')                          then 'csp_rp_alltime'
+        when {{ exam_group }} in ('rp per year')                          then 'csp_rp_peryear'
+        when {{ exam_group }} in ('csa pd all time','csa_all_time_pd') then 'csa_pd_alltime'
+        when {{ exam_group }} in ('csp pd all time','csp_all_time_pd') then 'csp_pd_alltime'
+        when {{ exam_group }} in ('csa_users','csa_heavy')             then 'csa_users' -- heavy users
+        when {{ exam_group }} in ('csp_users','csp_heavy')             then 'csp_users' -- heavy users
         when {{ exam_group }} in ('csp_users_and_audit','csp_ballmer') then 'csp_users_and_audit' -- heavy+audit = "Ballmer"
         when {{ exam_group }} in ('csa_ballmer')                       then 'csa_users_and_audit' -- heavy+audit = "Ballmer"
 
@@ -131,13 +133,13 @@ end as demographic_category
         - "2023 CSA LESS THAN 10 AGGREGATE N=170" should return 170 
 
     ASSUMPTIONS:
-    1. The school_name fits the pattern "%LESS%THAN%10%AGG%"
+    1. The school_name fits the pattern "%LESS%THAN%10%"
     2. There is an '=' sign in the school_name
     3. There is an integer somewhere after the '=' sign
 */
 {% macro ap_extract_n_schools_from_aggregate(school_name) %}
     case
-        when upper({{school_name}}) like '%LESS%THAN%10%AGG%' 
+        when upper({{school_name}}) like '%LESS%THAN%10%' 
         then regexp_replace( upper({{school_name}} ),'.*[=][^0-9]*', '')::integer  -- remove any/all characters found before the '=' sign, and any non-numeric characters after it
         else 1::integer
     end
