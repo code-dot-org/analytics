@@ -31,7 +31,10 @@ agg_exam_results as (
         'college board' as source,
         exam_year, 
         null                as pd_year,
-        'cdo_audit'         as reporting_group, -- in theory this should be run through the macro that normalizes these values
+        case 
+            when exam = 'csp' then 'csp_audit'
+            when exam = 'csa' then 'csa_audit'
+        end  as reporting_group, 
         null                as rp_id,
         exam, 
         demographic_category, 
@@ -41,7 +44,8 @@ agg_exam_results as (
         score_of, 
         sum(num_students)   as num_students
 
-    from {{ ref('stg_external_datasets__ap_school_level_exam_results') }}
+    from {{ ref('int_ap_school_level_results') }}
+    where (reporting_group != 'csa_audit' or exam_year != '2022') --we didn't have a CSA offering for 2022, so results are not comparable
     {{ dbt_utils.group_by(10) }}
 )
 , final as (

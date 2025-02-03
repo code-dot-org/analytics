@@ -36,7 +36,10 @@ with unpivoted_data as (
 
         exam_year                               as exam_year,
         pd_year                                 as pd_year,
-        {{ ap_norm_exam_group('exam_group') }}  as reporting_group,                    -- exam_group is the name of the aggregate report group, the value of which is inconsistently given each year.  eg. "csp_audit_and_users" == "csp_ballmer" and so on.  This macro normalizes the values.
+        case
+            when exam_group = 'cdo_audit' then 'csp_audit' -- specifying cdo_audit as csp for 2022 and earlier
+            else {{ ap_norm_exam_group('exam_group') }}  
+            end as reporting_group,                    -- exam_group is the name of the aggregate report group, the value of which is inconsistently given each year.  eg. "csp_audit_and_users" == "csp_ballmer" and so on.  This macro normalizes the values.
         rp_id                                   as rp_id,
         {{ ap_norm_exam_subject('exam') }}      as exam,
 
