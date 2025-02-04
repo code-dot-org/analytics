@@ -3,7 +3,7 @@ version: 2
 models: 
   - name: dim_pl_activity
     description: |
-      this model has one record for every teacher who starts self-paced or attends facilitated PL for a particular topic (or course) in a given school year. 
+      this model has one record for every teacher who starts self-paced or attends facilitated PL for a particular topic (or course) in a given school year. The grain of the model is teacher_id / pl_type / school_year / workshop_id / topic
     columns: 
       - name: teacher_id
         data_tests:
@@ -73,5 +73,42 @@ models:
         description: 1 if the teacher was an in-classroom teacher either in that same school year as training or the following school year
       - name: sustained
         description: 1 if the teacher was n in-classroom teacher for the year after implementing
+    config:
+      tags: ['released']
+
+  - name: dim_pl_workshops
+    description: |
+        this model has a row for every facilitated PL workshop, and various stats on enrollment and attendance. 
+    columns: 
+      - name: pl_workshop_id
+        data_tests:
+          - not_null
+          - unique
+      - name: pl_organizer_id 
+        description: the user_id associated with the creater of the workshop. 
+      - name: pl_regional_partner_id
+        description: if the organizer is a regional partner, this is the ID associated with the RP. Null otherwise. 
+      - name: school_year
+        description: the school year associated with the workshop start date
+      - name: workshop_subject
+        description: the subject selected for the workshop (e.g. intro, deep dive, district, etc)
+      - name: workshop_started_at 
+        description: the start date selected by the organizer
+      - name: is_byow
+        description: 1 if the workshop is "build your own workshop", 0 otherwise
+      - name: num_teachers_enrolled 
+        description: number of teachers who enrolled in the workshop
+      - name: num_teachers_attended 
+        description: number of teachers who attended at least 1 session of the workshop 
+      - name: num_sessions
+        description: the number of sessions offered by the workshop
+      - name: avg_sessions_attended
+        description: the average number of sessions attended by teachers who attended any amount of the workshop
+      - name: pct_sessions_attended
+        description: the percent of all sessions offered that were attended by the workshop teachers
+      - name: topics 
+        description: a comma separated list of topics selected by the workshop organizer
+      - name: grade_bands
+        description: a comma separated list of the grade bands associated with the topics/ courses selected by the organizer
     config:
       tags: ['released']
