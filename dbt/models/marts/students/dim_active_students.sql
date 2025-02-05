@@ -17,6 +17,11 @@ users as (
     where user_type = 'student'
 ),
 
+section_mapping as (
+    select * 
+    from {{ ref('int_section_mapping') }}
+),
+
 user_levels as (
     select  
 
@@ -81,6 +86,11 @@ combined as (
         on uni.activity_date 
             between sy.started_at
                 and sy.ended_at 
+    
+    -- left join section_mapping sm 
+    --     on uni.user_id = section_mapping.student_id
+    --         and sy.school_year = section_mapping.school_year
+
 
     {{ dbt_utils.group_by(8) }} 
 ),
