@@ -40,7 +40,7 @@ course_structure as (
 ),
 
 combined as (
-    select 
+    select distinct
         -- user data
         usl.user_id,
         usr.user_type,
