@@ -75,6 +75,11 @@ combined as (
         extract(year from uni.activity_date)   as cal_year,
         sy.school_year,
 
+        sm.section_id,
+        sm.teacher_id,
+        sm.school_id,
+        sm.school_district_id,
+
         max(uni.has_user_level_activity)       as has_user_level_activity,
         max(uni.has_project_activity)          as has_project_activity
 
@@ -87,12 +92,11 @@ combined as (
             between sy.started_at
                 and sy.ended_at 
     
-    -- left join section_mapping sm 
-    --     on uni.user_id = section_mapping.student_id
-    --         and sy.school_year = section_mapping.school_year
+    left join section_mapping sm 
+        on uni.user_id = section_mapping.student_id
+            and sy.school_year = section_mapping.school_year
 
-
-    {{ dbt_utils.group_by(8) }} 
+    {{ dbt_utils.group_by(12) }} 
 ),
 
 final as (
