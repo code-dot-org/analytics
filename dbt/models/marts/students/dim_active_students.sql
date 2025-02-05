@@ -93,8 +93,8 @@ combined as (
                 and sy.ended_at 
     
     left join section_mapping sm 
-        on uni.user_id = section_mapping.student_id
-            and sy.school_year = section_mapping.school_year
+        on uni.user_id = sm.student_id
+            and sy.school_year = sm.school_year
 
     {{ dbt_utils.group_by(12) }} 
 ),
