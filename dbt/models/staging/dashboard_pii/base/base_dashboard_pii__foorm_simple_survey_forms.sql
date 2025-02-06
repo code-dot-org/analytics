@@ -11,7 +11,7 @@ renamed as (
         kind,
         form_name,
         form_version,
-        -- properties, 
+        properties, 
         created_at,
         updated_at
     from source
