@@ -100,12 +100,14 @@ models:
         description: number of teachers who enrolled in the workshop
       - name: num_teachers_attended 
         description: number of teachers who attended at least 1 session of the workshop 
+      - name: pct_teachers_attended 
+        description: number of teachers who attended at least 1 session / number of enrolled teachers
       - name: num_sessions
         description: the number of sessions offered by the workshop
       - name: avg_sessions_attended
-        description: the average number of sessions attended by teachers who attended any amount of the workshop
+        description: the average number of sessions attended by teachers who attended any amount of the workshop. Those who enrolled but did not attend would not be counted towards this average. 
       - name: pct_sessions_attended
-        description: the percent of all sessions offered that were attended by the workshop teachers
+        description: the percent of all sessions offered that were attended by the workshop teachers. Those who enrolled but did not attend would not be counted towards this percent. 
       - name: topics 
         description: a comma separated list of topics selected by the workshop organizer
       - name: grade_bands
