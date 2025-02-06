@@ -57,7 +57,7 @@ content_area_mapping as (
 enrollments_by_workshop as ( 
     select 
         pd_workshop_id,
-        count(distinct teacher_id) as num_teachers_enrolled 
+        coalesce(count(distinct teacher_id), 0) as num_teachers_enrolled 
     from pd_enrollments
     group by 1
 ),
@@ -65,7 +65,9 @@ enrollments_by_workshop as (
 sessions_by_workshop as (
     select 
         pd_workshop_id,
-        count(distinct pd_session_id) as num_sessions
+        coalesce(count(distinct pd_session_id), 0) as num_sessions,
+        min(started_at):: date as workshop_started_at,
+        max(started_at):: date as workshop_ended_at
     from pd_sessions
     group by 1
 ),
@@ -77,9 +79,10 @@ pd_workshops as (
         , school_year
         , course_name
         , subject as workshop_subject
-        , started_at as workshop_started_at
         , regional_partner_id 
         , is_byow
+        , participant_group_type
+        , is_virtual
     from {{ ref('stg_dashboard_pii__pd_workshops') }}
 ),
 
@@ -87,7 +90,7 @@ session_teacher_attendance as (
     select 
         pda.teacher_id,
         pds.pd_workshop_id,
-        count(distinct pda.pd_session_id) as num_sessions_attended
+        coalesce(count(distinct pda.pd_session_id), 0) as num_sessions_attended
     from pd_attendances pda 
     left join pd_sessions pds 
         on pda.pd_session_id = pds.pd_session_id
@@ -97,7 +100,7 @@ session_teacher_attendance as (
 attendances_by_workshop as ( 
     select 
         pd_workshop_id,
-        count(distinct teacher_id) as num_teachers_attended 
+        coalesce(count(distinct teacher_id), 0) as num_teachers_attended 
     from session_teacher_attendance
     group by 1
 ),
@@ -116,18 +119,47 @@ select
     pd_workshops.regional_partner_id as pl_regional_partner_id,
     pd_workshops.school_year,
     pd_workshops.workshop_subject,
-    pd_workshops.workshop_started_at,
-    is_byow,
+    pd_workshops.participant_group_type,
+    pd_workshops.is_byow,
+    pd_workshops.is_virtual,
+
+    s.workshop_started_at,
+    s.workshop_ended_at,
+
     case 
         when pd_workshops.course_name = 'build your own workshop' then co.display_name
         else pd_workshops.course_name
     end                                             as topic,
-    coalesce(cam.grade_band, cg.grade_band)         as grade_band,
-    cast(e.num_teachers_enrolled as float)          as num_teachers_enrolled,
-    cast(a.num_teachers_attended as float)          as num_teachers_attended,
-    cast(s.num_sessions as float)                   as num_sessions,
-    round(asa.avg_sessions_attended, 3) :: decimal(10,4) as avg_sessions_attended,
-    round(asa.avg_sessions_attended / s.num_sessions, 3) :: decimal(10,4) as pct_sessions_attended
+    coalesce(
+        cam.grade_band, 
+        cg.grade_band
+    )                                               as grade_band,
+    cast(
+        e.num_teachers_enrolled as float
+    )                                               as num_teachers_enrolled,
+    cast(
+        a.num_teachers_attended as float
+    )                                               as num_teachers_attended,
+    (
+        cast(
+            a.num_teachers_attended as float
+        ) / 
+        nullif(
+            cast(
+            e.num_teachers_enrolled as float
+            ), 0
+        )                                               
+    )                                               as pct_teachers_attended,
+    cast(
+        s.num_sessions as float
+    )                                               as num_sessions,
+    round(
+        asa.avg_sessions_attended, 3
+    ) :: decimal(10,4)                              as avg_sessions_attended,
+    round(
+        asa.avg_sessions_attended 
+        / nullif(s.num_sessions, 0), 3
+    ) :: decimal(10,4)                              as pct_sessions_attended
 
 from pd_workshops
 left join enrollments_by_workshop e 

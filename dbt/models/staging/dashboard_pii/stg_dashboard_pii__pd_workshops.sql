@@ -56,6 +56,12 @@ select
     -- , is_funded
     -- , funding_type
     , module
+    , lower(participant_group_type) as participant_group_type
+    , case 
+        when json_extract_path_text(properties, 'virtual') = 'true' then 1 
+        when json_extract_path_text(properties, 'virtual') = 'false' then 0 
+        else null 
+    end as is_virtual
 from pd_workshops                                           as pdw
 join school_years                                           as sy
     on pdw.started_at between sy.started_at and sy.ended_at
