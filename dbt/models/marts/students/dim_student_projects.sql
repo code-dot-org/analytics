@@ -38,7 +38,7 @@ user_geos as (
 
 countries as (
     select * 
-    from {{ ref('stg_public__countries') }}
+    from {{ ref('dim_country_reference') }}
 ),
 
 international_partners_raw as (
@@ -72,8 +72,8 @@ final as (
         , p.published_at                                                        as project_published_at
         , sy.school_year                                                        as school_year
         , extract('year' from p.created_at)                                     as cal_year
-        , pc.display_name                                                       as country
-        , ipr.region                                                            as region
+        , ug.country                                                       as country
+        , countries.region                                                            as region
         , p.is_standalone 
         , p.abuse_score 
         , p.project_type 
@@ -100,8 +100,8 @@ final as (
     left join user_geos                                                         as ug 
         on u.user_id = ug.user_id
 
-    left join countries                                                         as pc 
-        on pc.alt_name = ug.country
+    left join countries                                                         as countries 
+        on countries.country = ug.country
 
     left join international_partners_raw                                        as ipr 
         on pc.display_name = ipr.display_name )
