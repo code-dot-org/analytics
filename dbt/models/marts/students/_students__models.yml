@@ -77,6 +77,7 @@ models:
         - `sign-ins` 
         - `projects`  
 
+      There is a row for every date a given student is active, and for every section they are in in that school year. So, if a student is in multiple sections in a given school year, every row for that student will be duplicated for each section ID. Always count distinct! 
     columns:
       - name: activity_date
         description: "The date on which activity was recorded for the user, merged across all aggregated activity types."
@@ -101,6 +102,18 @@ models:
       - name: school_year
         description: "The school year during which the activity occurred, determined by matching the activity date with school year ranges. A school year is defined as the 365 days between July 1 in year 1, and June 30 in year 2."
         data_type: "varchar"
+      
+      - name: section_id
+        description: The section ID associated with the student in the school year of the activity date. If the student is associated with multiple sections that school year, there will be a row for every section they are in for every date they have activity.
+      
+      - name: teacher_id
+        description: the teacher ID associated with the section the student is in in that school year. 
+      
+      - name: school_id
+        description: the NCES school ID associated with the teacher of the section the student is in in that school year. Null if not in a section or teacher has not chosen school. 
+
+      - name: school_district_id
+        description: the NCES school district ID associated with their section's teacher, null if the teacher did not choose a school. 
 
       - name: has_sign_in_activity
         description: "`0|1` flag indicating whether there was any sign-in activity for the user on the given day (1 for yes, 0 for no)."
@@ -121,6 +134,7 @@ models:
           combination_of_columns:
             - student_id
             - activity_date
+            - section_id
 
   - name: dim_students
     description: |
@@ -264,6 +278,9 @@ models:
 
       - name: activity_locale 
         description: the locale of the particular level the student attempted-- this is deduced from their selected locale and whether or not that locale is supported by that script at the time of activity (will be en-US otherwise). Only available from 12/24. 
+      
+      - name: selected_language
+        description: the locale selected by the user at the time of activity (which may not be the language the activity was in if it's untranslated)
     
     config:
       tags: ['released']
