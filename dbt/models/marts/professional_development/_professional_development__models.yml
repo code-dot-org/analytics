@@ -93,7 +93,13 @@ models:
       - name: workshop_subject
         description: the subject selected for the workshop (e.g. intro, deep dive, district, etc)
       - name: workshop_started_at 
-        description: the start date selected by the organizer
+        description: the day of the first session of the workshop
+      - name: workshop_ended_at 
+        description: the day of the last session of the workshop
+      - name: participant_group_type 
+        description: added dec 2024, indicates the primary audience of the workshop
+      - name: is virtual
+        description: 1 if the workshop is labeled as virtual, 0 otherwise
       - name: is_byow
         description: 1 if the workshop is "build your own workshop", 0 otherwise
       - name: num_teachers_enrolled 
