@@ -12,6 +12,7 @@ int_pl_workshops as (
         workshop_ended_at,
         participant_group_type,
         is_virtual,
+        is_upcoming,
         is_byow,
         num_teachers_enrolled,
         num_teachers_attended,
@@ -23,7 +24,7 @@ int_pl_workshops as (
         listagg(distinct grade_band, ', ') within group (order by pl_workshop_id) as grade_bands
 
     from {{ ref('int_pl_workshops') }}
-    {{ dbt_utils.group_by(16) }}
+    {{ dbt_utils.group_by(17) }}
 ) 
 
 select * 

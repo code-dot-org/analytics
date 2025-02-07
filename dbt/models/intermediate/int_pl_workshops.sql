@@ -74,16 +74,24 @@ sessions_by_workshop as (
 
 pd_workshops as (
     select 
-        pd_workshop_id
-        , organizer_id
-        , school_year
-        , course_name
-        , subject as workshop_subject
-        , regional_partner_id 
-        , is_byow
-        , participant_group_type
-        , is_virtual
-    from {{ ref('stg_dashboard_pii__pd_workshops') }}
+        pdw.pd_workshop_id
+        , pdw.organizer_id
+        , pdw.school_year
+        , pdw.course_name
+        , pdw.subject as workshop_subject
+        , pdw.regional_partner_id 
+        , pdw.is_byow
+        , pdw.participant_group_type
+        , pdw.is_virtual
+        , case 
+            when sbw.workshop_started_at is null 
+                or sbw.workshop_started_at > current_date
+            then 1 
+            else 0 
+        end as is_upcoming
+    from {{ ref('stg_dashboard_pii__pd_workshops') }} pdw
+    left join sessions_by_workshop sbw 
+        on pdw.pd_workshop_id = sbw.pd_workshop_id
 ),
 
 session_teacher_attendance as (
@@ -122,6 +130,7 @@ select
     pd_workshops.participant_group_type,
     pd_workshops.is_byow,
     pd_workshops.is_virtual,
+    pd_workshops.is_upcoming,
 
     s.workshop_started_at,
     s.workshop_ended_at,
@@ -137,29 +146,45 @@ select
     cast(
         e.num_teachers_enrolled as float
     )                                               as num_teachers_enrolled,
-    cast(
-        a.num_teachers_attended as float
-    )                                               as num_teachers_attended,
-    (
-        cast(
-            a.num_teachers_attended as float
-        ) / 
-        nullif(
+    case 
+        when pd_workshops.is_upcoming = 1 then null 
+        else 
             cast(
-            e.num_teachers_enrolled as float
-            ), 0
-        )                                               
-    )                                               as pct_teachers_attended,
+                a.num_teachers_attended as float
+            )                                       
+    end                                             as num_teachers_attended,
+    case
+        when pd_workshops.is_upcoming = 1 then null 
+        else
+            (
+                cast(
+                    a.num_teachers_attended as float
+                ) / 
+                nullif(
+                    cast(
+                    e.num_teachers_enrolled as float
+                    ), 0
+                )                                               
+            )
+    end                                             as pct_teachers_attended,
     cast(
         s.num_sessions as float
     )                                               as num_sessions,
-    round(
-        asa.avg_sessions_attended, 3
-    ) :: decimal(10,4)                              as avg_sessions_attended,
-    round(
-        asa.avg_sessions_attended 
-        / nullif(s.num_sessions, 0), 3
-    ) :: decimal(10,4)                              as pct_sessions_attended
+    case
+        when pd_workshops.is_upcoming = 1 then null 
+        else
+            round(
+                asa.avg_sessions_attended, 3
+            ) :: decimal(10,4)
+    end                                             as avg_sessions_attended,
+    case
+        when pd_workshops.is_upcoming = 1 then null 
+        else
+            round(
+                asa.avg_sessions_attended 
+                / nullif(s.num_sessions, 0), 3
+            ) :: decimal(10,4) 
+    end                                             as pct_sessions_attended
 
 from pd_workshops
 left join enrollments_by_workshop e 

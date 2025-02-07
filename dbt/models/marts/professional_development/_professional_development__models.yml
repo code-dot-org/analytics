@@ -97,7 +97,7 @@ models:
       - name: workshop_ended_at 
         description: the day of the last session of the workshop
       - name: participant_group_type 
-        description: added dec 2024, indicates the primary audience of the workshop
+        description: added dec 2024, indicates the primary audience of the workshop (e.g. district, multi-district, regional)
       - name: is virtual
         description: 1 if the workshop is labeled as virtual, 0 otherwise
       - name: is_byow
