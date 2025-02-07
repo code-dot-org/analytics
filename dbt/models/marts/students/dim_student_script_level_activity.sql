@@ -77,6 +77,7 @@ student_activity as (
             when ul.activity_month in ( 1,   2,  3 )  then 'Q3'
             when ul.activity_month in ( 4,   5,  6 )  then 'Q4'
         end as activity_quarter, 
+        ul.selected_locale,
         ul.activity_locale,
 
         cs.content_area,
@@ -243,7 +244,8 @@ final as (
         sta.activity_month,
         sta.activity_quarter, 
         
-        -- curriculum content of the activity 
+        -- curriculum content of the activity
+        sta.selected_locale, 
         sta.activity_locale,
         sta.content_area,
         sta.course_name,
