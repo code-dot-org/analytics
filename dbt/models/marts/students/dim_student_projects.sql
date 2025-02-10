@@ -1,3 +1,7 @@
+/*
+edits: CK, 2-10-25 - removed international partner + regional data and used country from ug instead
+*/
+
 with 
 projects as (
     select * 
