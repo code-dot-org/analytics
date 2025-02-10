@@ -32,8 +32,8 @@ user_levels as (
         
     from {{ ref('dim_user_levels') }}
     where 
-        total_attempts > 0 
-        and created_date > {{ get_cutoff_date() }} 
+        -- total_attempts > 0 
+        created_date > {{ get_cutoff_date() }} 
 ), 
 
 projects as (
