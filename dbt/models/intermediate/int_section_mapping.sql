@@ -39,6 +39,11 @@ sections as (
     from {{ ref('stg_dashboard__sections') }}
 ),
 
+schools as (
+    select * 
+    from {{ ref('dim_schools') }}
+),
+
 combined as (
     select 
         sy.school_year, 
@@ -47,6 +52,7 @@ combined as (
         sections.section_id                                                 as section_id,
         tsc.school_id,
         tsc.school_info_id,
+        schools.school_district_id,
         student_added_at,
         case 
             when 
@@ -73,6 +79,8 @@ combined as (
     left join teacher_school_changes tsc 
         on sections.teacher_id = tsc.teacher_id 
         and sy.ended_at between tsc.started_at and tsc.ended_at 
+    left join schools 
+        on tsc.school_id = schools.school_id 
 ),
 
 final as (
@@ -83,6 +91,7 @@ final as (
         teacher_id,
         school_id,
         school_info_id,
+        school_district_id,
         student_added_at,
         student_removed_at
     from combined
