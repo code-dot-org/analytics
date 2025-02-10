@@ -10,7 +10,7 @@ student_course_starts as (
     select *
     from {{ ref('dim_user_course_activity') }}
     where user_id in (select student_id from student_section)
-    and user_type = 'student'
+    --and user_type = 'student'
 ),
 
 combined as (
