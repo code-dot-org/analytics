@@ -18,29 +18,39 @@ foorm_submissions_reshaped as (
 foorm_forms_reshaped as (
     select * 
     from {{ ref('stg_analysis__foorm_forms_reshaped') }}
-),
+)
+,
 
 foorm_surveys as (
     select
     fssf.path,
     fssf.form_name,
     fsss.simple_survey_form_id,
+    fssf.kind,
+    fssf.form_version,
     fsss.foorm_submission_id,
     fsss.user_id,
     fsss.created_at,
-    case 
-        when fsr.item_name = 'pre_enrollment' then 'num_pre_enrollment'
-        when fsr.item_name = 'post_enrollment' then 'num_post_enrollment'
-        else fsr.item_name
-    end as item_name,
+    case -- adjustment for surveys/teachers/young_women_in_cs
+         when fsr.item_name = 'pre_enrollment' then 'num_pre_enrollment'
+         when fsr.item_name = 'post_enrollment' then 'num_post_enrollment'
+         else fsr.item_name
+     end as item_name,
     fsr.matrix_item_name,
     fsr.response_value,
-    fsr.response_text,
+    case 
+      when fsr.response_value SIMILAR TO '[0-9]+(.[0-9][0-9])?' THEN response_value::integer
+      WHEN ffr.item_type = 'scale' AND fsr.response_text SIMILAR TO '[0-9]+(.[0-9][0-9])?' THEN response_text::integer -- type 'scale' doesn't have a response value, only text. 
+    ELSE NULL
+    END response_value_numeric,
+    coalesce( nullif(fsr.response_text,''), fsr.response_value) as response_text,
     ffr.item_type,
     ffr.item_text,
     ffr.matrix_item_header,
     ffr.response_options,
-    ffr.num_response_options
+    ffr.num_response_options,
+    ffr.is_facilitator_specific,
+    JSON_EXTRACT_PATH_TEXT(JSON_EXTRACT_PATH_TEXT(fssf.properties,'survey_data'),'course') course
 
     from foorm_simple_survey_forms                                          as fssf
 
@@ -135,26 +145,32 @@ schools as (
 
 users as (
     select * 
-    from {{ ref('stg_dashboard_pii__users') }}
+    from {{ ref('dim_users') }}
 )
 
 select distinct 
     s.form_name
-    , s.foorm_submission_id
+    , s.path
+    , s.kind
+    , s.simple_survey_form_id
+    , s.form_version
+    , s.course
+    , s.is_facilitator_specific
+    , s.foorm_submission_id                                                        as submission_id
     , s.user_id
-    , u.name                                                                        as code_studio_name
-    , u.teacher_email                                                               as email
-    , trunc(s.created_at)                                                           as created_at
+    , u.user_type
+    , u.us_intl
+    , u.country
+    , trunc(s.created_at)                                                           as submission_date
     , s.matrix_item_name
     , s.matrix_item_header
     , s.item_name
     , trim(rtrim(s.item_text,'.'))                                                  as item_text
     , s.item_type 
-    , s.response_value
-    , case
+    , s.num_response_options
+        , case
         when s.item_type = 'multiSelect' then fsl.multiple_choice
         when s.response_value = 'other' then 'other'
-        when s.response_value = 'true' then 'Y'
         else trim(s.response_text)
     end                                                                             as response_text
     , case 
@@ -165,14 +181,17 @@ select distinct
             where s.foorm_submission_id = c.foorm_submission_id 
             and s.item_name = c.item_name_parent
         ) 
-        when s.response_value = 'true' then 'Y'
         else trim(s.response_text)
     end                                                                             as full_response_text
+    , s.response_value
+    , s.response_value_numeric
+    , s.response_value_numeric ::float/s.num_response_options::float                as response_value_pct
+    , s.response_options
     , sy.school_year 
+    , si.school_id
     , coalesce (ss.school_name, si.school_name)                                     as school_name
     , coalesce (ss.state, si.state)                                                 as school_state
     , coalesce (ss.school_type, si.school_type)                                     as school_type
-    , si.school_id
 
 from foorm_surveys                                                                  as s
 
