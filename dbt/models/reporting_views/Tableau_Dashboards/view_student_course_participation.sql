@@ -73,7 +73,6 @@ school_years as (
         on scm.section_id   = scz.section_id
 )
 
-, final as (
 select 
   sa.user_id as student_id
 , sa.school_year 
@@ -96,6 +95,7 @@ select
 , ss.school_district_id
 , ss.school_district_name
 , ss.school_state
+, sec.section_size
 
 from student_activity   as  sa
 left join student_section      as  sec
@@ -106,17 +106,4 @@ left join student_section      as  sec
 left join schools       as ss
         on sec.school_id    = ss.school_id 
 
-{{ dbt_utils.group_by(21) }} -- grouping instead of select distinct to deduplicate records with better performance
-)
-
-select
-school_year
-, course_name
-, count (distinct student_id) n_students
-from final
-where 
-us_intl = 'us'
--- and course_name = 'csf'
-and num_unique_days >= 5
-{{ dbt_utils.group_by(2) }}
-order by 1,2
+{{ dbt_utils.group_by(22) }} -- grouping instead of select distinct to deduplicate records with better performance
