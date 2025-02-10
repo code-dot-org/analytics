@@ -13,56 +13,111 @@ models:
   - name: dim_foorms
 
     description: |
-      This model contains the formatted survey responses for all foorm surveys (e.g. YWinCS ambassador application).   
-      Note: when querying this model, be sure to filter for the form_name you're looking for results from. 
+      This model contains the formatted survey responses for all simple foorm surveys (e.g. nps, end of year teacher surveys, self-paced pl surveys).   
+      Note: when querying this model, be sure to filter for the form_name or path you're looking for results from. 
 
     columns: 
 
       - name: form_name
+        description: name of the survey in Foorm, including the category. i.e. surveys/teachers/selfpaced_pd_ai_101_district_leaders_pre_survey .
         data_tests:
           - not_null
       
-      - name: foorm_submission_id
+      - name: path
+        description:  from the url string used for distribution, the segment following 'https://studio.code.org/form/. i.e. in 'https://studio.code.org/form/ai_101_district_leaders_selfpaced_pl_pre_survey' the path would be  'ai_101_district_leaders_selfpaced_pl_pre_survey'.
+
+      - name: kind
+        description:  optional survey identifier used when publishing, often used when the same survey needs to be used for different groups of teachers and the analyst or end user wants to differentiate them. 
+
+      - name: form_version
+        description:  survey versions, a new version is created when the survey's structure changes, especially when questions are removed or reworded in a way that changes the meaning of the question.
+
+      - name: course
+        description:  value of the course property in a survey when it is used (most often it is used for PD workshop surveys).
+
+      - name: is_facilitator_specific
+        description:  surveys for facilitators.
+
+      - name: submission_id
         description: unique ID for every foorm foorm_submission_id for a given foorm. 
         data_tests: 
           - not_null
 
       - name: user_id
-        data_tests: 
-          - not_null  
+        description: user account identifier for users who take the survey while they are signed-in. PD workshop surveys require users to be signed in. For Simple surveys the user or analyst publishing the survey can decide if the survey is available to signed-out users to decrease friction and improve response rates when there is no need to join to the user's platform activity. Therefore, for some surveys this field is null.
 
-      - name: code_studio_name
-        description: the name of the person filling out the foorm, as it appears in code studio
+      - name: user_type
+        description: type of account of the user answering the survey if the user is signed-in.
 
-      - name: email
-        description: email associated with the account filling out the foorm
+      - name: us_intl
+        description: label for us / intl based on the user's IP geolocation, only available for users taking the survey while signed-in.
 
-      - name: created_at
-        description: the date on which the foorm was submitted
+      - name: country
+        description: user's country based on their IP geolocation, only available for users taking the survey while signed-in.
+
+
+      # - name: code_studio_name
+      #   description: the name of the person filling out the foorm, as it appears in code studio
+
+      # - name: email
+      #   description: email associated with the account filling out the foorm
+
+      - name: submission_date
+        description: the date on which the foorm was submitted.
+
+      - name: matrix_item_name
+        description: identifier for questions included in a matrix. Null for non-matrix questions.
+
+      - name: matrix_item_header
+        description: text of the matrix header. Null for non-matrix questions.
 
       - name: item_name
+        description: identifier for survey questions. Each question in a survey has a unique identifier. 
+        data_tests: 
+          - not_null
 
       - name: item_text
+        description: full text of the survey question.
 
       - name: item_type
+        description: type of the survey question (i.e. multiSelect, singleSelect, scale, text, etc.).
+
+      - name: num_response_options
+        description: number of response options available. Null for open text questions.
 
       - name: response_text
+        description: full text corresponding to the answer selected, or user-entered if the question is an open text (i.e. response_value = 'csp' and response_text = 'CS Principles').
 
       - name: full_response_text
-        description: includes the text associated with "other"
+        description: value in response_text or the answer to the follow-up question when the user selects "other".
+
+      - name: response_value
+        description: identifier for the response option selected by the user (i.e. response_value = 'csp' and response_text = 'CS Principles'). Null if the quetsion is an open-text one (when item_type = text).
+
+      - name: response_value_numeric
+        description: response value for responses that are numeric, such as answers to scale questions. Useful to calculate average, medians and other statistical values. Null for non-numeric answers.
+
+      - name: num_response_value_pct
+        description: percent value equivalent to the answer selected in a quetsion with numeric answer options. Calulated as response_value_numeric/num_response_options. Null for non-numeric answers.
+
+      - name: response_options
+        description: string with all answer choices available for the question.
 
       - name: school_year
-        description: the school year in which the foorm was submitted
-
-      - name: school_name
-        description: if the school name is in all-caps and there is a school_id associated with it, it was found in the NCES dropdown. If not, it was typed in manually by the user. 
-
-      - name: school_type
-
-      - name: school_state
+        description: the school year in which the foorm was submitted.
 
       - name: school_id
-        description: if the ambassador found their school in the NCES dropdown, this will be populated. Null otherwise. 
+        description: NCES id for teachers whose account is associated with an NCES school. Null otherwise. 
+
+      - name: school_name
+        description: if the school has a school_id associated with it, it was found in the NCES dropdown. If not, it was typed in manually by the user. 
+
+      - name: school_type
+        description: school type (i.e. public, private, charter, homeschool, etc.). 
+
+      - name: school_state
+        description: US state of the school.
+
     config:
       tags: ['released']
 
@@ -76,11 +131,11 @@ models:
       - name: user_id
         description: the user_id associated with the ambassador's teacher account
 
-      - name: code_studio_name
-        description: the ambassador's name as it appears in code studio 
+      # - name: code_studio_name
+      #   description: the ambassador's name as it appears in code studio 
 
-      - name: email
-        description: the email associated with the ambassador's teacher account
+      # - name: email
+      #   description: the email associated with the ambassador's teacher account
 
       - name: section_id
         description: the section_d associated with the ambassador's teacher account
