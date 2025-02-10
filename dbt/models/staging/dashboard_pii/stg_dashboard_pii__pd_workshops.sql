@@ -71,3 +71,4 @@ select
 from pd_workshops                                           as pdw
 join school_years                                           as sy
     on coalesce(pdw.started_at, pdw.created_at) between sy.started_at and sy.ended_at
+where coalesce(pdw.started_at, pdw.created_at) > {{ get_cutoff_date() }} 

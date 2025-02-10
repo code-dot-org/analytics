@@ -22,3 +22,4 @@ select
 from pd_sessions                                                                                as pds
 join school_years                                                                               as sy
     on pds.started_at between sy.started_at and sy.ended_at
+where pds.started_at > {{ get_cutoff_date() }} 
