@@ -3,14 +3,15 @@ with
 amb_section_metrics as (
     select 
         user_id,
-        code_studio_name,
-        email,
+        -- code_studio_name,
+        -- email,
         school_year,
         min(section_created_dt) as section_created_dt,
         count(distinct section_id) as num_sections,
         count(distinct student_id) as num_students
     from {{ ref('dim_ambassador_activity') }}
-    group by 1,2,3,4
+    group by 1,2
+    -- ,3,4
     having num_sections > 0 
 ),
 
@@ -21,12 +22,19 @@ section_course_list as (
         listagg(distinct course_name, ', ') within group (order by user_id, school_year) as courses_touched
     from {{ ref('dim_ambassador_activity') }}
     group by 1,2
-),
+)
+,
 
 event_impact_survey as ( 
     select *
     from (select 
-            foorm_submission_id, user_id, code_studio_name, email, school_year, item_name, response_text
+            submission_id as form_submission_id
+            , user_id
+            -- , code_studio_name
+            -- , email
+            , school_year
+            , item_name
+            , response_text
             from {{ ref('dim_foorms') }}
             where form_name = 'surveys/teachers/cs_ambassador_event')
     pivot(max(response_text) for item_name in (
@@ -39,10 +47,19 @@ event_impact_survey as (
     )
 )
 
+-- CTE: users to bring user name and email
+, users as (
+    select * 
+    from {{ ref('stg_dashboard_pii__users') }}
+    where user_id in 
+    (select user_id from amb_section_metrics )
+)
+
+
 select 
     coalesce(eis.user_id, asm.user_id) as user_id,
-    coalesce(eis.code_studio_name, asm.code_studio_name) as code_studio_name,
-    coalesce(eis.email, asm.email) as email,
+    u.name as code_studio_name,
+    u.teacher_email as email,
     coalesce(eis.school_year, asm.school_year) as school_year,
     case 
         when eis.user_id is not null then 1 else 0 end as is_survey,
@@ -78,4 +95,7 @@ full join event_impact_survey               as eis
     on asm.user_id = eis.user_id
     and asm.school_year = eis.school_year
 
+join users                                  as u
+    on     asm.user_id = u.user_id
 
+order by survey_num_pre_enrollment

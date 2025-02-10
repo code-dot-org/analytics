@@ -33,8 +33,8 @@ course_structure as (
 
 select distinct 
     fs.user_id
-    , fs.code_studio_name
-    , fs.email
+    -- , fs.code_studio_name
+    -- , fs.email
     , fs.school_year                         
     , s.section_id
     , s.section_name
