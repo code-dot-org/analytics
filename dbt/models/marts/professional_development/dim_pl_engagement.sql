@@ -24,6 +24,18 @@ active_teachers_sy_int as (
     join school_years 
         on active_teachers.school_year = school_years.school_year 
 ),
+    
+active_students_by_teacher as ( 
+    select 
+        active_students.teacher_id,
+        active_students.school_year,
+        school_years.school_year_int,
+        count(distinct active_students.student_id):: float as num_active_students
+    from {{ ref('dim_active_students') }} active_students
+    join school_years 
+        on active_students.school_year = school_years.school_year
+    group by 1,2,3
+),
 
 pl_with_engagement as (
     select 
@@ -76,7 +88,12 @@ select
         when act_1.teacher_id is not null and act_2.teacher_id is not null then 1.00 
         when act_2.teacher_id is not null and act_3.teacher_id is not null then 1.00
         else 0.00
-    end as sustained
+    end as sustained,
+    case 
+        when act_1.teacher_id is not null then act_stu_1.num_active_students 
+        when act_2.teacher_id is not null then act_stu_2.num_active_students 
+        else 0.00
+    end as num_active_students
 from pl_with_engagement pl
 left join active_teachers_sy_int act_1
     on pl.teacher_id = act_1.teacher_id 
@@ -87,6 +104,12 @@ left join active_teachers_sy_int act_2
 left join active_teachers_sy_int act_3
     on pl.teacher_id = act_3.teacher_id 
     and pl.school_year_int + 2 = act_3.school_year_int
+left join active_students_by_teacher act_stu_1
+    on pl.teacher_id = act_stu_1.teacher_id
+    and pl.school_year_int = act_stu_1.school_year_int
+left join active_students_by_teacher act_stu_2
+    on pl.teacher_id = act_stu_2.teacher_id 
+    and pl.school_year_int + 1 = act_stu_2.school_year_int
 
 
 

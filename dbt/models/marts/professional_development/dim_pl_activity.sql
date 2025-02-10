@@ -91,7 +91,7 @@ left join school_years sy
     on pdw.school_year = sy.school_year
 left join teacher_schools_historical tsh
     on pda.teacher_id = tsh.teacher_id
-    and sy.started_at between tsh.started_at and tsh.ended_at
+    and sy.ended_at between tsh.started_at and tsh.ended_at
 left join teachers 
     on pda.teacher_id = teachers.teacher_id
 left join schools 

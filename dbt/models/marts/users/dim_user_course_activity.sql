@@ -68,6 +68,7 @@ school_years as (
 users as (
     select *
     from {{ ref('dim_users') }}
+    where user_type = 'student'
 ),
 
 combined as (
