@@ -1,14 +1,11 @@
 with 
 course_structure as (
-    select *
+    select 
+    *
     from {{ ref('dim_course_structure') }}
     where 
         course_name != 'other'
-        and 
-        (
-        participant_audience = 'teacher'
-        and instruction_type = 'self_paced'
-        )
+        and participant_audience = 'teacher'
         and script_name not in ('alltheselfpacedplthings')
         and content_area like '%self_paced_pl%'
 ),
