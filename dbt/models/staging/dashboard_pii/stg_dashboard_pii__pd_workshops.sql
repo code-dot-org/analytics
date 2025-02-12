@@ -56,6 +56,19 @@ select
     -- , is_funded
     -- , funding_type
     , module
+    , lower(participant_group_type) as participant_group_type
+    , case 
+        when json_extract_path_text(properties, 'virtual') = 'true' then 1 
+        when json_extract_path_text(properties, 'virtual') = 'false' then 0 
+        else null 
+    end as is_virtual
+    -- , case 
+    --     when pdw.started_at is null 
+    --         or pdw.started_at > current_date() 
+    --     then 1
+    --     else 0                 
+    -- end as is_upcoming
 from pd_workshops                                           as pdw
 join school_years                                           as sy
-    on pdw.started_at between sy.started_at and sy.ended_at
+    on coalesce(pdw.started_at, pdw.created_at) between sy.started_at and sy.ended_at
+where coalesce(pdw.started_at, pdw.created_at) > {{ get_cutoff_date() }} 

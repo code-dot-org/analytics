@@ -14,3 +14,4 @@ select
     sy.school_year
 from pd_attendances pda
 join school_years sy on pda.created_at between sy.started_at and sy.ended_at
+where pda.created_at > {{ get_cutoff_date() }} 
