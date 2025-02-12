@@ -10,14 +10,15 @@ models:
         data_tests:
           - not_null 
           - unique
-      - name: user_id
-        description: unique ID for the user, if they were signed in when completing the project
 
-      - name: is_signed_in
+      - name: user_id
+        description: unique ID for the user, if they were signed in when completing the project, NULL otherwise
+
+      - name: known_cdo_user
         description: 1 if the user was signed in while completing the project, 0 otherwise
 
       - name: user_type
-        description: student or teacher
+        description: student or teacher if known, NULL if not signed in
       
       - name: is_published
         description: 1 if the project was published, 0 otherwise
@@ -38,16 +39,10 @@ models:
         description: the calendar year when the project was first created 
       
       - name: country
-        description: the country associated with the signed-in user's location
-
-      - name: intl_partner_id
-        description: the intl partner ID associated with user's country
-
-      - name: intl_partner_name
-        description: the intl partner name associated with user's country
-
-      - name: region
-        description: the signed-in user's region
+        description: the country of the user
+      
+      - name: us_intl
+        description: us or intl or NULL, if not known
 
       - name: is_standalone
         description: 1 if the project was done as a standalone project, 0 if done as part of a curriculum
@@ -63,8 +58,9 @@ models:
       - name: remix_parent_id
         description: null if not remixed
       
-      - name: is_valid 
-        description: 0 if the project is a "ghost project" with a null channel id, 1 otherwise
+      - name: project_info 
+        description: project details
+
 
     config:
       tags: ['released']

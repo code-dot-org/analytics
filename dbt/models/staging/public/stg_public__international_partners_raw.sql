@@ -1,5 +1,5 @@
 with international_partners_raw as (
-    select * 
+    select *
     from {{ ref ('base_public__international_partners_raw') }}
 )
 

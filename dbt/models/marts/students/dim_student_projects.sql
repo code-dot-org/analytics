@@ -1,3 +1,7 @@
+/*
+edits: CK, 2-10-25 - removed international partner + regional data and used country from ug instead
+*/
+
 with 
 projects as (
     select * 
@@ -33,22 +37,8 @@ user_geos as (
     select distinct 
         user_id
         , country 
+        , us_intl
     from {{ ref('stg_dashboard__user_geos') }}
-),
-
-countries as (
-    select * 
-    from {{ ref('stg_public__countries') }}
-),
-
-international_partners_raw as (
-    select * 
-    from {{ ref('stg_public__international_partners_raw') }}
-),
-
-international_contact_info as (
-    select *
-    from {{ ref('stg_public__international_contact_info') }}
 ),
 
 school_years as (
@@ -61,7 +51,7 @@ final as (
           p.project_id 
         , u.user_id
         , case when p.user_id   is not null then 1 else 0 end   as known_cdo_user -- (1=student, 0=anon)
-        , case when u.user_id   is not null then 1 else 0 end   as is_signed_in
+        --, case when u.user_id   is not null then 1 else 0 end   as is_signed_in
         , u.user_type 
         , case 
             when p.published_at is not null then 1
@@ -72,11 +62,11 @@ final as (
         , p.published_at                                                        as project_published_at
         , sy.school_year                                                        as school_year
         , extract('year' from p.created_at)                                     as cal_year
-        , pc.display_name                                                       as country
-        , ipr.region                                                            as region
+        , ug.country                                                       as country
+        , ug.us_intl                                                        as us_intl
         , p.is_standalone 
         , p.abuse_score 
-        , p.project_type 
+        , p.project_type
         , case 
             when p.state = 'deleted' then 1 
             else 0 
@@ -99,12 +89,7 @@ final as (
 
     left join user_geos                                                         as ug 
         on u.user_id = ug.user_id
-
-    left join countries                                                         as pc 
-        on pc.alt_name = ug.country
-
-    left join international_partners_raw                                        as ipr 
-        on pc.display_name = ipr.display_name )
+)
 
 select * 
 from final 
