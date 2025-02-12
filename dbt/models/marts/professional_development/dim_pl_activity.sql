@@ -5,6 +5,11 @@ teachers as (
     from {{ ref('dim_teachers') }}
 ),
 
+school_years as (
+    select * 
+    from {{ ref('int_school_years') }}
+),
+
 self_paced_activity as ( 
     select 
         teacher_id,
@@ -20,6 +25,7 @@ self_paced_activity as (
 teacher_schools_historical as (
     select * 
     from {{ ref('int_teacher_schools_historical') }}
+    where school_id is not null
 ),
 
 schools as (
@@ -52,60 +58,8 @@ pd_sessions as (
 ),
 
 pd_workshops as (
-    select 
-        pd_workshop_id
-        , organizer_id
-        , school_year
-        , course_name
-        , subject as workshop_subject
-        , started_at as workshop_started_at
-        , regional_partner_id 
-        , is_byow
-    from {{ ref('stg_dashboard_pii__pd_workshops') }}
-),
-
-course_offerings as ( 
-    select * 
-    from {{ ref('stg_dashboard__course_offerings') }}
-),
-
-course_offerings_pd_workshops as ( 
-    select * 
-    from {{ ref('stg_dashboard_pii__course_offerings_pd_workshops') }}
-),
-
-course_structure as (
     select *
-        , replace(replace(replace(content_area, 'curriculum_', ''), '_self_paced_pl', ''), 'self_paced_pl_', '') as grade_band
-    from {{ ref('dim_course_structure') }}
-    where content_area != 'other'
-),
-
-course_grade_band as (
-    select distinct
-        course_name,
-        grade_band
-    from course_structure
-),
-
-regional_partners as (
-    select * 
-    from {{ ref('dim_regional_partners') }}
-),
-
-course_scripts as (
-    select * 
-    from {{ ref('stg_dashboard__course_scripts') }}
-),
-
-content_area_mapping as (
-    select distinct 
-        wco.course_offering_id,
-        cs.grade_band
-    from course_offerings_pd_workshops wco 
-    join course_offerings co 
-        on wco.course_offering_id = co.course_offering_id 
-    left join course_structure cs on co.key = cs.family_name
+    from {{ ref('int_pl_workshops') }}
 ),
 
 facilitated_pd as (
@@ -114,18 +68,15 @@ facilitated_pd as (
         teachers.us_intl,
         pdw.school_year,
         'facilitated'                                   as pl_type,
-        pdw.pd_workshop_id                              as pl_workshop_id,
-        pdw.organizer_id                                as pl_organizer_id,
-        pdw.regional_partner_id                         as workshop_regional_partner_id,
+        pdw.pl_workshop_id,
+        pdw.pl_organizer_id,
+        pdw.pl_regional_partner_id                      as workshop_regional_partner_id,
         districts.regional_partner_id                   as district_regional_partner_id,
         pdw.workshop_subject,
         pdw.workshop_started_at,
         pdw.is_byow,
-        case 
-            when pdw.course_name = 'build your own workshop' then co.display_name
-            else pdw.course_name
-        end                                             as topic,
-        coalesce(cam.grade_band, cg.grade_band)         as grade_band,
+        pdw.topic,
+        pdw.grade_band,
         tsh.school_id,
         schools.school_district_id,
         cast(null as bigint)                            as num_levels,
@@ -135,18 +86,12 @@ from pd_attendances pda
 join pd_sessions pds
     on pda.pd_session_id = pds.pd_session_id
 join pd_workshops pdw
-    on pds.pd_workshop_id = pdw.pd_workshop_id
-left join course_grade_band cg 
-    on pdw.course_name = cg.course_name
-left join course_offerings_pd_workshops copw 
-    on pdw.pd_workshop_id = copw.pd_workshop_id
-left join content_area_mapping cam 
-    on copw.course_offering_id = cam.course_offering_id
-left join course_offerings co 
-    on copw.course_offering_id = co.course_offering_id
+    on pds.pd_workshop_id = pdw.pl_workshop_id
+left join school_years sy
+    on pdw.school_year = sy.school_year
 left join teacher_schools_historical tsh
     on pda.teacher_id = tsh.teacher_id
-    and pda.school_year = tsh.started_at_sy
+    and sy.ended_at between tsh.started_at and tsh.ended_at
 left join teachers 
     on pda.teacher_id = teachers.teacher_id
 left join schools 
@@ -177,9 +122,11 @@ self_paced_pd as (
         cast(null as bigint)                as num_hours
 
     from self_paced_activity spa
+    left join school_years sy
+        on spa.school_year = sy.school_year
     left join teacher_schools_historical tsh
         on spa.teacher_id = tsh.teacher_id
-        and spa.school_year = tsh.started_at_sy 
+        and sy.started_at between tsh.started_at and tsh.ended_at
     left join teachers 
         on spa.teacher_id = teachers.teacher_id
     left join schools 

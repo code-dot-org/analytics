@@ -16,6 +16,7 @@ course_structure as (
 user_levels as (
     select *
     from {{ ref('dim_user_levels') }}
+    where created_date > {{ get_cutoff_date() }} 
 ),
 
 teachers as (

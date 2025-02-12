@@ -18,3 +18,4 @@ select
     , application_id 
 
 from pd_enrollments
+where enrolled_at > {{ get_cutoff_date() }} 
