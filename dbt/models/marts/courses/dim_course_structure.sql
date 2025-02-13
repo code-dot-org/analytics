@@ -39,7 +39,11 @@ levels_script_levels as (
 ),
 
 course_scripts as (
-    select * 
+    select 
+        course_script_id,
+        course_id,
+        script_id,
+        position
     from {{ ref('stg_dashboard__course_scripts') }}
 ),
 
@@ -79,10 +83,9 @@ combined as (
         sc.course_name,
         ug.unit_group_id                                                as course_id,
         ug.unit_group_name                                              as course_name_full,
+        
         -- scripts
         sc.topic_tags,
-
-
         sl.script_id,
         sc.script_name,
         sc.is_standalone,
