@@ -5,7 +5,7 @@ course_scripts as (
         , course_id
         , script_id
         , position
-        , lower(experiment_name)            as experiment_name
+        --, lower(experiment_name)            as experiment_name
         , default_script_id 
     from {{ ref('base_dashboard__course_scripts')}}
 )
