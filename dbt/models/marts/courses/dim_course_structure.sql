@@ -16,67 +16,67 @@ with
 scripts as (
     select *
     from {{ ref('stg_dashboard__scripts') }} 
-),
+)
 
-levels as (
+, levels as (
     select * 
     from {{ ref('stg_dashboard__levels') }}
-),
+)
 
-stages as (
+, stages as (
     select *
     from {{ ref('stg_dashboard__stages') }}
-),
+)
 
-script_levels as (
+, script_levels as (
     select *
     from {{ ref('stg_dashboard__script_levels') }}
-),
+)
 
-levels_script_levels as (
+, levels_script_levels as (
     select * 
     from {{ ref('stg_dashboard__levels_script_levels') }}
-),
+)
 
-course_scripts as (
+, course_scripts as (
     select 
         course_script_id,
         course_id,
         script_id,
         position
     from {{ ref('stg_dashboard__course_scripts') }}
-),
+)
 
-unit_groups as (
+, unit_groups as (
     select * 
     from {{ ref('stg_dashboard__unit_groups') }}
-),
+)
 
-contained_levels as (
+, contained_levels as (
     select * 
     from {{ ref("stg_dashboard__contained_levels") }}
-),
+)
 
-parent_levels_child_levels as (
+, parent_levels_child_levels as (
     select *
     from {{ ref('int_parent_levels_child_levels') }}
-),
+)
 
 -- select all courses that should be categorized as active student courses, to account for those with null participant audience
-student_course_names as (
+, student_course_names as (
     select distinct course_name
     from {{ ref('stg_dashboard__scripts') }}
     where 
         content_area like 'curriculum%' 
     and course_name not in ('hoc', 'other')
-),
+)
 
-script_names as (
+, script_names as (
     select * 
     from {{ ref('dim_script_names') }} 
-),
+)
 
-combined as (
+, combined as (
     select distinct 
         -- courses
         sc.content_area,
@@ -236,9 +236,9 @@ combined as (
     
     left join contained_levels as col 
         on lsl.level_id = col.level_group_level_id
-),
+)
 
-final as (
+, final as (
     select 
         content_area,
         topic_tags,
