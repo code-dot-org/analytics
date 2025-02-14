@@ -57,6 +57,7 @@ final as (
         teachers.purged_at,
         teachers.is_ambassador,
         teachers.teacher_email,
+        teachers.teacher_name,
         teachers.races,
         teachers.race_group,
         teachers.gender_group,
