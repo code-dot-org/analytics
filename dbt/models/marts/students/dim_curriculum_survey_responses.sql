@@ -18,7 +18,8 @@ student_surveys as (
         question_name,
         question_type,
         question_number,
-        question_text
+        question_text,
+        num_response_options
     from {{ ref('dim_curriculum_surveys') }}
 ),
 
@@ -96,6 +97,8 @@ combined as (
             then coalesce(lsfr.data,ls.data) 
             
         end as answer_response -- answer chosen or written by student 
+        , ss.num_response_options
+        , ul.level_source_id
 
     from student_surveys    as ss 
 
