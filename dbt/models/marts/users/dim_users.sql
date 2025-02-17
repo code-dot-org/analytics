@@ -40,6 +40,7 @@ final as (
         users.cap_status_date,
         users_pii.is_ambassador,
         users_pii.teacher_email,
+        users_pii.teacher_name,
         users_pii.races,
         users_pii.race_group,
         users.gender,

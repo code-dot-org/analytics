@@ -52,6 +52,7 @@ renamed as (
         case when user_type = 'teacher' then user_id end            as teacher_id,
 
         case when user_type = 'teacher' then email else null end    as teacher_email, -- PII!
+        case when user_type = 'teacher' then name else null end     as teacher_name,
         
         is_ambassador,
         birthday,
