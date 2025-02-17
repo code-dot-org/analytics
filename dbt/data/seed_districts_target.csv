@@ -1,235 +1,246 @@
-district_name,state,district_id,school_year
-Lower Kuskokwim School District,AK,200001,2024-25
-Lower Yukon School District,AK,200003,2024-25
-Ketchikan Gateway Borough School District,AK,200150,2024-25
-Anchorage School District,AK,200180,2024-25
-Juneau Borough School District,AK,200210,2024-25
-Kodiak Island Borough School District,AK,200480,2024-25
-Nenana City School District,AK,200540,2024-25
-Fairbanks North Star Borough School District,AK,200600,2024-25
-North Slope Borough School District,AK,200610,2024-25
-Northwest Arctic Borough School District,AK,200625,2024-25
-Yukon/Koyukuk School District,AK,200862,2024-25
-Riverbank Unified School District,CA,600061,2024-25
-ABC Unified School District,CA,601620,2024-25
-Big Sur Charter,CA,602469,2024-25
-Carmel Unified School District,CA,607530,2024-25
-Castro Valley Unified School District,CA,607800,2024-25
-Cupertino Union School District,CA,610290,2024-25
-El Monte City School District,CA,612090,2024-25
-Franklin-McKinley School District,CA,614370,2024-25
-Junction Elementary School District,CA,619200,2024-25
-Piedmont Unified School District,CA,630330,2024-25
-Portola Valley School District,CA,631470,2024-25
-Salinas City Elementary School District,CA,633930,2024-25
-San Jacinto Unified School District,CA,634440,2024-25
-San Leandro Unified School District,CA,634680,2024-25
-Santa Clara Unified School District,CA,635430,2024-25
-Soledad Unified School District,CA,637050,2024-25
-Visalia Unified School District,CA,641160,2024-25
-Santa Barbara County Education Office,CA,691034,2024-25
-Santa Cruz County Office of Education,CA,691036,2024-25
-Fulton County Schools,GA,1302280,2024-25
-Algiers Charter School Association,LA,2200053,2024-25
-Allen Parish,LA,2200060,2024-25
-Morris Jeff Community School,LA,2200203,2024-25
-Bogalusa City Schools,LA,2200240,2024-25
-The Willow School New Orleans,LA,2200297,2024-25
-Caddo Parish Public Schools,LA,2200300,2024-25
-Calcasieu Parish,LA,2200330,2024-25
-Caldwell Parish,LA,2200360,2024-25
-Cameron Parish,LA,2200390,2024-25
-Franklin Parish,LA,2200660,2024-25
-Lincoln Parish,LA,2200990,2024-25
-Ouachita Parish School System,LA,2201200,2024-25
-Albert Lea Area Schools,MN,2702970,2024-25
-Austin Public School District,MN,2703450,2024-25
-Burnsville-Eagan-Savage School District 191,MN,2707290,2024-25
-Duluth Independent School District 709,MN,2711040,2024-25
-Edina Public School District,MN,2711250,2024-25
-Moorhead Public School District,MN,2721420,2024-25
-North St Paul-Maplewood-Oakdale School District,MN,2723850,2024-25
-Osseo Area Schools,MN,2725200,2024-25
-Wayzata Public School District,MN,2742160,2024-25
-Picayune School District,MS,2803630,2024-25
-Belton School District 124 ,MO,2904620,2024-25
-Fort Osage School District,MO,2912290,2024-25
-Independence School District,MO,2915480,2024-25
-Pattonville R-III School District,MO,2923700,2024-25
-Riverview Gardens School District,MO,2926670,2024-25
-Rockwood School District,MO,2926850,2024-25
-St. Louis Public Schools,MO,2929280,2024-25
-Grand Island Public Schools,NE,3100016,2024-25
-Amherst Public Schools,NE,3100070,2024-25
-Arcadia Public Schools,NE,3103120,2024-25
-Arlington Public Schools,NE,3103130,2024-25
-Bellevue Public Schools,NE,3103810,2024-25
-Elkhorn Public Schools,NE,3170110,2024-25
-Fremont Public Schools,NE,3170710,2024-25
-Lexington Public Schools,NE,3172810,2024-25
-South Sioux City Community Schools,NE,3176860,2024-25
-Westside Community Schools,NE,3178660,2024-25
-Pitt County Schools,NC,3700012,2024-25
-Alamance-Burlington Schools,NC,3700030,2024-25
-Cabarrus County Schools,NC,3700347,2024-25
-Buncombe County Schools,NC,3700450,2024-25
-Burke County Public Schools,NC,3700480,2024-25
-Cleveland County Schools,NC,3700900,2024-25
-Davidson County Schools NC,NC,3701140,2024-25
-Iredell-Statesville Schools,NC,3702310,2024-25
-Nash County Public Schools,NC,3703270,2024-25
-New Hanover County Schools,NC,3703330,2024-25
-Onslow County Schools,NC,3703450,2024-25
-Robeson County Schools,NC,3703930,2024-25
-Rockingham County Schools,NC,3703990,2024-25
-Stanly County Schools,NC,3704320,2024-25
-Wake County Public School System,NC,3704720,2024-25
-Wayne County Public Schools,NC,3704880,2024-25
-Dickinson 1 School District,ND,3800038,2024-25
-Devils Lake Public School District,ND,3805040,2024-25
-Fargo 1 School District,ND,3806780,2024-25
-Mandan 1 School District,ND,3811820,2024-25
-McKenzie County 1 School District,ND,3812540,2024-25
-Minot 1 School District,ND,3813030,2024-25
-Wahpeton 37 School District,ND,3819020,2024-25
-Akron City Public Schools,OH,3904348,2024-25
-Cincinnati Public Schools,OH,3904375,2024-25
-Lancaster City School District,OH,3904420,2024-25
-Lima City School District,OH,3904422,2024-25
-Toledo City Schools,OH,3904490,2024-25
-Westerville Schools,OH,3904504,2024-25
-Youngstown City School District,OH,3904516,2024-25
-Union Local School District,OH,3904601,2024-25
-River Valley Local School District,OH,3904844,2024-25
-Bixby Public Schools,OK,4004500,2024-25
-Broken Arrow Public Schools,OK,4005490,2024-25
-Edmond Public Schools,OK,4010590,2024-25
-Jenks Public Schools,OK,4015720,2024-25
-Lawton Public Schools,OK,4017250,2024-25
-Mustang Public Schools,OK,4021000,2024-25
-Norman Public Schools,OK,4021720,2024-25
-Oklahoma City Public Schools,OK,4022770,2024-25
-Owasso Public Schools,OK,4023280,2024-25
-Union Public Schools,OK,4030600,2024-25
-Wagoner Public Schools,OK,4031350,2024-25
-Yukon Public Schools,OK,4033480,2024-25
-Campbell County Schools TN,TN,4700420,2024-25
-Carter County School District,TN,4700510,2024-25
-Cheatham County School District,TN,4700570,2024-25
-Claiborne County Schools,TN,4700630,2024-25
-Dickson County School District,TN,4701020,2024-25
-Hamilton County Schools,TN,4701590,2024-25
-Hawkins County School District,TN,4701740,2024-25
-Henderson County School System,TN,4701800,2024-25
-Knox Schools,TN,4702220,2024-25
-Loudon County Schools,TN,4702520,2024-25
-Jackson-Madison County School System,TN,4702580,2024-25
-Marion County Schools,TN,4702640,2024-25
-Marshall County Schools,TN,4702670,2024-25
-Maury County School District,TN,4702760,2024-25
-McNairy County School District,TN,4702880,2024-25
-Clarksville Montgomery County Schools,TN,4703030,2024-25
-Putnam County Schools (TN),TN,4703480,2024-25
-Robertson County Schools,TN,4703600,2024-25
-Rutherford County Schools,TN,4703690,2024-25
-Smith County Schools,TN,4703870,2024-25
-Union County TN,TN,4704290,2024-25
-Washington County Schools,TN,4704380,2024-25
-Wayne County Schools,TN,4704440,2024-25
-Williamson County School District,TN,4704530,2024-25
-East Chambers ISD,TX,4817880,2024-25
-Bellevue School District,WA,5300390,2024-25
-Bellingham School District,WA,5300420,2024-25
-Edmonds School District,WA,5302400,2024-25
-Everett Public School District,WA,5302670,2024-25
-Evergreen School District,WA,5302700,2024-25
-Federal Way School District,WA,5302820,2024-25
-Highline Public Schools,WA,5303540,2024-25
-Hockinson School District,WA,5303570,2024-25
-Issaquah School District,WA,5303750,2024-25
-Northshore School District,WA,5305910,2024-25
-Seattle Public Schools,WA,5307710,2024-25
-Shoreline School District,WA,5307920,2024-25
-Spokane Public School District,WA,5308250,2024-25
-Tacoma Public Schools,WA,5308700,2024-25
-Wenatchee School District,WA,5309660,2024-25
-Yakima School District,WA,5310110,2024-25
-Marion County Schools,WV,5400720,2024-25
-Monongalia County Schools,WV,5400930,2024-25
-Taylor County Schools,WV,5401380,2024-25
-Columbia Public Schools,MO,290100002281,2024-25
-Carthage R-IX,MO,290746000211,2024-25
-Jefferson City,MO,291619003346,2024-25
-Charter Schools USA,LA,,2024-25
-Terrebonne Parish,LA,,2024-25
-Bogalusa City Schools,LA,,2024-25
-Richland Parish,LA,,2024-25
-Catahoula Parish,LA,,2024-25
-Sabine Parish,LA,,2024-25
-Jackson Parish,LA,,2024-25
-St. James Parish,LA,,2024-25
-Union Parish,LA,,2024-25
-East Feliciana Parish,LA,,2024-25
-Washington Parish,LA,,2024-25
-Iberia Parish,LA,,2024-25
-St. Martin Parish,LA,,2024-25
-Tensas Parish,LA,,2024-25
-Pointe Coupee Parish,LA,,2024-25
-Winn Parish,LA,,2024-25
-Lafourche Parish,LA,,2024-25
-Iberville Parish,LA,,2024-25
-East Carroll Parish,LA,,2024-25
-Claiborne Parish,LA,,2024-25
-Birla High School,LA,,2024-25
-St. Francis De Sales Cathedral School,LA,,2024-25
-Academy of The Sacred Heart New Orleans,LA,,2024-25
-Woodland Park Magnet School,LA,,2024-25
-Findlay City School District,OH,,2024-25
-New Albany Plain Local Schools,OH,,2024-25
-Madison-Plains Local School District,OH,,2024-25
-Bowling Green City School District,OH,,2024-25
-Anthony Wayne Local School District,OH,,2024-25
-Athens City School District,OH,,2024-25
-Charlotte-Mecklenburg Schools,NC,,2024-25
-Bienville Parish,LA,,2024-25
-St. Charles Parish,LA,,2024-25
-Webster Parish,LA,,2024-25
-St. Helena Parish,LA,,2024-25
-Concordia Parish School District,LA,,2024-25
-West Baton Rouge,LA,,2024-25
-Morehouse Parish,LA,,2024-25
-West Feliciana Parish,LA,,2024-25
-Madison Parish,LA,,2024-25
-Grant Parish,LA,,2024-25
-Rapides Parish,LA,,2024-25
-Vernon Parish,LA,,2024-25
-Evangeline Parish,LA,,2024-25
-Assumption Parish,LA,,2024-25
-Desoto Parish,LA,,2024-25
-Lasalle Parish,LA,,2024-25
-Avoyelles Parish,LA,,2024-25
-St. Landry Parish,LA,,2024-25
-Archbishop Chapelle High School,LA,,2024-25
-St. Mary Parish,LA,,2024-25
-West Carroll Parish,LA,,2024-25
-Vermilion Parish,LA,,2024-25
-Acadiana High School,LA,,2024-25
-Nola Public Schools,LA,,2024-25
-St. Tammany Parish,LA,,2024-25
-Central Community Schools,LA,,2024-25
-Beauregard Parish,LA,,2024-25
-UView Academy,LA,,2024-25
-Tangipahoa Parish,LA,,2024-25
-Red River Parish,LA,,2024-25
-St. John The Baptist Parish,LA,,2024-25
-Monroe City Schools,LA,,2024-25
-Jefferson Davis Parish,LA,,2024-25
-Louisiana Department of Education,LA,,2024-25
-Jefferson Parish,LA,,2024-25
-St. Bernard Parish,LA,,2024-25
-Zachary Community School District,LA,,2024-25
-Acadia Parish,LA,,2024-25
-The Dunham School,LA,,2024-25
-City of Baker Schools,LA,,2024-25
-Livingston Parish,LA,,2024-25
-Plaquemines Parish,LA,,2024-25
+district_id,school_year
+200001,2024-25
+200003,2024-25
+200150,2024-25
+200180,2024-25
+200210,2024-25
+200480,2024-25
+200540,2024-25
+200600,2024-25
+200610,2024-25
+200625,2024-25
+200862,2024-25
+600061,2024-25
+601620,2024-25
+602469,2024-25
+607530,2024-25
+607800,2024-25
+610290,2024-25
+612090,2024-25
+614370,2024-25
+619200,2024-25
+630330,2024-25
+631470,2024-25
+633930,2024-25
+634440,2024-25
+634680,2024-25
+635430,2024-25
+637050,2024-25
+641160,2024-25
+691034,2024-25
+691036,2024-25
+1302280,2024-25
+2200053,2024-25
+2200060,2024-25
+2200203,2024-25
+2200240,2024-25
+2200297,2024-25
+2200300,2024-25
+2200330,2024-25
+2200360,2024-25
+2200390,2024-25
+2200660,2024-25
+2200990,2024-25
+2201200,2024-25
+2702970,2024-25
+2703450,2024-25
+2707290,2024-25
+2711250,2024-25
+2721420,2024-25
+2723850,2024-25
+2725200,2024-25
+2742160,2024-25
+2803630,2024-25
+2904620,2024-25
+2912290,2024-25
+2915480,2024-25
+2923700,2024-25
+2926670,2024-25
+2929280,2024-25
+3100016,2024-25
+3100070,2024-25
+3103120,2024-25
+3103130,2024-25
+3103810,2024-25
+3170110,2024-25
+3170710,2024-25
+3172810,2024-25
+3176860,2024-25
+3178660,2024-25
+3700012,2024-25
+3700030,2024-25
+3700347,2024-25
+3700450,2024-25
+3700480,2024-25
+3700900,2024-25
+3701140,2024-25
+3702310,2024-25
+3703270,2024-25
+3703330,2024-25
+3703450,2024-25
+3703930,2024-25
+3703990,2024-25
+3704320,2024-25
+3704720,2024-25
+3704880,2024-25
+3800038,2024-25
+3805040,2024-25
+3806780,2024-25
+3811820,2024-25
+3812540,2024-25
+3813030,2024-25
+3819020,2024-25
+3904348,2024-25
+3904375,2024-25
+3904420,2024-25
+3904422,2024-25
+3904490,2024-25
+3904504,2024-25
+3904516,2024-25
+3904601,2024-25
+3904844,2024-25
+4004500,2024-25
+4010590,2024-25
+4015720,2024-25
+4017250,2024-25
+4021000,2024-25
+4021720,2024-25
+4022770,2024-25
+4023280,2024-25
+4030600,2024-25
+4031350,2024-25
+4033480,2024-25
+4700420,2024-25
+4700510,2024-25
+4700570,2024-25
+4700630,2024-25
+4701020,2024-25
+4701590,2024-25
+4701740,2024-25
+4701800,2024-25
+4702220,2024-25
+4702520,2024-25
+4702580,2024-25
+4702640,2024-25
+4702670,2024-25
+4702760,2024-25
+4702880,2024-25
+4703030,2024-25
+4703480,2024-25
+4703690,2024-25
+4703870,2024-25
+4704290,2024-25
+4704380,2024-25
+4704440,2024-25
+4704530,2024-25
+4817880,2024-25
+5300390,2024-25
+5300420,2024-25
+5302400,2024-25
+5302670,2024-25
+5302700,2024-25
+5302820,2024-25
+5303540,2024-25
+5303570,2024-25
+5303750,2024-25
+5305910,2024-25
+5307920,2024-25
+5308250,2024-25
+5308700,2024-25
+5309660,2024-25
+5310110,2024-25
+5400720,2024-25
+5400930,2024-25
+5401380,2024-25
+290100002281,2024-25
+290746000211,2024-25
+291619003346,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25
+,2024-25

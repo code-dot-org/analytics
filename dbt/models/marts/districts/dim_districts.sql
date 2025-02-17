@@ -22,6 +22,11 @@ rp_mappings as (
     from {{ ref('stg_dashboard_pii__pd_regional_partner_mappings') }}
 ),
 
+email_domains as (
+    select * 
+    from {{ref('stg_external_datasets__districts_domains')}}
+),
+
 combined as (
     select
         school_districts.school_district_id,
@@ -30,6 +35,7 @@ combined as (
         school_districts.school_district_state,
         school_districts.school_district_zip,
         school_districts.last_known_school_year_open,
+        email_domains.domain_name,
 
         --regional partner association 
         rp_mappings.regional_partner_id,
@@ -58,6 +64,8 @@ combined as (
     from dim_schools
     left join school_districts
         on dim_schools.school_district_id = school_districts.school_district_id 
+    left join email_domains
+        on email_domains.district_id = school_districts.school_district_id
     left join rp_mappings 
         on (
             school_districts.school_district_zip = rp_mappings.zip_code 
@@ -70,7 +78,7 @@ combined as (
     left join regional_partners 
         on regional_partners.regional_partner_id = rp_mappings.regional_partner_id
     where dim_schools.school_district_id is not null 
-    {{ dbt_utils.group_by(8) }}
+    {{ dbt_utils.group_by(9) }}
 )
 
 select *
