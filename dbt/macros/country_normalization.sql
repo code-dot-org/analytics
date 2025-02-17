@@ -5,6 +5,7 @@
         when lower({{raw_country_name }}) in ('the bahamas') then 'bahamas'
         when lower({{raw_country_name }}) in ('caribbean netherlands') then 'bonaire, sint eustatius, and saba'
         when lower({{raw_country_name }}) in ('bosnia herzegovina','bosnia & herzegovina') then 'bosnia and herzegovina'
+        when lower({{raw_country_name }}) in ('brasil') then 'brazil'
         when lower({{raw_country_name }}) in ('brunei') then 'brunei darussalam'
         when lower({{raw_country_name }}) in ('cape verde') then 'cabo verde'
         when lower({{raw_country_name }}) in ('cocos [keeling] islands') then 'cocos (keeling) islands'
@@ -15,12 +16,14 @@
         when lower({{raw_country_name }}) in ('swaziland') then 'eswatini'
         when lower({{raw_country_name }}) in ('falkland islands (islas malvinas)') then 'falkland islands'
         when lower({{raw_country_name }}) in ('the gambia') then 'gambia'
+        when lower({{raw_country_name }}) in ('hongkong') then 'hong kong'
         when lower({{raw_country_name }}) in ('iran, islamic republic of') then 'iran'
         when lower({{raw_country_name }}) in ('hashemite kingdom of jordan') then 'jordan'
-        when lower({{raw_country_name }}) in ('republic of kosovo') then 'kosovo'
+        when lower({{raw_country_name }}) in ('republic of kosovo','xk') then 'kosovo'
         when lower({{raw_country_name }}) in ('lao people''s democratic republic') then 'laos'
         when lower({{raw_country_name }}) in ('republic of lithuania') then 'lithuania'
         when lower({{raw_country_name }}) in ('macau') then 'macao'
+        when lower({{raw_country_name }}) in ('méxico') then 'mexico'
         when lower({{raw_country_name }}) in ('federated states of micronesia','micronesia') then 'micronesia, federated states of'
         when lower({{raw_country_name }}) in ('republic of moldova','moldova') then 'moldova, republic of'
         when lower({{raw_country_name }}) in ('principality of monaco') then 'monaco'
@@ -42,16 +45,17 @@
         when lower({{raw_country_name }}) in ('sint maarten (dutch part)') then 'sint maarten'
         when lower({{raw_country_name }}) in ('slovak republic') then 'slovakia'
         when lower({{raw_country_name }}) in ('republic of korea', 'korea, republic of','korea, south (rok)') then 'south korea'
+        when lower({{raw_country_name }}) in ('españa') then 'spain'
         when lower({{raw_country_name }}) in ('syrian arab republic') then 'syria'
         when lower({{raw_country_name }}) in ('tanzania, united republic of') then 'tanzania'
         when lower({{raw_country_name }}) in ('democratic republic of timor-leste','east timor','timor leste') then 'timor-leste'
         when lower({{raw_country_name }}) in ('turkey','turkiye') then 'türkiye'
         when lower({{raw_country_name }}) in ('northern ireland') then 'united kingdom'
-        when lower({{raw_country_name }}) in ('us','u.s.') then 'united states'
+        when lower({{raw_country_name }}) in ('us','u.s.','the united states of america','u.s.a.','usa!','usa','u.s.a') then 'united states'
         when lower({{raw_country_name }}) in ('u.s. minor outlying islands') then 'united states minor outlying islands'
         when lower({{raw_country_name }}) in ('us virgin islands') then 'u.s. virgin islands'
         when lower({{raw_country_name }}) in ('viet nam') then 'vietnam'
-        when {{raw_country_name}} = '' then NULL
+        when {{raw_country_name}} in ('', 'NA','Europe') then NULL
         else lower({{raw_country_name }})
     end
 {% endmacro %}
