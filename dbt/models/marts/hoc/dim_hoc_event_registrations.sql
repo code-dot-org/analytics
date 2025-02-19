@@ -51,7 +51,7 @@ forms as (
     select
         null as form_id
         , email as email
-        , datepart('year', last_submitted) as cal_year
+        , '2024' as cal_year
         , '2024-25' as school_year
         , last_submitted as registered_at
         , null as event_type
@@ -61,6 +61,8 @@ forms as (
         , language
     from {{ref('stg_analysis_pii__hoc_event_registrations2024')}}
 )
+
+--select * from pegasus_registrations
 
 , combined as (
     select * from pardot_registrations
