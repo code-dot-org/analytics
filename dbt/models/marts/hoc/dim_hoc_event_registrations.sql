@@ -74,6 +74,10 @@ forms as (
         , {{get_email_domain('email')}}
         , teachers.teacher_id
         , tsh.school_id as school_id
+        , RANK() OVER (
+            PARTITION BY combined.email, combined.form_id
+            ORDER BY teachers.teacher_id DESC --this accounts for a single email matching to multiple accounts. It only pulls the most recent. 
+    ) AS teacher_account_rank
     from combined
     left join teachers 
         on combined.email = teachers.teacher_email
@@ -84,41 +88,25 @@ forms as (
 
 , final as (
     select
-        with_supplementary.*,
-        coalesce(schools.school_district_id, districts.school_district_id) as school_district_id --districts is based on email domain not on school_id
+        form_id
+        , cal_year
+        , school_year
+        , registered_at
+        , event_type
+        , with_supplementary.city
+        , with_supplementary.state
+        , with_supplementary.country
+        , with_supplementary.language
+        , with_supplementary.teacher_id
+        , schools.school_id
+        , coalesce(schools.school_district_id, districts.school_district_id) as school_district_id --districts is based on email domain not on school_id
     from 
         with_supplementary
     left join schools 
         on with_supplementary.school_id = schools.school_id
     left join districts
         on with_supplementary.email_domain = districts.domain_name
+    where teacher_account_rank = 1
 )
 
 select * from final
-
-
-/*
-
-        , {{get_email_domain('email')}}
-        , teachers.teacher_id
-        , tsh.school_id
-        --, schools.school_district_id
-
-    from forms 
-    left join teachers
-        on forms.email = teachers.teacher_email
-    left join teacher_school_historical tsh
-        on teachers.teacher_id = tsh.teacher_id
-        and registered_at between tsh.started_at and tsh.ended_at
-    left join schools 
-        on tsh.school_id = schools.school_id
-)
-
-select
-    pegasus_registrations.*,
-    districts.school_district_id as district_imputed
-from pegasus_registrations
- left join districts
-        on pegasus_registrations.email_domain = districts.domain_name
-
-*/
