@@ -55,8 +55,7 @@
         when lower({{raw_country_name }}) in ('u.s. minor outlying islands') then 'united states minor outlying islands'
         when lower({{raw_country_name }}) in ('us virgin islands') then 'u.s. virgin islands'
         when lower({{raw_country_name }}) in ('viet nam') then 'vietnam'
-        when lower({{raw_country_name}}) in (
-            select country from {{ref('dim_country_reference')}}) then lower({{raw_country_name}})
-        else null
+        when lower({{raw_country_name}}) in ('','europe','na','ro','sk','in','tn') then NULL
+        else lower({{raw_country_name }})
     end
 {% endmacro %}

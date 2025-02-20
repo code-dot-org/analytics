@@ -39,7 +39,7 @@ seeds:
           - not_null
           - unique
 
-  - name: seed_districts_target
+  - name: seed_districts_domains
     description: Email domains associated with school districts
     columns:
       - name: district_id
