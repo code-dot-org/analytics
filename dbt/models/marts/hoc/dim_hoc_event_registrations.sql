@@ -62,15 +62,39 @@ forms as (
     from {{ref('stg_analysis_pii__hoc_event_registrations2024')}}
 )
 
---select * from pegasus_registrations
-
 , combined as (
     select * from pardot_registrations
     union all
     select * from pegasus_registrations
 )
 
-select * from combined
+, with_supplementary as (
+    select
+        combined.* 
+        , {{get_email_domain('email')}}
+        , teachers.teacher_id
+        , tsh.school_id as school_id
+    from combined
+    left join teachers 
+        on combined.email = teachers.teacher_email
+    left join teacher_school_historical tsh
+        on teachers.teacher_id = tsh.teacher_id
+        and registered_at between tsh.started_at and tsh.ended_at
+)
+
+, final as (
+    select
+        with_supplementary.*,
+        coalesce(schools.school_district_id, districts.school_district_id) as school_district_id --districts is based on email domain not on school_id
+    from 
+        with_supplementary
+    left join schools 
+        on with_supplementary.school_id = schools.school_id
+    left join districts
+        on with_supplementary.email_domain = districts.domain_name
+)
+
+select * from final
 
 
 /*
