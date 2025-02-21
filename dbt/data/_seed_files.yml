@@ -47,6 +47,11 @@ seeds:
         data_tests:
           - not_null
           - unique
+      - name: domain_name
+        description: Email domain
+        data_tests:
+          - not_null
+          - unique
 
   - name: seed_hoc_internal_tutorials
     description: reference list of Code.org HOC tutorials (differentiated from 3rd party) provided by Bethany on 2024-10-29
