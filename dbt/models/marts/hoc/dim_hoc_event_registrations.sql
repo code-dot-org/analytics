@@ -89,6 +89,7 @@ forms as (
 , final as (
     select
         form_id
+        , email 
         , cal_year
         , school_year
         , registered_at
