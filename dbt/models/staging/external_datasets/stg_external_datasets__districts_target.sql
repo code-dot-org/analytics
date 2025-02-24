@@ -5,8 +5,6 @@ districts_target as (
 )
 
 select 
-    lower(district_name) as district_name,
-    state,
     district_id,
     school_year
 from districts_target

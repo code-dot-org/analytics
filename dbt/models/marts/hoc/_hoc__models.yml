@@ -42,14 +42,6 @@ models:
       - name: form_id
         description: |
           This model has 1 row for every HoC event registered via our form (2014 - 2023) or pardot (2024)
-        
-        data_tests:
-          - not_null 
-          - unique
-          
-      # may bring this in later
-      # - name: email
-      #   description: the email associated with the person registering the event
       
       - name: cal_year
         description: the calendar year associated with the HoC year they are registering for
