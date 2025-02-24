@@ -11,11 +11,19 @@ school_years as (
 )
 
 , student_demographics as (
-    select 
+    select
         s.student_id
     ,   s.is_urg
-    ,   s.gender_group
-    ,   s.race_group 
+    ,   case 
+            when s.gender_group in ('not_collected', 'no_response') 
+                then 'unknown' 
+            else  s.gender_group
+            end as gender_group
+    ,   case 
+            when s.race_group  in ('not_collected', 'no_response')
+                then 'unknown'
+            else s.race_group
+            end as race_group  
     from {{ ref('dim_students') }} s
 )
 
