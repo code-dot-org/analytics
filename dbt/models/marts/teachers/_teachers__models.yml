@@ -148,6 +148,9 @@ models:
       
       - name: is_ambassador
         description: 1 is the teacher account is associated with a student participating in the ambassador program, 0 otherwise
+
+      - name: teacher_role
+        description: the teacher's role in their org, if provided (includes classroom teacher as well as parent, library specialist, district admin, and other options)
         
       - name: state
         description: State value extracted from user's IP address
