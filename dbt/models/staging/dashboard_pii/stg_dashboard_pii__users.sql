@@ -1,8 +1,33 @@
 with
+
 users as (
-    select *
+    select 
+        id                          as user_id,
+        name,
+        user_type,
+        email,
+        gender,
+        birthday,
+        active                      as is_active,
+        urm                         as is_urg,
+        races,
+        created_at,
+        updated_at,
+        purged_at,
+        deleted_at,
+        nullif(
+            json_extract_path_text(
+            lower(properties), 
+            'us_state',    
+             true),'')          as us_state,
+        nullif(
+            json_extract_path_text(
+            lower(properties), 
+            'educator_role',    
+             true),'')          as teacher_role 
     from {{ ref('base_dashboard_pii__users') }}
-    where is_active
+    where
+        active
         and user_type is not null 
 ),
 
@@ -53,7 +78,8 @@ renamed as (
 
         case when user_type = 'teacher' then email else null end    as teacher_email, -- PII!
         case when user_type = 'teacher' then name else null end     as teacher_name,
-        
+
+        teacher_role,
         is_ambassador,
         birthday,
         datediff(year, birthday, current_date)  as age_years,
