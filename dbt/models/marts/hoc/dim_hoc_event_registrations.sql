@@ -100,7 +100,7 @@ forms as (
         , with_supplementary.language
         , with_supplementary.teacher_id
         , schools.school_id
-        , coalesce(schools.school_district_id, districts.school_district_id) as school_district_id --districts is based on email domain not on school_id
+        , coalesce(schools.school_district_id, districts.school_district_id) as school_district_id --districts is based on district associated to school, or to email domain if school association is not available
     from 
         with_supplementary
     left join schools 
