@@ -48,3 +48,5 @@ models:
 
       - name: page_url
         description: page_url value extracted from company_metadata
+
+  - name: stg_analysis_pii__hoc_event_registrations2024
