@@ -17,7 +17,7 @@ user_levels as (
         end                     as activity_locale,
         selected_locale,
         is_locale_supported,
-        sum(time_spent)         as time_spent_minutes,
+        sum(time_spent)/60      as time_spent_minutes,
         sum(attempts)           as total_attempts,
         max(best_result)        as best_result
     from {{ ref('stg_dashboard__user_levels') }}    
