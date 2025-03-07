@@ -22,7 +22,6 @@ dssla as (
     from {{ref('dim_student_script_level_activity')}}
     where 
         user_type = 'student' and
-        country = 'united states' and 
         content_area <> 'hoc'
 )
 
@@ -49,6 +48,7 @@ dssla as (
         student_id,
         grade_band,
         course_name,
+        country,
         activity_date as qualifying_date
     from
         days_per_student_course
@@ -63,6 +63,7 @@ dssla as (
         student_id,
         grade_band,
         course_name,
+        country,
         activity_date as qualifying_date
     from
         days_per_student_course

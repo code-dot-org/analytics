@@ -36,10 +36,10 @@ models:
       tags: ['reporting', 'tableau']
 
 
-## Daily participating students
-  - name: daily_participating_students
+## Daily curriculum student users
+  - name: us_daily_curriculum_student_users
     description: |
-      Daily count of participating students as defined by 2030 goals. "participating" students have 5+ days of content in a HS course or standalone unit or 1+ day of content in a MS or ES course
+      Daily count of curriculum students as defined by 2030 goals for the US market. "Curriculum student users" have 5+ days of content in a HS course or standalone unit or 1+ day of content in a MS or ES course. This view incorporates the adjustment for ES.
     columns:
       - name: school_year
         description: school year in format YYYY-YY
@@ -68,10 +68,10 @@ models:
     config:
       tags: ['released','reporting']
 
-  ## Yearly participating students
-  - name: yearly_participating_students
+  ## Yearly curriculum student users
+  - name: us_yearly_curriculum_student_users
     description: |
-      Annual calculations of participating students as defined by 2030 goals. "participating" students have 5+ days of content in a HS course or standalone unit or 1+ day of content in a MS or ES course
+      Annual count of curriculum students as defined by 2030 goals for the US market. "Curriculum student users" have 5+ days of content in a HS course or standalone unit or 1+ day of content in a MS or ES course. This view incorporates the adjustment for ES.
     columns:
       - name: school_year
         description: school year in format YYYY-YY

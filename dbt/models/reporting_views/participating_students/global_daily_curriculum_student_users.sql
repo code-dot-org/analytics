@@ -12,6 +12,8 @@ with participating as (
     select * from 
     {{ref('dim_participating_students')}}
     where qualifying_date >= '2019-07-01' --starting with 2019-20 school year
+    and country <> 'united states'
+    and country is not null
 )
 
 , all_students as (
@@ -23,7 +25,8 @@ with participating as (
         {{ref('dim_student_script_level_activity')}}
     where 
         user_type = 'student' and
-        country = 'united states' and 
+        and country <> 'united states'
+        and country is not null
         content_area <> 'hoc' and
         activity_date >= '2019-07-01' --starting with 2019-20 school year
     group by 1,2

@@ -18,9 +18,9 @@ Edit log:
 
 with
 
-int_participating_students as (
+int_curriculum_students as (
     select * from 
-    {{ref('int_participating_students')}}
+    {{ref('int_curriculum_students')}}
 ),
 
 students as (
@@ -37,11 +37,12 @@ earliest_date as (
         int_participating_students.school_year as school_year,
         int_participating_students.student_id as student_id,
         int_participating_students.grade_band as grade_band,
+        country,
         min(qualifying_date) as qualifying_date
     from 
-        int_participating_students
+        int_curriculum_students
     left join students 
-        on students.student_id = int_participating_students.student_id
+        on students.student_id = int_curriculum_students.student_id
     group by 1,2,3
 )
 
@@ -49,7 +50,8 @@ earliest_date as (
     select
         earliest_date.*,
         students.race_group,
-        students.gender_group
+        students.gender_group,
+        country
     from earliest_date
     left join students 
         on students.student_id = earliest_date.student_id
