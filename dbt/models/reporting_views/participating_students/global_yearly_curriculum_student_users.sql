@@ -12,11 +12,11 @@ Description of qualifying students
 - Total US students = Total unique known students (including 1-4 day HS) + (ES * 40% to account for anonymous)
 */
 
-with participating as (
+with curriculum_students as (
     select * from 
-    {{ref('dim_participating_students')}}
+    {{ref('dim_curriculum_student_users')}}
     where qualifying_date >= '2019-07-01' --starting with 2019-20 school year
-    where country <> 'united states'
+    and country <> 'united states'
     and country is not null
 )
 
@@ -37,10 +37,10 @@ with participating as (
 , category_counts as (
     select 
     school_year
-    , count (distinct case when grade_band = 'HS' then participating.student_id else null end ) n_students_HS
-    , count (distinct case when grade_band = 'MS' then participating.student_id else null end ) n_students_MS
-    , count (distinct case when grade_band = 'ES' then participating.student_id else null end ) n_students_ES 
-    from participating
+    , count (distinct case when grade_band = 'HS' then curriculum_students.student_id else null end ) n_students_HS
+    , count (distinct case when grade_band = 'MS' then curriculum_students.student_id else null end ) n_students_MS
+    , count (distinct case when grade_band = 'ES' then curriculum_students.student_id else null end ) n_students_ES 
+    from curriculum_students
     group by school_year
 )
 

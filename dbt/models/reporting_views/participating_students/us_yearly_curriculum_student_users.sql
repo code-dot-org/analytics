@@ -12,9 +12,9 @@ Description of qualifying students
 - Total US students = Total unique known students (including 1-4 day HS) + (ES * 40% to account for anonymous)
 */
 
-with participating as (
+with curriculum_students as (
     select * from 
-    {{ref('dim_participating_students')}}
+    {{ref('dim_curriculum_student_users')}}
     where qualifying_date >= '2019-07-01' --starting with 2019-20 school year
     where country = 'united states'
 )
@@ -35,17 +35,17 @@ with participating as (
 , category_counts as (
     select 
     school_year
-    , count (distinct case when grade_band = 'HS' then participating.student_id else null end ) n_students_HS
-    , count (distinct case when grade_band = 'MS' then participating.student_id else null end ) n_students_MS
-    , count (distinct case when grade_band = 'ES' then participating.student_id else null end ) n_students_ES 
-    , count (distinct case when grade_band = 'HS' and gender_group = 'f' then participating.student_id else null end ) n_students_HS_f
-    , count (distinct case when grade_band = 'HS' and gender_group in ('m','nb') then participating.student_id else null end ) n_students_HS_not_f
-    , count (distinct case when grade_band = 'HS' and race_group in ('hispanic','black','two_or_more_urg','american_indian','hawaiian') then participating.student_id else null end ) n_students_HS_urg
-    , count (distinct case when grade_band = 'HS' and race_group in ('white','asian','two_or_more_non_urg') then participating.student_id else null end ) n_students_HS_not_urg
-    , count (distinct case when grade_band = 'MS' and gender_group = 'f' then participating.student_id else null end ) n_students_MS_f
-    , count (distinct case when grade_band = 'MS' and gender_group in ('m','nb') then participating.student_id else null end ) n_students_MS_not_f
-    , count (distinct case when grade_band = 'MS' and race_group in ('hispanic','black','two_or_more_urg','american_indian','hawaiian') then participating.student_id else null end ) n_students_MS_urg
-    , count (distinct case when grade_band = 'MS' and race_group in ('white','asian','two_or_more_non_urg') then participating.student_id else null end ) n_students_MS_not_urg
+    , count (distinct case when grade_band = 'HS' then curriculum_students.student_id else null end ) n_students_HS
+    , count (distinct case when grade_band = 'MS' then curriculum_students.student_id else null end ) n_students_MS
+    , count (distinct case when grade_band = 'ES' then curriculum_students.student_id else null end ) n_students_ES 
+    , count (distinct case when grade_band = 'HS' and gender_group = 'f' then curriculum_students.student_id else null end ) n_students_HS_f
+    , count (distinct case when grade_band = 'HS' and gender_group in ('m','nb') then curriculum_students.student_id else null end ) n_students_HS_not_f
+    , count (distinct case when grade_band = 'HS' and race_group in ('hispanic','black','two_or_more_urg','american_indian','hawaiian') then curriculum_students.student_id else null end ) n_students_HS_urg
+    , count (distinct case when grade_band = 'HS' and race_group in ('white','asian','two_or_more_non_urg') then curriculum_students.student_id else null end ) n_students_HS_not_urg
+    , count (distinct case when grade_band = 'MS' and gender_group = 'f' then curriculum_students.student_id else null end ) n_students_MS_f
+    , count (distinct case when grade_band = 'MS' and gender_group in ('m','nb') then curriculum_students.student_id else null end ) n_students_MS_not_f
+    , count (distinct case when grade_band = 'MS' and race_group in ('hispanic','black','two_or_more_urg','american_indian','hawaiian') then curriculum_students.student_id else null end ) n_students_MS_urg
+    , count (distinct case when grade_band = 'MS' and race_group in ('white','asian','two_or_more_non_urg') then curriculum_students.student_id else null end ) n_students_MS_not_urg
     from participating
     group by school_year
 )
