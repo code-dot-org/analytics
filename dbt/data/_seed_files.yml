@@ -44,7 +44,7 @@ seeds:
           - unique
 
   - name: seed_districts_domains
-    description: Email domains associated with school districts
+    description: Email domains associated with school districts. This data is collected manually by the O&A team and does not represent ALL email domains of school districts. It is a partial list, primarily school districts enrolled in or targets of the district program. 
     columns:
       - name: district_id
         description: NCES district ID
