@@ -22,13 +22,17 @@ seeds:
     description: pulled manually from the output of what is currently in redshift
   
   - name: seed_districts_enrolled
-    description: districts enrolled in the district program, as of January 2025
+    description: districts enrolled in the district program, as of February 2025
     columns:
       - name: district_id
         description: NCES district ID
         data_tests:
           - not_null
           - unique
+      - name: month_closed
+        description: month that the district joined the district program
+        data_tests:
+          - not_null
   
   - name: seed_districts_target
     description: This data is exported fron Hubspot on a monthly basis to compile a list of target districts. Data last exported February 2025.
