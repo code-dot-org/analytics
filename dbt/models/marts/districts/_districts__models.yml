@@ -19,6 +19,8 @@ models:
         description: NCES zip code the district resides in
       - name: last_known_school_year_open
         description: NCES last year the school was confirmed open
+      - name: domain_name
+        description: email domain for the school district, if documented by the O&A team (note that this is a partial list, manually curated)
       - name: num_schools
         description: the number of schools in the district
       - name: num_schools_stage_el
