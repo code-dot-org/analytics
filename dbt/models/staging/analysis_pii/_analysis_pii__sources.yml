@@ -7,3 +7,4 @@ sources:
     tables:
       - name: foorm_submissions_reshaped
       - name: statsig_events
+      - name: hoc_event_registrations2024
