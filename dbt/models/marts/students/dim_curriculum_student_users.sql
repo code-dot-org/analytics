@@ -38,6 +38,10 @@ int_curriculum_students as (
         int_curriculum_students.student_id as student_id,
         int_curriculum_students.grade_band as grade_band,
         country,
+        case when country = 'united states' then 'us'
+             when country <> 'united states' then 'intl'
+             else null 
+        end as us_intl,
         min(qualifying_date) as qualifying_date
     from 
         int_curriculum_students
@@ -50,8 +54,7 @@ int_curriculum_students as (
     select
         earliest_date.*,
         students.race_group,
-        students.gender_group,
-        country
+        students.gender_group
     from earliest_date
     left join students 
         on students.student_id = earliest_date.student_id

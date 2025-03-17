@@ -13,21 +13,20 @@ Description of qualifying students
 */
 
 with curriculum_students as (
-    select * from 
-    {{ref('dim_curriculum_student_users')}}
-    where qualifying_date >= '2019-07-01' --starting with 2019-20 school year
-    where country = 'united states'
+    select *
+    from 
+        {{ref('dim_curriculum_student_users')}}
+    where qualifying_date >= '2020-07-01' --starting with 2020-21 school year
 )
 
 , dssla as (
     select 
-        student_id,
-        school_year
+        student_id
+        , school_year
     from 
         {{ref('dim_student_script_level_activity')}}
     where 
         user_type = 'student' and
-        country = 'united states' and 
         content_area <> 'hoc' and
         activity_date >= '2019-07-01' --starting with 2019-20 school year
 )
@@ -35,6 +34,7 @@ with curriculum_students as (
 , category_counts as (
     select 
     school_year
+    , us_intl
     , count (distinct case when grade_band = 'HS' then curriculum_students.student_id else null end ) n_students_HS
     , count (distinct case when grade_band = 'MS' then curriculum_students.student_id else null end ) n_students_MS
     , count (distinct case when grade_band = 'ES' then curriculum_students.student_id else null end ) n_students_ES 
@@ -47,21 +47,23 @@ with curriculum_students as (
     , count (distinct case when grade_band = 'MS' and race_group in ('hispanic','black','two_or_more_urg','american_indian','hawaiian') then curriculum_students.student_id else null end ) n_students_MS_urg
     , count (distinct case when grade_band = 'MS' and race_group in ('white','asian','two_or_more_non_urg') then curriculum_students.student_id else null end ) n_students_MS_not_urg
     from participating
-    group by school_year
+    group by school_year, us_intl
 )
 
 , total_counts as (
     select
-    school_year,
-    count (distinct student_id) n_students
+    school_year
+    , us_intl
+    , count (distinct student_id) n_students
     from
         dssla
     group by
-        school_year
+        school_year, us_intl
 )
 
 , final as (select
     category_counts.school_year
+    , us_intl
     --, total_counts.n_students as n_students
     , round(total_counts.n_students + n_students_ES * 0.4)::int as n_students_adj
     , n_students_HS
@@ -75,6 +77,7 @@ with curriculum_students as (
     from category_counts
     join total_counts
         on category_counts.school_year = total_counts.school_year
+    group by us_intl
     order by school_year desc
 )
 
