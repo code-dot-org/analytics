@@ -21,29 +21,29 @@ with
 int_curriculum_students as (
     select * from 
     {{ref('int_curriculum_students')}}
-),
+)
 
-students as (
+, students as (
     select 
         student_id,
         race_group,
         gender_group
     from 
     {{ref('dim_students')}}
-),
+)
 
-earliest_date as (
+, earliest_date as (
     select 
-        int_participating_students.school_year as school_year,
-        int_participating_students.student_id as student_id,
-        int_participating_students.grade_band as grade_band,
+        int_curriculum_students.school_year as school_year,
+        int_curriculum_students.student_id as student_id,
+        int_curriculum_students.grade_band as grade_band,
         country,
         min(qualifying_date) as qualifying_date
     from 
         int_curriculum_students
     left join students 
         on students.student_id = int_curriculum_students.student_id
-    group by 1,2,3
+    group by 1,2,3,4
 )
 
 , final as (

@@ -29,6 +29,7 @@ dssla as (
     select 
     dssla.school_year
     , dssla.student_id
+    , dssla.country
     , case 
         when dssla.content_area  = 'curriculum_k_5' then 'ES'
         when dssla.content_area  = 'curriculum_6_8' then 'MS'
@@ -39,7 +40,7 @@ dssla as (
     , activity_date
     , row_number() over (partition by student_id, school_year, course_name, grade_band order by activity_date asc) as day_order
     from dssla 
-    group by 1,2,3,4,5
+    group by 1,2,3,4,5,6
 )
 
 , qualifying_day_ES_MS as (
