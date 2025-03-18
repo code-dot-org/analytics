@@ -21,6 +21,7 @@ user_levels as (
         sum(attempts)           as total_attempts,
         max(best_result)        as best_result
     from {{ ref('stg_dashboard__user_levels') }}    
+    where attempts > 0
     {{ dbt_utils.group_by(8) }}
 ),
 
