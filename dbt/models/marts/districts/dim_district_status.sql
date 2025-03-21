@@ -192,7 +192,7 @@ final as (
             else 0
         end                                                             as is_target_this_year
         , case
-            when de_2.school_year_enrolled is not null then de_2.month_closed
+            when de_1.school_year_enrolled is not null then de_1.month_closed
             else null 
         end                                                             as enrolled_at
     from full_status                                                    as fs
