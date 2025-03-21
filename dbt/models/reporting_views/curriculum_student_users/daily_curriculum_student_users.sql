@@ -104,6 +104,15 @@ with curriculum_students as (
         school_year,
         qualifying_date,
         date_part(week, qualifying_date)::int week_number,
+        *decode (date_part(dayofweek, qualifying_date),
+                     0, 'sun',
+                     1, 'mon',
+                     2, 'tue',
+                     3, 'wed',
+                     4, 'thu',
+                     5, 'fri',
+                     6, 'sat')
+        day_of_the_week,
         us_intl,
         country,
         n_students,
@@ -123,15 +132,7 @@ order by qualifying_date desc, us_intl
         school_year,
         qualifying_date,
         us_intl,
-        /*decode (date_part(dayofweek, qualifying_date),
-                     0, 'sun',
-                     1, 'mon',
-                     2, 'tue',
-                     3, 'wed',
-                     4, 'thu',
-                     5, 'fri',
-                     6, 'sat')
-        day_of_the_week,
+        /
 
     from 
         calculations
