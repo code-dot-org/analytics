@@ -13,7 +13,7 @@ Description of qualifying criteria
 
 
 Edit log: 
-
+3/25 - edited to include global usage
 */
 
 with
