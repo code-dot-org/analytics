@@ -51,9 +51,14 @@ with curriculum_counts as (
 , date_spine as (
   {{dbt_utils.date_spine(
     datepart="day",
-    start_date="to_date('2020-07-01', 'yyyy-mm-dd')",
-    end_date="to_date('2025-07-01', 'yyyy-mm-dd')"
+    start_date= "to_date('2020-07-01', 'yyyy-mm-dd')",
+    end_date= "to_date('2025-07-01', 'yyyy-mm-dd')"
     )}}
+)
+
+, school_years as (
+    select * 
+    from {{ ref('int_school_years') }}
 )
 
 , frame as (
@@ -65,6 +70,7 @@ with curriculum_counts as (
 , calculations as (
     select
     frame.date_day as qualifying_date
+    , school_years.school_year
     , frame.us_intl
     , frame.country
     , coalesce(sum(all_counts.n_students) 
@@ -102,11 +108,15 @@ with curriculum_counts as (
     left join all_counts 
         on all_counts.qualifying_date = frame.date_day
         and all_counts.country = frame.country
+    inner join school_years 
+        on frame.date_day
+            between school_years.started_at 
+                and school_years.ended_at
 )
 
 , final as (
     select 
-       -- school_year,
+        school_year,
         qualifying_date,
         date_part(week, qualifying_date)::int week_number,
         decode (date_part(dayofweek, qualifying_date),
@@ -131,5 +141,4 @@ with curriculum_counts as (
 
 select * 
 from final
-order by qualifying_date desc, country
-
+order by qualifying_date, country
