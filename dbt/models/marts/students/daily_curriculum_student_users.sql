@@ -20,9 +20,8 @@ with curriculum_counts as (
         , count (distinct case when grade_band = 'MS' then student_id else null end ) n_students_MS
         , count (distinct case when grade_band = 'ES' then student_id else null end ) n_students_ES 
     from {{ref('dim_curriculum_student_users')}}
-    where qualifying_date >= '2020-07-01' --starting with 2020-21 school year
+    where qualifying_date >= '2020-07-01' --replace with dynamic reference
     group by 1,2,3,4  
-
 )
 
 --duca used here because the total includes 1+ days of HS and that's not in dim_curriculum_student_users
@@ -37,7 +36,7 @@ with curriculum_counts as (
         {{ref('dim_user_course_activity')}}
     where 
         user_type = 'student' and
-        content_area <> 'hoc' and
+        content_area like '%curriculum%' and
         first_activity_at >= '2020-07-01'
     group by 1,2,3,4
 )
