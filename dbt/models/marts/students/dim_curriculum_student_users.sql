@@ -13,53 +13,27 @@ Description of qualifying criteria
 
 
 Edit log: 
-3/25 - edited to include global usage
+3/25/25 - CK edited to include global usage rather than just US
 */
 
 with
 
-int_curriculum_students as (
-    select * from 
-    {{ref('int_curriculum_students')}}
-)
-
-, students as (
+final as (
     select 
-        student_id,
-        race_group,
-        gender_group
+        school_year
+        , student_id
+        , grade_band
+        , country
+        , us_intl
+        , race_group
+        , gender_group
+        , min(qualifying_date) as qualifying_date
     from 
-    {{ref('dim_students')}}
-)
+        {{ref('int_curriculum_students')}}
+    group by 1,2,3,4,5,6,7
 
-, earliest_date as (
-    select 
-        int_curriculum_students.school_year as school_year,
-        int_curriculum_students.student_id as student_id,
-        int_curriculum_students.grade_band as grade_band,
-        country,
-        case when country = 'united states' then 'us'
-             when country <> 'united states' then 'intl'
-             else null 
-        end as us_intl,
-        min(qualifying_date) as qualifying_date
-    from 
-        int_curriculum_students
-    left join students 
-        on students.student_id = int_curriculum_students.student_id
-    group by 1,2,3,4
-)
-
-, final as (
-    select
-        earliest_date.*,
-        students.race_group,
-        students.gender_group
-    from earliest_date
-    left join students 
-        on students.student_id = earliest_date.student_id
 )
 
 select * 
-from final
+from final 
 
