@@ -25,13 +25,13 @@ with curriculum_counts as (
 )
 
 --duca used here because the total includes 1+ days of HS and that's not in dim_curriculum_student_users
-, all_counts as (
+, all_students as (
     select 
-       {{ date_trunc("day", "first_activity_at") }} as qualifying_date,
+        user_id,
         school_year,
         us_intl,
         country,
-        count(distinct user_id) as n_students
+        min({{ date_trunc("day", "first_activity_at") }}) as qualifying_date
     from 
         {{ref('dim_user_course_activity')}}
     where 
@@ -42,18 +42,31 @@ with curriculum_counts as (
     group by 1,2,3,4
 )
 
+, student_aggregate as (
+    select 
+        qualifying_date,
+        school_year,
+        us_intl,
+        country,
+        count(distinct user_id) as n_students
+    from 
+        all_students
+    group by 1,2,3,4
+)
+
 , countries as (
     select country, us_intl
-    from all_counts
+    from student_aggregate
     group by 1,2
 )
 
 , date_spine as (
-  {{dbt_utils.date_spine(
+    {{ dbt_utils.date_spine(
     datepart="day",
-    start_date= "to_date('2020-07-01', 'yyyy-mm-dd')",
-    end_date= "to_date('2025-07-01', 'yyyy-mm-dd')"
-    )}}
+    start_date="cast('2020-07-01' as date)",
+    end_date="sysdate"
+   )
+}}
 )
 
 , school_years as (
@@ -73,7 +86,7 @@ with curriculum_counts as (
         , frame.country
         , frame.us_intl
         , school_years.school_year
-        , coalesce(all_counts.n_students, 0) as n_students
+        , coalesce(student_aggregate.n_students, 0) as n_students
         , coalesce(curriculum_counts.n_students_hs, 0) as n_students_hs
         , coalesce(curriculum_counts.n_students_ms, 0) as n_students_ms
         , coalesce(curriculum_counts.n_students_es, 0) as n_students_es
@@ -81,9 +94,9 @@ with curriculum_counts as (
     left join curriculum_counts 
         on curriculum_counts.qualifying_date = frame.date_day
         and curriculum_counts.country = frame.country
-    left join all_counts 
-        on all_counts.qualifying_date = frame.date_day
-        and all_counts.country = frame.country
+    left join student_aggregate 
+        on student_aggregate.qualifying_date = frame.date_day
+        and student_aggregate.country = frame.country
     inner join school_years 
         on frame.date_day
             between school_years.started_at 
