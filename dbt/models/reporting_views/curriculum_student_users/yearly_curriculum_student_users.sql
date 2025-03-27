@@ -52,16 +52,16 @@ with curriculum_counts as (
 , us_metric_prep as (
     select 
         school_year
-        , count (distinct case when grade_band = 'HS' then student_id else null end ) n_students_HS
-        , count (distinct case when grade_band = 'MS' then student_id else null end ) n_students_MS
-        , count (distinct case when grade_band = 'HS' and gender_group = 'f' then student_id else null end ) n_students_HS_f
-        , count (distinct case when grade_band = 'HS' and gender_group in ('m','nb') then student_id else null end ) n_students_HS_not_f
-        , count (distinct case when grade_band = 'HS' and race_group in ('hispanic','black','two_or_more_urg','american_indian','hawaiian') then student_id else null end ) n_students_HS_urg
-        , count (distinct case when grade_band = 'HS' and race_group in ('white','asian','two_or_more_non_urg') then student_id else null end ) n_students_HS_not_urg
-        , count (distinct case when grade_band = 'MS' and gender_group = 'f' then student_id else null end ) n_students_MS_f
-        , count (distinct case when grade_band = 'MS' and gender_group in ('m','nb') then student_id else null end ) n_students_MS_not_f
-        , count (distinct case when grade_band = 'MS' and race_group in ('hispanic','black','two_or_more_urg','american_indian','hawaiian') then student_id else null end ) n_students_MS_urg
-        , count (distinct case when grade_band = 'MS' and race_group in ('white','asian','two_or_more_non_urg') then student_id else null end ) n_students_MS_not_urg
+        , count (distinct case when grade_band = 'HS' then student_id else null end ) n_students_hs
+        , count (distinct case when grade_band = 'MS' then student_id else null end ) n_students_ms
+        , count (distinct case when grade_band = 'HS' and gender_group = 'f' then student_id else null end ) n_students_hs_f
+        , count (distinct case when grade_band = 'HS' and gender_group in ('m','nb') then student_id else null end ) n_students_hs_not_f
+        , count (distinct case when grade_band = 'HS' and race_group in ('hispanic','black','two_or_more_urg','american_indian','hawaiian') then student_id else null end ) n_students_hs_urg
+        , count (distinct case when grade_band = 'HS' and race_group in ('white','asian','two_or_more_non_urg') then student_id else null end ) n_students_hs_not_urg
+        , count (distinct case when grade_band = 'MS' and gender_group = 'f' then student_id else null end ) n_students_ms_f
+        , count (distinct case when grade_band = 'MS' and gender_group in ('m','nb') then student_id else null end ) n_students_ms_not_f
+        , count (distinct case when grade_band = 'MS' and race_group in ('hispanic','black','two_or_more_urg','american_indian','hawaiian') then student_id else null end ) n_students_ms_urg
+        , count (distinct case when grade_band = 'MS' and race_group in ('white','asian','two_or_more_non_urg') then student_id else null end ) n_students_ms_not_urg
     from curriculum_counts
     where country = 'united states'
     group by 1
@@ -69,10 +69,10 @@ with curriculum_counts as (
 , us_metrics as (
     select
         school_year
-        , round(cast(n_students_HS_f as decimal) / (n_students_hs_not_f + n_students_hs_f) * n_students_hs)::int as n_students_hs_f
-        , round(cast(n_students_HS_urg as decimal) / (n_students_hs_not_urg + n_students_hs_urg) * n_students_hs)::int as n_students_hs_urg
-        , round(cast(n_students_MS_f as decimal) / (n_students_ms_not_f + n_students_ms_f) * n_students_ms)::int as n_students_ms_f
-        , round(cast(n_students_MS_urg as decimal) / (n_students_ms_not_urg + n_students_ms_urg) * n_students_ms)::int as n_students_ms_urg
+        , round(cast(n_students_hs_f as decimal) / (n_students_hs_not_f + n_students_hs_f) * n_students_hs)::int as n_students_hs_f
+        , round(cast(n_students_hs_urg as decimal) / (n_students_hs_not_urg + n_students_hs_urg) * n_students_hs)::int as n_students_hs_urg
+        , round(cast(n_students_ms_f as decimal) / (n_students_ms_not_f + n_students_ms_f) * n_students_ms)::int as n_students_ms_f
+        , round(cast(n_students_ms_urg as decimal) / (n_students_ms_not_urg + n_students_ms_urg) * n_students_ms)::int as n_students_ms_urg
     from us_metric_prep
     group by 1,2,3,4,5
 )
@@ -82,16 +82,16 @@ with curriculum_counts as (
         all_counts.school_year
         ,  all_counts.country
         ,  all_counts.us_intl
-        , n_students
-        , (n_students + round(0.4 * n_students_es))::int as n_students_adj
-        , n_students_hs
-        , n_students_ms
-        , n_students_es
-        , round(n_students_es * 1.4)::int as n_students_es_adj
-        , n_students_hs_f
-        , n_students_hs_urg
-        , n_students_ms_f
-        , n_students_ms_urg
+        , coalesce(n_students, 0) as n_students
+        , coalesce((n_students + round(0.4 * n_students_es))::int,0) as n_students_adj
+        , coalesce(n_students_hs, 0)
+        , coalesce(n_students_ms, 0)
+        , coalesce(n_students_es, 0)
+        , coalesce(round(n_students_es * 1.4)::int,0) as n_students_es_adj
+        , coalesce(n_students_hs_f, 0)
+        , coalesce(n_students_hs_urg, 0)
+        , coalesce(n_students_ms_f, 0)
+        , coalesce(n_students_ms_urg, 0)
     from all_counts
     left join grade_band_metrics
         on all_counts.school_year = grade_band_metrics.school_year
