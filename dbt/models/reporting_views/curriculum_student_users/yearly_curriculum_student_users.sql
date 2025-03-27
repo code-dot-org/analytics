@@ -84,14 +84,14 @@ with curriculum_counts as (
         ,  all_counts.us_intl
         , coalesce(n_students, 0) as n_students
         , coalesce((n_students + round(0.4 * n_students_es))::int,0) as n_students_adj
-        , coalesce(n_students_hs, 0)
-        , coalesce(n_students_ms, 0)
-        , coalesce(n_students_es, 0)
+        , coalesce(n_students_hs, 0) as n_students_hs
+        , coalesce(n_students_ms, 0) as n_students_ms
+        , coalesce(n_students_es, 0) as n_students_es
         , coalesce(round(n_students_es * 1.4)::int,0) as n_students_es_adj
-        , coalesce(n_students_hs_f, 0)
-        , coalesce(n_students_hs_urg, 0)
-        , coalesce(n_students_ms_f, 0)
-        , coalesce(n_students_ms_urg, 0)
+        , coalesce(n_students_hs_f, 0) as n_students_hs_f
+        , coalesce(n_students_hs_urg, 0) as n_students_hs_urg
+        , coalesce(n_students_ms_f, 0) as n_students_ms_f
+        , coalesce(n_students_ms_urg, 0) as n_students_ms_urg
     from all_counts
     left join grade_band_metrics
         on all_counts.school_year = grade_band_metrics.school_year

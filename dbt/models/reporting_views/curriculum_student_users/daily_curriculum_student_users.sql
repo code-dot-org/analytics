@@ -129,12 +129,12 @@ with curriculum_counts as (
         day_of_the_week,
         us_intl,
         country,
-        n_students,
-        (n_students + round(0.4 * n_students_es))::int as n_students_adj,
-        n_students_hs,
-        n_students_ms,
-        n_students_es,
-        round(n_students_es * 1.4)::int as n_students_es_adj
+        coalesce(n_students, 0) as n_students
+        coalesce((n_students + round(0.4 * n_students_es))::int,0) as n_students_adj,
+        coalesce(n_students_hs, 0) as n_students_hs,
+        coalesce(n_students_ms, 0) as n_students_ms
+        coalesce(n_students_es, 0) as n_students_es
+        coalesce(round(n_students_es * 1.4)::int,0) as n_students_es_adj
     from calculations
 )
 
