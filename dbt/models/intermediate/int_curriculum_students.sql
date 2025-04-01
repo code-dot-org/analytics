@@ -19,6 +19,8 @@ students as (
         , course_name
         , dssla.country
         , dssla.us_intl
+        , dssla.school_state
+        , dssla.school_district_id
         , gender_group
         , race_group
     from
@@ -38,6 +40,8 @@ students as (
     , student_id
     , country
     , us_intl
+    , school_state
+    , school_district_id
     , race_group
     , gender_group
     , case 
@@ -48,9 +52,9 @@ students as (
         end grade_band
     , course_name
     , activity_date
-    , row_number() over (partition by student_id, school_year, course_name, grade_band order by activity_date asc) as day_order
+    , row_number() over (partition by student_id, school_year, course_name, grade_band, school_district_id, school_state order by activity_date asc) as day_order
     from students 
-    group by 1,2,3,4,5,6,7,8,9
+    group by 1,2,3,4,5,6,7,8,9,10,11
 )
 
 , qualifying_day_ES_MS as (
@@ -60,6 +64,8 @@ students as (
         , grade_band
         , country
         , us_intl
+        , school_district_id
+        , school_state
         , race_group
         , gender_group
         , activity_date as qualifying_date
@@ -77,6 +83,8 @@ students as (
         , grade_band
         , country
         , us_intl
+        , school_district_id
+        , school_state
         , race_group
         , gender_group
         , activity_date as qualifying_date

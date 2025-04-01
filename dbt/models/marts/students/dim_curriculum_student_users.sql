@@ -19,12 +19,14 @@ final as (
         , grade_band
         , country
         , us_intl
+        , school_state
+        , school_district_id
         , race_group
         , gender_group
         , min(qualifying_date) as qualifying_date
     from 
         {{ref('int_curriculum_students')}}
-    group by 1,2,3,4,5,6,7
+    group by 1,2,3,4,5,6,7,8,9
 
 )
 
