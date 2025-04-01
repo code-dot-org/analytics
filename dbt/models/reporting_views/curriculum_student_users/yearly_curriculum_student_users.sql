@@ -1,15 +1,7 @@
 /* Author: Cory
 Date: 11/30/24
-Purpose: Used for establishing 2030 participating student goals
+Purpose: Used for establishing 2030 curriculum student user goals
 Does all the calculations to generate the school-year level reporting metrics
-
-Edit log: 
-
-Description of qualifying students
-- Unique US students with 1+ touchpoint of ES curriculum + 40% uplift
-- Unique US students with 1+ touchpoint of MS curriculum
-- Unique US students with 5+ touchpoints of CSA/CSP or standalone units for HS
-- Total US students = Total unique known students (including 1-4 day HS) + (ES * 40% to account for anonymous)
 
 Edits:
 3/25: CK edits to include global
