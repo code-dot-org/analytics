@@ -393,6 +393,7 @@ models:
     description: |
       This model includes user answers to level-based curriculum survey questions, organized by curriculum and survey details. 
       dimensionality of curriculum surveys.
+
     columns:
       - name: student_id 
         description: ""
@@ -407,6 +408,7 @@ models:
 
       - name: country
         description: "" 
+
       - name: us_intl
         description: "" 
 
@@ -482,6 +484,7 @@ models:
   - name: dim_curriculum_student_users
     description: |
       This model counts the students who qualify as curriculum student users for 2030 Code.org goals
+
     columns:
       - name: school_year 
         description: school year of activity
@@ -489,7 +492,7 @@ models:
           - not_null
 
       - name: student_id 
-        description: 
+        description: student ID
         data_tests:
           - not_null
 
