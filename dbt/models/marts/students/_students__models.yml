@@ -482,8 +482,7 @@ models:
 
   
   - name: dim_curriculum_student_users
-    description: |
-      This model counts the students who qualify as curriculum student users for 2030 Code.org goals
+    description: This model counts the students who qualify as curriculum student users for 2030 Code.org goals
 
     columns:
       - name: school_year 
@@ -500,75 +499,21 @@ models:
         description: grade band of curriculum that student accessed (NOT necessarily the grade the student is enrolled in). For instance, a high school student who uses CSD will come through with grade_band = 'MS'.
         data_tests:
           - not_null
+
       - name: country
         description: "" 
+
       - name: us_intl
         description: "" 
+
       - name: race_group
         description: Aggregated race category, if known
+
       - name: gender_group
         description: Aggregated gender category, if known
+
       - name: qualifying_date
         description: The earliest date within the school year that student was considered a curriculum student user in that grade band. Example - if a student does curriculum in both CSC 6-8 and CSD, their first day of activity at the MS level is the qualifying date. If a student does 3 days of activity in CSP + 5 days of activity in CSA, the qualifying day will be the 5th day of activity in CSA.
-
-      - name: is_urg 
-        description: "" 
-
-      - name: group_level_id
-        description: id of the group level associated to the survey 
-        data_tests:
-          - not_null 
-
-      - name: content_area
-        description: "" 
-
-      - name: course_name
-        description: "" 
-
-      - name: script_id
-        description: "" 
-
-      - name: script_name
-        description: "" 
-
-      - name: unit
-        description: "" 
-
-      - name: topic_tags
-        description: "" 
-
-      - name: version_year
-        description: "" 
-
-      - name: survey_level_id 
-        description: contained level_id of survey 
         
-      - name: survey_name
-        description: "" 
-
-      - name: survey_type
-        description: "" 
-
-      - name: contained_level_id
-        description: "" 
-
-      - name: question_name
-        description: "" 
-
-      - name: question_type
-        description: "" 
-
-      - name: question_number 
-        description: "" 
-
-      - name: question_text 
-        description: "" 
-
-      - name: answer_number 
-        description: "" 
-
-      - name: answer_response
-        description: "" 
-    
     config:
       tags: ['released']
