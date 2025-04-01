@@ -36,10 +36,10 @@ models:
       tags: ['reporting', 'tableau']
 
 
-## Daily participating students
-  - name: daily_participating_students
+## Daily curriculum student users
+  - name: daily_curriculum_student_users
     description: |
-      Daily count of participating students as defined by 2030 goals. "participating" students have 5+ days of content in a HS course or standalone unit or 1+ day of content in a MS or ES course
+      Daily count of curriculum students as defined by 2030 goals for all countries. "Curriculum student users" have 5+ days of content in a HS course or 1+ day of content in a MS or ES course. This view incorporates an adjustment for ES and for the total based on an assumed 40% anonymous usage at the ES level.
     columns:
       - name: school_year
         description: school year in format YYYY-YY
@@ -49,66 +49,68 @@ models:
         description: date at which that student met the qualifying criteria
         data_tests:
           - not_null
-      - name: n_students_adj_cumulative
-        description: cumulative counts as of that school year for all students with 1+ touchpoints of content, adjusted up to account for 40% anonymous usage in elementary
+      - name: week_number
+        description: ISO week number
+      - name: n_students
+        description: number of unique students meeting at least 1+ day of curriculum (including HS). This is the number to use for reporting total curriculum students externally.
+      - name: n_students_adj
+        description: number of unique students meeting at least 1+ day of curriculum, with the adjustment to include 40% expected anonymous students. This is the number to use for internal tracking of curriculum students against 2030 goals. External reporting should not use this number.
+      - name: n_students_hs
+        description: school year to date counts for that school year for HS (5+ days of activity)
         data_tests:
           - not_null
-      - name: n_students_hs_cumulative
-        description: cumulative counts as of that school year
+      - name: n_students_ms
+        description: school year to date counts for that school year for MS
         data_tests:
           - not_null
-      - name: n_students_ms_cumulative
-        description: cumulative counts as of that school year
+      - name: n_students_es
+        description: school year to date counts for that school year for ES (NOT adjusted). External reporting should use this number of elementary school.
         data_tests:
           - not_null
-      - name: n_students_es_adj_cumulative
-        description: cumulative counts as of that school year. ES numbers are adjusted up 40% to account for anonymous usage. 
+      - name: n_students_es_adj
+        description: school year to date counts for that school year for ES, adjusted to account for expected 40% anonymous. Code.org goals should use the adjusted number for ES. External reporting should not use this number. 
         data_tests:
           - not_null
     config:
       tags: ['released','reporting']
 
-  ## Yearly participating students
-  - name: yearly_participating_students
+  ## Yearly curriculum student users
+  - name: yearly_curriculum_student_users
     description: |
-      Annual calculations of participating students as defined by 2030 goals. "participating" students have 5+ days of content in a HS course or standalone unit or 1+ day of content in a MS or ES course
+      Annual count of curriculum students as defined by 2030 goals. "Curriculum student users" have 5+ days of content in a HS course or standalone unit or 1+ day of content in a MS or ES course. This view incorporates the adjustment for ES. Note that gender and URG counts are NULL for non-US countries.
     columns:
       - name: school_year
         description: school year in format YYYY-YY
         data_tests:
           - not_null
+      - name: n_students
+        description: number of unique students meeting at least 1+ day of curriculum. This is the number to use for reporting total curriculum students externally.
       - name: n_students_adj
-        description: cumulative counts as of that school year; all students with 1+ non-HOC content day + 40% uplift for elementary
+        description: number of unique students meeting at least 1+ day of curriculum, with the adjustment to include 40% expected anonymous students. This is the number to use for internal tracking of curriculum students against 2030 goals. External reporting should not use this number.
+      - name: n_students_hs
+        description: school year to date counts for that school year for HS (5+ days of activity in a course)
         data_tests:
           - not_null
-      - name: n_students_HS
-        description: cumulative counts as of that school year
+      - name: n_students_ms
+        description: school year to date counts for that school year for MS (1+ days of activity in a course)
         data_tests:
           - not_null
-      - name: n_students_MS
-        description: cumulative counts as of that school year
+      - name: n_students_es
+        description: school year to date counts for that school year for ES (1+ days in a course). External reporting for elementary should use this number. 
         data_tests:
           - not_null
-      - name: n_students_ES_adj
-        description: cumulative counts as of that school year. ES numbers are adjusted up 40% to account for anonymous usage. 
+      - name: n_students_es_adj
+        description: school year to date counts for that school year for ES, adjusted to account for expected 40% anonymous. Code.org goals should use this number for ES. External reporting should not use this number. 
         data_tests:
           - not_null
-      - name: n_students_HS_f_calc
+      - name: n_students_hs_f
         description: imputation of number of female students, based on self-reported data for HS
-        data_tests:
-          - not_null
-      - name: n_students_HS_urg_calc
+      - name: n_students_hs_urg
         description: imputation of number of URG students, based on self-reported data for HS
-        data_tests:
-          - not_null
-      - name: n_students_MS_f_calc
-        description: imputation of number of female students, based on self-reported data for HS
-        data_tests:
-          - not_null
-      - name: n_students_MS_urg_calc
-        description: imputation of number of URG students, based on self-reported data for HS
-        data_tests:
-          - not_null
+      - name: n_students_ms_f
+        description: imputation of number of female students, based on self-reported data for MS
+      - name: n_students_ms_urg
+        description: imputation of number of URG students, based on self-reported data for MS
     config:
       tags: ['released']
 
