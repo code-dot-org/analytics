@@ -19,8 +19,6 @@ final as (
         , grade_band
         , country
         , us_intl
-        , school_state
-        , school_district_id
         , race_group
         , gender_group
         , min(qualifying_date) as qualifying_date

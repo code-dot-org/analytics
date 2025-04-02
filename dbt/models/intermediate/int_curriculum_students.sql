@@ -19,8 +19,6 @@ students as (
         , course_name
         , dssla.country
         , dssla.us_intl
-        , dssla.school_state
-        , dssla.school_district_id
         , gender_group
         , race_group
     from
@@ -40,8 +38,6 @@ students as (
     , student_id
     , country
     , us_intl
-    , school_state
-    , school_district_id
     , race_group
     , gender_group
     , case 
@@ -64,8 +60,6 @@ students as (
         , grade_band
         , country
         , us_intl
-        , school_district_id
-        , school_state
         , race_group
         , gender_group
         , activity_date as qualifying_date
@@ -83,8 +77,6 @@ students as (
         , grade_band
         , country
         , us_intl
-        , school_district_id
-        , school_state
         , race_group
         , gender_group
         , activity_date as qualifying_date
