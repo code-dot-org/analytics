@@ -24,7 +24,7 @@ final as (
         , min(qualifying_date) as qualifying_date
     from 
         {{ref('int_curriculum_students')}}
-    group by 1,2,3,4,5,6,7,8,9
+    group by 1,2,3,4,5,6,7
 
 )
 
