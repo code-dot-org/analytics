@@ -48,7 +48,7 @@ students as (
         end grade_band
     , course_name
     , activity_date
-    , row_number() over (partition by student_id, school_year, course_name, grade_band, school_district_id, school_state order by activity_date asc) as day_order
+    , row_number() over (partition by student_id, school_year, course_name, grade_band order by activity_date asc) as day_order
     from students 
     group by 1,2,3,4,5,6,7,8,9,10,11
 )
