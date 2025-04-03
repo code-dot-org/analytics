@@ -48,7 +48,8 @@ teacher_active_courses as (
         distinct teacher_id,
         school_year,
         course_name,
-        section_started_at
+        section_started_at,
+        fifth_student_started_at
     from {{ref('int_active_sections')}}
 ),
 
@@ -59,6 +60,7 @@ teacher_active_courses_with_sy as (
         tac.school_year,
         tac.course_name,
         tac.section_started_at,
+        tac.fifth_student_started_at,
         tsc.school_id
     from teacher_active_courses tac 
     join school_years sy
@@ -72,7 +74,7 @@ started_schools as (
     select 
         school_id,
         school_year,
-        min(section_started_at) as school_started_at,
+        min(fifth_student_started_at) as school_started_at,
         listagg( distinct course_name, ', ') within group (order by course_name) active_courses
     from teacher_active_courses_with_sy
     group by 1, 2
@@ -134,10 +136,6 @@ final as (
             when status_code = '111' then 'active retained'
             else null 
         end as status,
-
-            -- (js): impossible = "i'm possible"
-            -- when status_code = '110' then '<impossible status>' 
-            -- when status_code = '010' then '<impossible status>'
         status_code,
         school_started_at,
         active_courses
