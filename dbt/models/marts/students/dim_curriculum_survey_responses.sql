@@ -59,7 +59,7 @@ school_years as (
 ),
 
 combined as (
-    select 
+    select distinct
         ul.user_id as student_id,
         ul.created_at,
         
