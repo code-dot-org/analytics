@@ -22,10 +22,40 @@ seeds:
     description: pulled manually from the output of what is currently in redshift
   
   - name: seed_districts_enrolled
-    description: districts enrolled in the district program, as of October 2024
+    description: districts enrolled in the district program, as of February 2025
+    columns:
+      - name: district_id
+        description: NCES district ID
+        data_tests:
+          - not_null
+          - unique
+      - name: month_closed
+        description: month that the district joined the district program
+        data_tests:
+          - not_null
   
   - name: seed_districts_target
-    description: This data is exported fron Hubspot on a monthly basis to compile a list of target districts. Data last exported December 2024.
+    description: This data is exported fron Hubspot on a monthly basis to compile a list of target districts. Data last exported February 2025.
+    columns:
+      - name: district_id
+        description: NCES district ID
+        data_tests:
+          - not_null
+          - unique
+
+  - name: seed_districts_domains
+    description: Email domains associated with school districts. This data is collected manually by the O&A team and does not represent ALL email domains of school districts. It is a partial list, primarily school districts enrolled in or targets of the district program. 
+    columns:
+      - name: district_id
+        description: NCES district ID
+        data_tests:
+          - not_null
+          - unique
+      - name: domain_name
+        description: Email domain
+        data_tests:
+          - not_null
+          - unique
 
   - name: seed_hoc_internal_tutorials
     description: reference list of Code.org HOC tutorials (differentiated from 3rd party) provided by Bethany on 2024-10-29

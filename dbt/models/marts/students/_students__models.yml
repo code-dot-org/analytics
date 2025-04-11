@@ -393,6 +393,7 @@ models:
     description: |
       This model includes user answers to level-based curriculum survey questions, organized by curriculum and survey details. 
       dimensionality of curriculum surveys.
+
     columns:
       - name: student_id 
         description: ""
@@ -407,6 +408,7 @@ models:
 
       - name: country
         description: "" 
+
       - name: us_intl
         description: "" 
 
@@ -475,5 +477,43 @@ models:
       - name: answer_response
         description: "" 
     
+    config:
+      tags: ['released']
+
+  
+  - name: dim_curriculum_student_users
+    description: This model counts the students who qualify as curriculum student users for 2030 Code.org goals
+
+    columns:
+      - name: school_year 
+        description: school year of activity
+        data_tests:
+          - not_null
+
+      - name: student_id 
+        description: student ID
+        data_tests:
+          - not_null
+
+      - name: grade_band
+        description: grade band of curriculum that student accessed (NOT necessarily the grade the student is enrolled in). For instance, a high school student who uses CSD will come through with grade_band = 'MS'.
+        data_tests:
+          - not_null
+
+      - name: country
+        description: "" 
+
+      - name: us_intl
+        description: "" 
+
+      - name: race_group
+        description: Aggregated race category, if known
+
+      - name: gender_group
+        description: Aggregated gender category, if known
+
+      - name: qualifying_date
+        description: The earliest date within the school year that student was considered a curriculum student user in that grade band. Example - if a student does curriculum in both CSC 6-8 and CSD, their first day of activity at the MS level is the qualifying date. If a student does 3 days of activity in CSP + 5 days of activity in CSA, the qualifying day will be the 5th day of activity in CSA.
+        
     config:
       tags: ['released']

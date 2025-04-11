@@ -87,15 +87,21 @@ combined as (
         count (distinct 
                 case 
                     when cs.level_type in (
-                        'curriculumreference'
-                        , 'standalonevideo'
-                        , 'freeresponse'
+                        'bubblechoice'
+                        , 'curriculumreference'
                         , 'external'
                         , 'externallink'
+                        , 'freeresponse'
+                        , 'levelgroup'
                         , 'map'
-                        , 'levelgroup')
+                        , 'match'
+                        , 'multi'
+                        , 'panels'
+                        , 'standalonevideo'
+                        , 'unplugged'
+                        )
                         then null 
-                    else ul.user_level_id end )      as num_levels_course_progress, -- levels that count for course progress because they indicate on-platform activity. Used for 6-12 curriculum
+                    else ul.user_level_id end )      as num_levels_course_progress, -- levels that count for course progress because they indicate on-platform activity. Used mostly for 6-12 curriculum
         count(distinct trunc(ul.created_at))    as num_unique_days,
         sum(time_spent)                         as sum_time_spent
 

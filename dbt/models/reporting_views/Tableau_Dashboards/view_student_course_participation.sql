@@ -10,6 +10,23 @@ school_years as (
     where sysdate-(365*3) < ended_at and sysdate > started_at -- four most recent school years (current and prior 3), to change the number of years, change the multiplier
 )
 
+, student_demographics as (
+    select
+        s.student_id
+    ,   s.is_urg
+    ,   case 
+            when s.gender_group in ('not_collected', 'no_response') 
+                then 'unknown' 
+            else  s.gender_group
+            end as gender_group
+    ,   case 
+            when s.race_group  in ('not_collected', 'no_response')
+                then 'unknown'
+            else s.race_group
+            end as race_group  
+    from {{ ref('dim_students') }} s
+)
+
 
 , student_activity as (
     select sa.*
@@ -79,6 +96,9 @@ select
 , sa.content_area
 , sa.course_name
 , sa.topic_tags
+, sd.gender_group
+, sd.race_group
+, sd.is_urg
 , sa.us_intl
 , sa.country
 , sa.num_unique_days
@@ -98,6 +118,8 @@ select
 , sec.section_size
 
 from student_activity   as  sa
+left join student_demographics as sd
+    on  sa.user_id      =   sd.student_id 
 left join student_section      as  sec
     on  sa.user_id      =   sec.student_id
     and sa.school_year  =   sec.school_year
@@ -106,4 +128,4 @@ left join student_section      as  sec
 left join schools       as ss
         on sec.school_id    = ss.school_id 
 
-{{ dbt_utils.group_by(22) }} -- grouping instead of select distinct to deduplicate records with better performance
+{{ dbt_utils.group_by(25) }} -- grouping instead of select distinct to deduplicate records with better performance
