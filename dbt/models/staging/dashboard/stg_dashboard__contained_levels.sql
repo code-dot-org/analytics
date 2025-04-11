@@ -12,7 +12,7 @@ renamed as (
         lower(contained_level_type)             as contained_level_type,
         contained_level_page,
         contained_level_position,
-        lower(contained_level_text)             as contained_level_text,
+        contained_level_text,
         created_at,
         updated_at
     from contained_levels )
