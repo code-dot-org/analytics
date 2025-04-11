@@ -90,15 +90,14 @@ combined as (
         
         ant.answer_number,
         case 
-            when ss.question_type = 'multi' 
-            then ant.answer_text
-            
             when ss.question_type = 'freeresponse'
             then coalesce(lsfr.data,ls.data) 
-            
-        end as answer_response -- answer chosen or written by student 
+            else ant.answer_text
+        end as answer_response -- free response answer or selected answer
+
         , ss.num_response_options
-        , ul.level_source_id
+        , ul.user_level_id      -- useful to count unique submissions
+        , ul.level_source_id    -- useful if there's a need to join to level_sources 
 
     from student_surveys    as ss 
 
