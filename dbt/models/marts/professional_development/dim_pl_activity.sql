@@ -66,6 +66,7 @@ facilitated_pd as (
     select distinct 
         pda.teacher_id,
         teachers.us_intl,
+        teachers.country,
         pdw.school_year,
         'facilitated'                                   as pl_type,
         pdw.pl_workshop_id,
@@ -105,6 +106,7 @@ self_paced_pd as (
     select distinct
         spa.teacher_id,
         teachers.us_intl,
+        teachers.country,
         spa.school_year,
         spa.pd_type                         as pl_type,
         cast(null as bigint)                as pl_workshop_id,
