@@ -60,6 +60,11 @@ with curriculum_counts as (
     group by 1,2
 )
 
+, school_weeks as (
+    select * 
+    from {{ ref('int_school_weeks') }}
+)
+
 , date_spine as (
     {{ dbt_utils.date_spine(
     datepart="day",
@@ -142,9 +147,10 @@ with curriculum_counts as (
 
 , final as (
     select 
-        school_year
+        calculations.school_year
         , qualifying_date
         , date_part(week, qualifying_date)::int week_number
+        , sw.school_year_week
         , decode (date_part(dayofweek, qualifying_date),
                      0, 'sun',
                      1, 'mon',
@@ -162,6 +168,10 @@ with curriculum_counts as (
         , coalesce(n_students_es, 0) as n_students_es
         , coalesce(round(n_students_es * 1.4)::int,0) as n_students_es_adj
     from calculations
+    left join school_weeks  as sw
+        on calculations.qualifying_date 
+            between sw.started_at 
+            and sw.ended_at
 )
 
 select * 

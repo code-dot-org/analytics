@@ -160,6 +160,8 @@ models:
           - not_null
       - name: week_number
         description: ISO week number
+      - name: school_year_week
+        description: week of the school year (starts July 1, ends June 30)
       - name: n_students
         description: number of unique students meeting at least 1+ day of curriculum (including HS). This is the number to use for reporting total curriculum students externally.
       - name: n_students_adj
