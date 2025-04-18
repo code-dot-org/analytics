@@ -151,7 +151,7 @@ with curriculum_counts as (
         calculations.school_year
         , qualifying_date
         , date_part(week, qualifying_date)::int week_number
-        , sw.school_year_week
+        , sw.week_number_school_year
         , decode (date_part(dayofweek, qualifying_date),
                      0, 'sun',
                      1, 'mon',
