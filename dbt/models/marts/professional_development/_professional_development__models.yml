@@ -10,7 +10,9 @@ models:
           - not_null
         description: unique ID for the teacher 
       - name: us_intl
-        description: georgaphic association of the teacher's account
+        description: geographic association of the teacher's account
+      - name: country
+        description:  teacher's country
       - name: school_year 
         description: the school year associated with the teacher's PL activity or attendance
       - name: pl_type
@@ -51,6 +53,8 @@ models:
       - name: teacher_id
         data_tests:
           - not_null
+      - name: country
+        description: teacher's country
       - name: school_year 
         description: the school year associated with the PL engagement 
       - name: grade_band
