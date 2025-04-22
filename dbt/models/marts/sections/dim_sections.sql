@@ -101,7 +101,7 @@ teacher_school_changes as (
         -- section activity within a school/school year
         act.school_id,
         act.course_name,
-        coalesce(act.is_active,0) is_active
+        coalesce(act.is_active,0) is_active,
         act.num_students_active,
         act.section_started_at,     
         coalesce(act.school_year, nsps.school_year) school_year    -- coalesce first activity school_year with year of student activity
