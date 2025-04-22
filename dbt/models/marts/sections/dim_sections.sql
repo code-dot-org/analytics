@@ -113,7 +113,7 @@ teacher_school_changes as (
             nsps.section_id = act.section_id
             and nsps.school_year = act.school_year
             and nsps.teacher_id = act.teacher_id
-            and nsps.school_id = act.school_id 
+            and coalesce(nsps.school_id,'0') = coalesce(act.school_id,'0') 
 )
 select *
 from final
