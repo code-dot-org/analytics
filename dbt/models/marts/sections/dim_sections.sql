@@ -11,6 +11,11 @@ some of them for clarity -- noted in inline comments below.
 This model should have every distinct section_id that appears in stg__sections.  However, some sections 
 will show students added but no activity because the activity is excluded by int_active_sections.
 
+
+-- Updated by Natalia 04/22/25
+1. Changed join from sections to active courses to use a coalesce around school_id to bring in active sections not associated to an NCES school
+2. Added coalesce(is_active,0) to avoid nulls on this field
+
 #}
 
 with school_years as (
@@ -96,7 +101,7 @@ teacher_school_changes as (
         -- section activity within a school/school year
         act.school_id,
         act.course_name,
-        act.is_active,
+        coalesce(act.is_active,0) is_active,
         act.num_students_active,
         act.section_started_at,     
         coalesce(act.school_year, nsps.school_year) school_year    -- coalesce first activity school_year with year of student activity
@@ -113,7 +118,7 @@ teacher_school_changes as (
             nsps.section_id = act.section_id
             and nsps.school_year = act.school_year
             and nsps.teacher_id = act.teacher_id
-            and nsps.school_id = act.school_id 
+            and coalesce(nsps.school_id,'0') = coalesce(act.school_id,'0') 
 )
 select *
 from final

@@ -160,6 +160,8 @@ models:
           - not_null
       - name: week_number
         description: ISO week number
+      - name: week_number_school_year
+        description: week of the school year (starts July 1, ends June 30)
       - name: n_students
         description: number of unique students meeting at least 1+ day of curriculum (including HS). This is the number to use for reporting total curriculum students externally.
       - name: n_students_adj
@@ -180,6 +182,12 @@ models:
         description: school year to date counts for that school year for ES, adjusted to account for expected 40% anonymous. Code.org goals should use the adjusted number for ES. External reporting should not use this number. 
         data_tests:
           - not_null
+    data_tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - country
+          - qualifying_date
+
     config:
       tags: ['released','reporting']
 

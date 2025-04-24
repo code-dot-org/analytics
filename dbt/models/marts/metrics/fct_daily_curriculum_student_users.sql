@@ -7,6 +7,7 @@ This is a daily cut so that the stakeholders can see YOY changes below the schoo
 Edit log: 
 
 2025-03-17 CK - edited to make global + replaced dssla with duca as a source of all_students data (for speed)
+2025-04-17 CK - edited to add school year week
 
 */
 
@@ -58,6 +59,11 @@ with curriculum_counts as (
     select country, us_intl
     from student_aggregate
     group by 1,2
+)
+
+, school_weeks as (
+    select * 
+    from {{ ref('int_school_weeks') }}
 )
 
 , date_spine as (
@@ -142,9 +148,10 @@ with curriculum_counts as (
 
 , final as (
     select 
-        school_year
+        calculations.school_year
         , qualifying_date
         , date_part(week, qualifying_date)::int week_number
+        , sw.school_year_week as week_number_school_year
         , decode (date_part(dayofweek, qualifying_date),
                      0, 'sun',
                      1, 'mon',
@@ -162,6 +169,10 @@ with curriculum_counts as (
         , coalesce(n_students_es, 0) as n_students_es
         , coalesce(round(n_students_es * 1.4)::int,0) as n_students_es_adj
     from calculations
+    left join school_weeks  as sw
+        on calculations.qualifying_date 
+            between sw.started_at 
+            and sw.ended_at
 )
 
 select * 
