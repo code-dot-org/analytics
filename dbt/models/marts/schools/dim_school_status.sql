@@ -16,6 +16,9 @@ Logic: we can determine status based on three properties we can compute for ever
     - '101' (5) = 'active reacquired'   -- Active this year + NOT active last year + active in the past
     - '110' (6) = '<impossible status>' -- impossible for same reason as status (2)
     - '111' (7) = 'active retained'     -- active this year + active last year + (active ever before implied) 
+
+Edit log
+- CK, April 2025 - added school_active_at date as the maximum of: 1) 5th student in-section activity, 2) teacher mapped to school
 #}
 
 with 
@@ -43,38 +46,46 @@ teacher_school_changes as (
     from {{ ref('int_teacher_schools_historical') }}
 ),
 
+/*--I think this is redundant?
 teacher_active_courses as (
     select 
         distinct teacher_id,
         school_year,
         course_name,
         section_started_at,
-        fifth_student_started_at
+        section_active_at
     from {{ref('int_active_sections')}}
-),
+),*/
 
 teacher_active_courses_with_sy as (
 
     select
-        tac.teacher_id,
-        tac.school_year,
-        tac.course_name,
-        tac.section_started_at,
-        tac.fifth_student_started_at,
-        tsc.school_id
-    from teacher_active_courses tac 
+        distinct
+        ias.teacher_id,
+        ias.school_year,
+        ias.course_name,
+        ias.section_started_at,
+        ias.section_active_at,
+        tsc.school_id,
+        tsc.started_at,
+        tsc.ended_at
+    from {{ref('int_active_sections')}} ias 
     join school_years sy
-        on tac.school_year = sy.school_year
+        on ias.school_year = sy.school_year
     join teacher_school_changes tsc 
-        on tac.teacher_id = tsc.teacher_id 
-        and sy.ended_at between tsc.started_at and tsc.ended_at 
-),
+        on ias.teacher_id = tsc.teacher_id 
+        and sy.ended_at between tsc.started_at and tsc.ended_at
+)
+
+select * from teacher_active_courses_with_sy
+where teacher_id = 42372866
 
 started_schools as (
     select 
         school_id,
         school_year,
-        min(fifth_student_started_at) as school_started_at,
+        min(section_started_at) as school_started_at,
+        min(section_active_at) as school_active_at,
         listagg( distinct course_name, ', ') within group (order by course_name) active_courses
     from teacher_active_courses_with_sy
     group by 1, 2
@@ -91,6 +102,7 @@ started_schools as (
         end as is_active,
 
         started_schools.school_started_at,
+        started_schools.school_active_at,
         started_schools.active_courses
     from all_schools_sy 
     left join started_schools
@@ -116,6 +128,7 @@ started_schools as (
         ) as ever_active_before,
         (is_active || prev_year_active || ever_active_before) status_code,
         school_started_at,
+        school_active_at,
         active_courses
     from
         active_status_simple
@@ -138,6 +151,7 @@ final as (
         end as status,
         status_code,
         school_started_at,
+        school_active_at,
         active_courses
         from full_status
     order by
