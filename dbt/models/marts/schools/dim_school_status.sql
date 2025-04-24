@@ -26,61 +26,49 @@ with
 all_schools as (
     select school_id
     from {{ ref('dim_schools') }}
-),
+)
 
-school_years as (
+, school_years as (
     select * 
     from {{ ref('int_school_years') }}
-),
+)
 
-all_schools_sy as (
+, all_schools_sy as (
     select 
         all_schools.school_id,
         school_years.school_year
     from all_schools 
     cross join school_years
-),
+)
 
-teacher_school_changes as (
+, teacher_school_changes as (
     select *
     from {{ ref('int_teacher_schools_historical') }}
-),
+)
 
-/*--I think this is redundant?
-teacher_active_courses as (
-    select 
-        distinct teacher_id,
-        school_year,
-        course_name,
-        section_started_at,
-        section_active_at
-    from {{ref('int_active_sections')}}
-),*/
-
-teacher_active_courses_with_sy as (
-
+, teacher_active_courses_with_sy as (
     select
         distinct
         ias.teacher_id,
         ias.school_year,
         ias.course_name,
-        ias.section_started_at,
+        max(ias.section_active_at,tsc.started_at) as section_active_at, --later of 1) section active at; 2) teacher match
         ias.section_active_at,
-        tsc.school_id,
-        tsc.started_at,
-        tsc.ended_at
+        tsc.started_at as teacher_school_match,
+        tsc.school_id
     from {{ref('int_active_sections')}} ias 
     join school_years sy
         on ias.school_year = sy.school_year
-    join teacher_school_changes tsc 
+    left join teacher_school_changes tsc 
         on ias.teacher_id = tsc.teacher_id 
         and sy.ended_at between tsc.started_at and tsc.ended_at
 )
 
 select * from teacher_active_courses_with_sy
-where teacher_id = 42372866
+where teacher_id = 29195974
+order by section_started_at 
 
-started_schools as (
+, started_schools as (
     select 
         school_id,
         school_year,
@@ -133,9 +121,9 @@ started_schools as (
     from
         active_status_simple
 
-), 
+)
 
-final as (
+, final as (
 
     select
         school_id,
