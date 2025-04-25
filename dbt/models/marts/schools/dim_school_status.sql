@@ -1,6 +1,5 @@
 {# Notes:
 
-
 Design: 1 row per school, school_year, churn_status
 Logic: we can determine status based on three properties we can compute for every user|school_year as a binary:
     - 0/1 they are active this school_year - (A)ctive
@@ -77,11 +76,21 @@ all_schools as (
         school_year,
         min(section_started_at) as school_started_at,
         min(school_section_active_at) as school_active_at,
-        listagg( distinct course_name, ', ') within group (order by course_name) active_courses,
-        count(distinct teacher_id) as num_active_teachers
+        listagg( distinct course_name, ', ') within group (order by course_name) active_courses
     from teacher_active_courses_with_sy
     group by 1, 2
 )
+
+--you can't do a distinct count and a listagg in the same cte
+, teacher_count as (
+    select
+        school_id,
+        school_year,
+        count (distinct teacher_id) as num_active_teachers
+    from teacher_active_courses_with_sy
+    group by 1, 2 
+)
+
 , active_status_simple as (
     select 
         all_schools_sy.school_id,
@@ -95,11 +104,14 @@ all_schools as (
         started_schools.school_started_at,
         started_schools.school_active_at,
         started_schools.active_courses,
-        started_schools.num_active_teachers
+        teacher_count.num_active_teachers
     from all_schools_sy 
     left join started_schools
         on started_schools.school_id = all_schools_sy.school_id 
         and started_schools.school_year = all_schools_sy.school_year
+    left join teacher_count
+        on teacher_count.school_id = all_schools_sy.school_id
+        and teacher_count.school_year = all_schools_sy.school_year
 )
 , full_status as (
     -- Determine the active status for each school in each school year
