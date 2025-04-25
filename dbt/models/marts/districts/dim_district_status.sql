@@ -48,14 +48,26 @@ teacher_school_changes as (
     from {{ ref('int_teacher_schools_historical') }}
 ),
 
-teacher_active_courses as (
+--TO DO: replace with the school status table, not the section one
+school_status as (
+    select 
+        school_id,
+        school_year,
+        active_courses,
+        school_started_at,
+        school_active_at
+    from 
+        {{ref('dim_school_status')}}
+),
+
+/*teacher_active_courses as (
     select 
         distinct teacher_id,
         school_year,
         course_name,
         section_started_at
     from {{ref('int_active_sections')}}
-),
+),*/
 
 districts_enrolled as (
     select * 

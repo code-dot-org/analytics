@@ -174,6 +174,18 @@ models:
           combination_of_columns:
             - school_year
             - teacher_id
+
+    columns:
+      - name: teacher_id
+      - name: school_year
+      - name: status
+      - name: section_courses_started
+        description: the courses the teacher has taught in-classroom that school year
+      - name: started_teaching_at
+        description: earliest activity of a sectioned student that school year
+      - name: active_at
+        description: the date at which the teacher was considered an active teacher that school year
+
     config:
       tags: ['released']
     

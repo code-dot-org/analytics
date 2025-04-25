@@ -1,4 +1,6 @@
 {# Notes:
+
+
 Design: 1 row per school, school_year, churn_status
 Logic: we can determine status based on three properties we can compute for every user|school_year as a binary:
     - 0/1 they are active this school_year - (A)ctive
@@ -18,7 +20,7 @@ Logic: we can determine status based on three properties we can compute for ever
     - '111' (7) = 'active retained'     -- active this year + active last year + (active ever before implied) 
 
 Edit log
-- CK, April 2025 - added school_active_at date as the maximum of: 1) 5th student in-section activity, 2) teacher mapped to school
+- CK, April 2025 - added school_active_at date as the maximum of: 1) 5th student in-section activity, 2) teacher mapped to school; added num_active_teachers
 #}
 
 with 
@@ -52,8 +54,13 @@ all_schools as (
         ias.teacher_id,
         ias.school_year,
         ias.course_name,
-        max(ias.section_active_at,tsc.started_at) as section_active_at, --later of 1) section active at; 2) teacher match
+        ias.section_started_at,
         ias.section_active_at,
+        case 
+            when {{ dbt.datediff("ias.section_active_at", "tsc.started_at", "day") }} >= 0
+            then tsc.started_at
+            else ias.section_active_at
+            end as school_section_active_at,
         tsc.started_at as teacher_school_match,
         tsc.school_id
     from {{ref('int_active_sections')}} ias 
@@ -64,17 +71,14 @@ all_schools as (
         and sy.ended_at between tsc.started_at and tsc.ended_at
 )
 
-select * from teacher_active_courses_with_sy
-where teacher_id = 29195974
-order by section_started_at 
-
 , started_schools as (
     select 
         school_id,
         school_year,
         min(section_started_at) as school_started_at,
-        min(section_active_at) as school_active_at,
-        listagg( distinct course_name, ', ') within group (order by course_name) active_courses
+        min(school_section_active_at) as school_active_at,
+        listagg( distinct course_name, ', ') within group (order by course_name) active_courses,
+        count(distinct teacher_id) as num_active_teachers
     from teacher_active_courses_with_sy
     group by 1, 2
 )
@@ -88,10 +92,10 @@ order by section_started_at
             then 1 
             else 0 
         end as is_active,
-
         started_schools.school_started_at,
         started_schools.school_active_at,
-        started_schools.active_courses
+        started_schools.active_courses,
+        started_schools.num_active_teachers
     from all_schools_sy 
     left join started_schools
         on started_schools.school_id = all_schools_sy.school_id 
@@ -117,7 +121,8 @@ order by section_started_at
         (is_active || prev_year_active || ever_active_before) status_code,
         school_started_at,
         school_active_at,
-        active_courses
+        active_courses,
+        num_active_teachers
     from
         active_status_simple
 
@@ -140,7 +145,8 @@ order by section_started_at
         status_code,
         school_started_at,
         school_active_at,
-        active_courses
+        active_courses,
+        num_active_teachers
         from full_status
     order by
         school_id, 
