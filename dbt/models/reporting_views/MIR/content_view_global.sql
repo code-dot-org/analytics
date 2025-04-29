@@ -1,3 +1,8 @@
+/* Edit log
+
+- CK 2025-4-29 - fixing an issue with small countries not having a value for all months and courses
+*/
+  
     -- Step 0: Stage data
     with 
     students_by_curriculum as (
@@ -11,7 +16,35 @@
         where
             user_type = 'student'
             and us_intl = 'intl'
+            and country = 'cuba'
+            and school_year = '2023-24'
     )
+
+, countries as (
+    select distinct country
+    from students_by_curriculum
+)
+
+, months as (
+    select distinct activity_month
+    from students_by_curriculum
+)
+
+, courses as (
+    select distinct course_name
+    from students_by_curriculum
+)
+
+, crossjoin as (
+    select
+        country,
+        activity_month,
+        course_name
+    from countries
+    cross join months
+    cross join courses
+    order by 1,2
+)
     
 , first_active_month as (
     select 
@@ -24,7 +57,7 @@
     group by student_id, school_year, course_name, country
 )
 
-, combined as (
+, combined_student as (
     select 
         sc.student_id,
         sc.course_name,
@@ -41,7 +74,7 @@
         --and sc.activity_month >= fam.first_activity_month
 )
 
-, final as (
+, aggregate as (
     select 
         course_name,
         school_year,
@@ -51,20 +84,30 @@
         count(distinct case 
             when activity_month = first_activity_month
             then student_id end) as num_new_students
-    from combined as com
+    from combined_student as com
     group by 1,2,3,4
 )
 
 , rolling_final_prep as (
     select 
-        school_year,
-        activity_month,
-        country,
-        course_name,
-        num_active_students,
-        num_new_students
-    from final
+        --school_year,
+        aggregate.activity_month,
+        aggregate.country,
+        aggregate.course_name,
+        coalesce(num_active_students,0) as num_active_students,
+        coalesce(num_new_students,0) as num_new_students
+    from crossjoin
+    left join aggregate
+        on aggregate.country = crossjoin.country
+        and aggregate.activity_month = crossjoin.activity_month
+        and aggregate.course_name = crossjoin.course_name
+    where activity_month is not null
+    and country is not null
+    and course_name is not null
 )
+
+select * from rolling_final_prep
+order by activity_month, course_name
 
 , rolling_final as (
     select 
@@ -87,6 +130,9 @@ select *
 from rolling_final
 order by 
     school_year desc, 
-    activity_month desc,
+    activity_month,
     course_name,
     country
+where school_year is not null
+and activity_month is not null
+and country is not null
