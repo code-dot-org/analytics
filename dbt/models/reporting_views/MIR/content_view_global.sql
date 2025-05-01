@@ -125,7 +125,7 @@
                 course_name
             order by activity_month
             rows between unbounded preceding and current row
-        ) as num_ytd_students
+        ) as num_active_students_ytd
     from rolling_final_prep )
 
 select * 
