@@ -131,6 +131,8 @@ select *
 from rolling_final
 order by 
     school_year desc, 
-    activity_month desc,
+    school_state,
     course_name,
-    school_state 
+    activity_month 
+
+     
