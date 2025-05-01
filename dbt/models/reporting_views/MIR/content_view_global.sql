@@ -16,8 +16,6 @@
         where
             user_type = 'student'
             and us_intl = 'intl'
-            and country = 'cuba'
-            and school_year = '2023-24'
     )
 
 , countries as (
@@ -35,14 +33,24 @@
     from students_by_curriculum
 )
 
+, school_years as (
+    select * 
+    from {{ ref('int_school_years') }}
+)
+
 , crossjoin as (
     select
         country,
         activity_month,
-        course_name
+        course_name,
+        school_year
     from countries
     cross join months
     cross join courses
+    inner join school_years 
+        on months.activity_month
+            between school_years.started_at 
+            and school_years.ended_at
     order by 1,2
 )
     
@@ -61,9 +69,9 @@
     select 
         sc.student_id,
         sc.course_name,
-        sc.school_year,
         sc.country,
         sc.activity_month,
+        sc.school_year,
         fam.first_activity_month as first_activity_month
     from students_by_curriculum as sc 
     left join first_active_month as fam 
@@ -90,10 +98,10 @@
 
 , rolling_final_prep as (
     select 
-        --school_year,
-        aggregate.activity_month,
-        aggregate.country,
-        aggregate.course_name,
+        crossjoin.activity_month,
+        crossjoin.country,
+        crossjoin.course_name,
+        crossjoin.school_year,
         coalesce(num_active_students,0) as num_active_students,
         coalesce(num_new_students,0) as num_new_students
     from crossjoin
@@ -101,13 +109,7 @@
         on aggregate.country = crossjoin.country
         and aggregate.activity_month = crossjoin.activity_month
         and aggregate.course_name = crossjoin.course_name
-    where activity_month is not null
-    and country is not null
-    and course_name is not null
 )
-
-select * from rolling_final_prep
-order by activity_month, course_name
 
 , rolling_final as (
     select 
@@ -123,16 +125,13 @@ order by activity_month, course_name
                 course_name
             order by activity_month
             rows between unbounded preceding and current row
-        ) as num_active_students_ytd
+        ) as num_ytd_students
     from rolling_final_prep )
 
 select * 
 from rolling_final
 order by 
     school_year desc, 
-    activity_month,
+    country,
     course_name,
-    country
-where school_year is not null
-and activity_month is not null
-and country is not null
+    activity_month
