@@ -39,6 +39,7 @@ districts_enrolled as (
     select * 
     from {{ ref('stg_external_datasets__districts_enrolled') }}
 ),
+
 districts_target as (
     select * 
     from {{ ref('stg_external_datasets__districts_target') }}
@@ -109,7 +110,7 @@ active_district_stats as (
     group by 1, 2
 ),
 
---listagg cannot be combined with count distinct; based on sections not schools to avoid splitting + recombining
+--listagg cannot be combined with count distinct; active_courses comes from sections not schools to avoid splitting + recombining 
 active_district_courses as (
     select 
         school_district_id

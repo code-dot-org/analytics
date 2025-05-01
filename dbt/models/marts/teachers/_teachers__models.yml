@@ -174,11 +174,12 @@ models:
           combination_of_columns:
             - school_year
             - teacher_id
-
+            
     columns:
       - name: teacher_id
       - name: school_year
       - name: status
+        description: the teacher's in-classroom status this school year 
       - name: section_courses_started
         description: the courses the teacher has taught in-classroom that school year
       - name: started_teaching_at

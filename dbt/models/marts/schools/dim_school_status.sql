@@ -53,14 +53,15 @@ all_schools as (
         ias.teacher_id,
         ias.school_year,
         ias.course_name,
+        ias.section_id,
         ias.section_started_at,
         ias.section_active_at,
+        tsc.started_at as teacher_school_match,
         case 
-            when {{ dbt.datediff("ias.section_active_at", "tsc.started_at", "day") }} >= 0
+            when tsc.started_at > ias.section_active_at 
             then tsc.started_at
             else ias.section_active_at
             end as school_section_active_at,
-        tsc.started_at as teacher_school_match,
         tsc.school_id
     from {{ref('int_active_sections')}} ias 
     join school_years sy

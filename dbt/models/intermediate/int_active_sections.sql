@@ -1,7 +1,7 @@
 {# dataops-316 
 
 Edit log
-- CK, April 2025 - added a 5th student date. This logic calculates the earliest day of qualifying section activity per student in a section section (later of activity, added to section) and then finds the date of the fifth student in the section.
+- CK, April 2025 - added a 5th student date. This logic calculates the earliest day of qualifying section activity per student in a section (later of activity, added to section) and then finds the date of the fifth student in the section.
 
 #}
 
@@ -28,13 +28,13 @@ student_section as (
         , scs.first_activity_at
         , ss.student_added_at
         , case 
-            when {{ dbt.datediff("scs.first_activity_at", "ss.student_added_at", "day") }} <= 0
+            when scs.first_activity_at > ss.student_added_at
             then scs.first_activity_at
             else ss.student_added_at
-            end as first_effective_date
+            end as effective_date
         , row_number() over (
             partition by ss.section_id, ss.teacher_id, ss.school_year, scs.course_name
-            order by first_effective_date
+            order by effective_date
         ) as student_row_n
     from student_course_starts scs
 	join student_section ss 
@@ -54,8 +54,8 @@ student_section as (
 		, ranks.school_year
 		, ranks.course_name
 		, ranks.section_id
-        , min(ranks.first_activity_at) as section_started_at
-        , fifth_rank.first_activity_at as section_active_at
+        , min(ranks.first_activity_at) as section_started_at --section_started is based on first student activity
+        , fifth_rank.effective_date as section_active_at --section_active_at is based on the later of activity + section add, for student #5
 		, count(distinct ranks.student_id) as num_students 
 	from ranks 
     left join fifth_rank

@@ -42,7 +42,7 @@ school_weeks as (
 
         -- school stats
         sssy.school_year,
-        sssy.school_started_at,
+        sssy.school_active_at,
         sssy.status,
         sssy.active_courses,
         
@@ -59,7 +59,7 @@ school_weeks as (
         on schools.school_id = sssy.school_id 
 
     left join school_weeks  as sw
-        on sssy.school_started_at 
+        on sssy.school_active_at 
             between sw.started_at 
                 and sw.ended_at
     
