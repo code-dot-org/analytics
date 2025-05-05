@@ -79,7 +79,7 @@ pd_workshops as (
         , pdw.school_year
         , pdw.course_name
         , pdw.subject as workshop_subject
-        , pdw.workshop_name as workshop_name
+        , pdw.workshop_name
         , pdw.regional_partner_id 
         , pdw.is_byow
         , pdw.participant_group_type

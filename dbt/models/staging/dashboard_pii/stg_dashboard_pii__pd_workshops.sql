@@ -60,7 +60,7 @@ select
     -- , is_on_map
     -- , is_funded
     -- , funding_type
-    --, module
+    , module
     , lower(participant_group_type) as participant_group_type
     , case 
         when json_extract_path_text(properties, 'virtual') = 'true' then 1 

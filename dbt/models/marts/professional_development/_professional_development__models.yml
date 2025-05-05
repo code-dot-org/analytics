@@ -44,11 +44,11 @@ models:
       - name: num_workshop_hours
         description: the number of hours of facilitated training the teacher attended, calculated as the sum of all PL session durations that they have an attendance record for. This does not account for asynchronous or self-paced work. NULL if self-paced activity.
       - name: num_levels
-        description: the number of self-paced levels the teacher touched. NULL for facilitated PL engagement.
+        description: the number of self-paced levels the teacher touched. NULL if facilitated PD.
       - name: selfpaced_start_date
-        description: the start date of the self-paced content for that course, that school year
+        description: the start date of the self-paced content for that course, that school year. NULL if facilitated PD. 
       - name: selfpaced_end_date
-        description: the end date of the self-paced content for that course, that school year
+        description: the end date of the self-paced content for that course, that school year. NULL if facilitated PD. 
     config:
       tags: ['released']
 
