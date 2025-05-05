@@ -1,3 +1,8 @@
+/* Edit log
+
+- CK, May 2025 - added workshop name + self-paced start and end date
+*/
+
 with 
 
 teachers as (
@@ -17,7 +22,9 @@ self_paced_activity as (
         course_name_implementation        as topic,
         'self_paced'                      as pd_type,
         replace(replace(content_area, '_self_paced_pl', ''), 'self_paced_pl_', '') as grade_band,
-        count(distinct level_script_id)   as num_levels
+        count(distinct level_script_id)   as num_levels,
+        min(level_created_dt)             as spa_start_date,
+        max(level_created_dt)             as spa_end_date
     from {{ ref('dim_self_paced_pd_activity') }}
     {{ dbt_utils.group_by(5) }}
 ),
@@ -68,20 +75,24 @@ facilitated_pd as (
         teachers.us_intl,
         teachers.country,
         pdw.school_year,
+        tsh.school_id,
+        schools.school_district_id,
+        pdw.topic,
+        pdw.grade_band,
         'facilitated'                                   as pl_type,
         pdw.pl_workshop_id,
         pdw.pl_organizer_id,
         pdw.pl_regional_partner_id                      as workshop_regional_partner_id,
         districts.regional_partner_id                   as district_regional_partner_id,
+        pdw.workshop_name,
         pdw.workshop_subject,
         pdw.workshop_started_at,
         pdw.is_byow,
-        pdw.topic,
-        pdw.grade_band,
-        tsh.school_id,
-        schools.school_district_id,
+        sum(pds.num_hours)                              as num_workshop_hours,
         cast(null as bigint)                            as num_levels,
-        sum(pds.num_hours)                              as num_hours
+        cast(null as timestamp)                         as selfpaced_start_date,
+        cast(null as timestamp)                         as selfpaced_end_date
+
 
 from pd_attendances pda 
 join pd_sessions pds
@@ -99,7 +110,7 @@ left join schools
     on tsh.school_id = schools.school_id
 left join districts
     on schools.school_district_id = districts.school_district_id
-{{ dbt_utils.group_by(16) }}
+{{ dbt_utils.group_by(17) }}
 ),
 
 self_paced_pd as (
@@ -108,20 +119,23 @@ self_paced_pd as (
         teachers.us_intl,
         teachers.country,
         spa.school_year,
+        tsh.school_id,
+        schools.school_district_id,
+        spa.topic,
+        spa.grade_band,
         spa.pd_type                         as pl_type,
         cast(null as bigint)                as pl_workshop_id,
         cast(null as bigint)                as pl_organizer_id,
         cast(null as bigint)                as workshop_regional_partner_id,
         districts.regional_partner_id       as district_regional_partner_id,
+        null                                as workshop_name,
         null                                as workshop_subject,
         cast(null as timestamp)             as workshop_started_at,
         cast(null as bigint)                as is_byow,
-        spa.topic,
-        spa.grade_band,
-        tsh.school_id,
-        schools.school_district_id,
+        cast(null as bigint)                as num_workshop_hours,
         spa.num_levels,
-        cast(null as bigint)                as num_hours
+        spa_start_date                      as selfpaced_start_date,
+        spa_end_date                        as selfpaced_end_date
 
     from self_paced_activity spa
     left join school_years sy

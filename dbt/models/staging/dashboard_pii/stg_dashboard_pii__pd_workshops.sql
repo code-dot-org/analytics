@@ -1,3 +1,7 @@
+/*Edit log
+- CK, May 2025 - added workshop name
+*/
+
 with
 pd_workshops as (
     select * 
@@ -34,6 +38,7 @@ select
         when lower(course) = 'build your own workshop' then 1 else 0 
     end                                                                 as is_byow
     , lower(subject)                                                    as subject
+    , name                                                              as workshop_name
     , capacity
     , section_id
     , pdw.started_at
@@ -55,7 +60,7 @@ select
     -- , is_on_map
     -- , is_funded
     -- , funding_type
-    , module
+    --, module
     , lower(participant_group_type) as participant_group_type
     , case 
         when json_extract_path_text(properties, 'virtual') = 'true' then 1 

@@ -15,34 +15,40 @@ models:
         description:  teacher's country
       - name: school_year 
         description: the school year associated with the teacher's PL activity or attendance
-      - name: pl_type
-        description: facilitated or self-paced; note that some facilitated workshops include self-paced components, and that teacher would have rows for both self-paced and facilitated activity
-      - name: pl_workshop_id
-        description: the workshop associated with the facilitated activity
-      - name: pl_organizer_id
-        description: the user id associated with the organizer of the workshop (if this organizer is a regional partner, they will also have a regional_partner_id)
-      - name: workshop_regional_partner_id
-        description: the ID of the regional partner who hosted the workshop
-      - name: district_regional_partner_id
-        description: the ID of the regional partner associated with the district of the teacher's school
-      - name: workshop_subject
-        description: the subject of the workshop the teacher attended, as recorded by the organizer
-      - name: workshop_started_at
-        description: the date the workshop was scheduled to start, as recorded by the organizer
-      - name: is_byow
-        description: 1 if the workshop attended is "build your own workshop", 0 otherwise
-      - name: topic 
-        description: the topic (in the case of BYOW) or course name (in the case of non-BYOW or self-paced) associated with the PL activity
-      - name: grade_band 
-        description: the grade band associated with the topic
       - name: school_id 
         description: the school_id associated with the teacher's code.org account 
       - name: school_district_id 
         description: the school district id associated with the teacher's school in their account
+      - name: topic 
+        description: the topic (in the case of BYOW) or course name (in the case of non-BYOW or self-paced) associated with the PL activity
+      - name: grade_band 
+        description: the grade band associated with the topic
+      - name: pl_type
+        description: facilitated or self-paced; note that some facilitated workshops include self-paced components, and that teacher would have rows for both self-paced and facilitated activity
+      - name: pl_workshop_id
+        description: the workshop associated with the facilitated activity. NULL if self-paced activity.
+      - name: pl_organizer_id
+        description: the user id associated with the organizer of the workshop (if this organizer is a regional partner, they will also have a regional_partner_id). NULL if self-paced activity.
+      - name: workshop_regional_partner_id
+        description: the ID of the regional partner who hosted the workshop. NULL if self-paced activity.
+      - name: district_regional_partner_id
+        description: the ID of the regional partner associated with the district of the teacher's school. NULL if self-paced activity.
+      - name: workshop_name
+        description: the name of the workshop the teacher attended. NULL if self-paced activity.
+      - name: workshop_subject
+        description: the subject of the workshop the teacher attended, as recorded by the organizer. NULL if self-paced activity.
+      - name: workshop_started_at
+        description: the date the workshop was scheduled to start, as recorded by the organizer. NULL if self-paced activity.
+      - name: is_byow
+        description: 1 if the workshop attended is "build your own workshop", 0 otherwise. NULL if self-paced activity.
+      - name: num_workshop_hours
+        description: the number of hours of facilitated training the teacher attended, calculated as the sum of all PL session durations that they have an attendance record for. This does not account for asynchronous or self-paced work. NULL if self-paced activity.
       - name: num_levels
-        description: the number of self-paced levels the teacher touched, null for facilitated PL engagement
-      - name: num_hours
-        description: the number of hours of training the teacher attended, calculated as the sum of all PL session durations that they have an attendance record for. This does not account for asynchronous work. 
+        description: the number of self-paced levels the teacher touched. NULL for facilitated PL engagement.
+      - name: selfpaced_start_date
+        description: the start date of the self-paced content for that course, that school year
+      - name: selfpaced_end_date
+        description: the end date of the self-paced content for that course, that school year
     config:
       tags: ['released']
 
@@ -96,6 +102,8 @@ models:
         description: the school year associated with the workshop start date
       - name: workshop_subject
         description: the subject selected for the workshop (e.g. intro, deep dive, district, etc)
+      - name: workshop_name
+        description: the name given to the workshop (see "workshop name" on the workshop dashboard)
       - name: workshop_started_at 
         description: the day of the first session of the workshop
       - name: workshop_ended_at 
