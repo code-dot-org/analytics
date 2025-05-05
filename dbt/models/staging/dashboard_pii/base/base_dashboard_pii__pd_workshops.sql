@@ -28,7 +28,7 @@ renamed as (
         funding_type,
         participant_group_type,
         properties,
-        --module, 
+        module, 
         name,
         description
         --registration_link
