@@ -41,7 +41,7 @@ models:
         description: the date the workshop was scheduled to start, as recorded by the organizer. NULL if self-paced activity.
       - name: is_byow
         description: 1 if the workshop attended is "build your own workshop", 0 otherwise. NULL if self-paced activity.
-      - name: num_workshop_hours
+      - name: num_hours
         description: the number of hours of facilitated training the teacher attended, calculated as the sum of all PL session durations that they have an attendance record for. This does not account for asynchronous or self-paced work. NULL if self-paced activity.
       - name: num_levels
         description: the number of self-paced levels the teacher touched. NULL if facilitated PD.

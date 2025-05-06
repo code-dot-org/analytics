@@ -88,7 +88,7 @@ facilitated_pd as (
         pdw.workshop_subject,
         pdw.workshop_started_at,
         pdw.is_byow,
-        sum(pds.num_hours)                              as num_workshop_hours,
+        sum(pds.num_hours)                              as num_hours,
         cast(null as bigint)                            as num_levels,
         cast(null as timestamp)                         as selfpaced_start_date,
         cast(null as timestamp)                         as selfpaced_end_date
@@ -132,7 +132,7 @@ self_paced_pd as (
         null                                as workshop_subject,
         cast(null as timestamp)             as workshop_started_at,
         cast(null as bigint)                as is_byow,
-        cast(null as bigint)                as num_workshop_hours,
+        cast(null as bigint)                as num_hours,
         spa.num_levels,
         spa_start_date                      as selfpaced_start_date,
         spa_end_date                        as selfpaced_end_date
