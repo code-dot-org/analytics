@@ -1,3 +1,7 @@
+/*Edit log
+- CK, May 2025 - added workshop name
+*/
+
 with
 pd_workshops as (
     select * 
@@ -34,6 +38,7 @@ select
         when lower(course) = 'build your own workshop' then 1 else 0 
     end                                                                 as is_byow
     , lower(subject)                                                    as subject
+    , lower(name)                                                       as workshop_name
     , capacity
     , section_id
     , pdw.started_at

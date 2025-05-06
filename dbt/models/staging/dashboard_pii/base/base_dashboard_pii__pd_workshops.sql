@@ -28,7 +28,10 @@ renamed as (
         funding_type,
         participant_group_type,
         properties,
-        module -- (js) new col added (see: https://github.com/code-dot-org/code-dot-org/pull/53949/files)
+        module, 
+        name,
+        description
+        --registration_link
     from source
 )
 

@@ -79,6 +79,7 @@ pd_workshops as (
         , pdw.school_year
         , pdw.course_name
         , pdw.subject as workshop_subject
+        , pdw.workshop_name
         , pdw.regional_partner_id 
         , pdw.is_byow
         , pdw.participant_group_type
@@ -127,6 +128,7 @@ select
     pd_workshops.regional_partner_id as pl_regional_partner_id,
     pd_workshops.school_year,
     pd_workshops.workshop_subject,
+    pd_workshops.workshop_name,
     pd_workshops.participant_group_type,
     pd_workshops.is_byow,
     pd_workshops.is_virtual,
