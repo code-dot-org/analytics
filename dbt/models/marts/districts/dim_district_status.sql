@@ -206,7 +206,7 @@ final as (
         and fs.school_year = de_2.school_year_enrolled
     left join districts_target                                        as dt
         on fs.school_district_id = dt.district_id 
-        and fs.school_year = dt.school_year
+        and fs.school_year = dt.school_year --assigns to most recent school year only
     order by
         fs.school_district_id
         , fs.school_year
