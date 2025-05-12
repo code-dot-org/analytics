@@ -51,7 +51,7 @@ seeds:
           - not_null
           - unique
       - name: domain_name
-        description: Email domain
+        description: Email domain of the school district. Please note that we only have these email domains for district program enrolled districts + target districts.
         data_tests:
           - not_null
           - unique
