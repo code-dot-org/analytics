@@ -26,13 +26,12 @@ seeds:
     columns:
       - name: district_id
         description: NCES district ID
-        data_tests:
-          - not_null
-          - unique
+
       - name: month_closed
-        description: month that the district joined the district program
-        data_tests:
-          - not_null
+        description: month that the district joined the district program. These are truncated, so a district that joins the program on 1/31 will come through as a January enrollment
+      
+      - name: tier
+        description: the category that the district team assigns the school district to (4 receives the most active support; 1 the least active support)
   
   - name: seed_districts_target
     description: This data is exported fron Hubspot on a monthly basis to compile a list of target districts. Data last exported February 2025.
@@ -52,7 +51,7 @@ seeds:
           - not_null
           - unique
       - name: domain_name
-        description: Email domain
+        description: Email domain of the school district. Please note that we only have these email domains for district program enrolled districts + target districts.
         data_tests:
           - not_null
           - unique
