@@ -191,15 +191,17 @@ final as (
             when dt.school_year is not null then 1
             else 0
         end                                                             as is_target_this_year
+        , 
+        de_1.tier                                                            as current_tier 
         , case
             when de_1.school_year_enrolled is not null then de_1.month_closed
             else null 
         end                                                             as enrolled_at
     from full_status                                                    as fs
-    left join districts_enrolled                                        as de_1
+    left join districts_enrolled                                        as de_1 --matches any year after they enroll
         on fs.school_district_id = de_1.district_id 
         and fs.school_year >= de_1.school_year_enrolled
-    left join districts_enrolled                                        as de_2
+    left join districts_enrolled                                        as de_2 --matches only the year they enroll
         on fs.school_district_id = de_2.district_id 
         and fs.school_year = de_2.school_year_enrolled
     left join districts_target                                        as dt
