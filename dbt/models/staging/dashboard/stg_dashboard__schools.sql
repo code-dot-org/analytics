@@ -1,13 +1,13 @@
 with schools as (
     select *
     from {{ ref('base_dashboard__schools') }}
-),
+)
 
-final as (
+, final as (
     select 
-        {{ pad_school_id('school_id') }}  as school_id,
+        {{ pad_school_id('id') }}  as school_id,
         school_district_id,
-        lower(school_name) as school_name,
+        lower(name) as school_name,
         lower(city) as city,
         upper(state) as state,
         zip,
@@ -20,9 +20,11 @@ final as (
         latitude,
         longitude,
         school_category,
-        last_known_school_year_open
-from schools
+        last_known_school_year_open,
+        county_id,
+        lower(county_name) as county_name
+    from schools
 )
 
-select *
-from final 
+select * 
+from final

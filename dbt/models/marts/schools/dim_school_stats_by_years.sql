@@ -1,4 +1,10 @@
--- Note: this data is built using NCES data recevied
+/*
+Note: this data is built using NCES data furnished by RED and uploaded once a year by the acquisitions team
+
+Edits:
+- CK - May 2025 - Added counts by gender, title i status, and open status
+*/
+
 
 with 
 school_stats_by_years as (
@@ -38,7 +44,7 @@ school_stats_by_years as (
 
     from {{ ref('stg_dashboard__school_stats_by_years') }}
     
-    {{ dbt_utils.group_by(40) }}
+    {{ dbt_utils.group_by(44) }}
 ),
 
 combined as (
