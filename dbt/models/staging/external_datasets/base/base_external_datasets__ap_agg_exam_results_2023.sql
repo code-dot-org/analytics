@@ -14,7 +14,7 @@
     - content of first 8 cols must be in this order: 
 
         exam_year                - e.g. 2022
-        pd_year                 - included for historical reasons, it exam_year - 1
+        pd_year                 - included for historical reasons will be NULL for all years after 2022
         exam_group              - the name of the aggregate report e.g. 'national','csp_users_and_audit', etc.
         rp_id                   - included for historical reasons will be NULL for all years after 2022
         exam                    - e.g. the name of the exam the report is for.  It can vary and will be normalized later csa, cs principles, csp, COMPSCP etc.
@@ -32,9 +32,6 @@
     ...
 
     The number and order of these ^^^ columns does not matter. 
-    
-    ANNUAL TASK:
-    DUPLICATE THIS FILE each year, replace the source, ensure correct columns are being reported.
 */ 
 
 with ap_data AS (

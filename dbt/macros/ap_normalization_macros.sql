@@ -1,7 +1,7 @@
 {% macro ap_norm_exam_subject(exam_name) %}
     case
-        when {{ exam_name }} in ('csa','Computer Sci A','COMSCA') then 'csa'
-        when {{ exam_name }} in ('csp','Computer Sci Prin','COMSCP') then 'csp'
+        when {{ exam_name }} in ('csa','Computer Sci A','COMSCA','Computer Science A') then 'csa'
+        when {{ exam_name }} in ('csp','Computer Sci Prin','COMSCP','Computer Science Principles') then 'csp'
         when {{ exam_name }} in ('sum_csa_csp','COMSCP or COMSCA') then 'sum_csa_csp'
         else 'UNEXPECTED exam_name: ''' || {{exam_name }} || '''. SEE macro - ap_norm_exam_subject'
     end
@@ -94,6 +94,7 @@ end as demographic_category
     case 
         --when {{ exam_group }} in ('cdo_audit')                         then {{exam_group}}
         when {{ exam_group }} in ('national')                          then {{exam_group}}
+        when {{ exam_group }} in ('global')                            then {{exam_group}}
         when {{ exam_group }} in ('rp all time')                          then 'csp_rp_alltime'
         when {{ exam_group }} in ('rp per year')                          then 'csp_rp_peryear'
         when {{ exam_group }} in ('csa pd all time','csa_all_time_pd') then 'csa_pd_alltime'

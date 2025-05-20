@@ -1,15 +1,15 @@
 /*
-    The purpose of this staging table is to: 
+    The purpose of this intermediate table is to: 
 
     (1) reshape the base_ tables of aggregate exam results into 7 columns (see docs) and 
     (2) union them together
     (3) normalize the values (e.g. APCSA, AP Computer Science A, etc. --> 'csa')
 
-    Note: the unpivot macro assumes that the first 8 columns are fixed.  See documentation for base tables that describe what those are and in what order.
+    Note: the unpivot macro assumes that the first 5 columns are fixed. See documentation for base tables that describe what those are and in what order.
 
-    ANNUAL TASK:
-    (0) (Assumption) you have created a new base table called base_external_datasets__ap_agg_exam_results_'~year for the year in question.
-    (1) add a new exam year to the years [] array.
+    How to Update:
+    (0) (Assumption) you have created a new base or staging table for the aggregate (not school-level) data you want to onboard.
+    (1) Add the new table to the loop
     (2) build the model
     (3) check all values derived from macros for 'UNEXPECTED' values -- these are values that the normalization macros weren't expecting
     (4) adjust any macros to handle the new values.
@@ -19,11 +19,15 @@
 */
 with unpivoted_data as (
     -- NOTE: these should be unionable because we're pivoting around the same set of 5 columns. i.e. the width of the base tables shouldn't matter as long as the first 5 columns are the same.
-    
-    {% set years = ['2017_2022', '2023','2024'] %} 
 
-    {% for year in years %}
-        {{ unpivot_big_table('base_external_datasets__ap_agg_exam_results_'~year, 5)}}
+    
+    {% set files = ['base_external_datasets__ap_agg_exam_results_2017_2022',
+                    'base_external_datasets__ap_agg_exam_results_2023',
+                    'base_external_datasets__ap_agg_exam_results_2024',
+                    'stg_external_datasets__ap_public_data'] %} 
+
+    {% for file in files %}
+        {{ unpivot_big_table(file, 5)}}
         {% if not loop.last %}
             union all
         {% endif %}
@@ -51,6 +55,7 @@ with unpivoted_data as (
 
     FROM unpivoted_data
 )
+
 SELECT
     * 
 FROM normalized_values

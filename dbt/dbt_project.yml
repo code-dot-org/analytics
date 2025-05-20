@@ -143,3 +143,7 @@ seeds:
     seed_districts_enrolled:
       +column_types:
         district_id: varchar(20)
+    
+    seed_public_ap_results:
+      +column_types:
+        exam_year: varchar(20)
