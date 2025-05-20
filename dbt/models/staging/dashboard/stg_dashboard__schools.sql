@@ -19,7 +19,7 @@ with schools as (
         lower(address_line3) as address_line3,
         latitude,
         longitude,
-        school_category,
+        lower(school_category) as school_category,
         last_known_school_year_open,
         county_id,
         lower(county_name) as county_name
