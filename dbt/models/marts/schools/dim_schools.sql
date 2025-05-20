@@ -1,17 +1,26 @@
--- Model: dim_schools
--- Scope: all dimensions we have/need for schools; one row per school + school_year
+/*
+Model: dim_schools
+Scope: all dimensions we have/need for schools; one row per school, most recent data. 
+
+Note on schools with NULL last_survey_year - there are 5500 schools wth no last_survey_year. The vast majority were from manual uploads in 2017-2018. These schools have no valid NCES match. However, teachers are still selecting them from the dropdown list. Over 150 of those schools were active in 2024-25. Until those schools are removed from the dropdown list and teachers are prompted to reaffiliate, we will keep them in the list of schools for now. 
+
+Edit log
+- CK - May 2025 - Added county ID and name, count by gender, open status, and title I detail
+*/
+
+
 with
 schools as (
     select *
     from {{ ref('stg_dashboard__schools') }}
-),
+)
 
-school_districts as (
+, school_districts as (
     select *
     from {{ ref('stg_dashboard__school_districts') }}
-),
+)
 
-school_stats_by_years as (
+, school_stats_by_years as (
     select *, 
         row_number() 
             over(
@@ -19,11 +28,10 @@ school_stats_by_years as (
                 order by school_year desc) as row_num
 
     from {{ ref('dim_school_stats_by_years') }}
-),
+)
 
-combined as (
+, combined as (
     select
-        -- schools
         schools.school_id,
         schools.city,
         schools.state,
@@ -41,6 +49,7 @@ combined as (
         ) as school_level_simple,
 
         school_stats_by_years.is_rural,
+        school_stats_by_years.title_i_status,
         school_stats_by_years.is_title_i,
         school_stats_by_years.community_type,
 
@@ -57,8 +66,14 @@ combined as (
         school_districts.school_district_id,
         school_districts.school_district_name,
 
+        --county
+        schools.county_id,
+        schools.county_name,
+
         -- nces school metrics
         school_stats_by_years.total_students,
+        school_stats_by_years.count_student_female,
+        school_stats_by_years.count_student_male,
         school_stats_by_years.count_student_am,
         school_stats_by_years.count_student_as,
         school_stats_by_years.count_student_hi,
@@ -75,10 +90,16 @@ combined as (
         school_stats_by_years.urg_with_tr_percent,
         school_stats_by_years.urg_no_tr_numerator_percent,
         school_stats_by_years.frl_eligible_percent,
+
+        
+        --open status
+        school_stats_by_years.open_status,
+        school_stats_by_years.is_school_open,
         
         -- dates 
         min(schools.created_at) as school_created_at,
         max(schools.updated_at) as school_last_updated_at
+
 
     from schools
     left join school_stats_by_years
@@ -88,7 +109,7 @@ combined as (
     left join school_districts
         on schools.school_district_id = school_districts.school_district_id
     
-    {{ dbt_utils.group_by(36) }}
+    {{ dbt_utils.group_by(43) }}
 )
 
 select *
