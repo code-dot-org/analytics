@@ -124,7 +124,12 @@ school_stats_by_years as (
         updated_at,
         community_type,
 
-        title_i_status,
+        case 
+            when title_i_status in (1,2,3,4,5,6)
+                then title_i_status
+            else null
+        end as title_i_status, --groups invalid values to be null
+
         case when title_i_status in (1,2,3,4,5) 
                 then 1
             when title_i_status = 6 

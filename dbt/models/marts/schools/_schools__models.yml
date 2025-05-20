@@ -50,6 +50,33 @@ models:
         data_tests:
           - not_null
           - unique
+      
+      - name: city
+        description: city where the school is located
+
+      - name: state
+        description: state where the school is located
+
+      - name: zip
+        description: zip code of the school address
+
+      - name: last_survey_year
+        description: the most recent year the school ID was part of the NCES school upload. NULL values indicate a school was manually entered and has never matched an NCES entry
+
+      - name: is_rural
+        description: school community is considered rural_distant, rural_town, rural_fringe, town_remote, or town_distant
+      
+      - name: title_i_status
+        description: the detailed mapping of title I status options.
+          1 = Title I targeted assistance eligible school-No program
+          2 = Title I targeted assistance school
+          3 = Title I schoolwide eligible-Title I targeted assistance program
+          4 = Title I schoolwide eligible school-No program
+          5 = Title I schoolwide school
+          6 = not a Title I school 
+
+      - name: is_title_i
+        description: binary, whether a school is eligible for title I or - not_null
 
       - name: urg_percent
         description: the share of students with race reported who are from an underrepresented racial group; excludes "two or more races" from the calculation entirely
@@ -59,9 +86,7 @@ models:
       
       - name: urg_with_tr_percent
         description: the share of students with race reported who are from an underrepresented racial group; includes "two or more races" in both the numerator and denominator
-      
-      - name: last_survey_year 
-        description: the school year associated with the most recent information about this school from NCES
+
       
       - name: is_stage_el
         description: binary; 1 if the school has any grade levels 0-5, 0 if not 

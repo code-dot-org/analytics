@@ -9,7 +9,6 @@ Edit log
 */
 
 
-
 with
 schools as (
     select *
