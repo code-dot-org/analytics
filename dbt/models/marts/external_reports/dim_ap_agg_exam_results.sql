@@ -1,6 +1,9 @@
 /*
     This model summarizes all aggregate AP exam results data into num_taking and num_passing
     AND performs the "external URG" calculations necessary to extrapolate the number of URG taking and passing the exam.
+
+Edits:
+- CK, May 2025 - some aggregates (global, state-based) have totals that are not the sum of the residual counts. For these, we want to pull the total # of exams and passed directly from the tables
     
 */
 with agg_exam_results as (
@@ -270,5 +273,5 @@ select
     coalesce(pct_passing,0)                                                                                 as pct_passing
 from final
 where exam in ('csa','csp')
-and reporting_group in ('csp_pd_alltime','csa_pd_alltime','national','csp_audit','csa_audit','csp_users','csa_users','csa_users_and_audit','csp_users_and_audit',
+and reporting_group in ('csp_pd_alltime','csa_pd_alltime','national','global','csp_audit','csa_audit','csp_users','csa_users','csa_users_and_audit','csp_users_and_audit',
 'csa_afe_eligible_schools','csp_afe_eligible_schools')
