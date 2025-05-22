@@ -56,9 +56,9 @@ unioned as (
     select * from projects 
 ), 
 
-school_years as (
+school_weeks as (
     select * 
-    from {{ ref('int_school_years') }}
+    from {{ ref('int_school_weeks') }}
 ),
 
 combined as (
@@ -73,7 +73,9 @@ combined as (
 
         uni.activity_date,
         extract(year from uni.activity_date)   as cal_year,
-        sy.school_year,
+        sw.school_year,
+        sw.school_year_week as week_number_school_year,
+        sw.iso_week as week_number_iso,
 
         sm.section_id,
         sm.teacher_id,
@@ -87,16 +89,16 @@ combined as (
     join users      as usr
         on uni.user_id = usr.user_id
     
-    join school_years as sy 
+    left join school_weeks  as sw
         on uni.activity_date 
-            between sy.started_at
-                and sy.ended_at 
+            between sw.started_at 
+            and sw.ended_at
     
     left join section_mapping sm 
         on uni.user_id = sm.student_id
-            and sy.school_year = sm.school_year
+            and sw.school_year = sm.school_year
 
-    {{ dbt_utils.group_by(12) }} 
+    {{ dbt_utils.group_by(14) }} 
 ),
 
 final as (
