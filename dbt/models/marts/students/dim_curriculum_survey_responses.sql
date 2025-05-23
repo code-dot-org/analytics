@@ -146,7 +146,3 @@ combined as (
 
 select * 
 from combined 
-    -- where survey_name = 'csp-post-survey-levelgroup_2024'
-	-- 	and (question_text like '%top two reasons%'
-	-- 	or question_text like '%family member%'
-	-- 	or question_text like '%encourage more of your friends%')
