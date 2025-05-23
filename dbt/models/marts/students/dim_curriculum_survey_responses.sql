@@ -35,6 +35,21 @@ level_sources as (
     where level_source_id in (select level_source_id from user_levels)
 ),
 
+level_sources_multi as (
+(select 
+*
+, regexp_substr(data,'[^,]*') answer_multi
+from level_sources
+) -- first response
+union all 
+(select 
+*
+, regexp_substr(data,'[0-9]+$', 1, 1) answer_multi
+from level_sources
+where regexp_substr(data,'[0-9]+$', 1, 1) is not null
+) -- second response
+),
+
 users as (
     select * 
     from {{ ref('dim_users') }}
@@ -67,8 +82,9 @@ combined as (
         
         usr.country,
         usr.us_intl,
-        usr.gender,
-        usr.races,
+
+        usr.gender_group,
+        usr.race_group,
         usr.is_urg,
 
         ss.group_level_id,
@@ -93,11 +109,13 @@ combined as (
             when ss.question_type = 'freeresponse'
             then coalesce(lsfr.data,ls.data) 
             else ant.answer_text
-        end as answer_response -- free response answer or selected answer
+        end as answer_response -- free response answer or selected answer(s)
 
         , ss.num_response_options
         , ul.user_level_id      -- useful to count unique submissions
         , ul.level_source_id    -- useful if there's a need to join to level_sources 
+
+        , ls.data -- source data in level_sources, useful to verify
 
     from student_surveys    as ss 
 
@@ -105,7 +123,7 @@ combined as (
      on ss.script_id            = ul.script_id
     and ss.contained_level_id   = ul.level_id
 
-    left join level_sources as ls 
+    left join level_sources_multi as ls 
      on ul.level_source_id = ls.level_source_id
 
     left join free_responses as lsfr 
@@ -113,7 +131,7 @@ combined as (
 
     left join answer_texts as ant
     on ls.level_id = ant.level_id
-    and ls.data = ant.answer_number
+    and ls.answer_multi = ant.answer_number
 
     join users              as usr 
     on ul.user_id = usr.user_id 
@@ -121,7 +139,14 @@ combined as (
     join school_years       as sy 
     on ul.created_at 
         between sy.started_at 
-            and sy.ended_at )
+            and sy.ended_at 
+            
+    {{ dbt_utils.group_by(30) }} -- To get unduplicated rows, better performing than select distinct
+    )
 
 select * 
 from combined 
+    -- where survey_name = 'csp-post-survey-levelgroup_2024'
+	-- 	and (question_text like '%top two reasons%'
+	-- 	or question_text like '%family member%'
+	-- 	or question_text like '%encourage more of your friends%')
