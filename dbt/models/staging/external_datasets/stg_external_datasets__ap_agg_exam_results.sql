@@ -23,8 +23,7 @@ with unpivoted_data as (
     
     {% set files = ['base_external_datasets__ap_agg_exam_results_2017_2022',
                     'base_external_datasets__ap_agg_exam_results_2023',
-                    'base_external_datasets__ap_agg_exam_results_2024',
-                    'stg_external_datasets__ap_public_data'] %} 
+                    'base_external_datasets__ap_agg_exam_results_2024'] %} 
 
     {% for file in files %}
         {{ unpivot_big_table(file, 5)}}

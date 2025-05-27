@@ -304,6 +304,56 @@ models:
               "score_of",
             ]
 
+  - name: stg_external_datasets__ap_public_data
+    description: |
+      Loads the global AP benchmarks provided by the college board for CSA and CSP
+
+    columns:
+      - name: exam_year
+        description: "The year in which the AP exam was taken. i.e. exam_year 2023 means the 2022-23 school year."
+        data_tests:
+          - not_null
+
+      - name: reporting_group
+        description: |
+          The benchmark of all students who took the AP exam, across countries. 
+
+        data_tests:
+          - not_null
+
+
+      - name: exam
+        description: "The specific AP exam for which the record applies. This is normalized to one of (`csp`, `csa`)."
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["csp", "csa"]
+
+      - name: demographic_category
+        description: |
+          The category to which the demographic group belongs, in this case total
+        data_tests:
+          - not_null
+
+      - name: demographic_group
+        description: |
+          The specific demographic group, in this case total
+        data_tests:
+          - not_null
+
+      - name: num_taking
+        description: "The number of students in this `demographic_group` earning a `score_of` in this `score category`."
+        data_tests:
+          - not_null
+
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            [
+              "exam_year",
+              "exam",
+            ]
+
   - name: stg_external_datasets__ap_crosswalks
     description: "Staging model that consolidates (unions) AP crosswalk data from multiple years and ensures consistent formatting of school IDs and ZIP codes."
     columns:
