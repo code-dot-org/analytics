@@ -3,7 +3,7 @@
     AND performs the "external URG" calculations necessary to extrapolate the number of URG taking and passing the exam.
 
 Edits:
-- CK, May 2025 - some aggregates (global, state-based) have totals that are not the sum of the residual counts. For these, we want to pull the total # of exams and passed directly from the tables
+- CK, May 2025 - some aggregates (global, state-based) have totals that are not the sum of the individual score counts. This is because scores are not provided when the group size is <5 students. Therefore, if a denominator (total) is provided, we need to use that as num_taking rather than summing up 1,2,3,4,5. If these two scores don't match, don't show pct_passing
     
 */
 with agg_exam_results as (
@@ -31,9 +31,17 @@ all_summary as (
         exam,
         demographic_category,
         demographic_group,
-        sum(case when score_of in (1,2,3,4,5) then num_students else 0 end)                                 as num_taking,
-        sum(case when score_of in (3,4,5) then num_students else 0 end)                                     as num_passing,
-        coalesce(num_passing::float / nullif(num_taking::float, 0), 0)                                      as pct_passing --prevent division by 0
+        sum(case when score_of is null
+                then num_students else 0 end)                                                    as num_taking_provided,
+        sum(case when score_of in (1,2,3,4,5) then num_students else 0 end)                      as num_taking,
+        sum(case when score_of in (3,4,5) then num_students else 0 end)                          as num_passing,
+        case
+            when num_taking_provided = num_taking and num_taking > 0
+                then num_passing::float / num_taking::float
+            when num_taking_provided is null and num_taking > 0
+                then num_passing::float /num_taking::float
+            else
+                null end                                                                         as pct_passing  --num_taking is based on raw scores. pct_passing is calculated if 1) raw score data is provided and non-zero, and 2) if total is provided, the sum of scores matches total provided and both are non-zero
     from agg_exam_results
     {{ dbt_utils.group_by(7) }}  
     order by
@@ -41,6 +49,7 @@ all_summary as (
         demographic_category,
         demographic_group
 ),
+
 
 tr_urg as (
     /*
@@ -247,7 +256,18 @@ urg_final_race_no_response as ( --make a copy of race_no_response to stick into 
 ),
 
 final as (
-    select * from all_summary
+    select 
+        source,
+        exam_year,
+        reporting_group,
+        rp_id,
+        exam,
+        demographic_category,
+        demographic_group,
+        num_taking,
+        num_passing,
+        pct_passing
+    from all_summary
     union all
     select * from tr_urg
     union all
@@ -270,7 +290,7 @@ select
     demographic_group,
     coalesce(num_taking,0)                                                                                  as num_taking,
     coalesce(num_passing,0)                                                                                 as num_passing,
-    coalesce(pct_passing,0)                                                                                 as pct_passing
+    pct_passing          --pct_passing should not be coalesced to 0                                                                      
 from final
 where exam in ('csa','csp')
 and reporting_group in ('csp_pd_alltime','csa_pd_alltime','national','global','csp_audit','csa_audit','csp_users','csa_users','csa_users_and_audit','csp_users_and_audit',
