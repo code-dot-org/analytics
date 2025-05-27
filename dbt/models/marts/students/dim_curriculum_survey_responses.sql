@@ -40,13 +40,16 @@ level_sources_multi as (
 *
 , regexp_substr(data,'[^,]*') answer_multi
 from level_sources
+where regexp_substr(data,'[^,]*') is not null
 ) -- first response
 union all 
 (select 
 *
 , regexp_substr(data,'[0-9]+$', 1, 1) answer_multi
 from level_sources
-where regexp_substr(data,'[0-9]+$', 1, 1) is not null
+where 
+    regexp_substr(data,'[0-9]+$', 1, 1) is not null     -- second answer is not null
+    and regexp_substr(data,'[^,]*') != data             -- first answer is not the only answer, in which case it will be the same as data
 ) -- second response
 ),
 
