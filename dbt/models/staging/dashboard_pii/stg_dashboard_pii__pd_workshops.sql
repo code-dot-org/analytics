@@ -38,7 +38,7 @@ select
         when lower(course) = 'build your own workshop' then 1 else 0 
     end                                                                 as is_byow
     , lower(subject)                                                    as subject
-    , lower(name)                                                       as workshop_name
+    , case when lower(name) = '' then null else lower(name) end                                                       as workshop_name
     , capacity
     , section_id
     , pdw.started_at
