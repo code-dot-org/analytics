@@ -422,11 +422,11 @@ models:
       - name: us_intl
         description: "" 
 
-      - name: gender
-        description: "" 
+      - name: gender_group
+        description: Recoded gender information 
 
-      - name: races
-        description: "" 
+      - name: race_group
+        description: Recoded race information 
 
       - name: is_urg 
         description: "" 
@@ -486,6 +486,18 @@ models:
 
       - name: answer_response
         description: "" 
+      
+      - name: num_response_options
+        description: number of options available to the survey question 
+      
+      - name: user_level_id
+        description: "" 
+      
+      - name: level_source_id
+        description: use this to join to the level_sources data if needed 
+      
+      - name: data
+        description: source data in level_sources, useful to verify
     
     config:
       tags: ['released']
