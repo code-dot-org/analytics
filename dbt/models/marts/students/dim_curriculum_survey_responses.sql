@@ -36,21 +36,23 @@ level_sources as (
 ),
 
 level_sources_multi as (
-(select 
-*
-, regexp_substr(data,'[^,]*') answer_multi
-from level_sources
-where regexp_substr(data,'[^,]*') is not null
-) -- first response
+    (
+        select
+            *
+            , regexp_substr(data,'[^,]*') answer_multi
+        from level_sources
+        where regexp_substr(data,'[^,]*') is not null
+    ) -- first response
 union all 
-(select 
-*
-, regexp_substr(data,'[0-9]+$', 1, 1) answer_multi
-from level_sources
-where 
-    regexp_substr(data,'[0-9]+$', 1, 1) is not null     -- second answer is not null
-    and regexp_substr(data,'[^,]*') != data             -- first answer is not the only answer, in which case it will be the same as data
-) -- second response
+    (
+        select 
+            *
+            , regexp_substr(data,'[0-9]+$', 1, 1) answer_multi
+    from level_sources
+    where 
+        regexp_substr(data,'[0-9]+$', 1, 1) is not null     -- second answer is not null
+        and regexp_substr(data,'[^,]*') != data             -- first answer is not the only answer, in which case it will be the same as data
+    ) -- second response
 ),
 
 users as (
@@ -145,7 +147,7 @@ combined as (
             and sy.ended_at 
             
     {{ dbt_utils.group_by(30) }} -- To get unduplicated rows, better performing than select distinct
-    )
+)
 
 select * 
 from combined 
