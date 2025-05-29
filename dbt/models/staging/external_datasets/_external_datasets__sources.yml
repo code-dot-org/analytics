@@ -29,14 +29,12 @@ sources:
     tables:
 
       # aggregate AP exam results
-      
       - name: ap_agg_exam_results_2024
         description: "Raw aggregated exam results from 2024. This is a load of the data from the College Board with the addtion of a few additional empty columns."
 
-
       - name: stg_ap_agg_exam_results_raw_2023
         description: "Raw aggregated exam results from 2023. This is more or less a direct copy of data .csv provided by the college board.  See S3 ap_data bucket."
-
+          
       - name: stg_ap_agg_exam_results_raw_2017_2022
         description: |
           AP aggregated exam results from 2017 to 2022. This is a copy of the existing/old ledger data from the VIEW `dashboard_production.analysis.ap_exam_results_raw` which was dumped into a .csv in S3 ap_data in order to be sourced and loaded consistently with future data. 
@@ -45,6 +43,10 @@ sources:
           ```sql
           select *
           from analysis.ap_exam_results_raw
+      
+      # State and national AP exam results
+      - name: ap_state_data_2007_2024
+        description: A combined file containing state num_taking data from 2007-2024 by race and gender. Later years (2023-2024) have score data as well
           ```
 
       # school level AP exam results
