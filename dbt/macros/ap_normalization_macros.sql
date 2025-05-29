@@ -1,7 +1,7 @@
 {% macro ap_norm_exam_subject(exam_name) %}
     case
-        when {{ exam_name }} in ('csa','Computer Sci A','COMSCA','Computer Science A') then 'csa'
-        when {{ exam_name }} in ('csp','Computer Sci Prin','COMSCP','Computer Science Principles') then 'csp'
+        when {{ exam_name }} in ('csa','Computer Sci A','COMSCA','Computer Science A', 'computer science a') then 'csa'
+        when {{ exam_name }} in ('csp','Computer Sci Prin','COMSCP','Computer Science Principles','computer science principles') then 'csp'
         when {{ exam_name }} in ('sum_csa_csp','COMSCP or COMSCA') then 'sum_csa_csp'
         else 'UNEXPECTED exam_name: ''' || {{exam_name }} || '''. SEE macro - ap_norm_exam_subject'
     end
