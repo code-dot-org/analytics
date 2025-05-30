@@ -24,7 +24,8 @@ user_levels as (
 
         -- dates 
         created_date                        as activity_date,
-        extract('month' from created_date)  as activity_month
+        extract('month' from created_date)  as activity_month,
+        extract('year' from created_date)   as activity_year
     from {{ ref('dim_user_levels') }}
 
 ), 
@@ -68,6 +69,7 @@ student_activity as (
         sy.school_year,
         ul.activity_date,
         ul.activity_month,
+        ul.activity_year,
 
         -- Note: post-process this work now that it is looking 
         -- for only a few values 
@@ -243,6 +245,7 @@ final as (
         sta.activity_date,
         sta.activity_month,
         sta.activity_quarter, 
+        sta.activity_year,
         
         -- curriculum content of the activity
         sta.selected_locale, 

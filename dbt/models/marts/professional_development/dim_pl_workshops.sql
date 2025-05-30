@@ -1,3 +1,7 @@
+/*Edit log
+- CK - May 2025, added workshop title
+*/
+
 with 
 
 int_pl_workshops as (
@@ -8,6 +12,7 @@ int_pl_workshops as (
         pl_regional_partner_id,
         school_year,
         workshop_subject,
+        workshop_name,
         workshop_started_at,
         workshop_ended_at,
         participant_group_type,
@@ -24,7 +29,7 @@ int_pl_workshops as (
         listagg(distinct grade_band, ', ') within group (order by pl_workshop_id) as grade_bands
 
     from {{ ref('int_pl_workshops') }}
-    {{ dbt_utils.group_by(17) }}
+    {{ dbt_utils.group_by(18) }}
 ) 
 
 select * 

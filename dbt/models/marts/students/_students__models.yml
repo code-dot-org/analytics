@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dim_student_projects
     description: |
-      This model tracks all student projects started on code.org. It includes additional information about the project itself, as well as other variables to make for easy segmentation for commonly asked questions. 
+      This model tracks all student projects started on code.org. It includes additional information about the project itself, as well as other variables to make for easy segmentation for commonly asked questions. Note that 'ghost projects' are excluded. (Ghost projects are empty projects that are logged in the underlying projects table, but don't meet the criteria of real usage.)
     columns:
       - name: project_id
         description: unique ID for the project
@@ -75,29 +75,39 @@ models:
 
       There is a row for every date a given student is active, and for every section they are in in that school year. So, if a student is in multiple sections in a given school year, every row for that student will be duplicated for each section ID. Always count distinct! 
     columns:
-      - name: activity_date
-        description: "The date on which activity was recorded for the user, merged across all aggregated activity types."
-        data_tests:
-          - not_null 
-        data_type: "date"
 
       - name: student_id
         description: "The unique student id, consolidated from any activity across user levels, sign-ins, and projects data."
         data_tests:
           - not_null
         data_type: "varchar"
-      
-      - name: country
-        description: "The country of the user, derived from Code.org user-geographical data linked to the user_id. The country is volitile - it maps to the user's _current_ geographic lociation, not necessarily their location at the time of the event, and it can change over time."
-        data_type: "varchar"
 
       - name: us_intl
         description: "Classifies the `country` as U.S. or international (`us` or `intl`).  International really means non-U.S."
         data_type: "varchar"
+    
+      - name: country
+        description: "The country of the user, derived from Code.org user-geographical data linked to the user_id. The country is volitile - it maps to the user's _current_ geographic lociation, not necessarily their location at the time of the event, and it can change over time."
+        data_type: "varchar"
+
+      - name: activity_date
+        description: "The date on which activity was recorded for the user, merged across all aggregated activity types."
+        data_tests:
+          - not_null 
+        data_type: "date"
+      
+      - name: cal_year
+        description: Calendar year of the activity
 
       - name: school_year
-        description: "The school year during which the activity occurred, determined by matching the activity date with school year ranges. A school year is defined as the 365 days between July 1 in year 1, and June 30 in year 2."
+        description: "The school year during which the activity occurred, determined by matching the activity date with school year ranges. A school year is defined as the 365 days between July 1 in calendar year 1, and June 30 in calendar year 2."
         data_type: "varchar"
+    
+      - name: week_number_school_year
+        description: The school year week of the activity (school year weeks start at 0 in July and finish at 52/53 in June)
+
+      - name: week_number_iso
+        description: The week number as defined by the ISO (starts at 0 in January and finishes at 52/53 in December)
       
       - name: section_id
         description: The section ID associated with the student in the school year of the activity date. If the student is associated with multiple sections that school year, there will be a row for every section they are in for every date they have activity.
@@ -111,10 +121,6 @@ models:
       - name: school_district_id
         description: the NCES school district ID associated with their section's teacher, null if the teacher did not choose a school. 
 
-      - name: has_sign_in_activity
-        description: "`0|1` flag indicating whether there was any sign-in activity for the user on the given day (1 for yes, 0 for no)."
-        data_type: "integer"
-
       - name: has_user_level_activity
         description: "`0|1` flag indicating whether there was any user level activity for the user on the given day (1 for yes, 0 for no)."
         data_type: "integer"
@@ -122,6 +128,10 @@ models:
       - name: has_project_activity
         description: "`0|1` flag indicating whether there was any project activity for the user on the given day (1 for yes, 0 for no)."
         data_type: "integer"
+      
+      - name: is_active_student
+        description: whether the student is active that day (all rows should be 1 for this value)
+
     config:
       tags: ['released']
 
@@ -412,11 +422,11 @@ models:
       - name: us_intl
         description: "" 
 
-      - name: gender
-        description: "" 
+      - name: gender_group
+        description: Recoded gender information 
 
-      - name: races
-        description: "" 
+      - name: race_group
+        description: Recoded race information 
 
       - name: is_urg 
         description: "" 
@@ -476,6 +486,18 @@ models:
 
       - name: answer_response
         description: "" 
+      
+      - name: num_response_options
+        description: number of options available to the survey question 
+      
+      - name: user_level_id
+        description: "" 
+      
+      - name: level_source_id
+        description: use this to join to the level_sources data if needed 
+      
+      - name: data
+        description: source data in level_sources, useful to verify
     
     config:
       tags: ['released']
