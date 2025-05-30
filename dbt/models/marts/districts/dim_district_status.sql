@@ -16,6 +16,12 @@ Logic: we can determine status based on three properties we can compute for ever
     - '101' (5) = 'active reacquired'   -- Active this year + NOT active last year + active in the past
     - '110' (6) = '<impossible status>' -- impossible for same reason as status (2)
     - '111' (7) = 'active retained'     -- active this year + active last year + (active ever before implied) 
+
+Edit log
+--Cory, May 2025
+1) Added district_started_at field as the date the first school in the district became active
+
+
 #}
 
 with 

@@ -178,7 +178,7 @@ models:
       - name: course_name
       - name: section_id
       - name: section_started_at
-        description: the datetime of the first date of activity of any student added to the section (even if the section was not created + the student was not added at the time)
+        description: the datetime of the first date of activity of any student added to the section (even if the section was not created or the student was not added at the time)
       - name: section_active_at
         description: the datetime the section became active. This is calculated by taking the later of each student's first day of activity and the date they were added to the section, and then finding that date for the fifth student. 
     data_tests:

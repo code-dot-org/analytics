@@ -16,6 +16,9 @@ will show students added but no activity because the activity is excluded by int
 1. Changed join from sections to active courses to use a coalesce around school_id to bring in active sections not associated to an NCES school
 2. Added coalesce(is_active,0) to avoid nulls on this field
 
+-- Updated by Cory May 2025
+Added section_active_at field
+
 #}
 
 with school_years as (

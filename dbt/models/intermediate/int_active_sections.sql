@@ -31,7 +31,7 @@ student_section as (
             when scs.first_activity_at > ss.student_added_at
             then scs.first_activity_at
             else ss.student_added_at
-            end as effective_date
+            end as effective_date --takes later of first_activity_at, student_added_at
         , row_number() over (
             partition by ss.section_id, ss.teacher_id, ss.school_year, scs.course_name
             order by effective_date

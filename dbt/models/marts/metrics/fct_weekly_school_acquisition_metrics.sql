@@ -1,3 +1,8 @@
+/*Edit log
+
+-- Cory, May 2025 - replaced school_started_at with school_active_at as the core date that this table is based on
+*/
+
 
 with 
 school_status as (
