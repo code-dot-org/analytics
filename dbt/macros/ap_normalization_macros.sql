@@ -3,6 +3,7 @@
         when {{ exam_name }} in ('csa','Computer Sci A','COMSCA','Computer Science A', 'computer science a') then 'csa'
         when {{ exam_name }} in ('csp','Computer Sci Prin','COMSCP','Computer Science Principles','computer science principles') then 'csp'
         when {{ exam_name }} in ('sum_csa_csp','COMSCP or COMSCA') then 'sum_csa_csp'
+        when {{ exam_name }} in ('csab') then 'csab'
         else 'UNEXPECTED exam_name: ''' || {{exam_name }} || '''. SEE macro - ap_norm_exam_subject'
     end
 {% endmacro %}
@@ -73,6 +74,8 @@ end as demographic_category
                     then 'detail'
                 when {{ score_category_input }} in ('total','all')
                     then 'total'
+                when {{ score_category_input }} in ('NA')
+                    then NULL
                 else 'UNEXPECTED input: ''' || {{ score_category_input }} || '''. SEE macro - ap_norm_score_category'
             end score_category,
             case
