@@ -76,13 +76,15 @@ models:
       - name: status
         description: the activity status of that school district in that school year as defined in the model description. 
       - name: district_started_at
-        description: time of first activity from an active school in this district in this school year
+        description: time of first activity from an active school in this district in this school year. NULL if inactive. 
+      - name: district_active_at
+        description: time the first school in the district became active. NULL if inactive. 
       - name: active_courses
-        description: comma separated list of courses associated with active schools in this school year
+        description: comma separated list of courses associated with active schools in this school year. NULL if inactive.
       - name: num_active_teachers
-        description: the number of active (has a section of 5+ students completing 1+ levels) teachers in that school year at that district
+        description: the number of active (has a section of 5+ students completing 1+ levels) teachers in that school year at that district. 0 if inactive. 
       - name: num_active_schools
-        description: the number of active schools (has 1+ active teachers) in the district in that school year
+        description: the number of active schools (has 1+ active teachers) in the district in that school year. 0 if inactive. 
       - name: is_enrolled_this_year
         description: 1 if the district enrolled in our district program with a close date during this school year, 0 otherwise
       - name: is_enrolled 

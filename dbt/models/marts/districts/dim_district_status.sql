@@ -16,13 +16,19 @@ Logic: we can determine status based on three properties we can compute for ever
     - '101' (5) = 'active reacquired'   -- Active this year + NOT active last year + active in the past
     - '110' (6) = '<impossible status>' -- impossible for same reason as status (2)
     - '111' (7) = 'active retained'     -- active this year + active last year + (active ever before implied) 
+
+Edit log
+--Cory, May 2025
+1) Added district_started_at field as the date the first school in the district became active
+
+
 #}
 
 with 
 
 dim_schools as (
     select * 
-    from {{ ref('dim_schools') }}
+    from {{ref('dim_schools')}}
 ),
 
 all_districts as (
@@ -33,6 +39,16 @@ all_districts as (
 school_years as (
     select * 
     from {{ ref('int_school_years') }}
+),
+
+districts_enrolled as (
+    select * 
+    from {{ ref('stg_external_datasets__districts_enrolled') }}
+),
+
+districts_target as (
+    select * 
+    from {{ ref('stg_external_datasets__districts_target') }}
 ),
 
 all_districts_sy as (
@@ -48,32 +64,29 @@ teacher_school_changes as (
     from {{ ref('int_teacher_schools_historical') }}
 ),
 
+active_schools as (
+    select * 
+    from {{ref('dim_school_status')}}
+    where status in ('active new', 'active retained', 'active reacquired')
+),
+
 teacher_active_courses as (
     select 
         distinct teacher_id,
         school_year,
         course_name,
-        section_started_at
+        section_started_at,
+        section_active_at
     from {{ref('int_active_sections')}}
 ),
 
-districts_enrolled as (
-    select * 
-    from {{ ref('stg_external_datasets__districts_enrolled') }}
-),
-
-districts_target as (
-    select * 
-    from {{ ref('stg_external_datasets__districts_target') }}
-),
-
 teacher_active_courses_with_sy as (
-
     select
         tac.teacher_id,
         tac.school_year,
         tac.course_name,
         tac.section_started_at,
+        tac.section_active_at,
         tsc.school_id,
         dim_schools.school_district_id
     from teacher_active_courses tac 
@@ -86,22 +99,29 @@ teacher_active_courses_with_sy as (
         on tsc.school_id = dim_schools.school_id
 ),
 
-started_districts as (
-    select 
-        school_district_id
-        , school_year
-        , min(section_started_at)                                                       as district_started_at
-        , listagg( distinct course_name, ', ') within group (order by course_name)      as active_courses
-    from teacher_active_courses_with_sy
-    group by 1, 2
-),
-
+--based on school_started_at not section_started_at to account for teacher/school mappings
+--teachers can only be mapped to one school at a time, so safe to sum 
 active_district_stats as (
     select 
         school_district_id
         , school_year
-        , count(distinct teacher_id)                                                    as num_active_teachers
-        , count(distinct school_id)                                                     as num_active_schools
+        , min(school_started_at)                                                       as district_started_at
+        , min(school_active_at)                                                        as district_active_at
+        , sum(num_active_teachers)                                                   as num_active_teachers
+        , count(distinct active_schools.school_id)                                         as num_active_schools
+    from active_schools
+    left join dim_schools  
+        on dim_schools.school_id = active_schools.school_id
+    where school_district_id is not null
+    group by 1, 2
+),
+
+--listagg cannot be combined with count distinct; active_courses comes from sections not schools to avoid splitting + recombining 
+active_district_courses as (
+    select 
+        school_district_id
+        , school_year
+        , listagg( distinct course_name, ', ') within group (order by course_name)      as active_courses
     from teacher_active_courses_with_sy
     group by 1, 2
 ),
@@ -111,26 +131,26 @@ active_status_simple as (
         all_districts_sy.school_district_id,
         all_districts_sy.school_year,
         case 
-            when started_districts.school_district_id is not null 
+            when active_district_stats.school_district_id is not null 
             then 1 
             else 0 
         end                                                                 as is_active,
-        started_districts.district_started_at,
-        started_districts.active_courses,
+        active_district_stats.district_started_at,
+        active_district_stats.district_active_at,
+        active_district_courses.active_courses,
         coalesce(active_district_stats.num_active_teachers, 0)              as num_active_teachers,
         coalesce(active_district_stats.num_active_schools, 0)               as num_active_schools
     from all_districts_sy 
-    left join started_districts
-        on started_districts.school_district_id = all_districts_sy.school_district_id 
-        and started_districts.school_year = all_districts_sy.school_year
     left join active_district_stats
-        on active_district_stats.school_district_id = started_districts.school_district_id 
-        and active_district_stats.school_year = started_districts.school_year
-),
+        on all_districts_sy.school_district_id = active_district_stats.school_district_id 
+        and all_districts_sy.school_year = active_district_stats.school_year
+    left join active_district_courses
+        on all_districts_sy.school_district_id = active_district_courses.school_district_id
+        and all_districts_sy.school_year = active_district_courses.school_year
+)
 
-full_status as (
+, full_status as (
     -- Determine the active status for each school district in each school year
-
     select
         school_district_id
         , school_year
@@ -152,16 +172,15 @@ full_status as (
         )                                                                               as ever_active_before
         , (is_active || prev_year_active || ever_active_before) status_code
         , district_started_at
+        , district_active_at
         , active_courses
         , num_active_teachers
         , num_active_schools
     from
         active_status_simple
-
 ), 
 
 final as (
-
     select distinct
         fs.school_district_id
         , fs.school_year
@@ -176,6 +195,7 @@ final as (
             when fs.status_code = '111' then 'active retained'
         end                                                             as status
         , fs.district_started_at
+        , fs.district_active_at
         , fs.active_courses
         , fs.num_active_teachers
         , fs.num_active_schools
@@ -211,6 +231,5 @@ final as (
         fs.school_district_id
         , fs.school_year
 )
-
 select * 
 from final

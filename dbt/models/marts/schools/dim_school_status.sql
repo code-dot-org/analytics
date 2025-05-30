@@ -1,4 +1,5 @@
 {# Notes:
+
 Design: 1 row per school, school_year, churn_status
 Logic: we can determine status based on three properties we can compute for every user|school_year as a binary:
     - 0/1 they are active this school_year - (A)ctive
@@ -16,6 +17,9 @@ Logic: we can determine status based on three properties we can compute for ever
     - '101' (5) = 'active reacquired'   -- Active this year + NOT active last year + active in the past
     - '110' (6) = '<impossible status>' -- impossible for same reason as status (2)
     - '111' (7) = 'active retained'     -- active this year + active last year + (active ever before implied) 
+
+Edit log
+- CK, April 2025 - added school_active_at date as the maximum of: 1) 5th student in-section activity, 2) teacher mapped to school; added num_active_teachers
 #}
 
 with 
@@ -23,60 +27,71 @@ with
 all_schools as (
     select school_id
     from {{ ref('dim_schools') }}
-),
+)
 
-school_years as (
+, school_years as (
     select * 
     from {{ ref('int_school_years') }}
-),
+)
 
-all_schools_sy as (
+, all_schools_sy as (
     select 
         all_schools.school_id,
         school_years.school_year
     from all_schools 
     cross join school_years
-),
+)
 
-teacher_school_changes as (
+, teacher_school_changes as (
     select *
     from {{ ref('int_teacher_schools_historical') }}
-),
+)
 
-teacher_active_courses as (
-    select 
-        distinct teacher_id,
-        school_year,
-        course_name,
-        section_started_at
-    from {{ref('int_active_sections')}}
-),
-
-teacher_active_courses_with_sy as (
-
+, teacher_active_courses_with_sy as (
     select
-        tac.teacher_id,
-        tac.school_year,
-        tac.course_name,
-        tac.section_started_at,
+        distinct
+        ias.teacher_id,
+        ias.school_year,
+        ias.course_name,
+        ias.section_id,
+        ias.section_started_at,
+        ias.section_active_at,
+        tsc.started_at as teacher_school_match,
+        case 
+            when tsc.started_at > ias.section_active_at 
+            then tsc.started_at
+            else ias.section_active_at
+            end as school_section_active_at,
         tsc.school_id
-    from teacher_active_courses tac 
+    from {{ref('int_active_sections')}} ias 
     join school_years sy
-        on tac.school_year = sy.school_year
-    join teacher_school_changes tsc 
-        on tac.teacher_id = tsc.teacher_id 
-        and sy.ended_at between tsc.started_at and tsc.ended_at 
-),
+        on ias.school_year = sy.school_year
+    left join teacher_school_changes tsc 
+        on ias.teacher_id = tsc.teacher_id 
+        and sy.ended_at between tsc.started_at and tsc.ended_at
+)
 
-started_schools as (
+, started_schools as (
     select 
         school_id,
         school_year,
         min(section_started_at) as school_started_at,
+        min(school_section_active_at) as school_active_at,
         listagg( distinct course_name, ', ') within group (order by course_name) active_courses
     from teacher_active_courses_with_sy
     group by 1, 2
 )
+
+--you can't do a distinct count and a listagg in the same cte
+, teacher_count as (
+    select
+        school_id,
+        school_year,
+        count (distinct teacher_id) as num_active_teachers
+    from teacher_active_courses_with_sy
+    group by 1, 2 
+)
+
 , active_status_simple as (
     select 
         all_schools_sy.school_id,
@@ -87,13 +102,17 @@ started_schools as (
             then 1 
             else 0 
         end as is_active,
-
         started_schools.school_started_at,
-        started_schools.active_courses
+        started_schools.school_active_at,
+        started_schools.active_courses,
+        teacher_count.num_active_teachers
     from all_schools_sy 
     left join started_schools
         on started_schools.school_id = all_schools_sy.school_id 
         and started_schools.school_year = all_schools_sy.school_year
+    left join teacher_count
+        on teacher_count.school_id = all_schools_sy.school_id
+        and teacher_count.school_year = all_schools_sy.school_year
 )
 , full_status as (
     -- Determine the active status for each school in each school year
@@ -114,13 +133,15 @@ started_schools as (
         ) as ever_active_before,
         (is_active || prev_year_active || ever_active_before) status_code,
         school_started_at,
-        active_courses
+        school_active_at,
+        active_courses,
+        num_active_teachers
     from
         active_status_simple
 
-), 
+)
 
-final as (
+, final as (
 
     select
         school_id,
@@ -134,13 +155,11 @@ final as (
             when status_code = '111' then 'active retained'
             else null 
         end as status,
-
-            -- (js): impossible = "i'm possible"
-            -- when status_code = '110' then '<impossible status>' 
-            -- when status_code = '010' then '<impossible status>'
         status_code,
         school_started_at,
-        active_courses
+        school_active_at,
+        active_courses,
+        num_active_teachers
         from full_status
     order by
         school_id, 

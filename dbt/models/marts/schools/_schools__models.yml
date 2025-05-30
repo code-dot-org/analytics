@@ -36,6 +36,9 @@ models:
       - name: school_started_at
         description: time of first activity from an active section at this school in this school year
       
+      - name: school_active_at
+        description: time the school was considered 'active' that school year (e.g., had a qualifying section and a teacher mapped to that school)
+      
       - name: active_courses
         description: comma separated list of courses associated with active sections at this school in this school year
     config:
