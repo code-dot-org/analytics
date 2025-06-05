@@ -9,6 +9,59 @@ models:
           combination_of_columns:
             - school_year
             - school_id
+    columns: 
+      - name: school_id
+        description: the NCES id associated with a school 
+        data_tests:
+          - not_null
+      - name: school_year
+        description: school year for which the stats are relevant (most schools will have multiple school years in this table, and the data may change every year)
+      - name: survey_year
+        description: what NCES survey year included these statistics
+      - name: first_survey_year
+        description: the first year the school ID was part of our NCES school upload. NULL values indicate a school was manually entered and has never matched an NCES entry
+      - name: is_stage_el
+        description: binary; 1 if the school has any grade levels 0-5, 0 if not 
+      - name: is_stage_mi
+        description: binary; 1 if the school has any grade levels 6-8, 0 if not 
+      - name: is_stage_hi
+        description: binary; 1 if the school has any grade levels 9-12, 0 if not 
+      - name: is_rural
+        description: school community is considered rural_distant, rural_town, rural_fringe, town_remote, or town_distant
+      - name: title_i_status
+        description: the detailed mapping of title I status options.
+          1 = Title I targeted assistance eligible school-No program
+          2 = Title I targeted assistance school
+          3 = Title I schoolwide eligible-Title I targeted assistance program
+          4 = Title I schoolwide eligible school-No program
+          5 = Title I schoolwide school
+          6 = not a Title I school 
+      - name: is_title_i
+        description: binary, whether a school is eligible for title I or not (1-5 in the detailed title_i_status field). NULL usually indicates a private school.
+      - name: community type
+        description: NCES community category
+      - name: school_category
+        description: Regular School, Alternative School, Special Education School, Career and Technical School, or NULL
+      - name: school_type
+        description: public, private, charter, or NULL
+      - name: is_high_needs
+        description: binary, whether the percentage of FRL (free and reduced lunch) students at the school is >50%
+      - name: open_status
+        description: 1-open, 2-closed, 3-new, 4-added, 5-changed boundary/agency, 6-inactive, 7-future, 8-reopened, or NULL
+      - name: is_school_open
+        description: binary, captures whether school is open (options 1,3,4,5, and 8 in open_status) or closed (options 2,6,and 7 in open_status)
+      - name: created_at
+        description: when the record was created for that school in our systems (not when the school was actually opened)
+      - name: updated_at
+        description: when the record was most recently updated in our systems
+      - name: urg_percent
+        description: the share of students with race reported who are from an underrepresented racial group; excludes "two or more races" from the calculation entirely
+      - name: urg_no_tr_numerator_percent
+        description: the share of students with race reported who are from an underrepresented racial group; excludes "two or more races" from the numerator only; used for AFE reporting 
+      - name: urg_with_tr_percent
+        description: the share of students with race reported who are from an underrepresented racial group; includes "two or more races" in both the numerator and denominator
+      - name: total_urg_no_tr_students
+        description: total number of URG students, excluding those identifying as two or more races
     config:
       tags: ['released']
 
@@ -53,6 +106,66 @@ models:
         data_tests:
           - not_null
           - unique
+      
+      - name: city
+        description: city where the school is located
+
+      - name: state
+        description: state where the school is located
+
+      - name: zip
+        description: zip code of the school address
+
+      - name: last_survey_year
+        description: the most recent year the school ID was part of the NCES school upload. NULL values indicate a school was manually entered and has never matched an NCES entry
+    
+      - name: is_stage_el
+        description: binary; 1 if the school has any grade levels 0-5, 0 if not 
+      
+      - name: is_stage_mi
+        description: binary; 1 if the school has any grade levels 6-8, 0 if not 
+      
+      - name: is_stage_hi
+        description: binary; 1 if the school has any grade levels 9-12, 0 if not 
+
+      - name: is_rural
+        description: school community is considered rural_distant, rural_town, rural_fringe, town_remote, or town_distant
+      
+      - name: title_i_status
+        description: the detailed mapping of title I status options.
+          1 = Title I targeted assistance eligible school-No program
+          2 = Title I targeted assistance school
+          3 = Title I schoolwide eligible-Title I targeted assistance program
+          4 = Title I schoolwide eligible school-No program
+          5 = Title I schoolwide school
+          6 = not a Title I school 
+
+      - name: is_title_i
+        description: binary, whether a school is eligible for title I or not (1-5 in the detailed title_i_status field). NULL usually indicates a private school.
+
+      - name: community type
+        description: NCES community category
+    
+      - name: school_category
+        description: Regular School, Alternative School, Special Education School, Career and Technical School, or NULL
+    
+      - name: school_type
+        description: public, private, charter, or NULL
+
+      - name: is_high_needs
+        description: binary, whether the percentage of FRL (free and reduced lunch) students at the school is >50%
+
+      - name: open_status
+        description: 1-open, 2-closed, 3-new, 4-added, 5-changed boundary/agency, 6-inactive, 7-future, 8-reopened, or NULL
+
+      - name: is_school_open
+        description: binary, captures whether school is open (options 1,3,4,5, and 8 in open_status) or closed (options 2,6,and 7 in open_status)
+
+      - name: school_created_at
+        description: when the record was created for that school in our systems (not when the school was actually opened)
+      
+      - name: school_last_updated_at
+        description: when the record was most recently updated in our systems
 
       - name: urg_percent
         description: the share of students with race reported who are from an underrepresented racial group; excludes "two or more races" from the calculation entirely
@@ -62,18 +175,6 @@ models:
       
       - name: urg_with_tr_percent
         description: the share of students with race reported who are from an underrepresented racial group; includes "two or more races" in both the numerator and denominator
-      
-      - name: last_survey_year 
-        description: the school year associated with the most recent information about this school from NCES
-      
-      - name: is_stage_el
-        description: binary; 1 if the school has any grade levels 0-5, 0 if not 
-      
-      - name: is_stage_mi
-        description: binary; 1 if the school has any grade levels 6-8, 0 if not 
-      
-      - name: is_stage_hi
-        description: binary; 1 if the school has any grade levels 9-12, 0 if not 
       
       - name: school_level_simple
         description: a combination of all school levels the school contains, separated by underscores
