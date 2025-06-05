@@ -16,6 +16,9 @@ Logic: we can determine status based on three properties we can compute for ever
     - '101' (5) = 'active reacquired'   -- Active this year + NOT active last year + active in the past
     - '110' (6) = '<impossible status>' -- impossible for same reason as status (2)
     - '111' (7) = 'active retained'     -- active this year + active last year + (active ever before implied) 
+
+    Edit log:
+    - CK, April 2025 - editing to include the active date not just the started_at date
 #}
 
 with 
@@ -23,6 +26,7 @@ teacher_section_started as (
     select teacher_id,
         school_year,
         min(section_started_at) as started_teaching_at,
+        min(section_active_at) as active_at,
         listagg(distinct course_name, ', ') within group (order by course_name ASC) section_courses_started
     from {{ ref('int_active_sections') }}
     group by 1, 2
@@ -55,7 +59,8 @@ active_status_simple as (
         all_sy.school_year,
         case when t.teacher_id is null then 0 else 1 end as is_active,
         t.section_courses_started,
-        t.started_teaching_at
+        t.started_teaching_at,
+        t.active_at
     from all_teachers_school_years all_sy
     left join teacher_section_started t 
         on t.teacher_id = all_sy.teacher_id 
@@ -70,6 +75,7 @@ full_status as (
         is_active,
         section_courses_started,
         started_teaching_at,
+        active_at,
         coalesce(
             lag(is_active, 1) 
                 over (partition by teacher_id order by school_year) 
@@ -100,7 +106,8 @@ final as (
             when status_code = '111' then 'active retained'
         end as status,
         section_courses_started,
-        started_teaching_at
+        started_teaching_at,
+        active_at
     from
         full_status
     order by

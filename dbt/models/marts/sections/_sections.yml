@@ -20,7 +20,7 @@ models:
         description: the id of the teacher who created the section
       - name: school_id
         description: the school id associated with the teacher of the section in the school year of adding students to the section (teachers can change their school association across school years!) 
-      - name: created_at_school_year
+      - name: school_year_created
         description: the school year in which the section was created
       - name: school_year
         description: the school year in which the teacher added students to the section. As an example, a section that was created in 2016-17 but gets re-used by the teacher every school year will have a row for every school year the teacher has added new students to it.
@@ -32,12 +32,16 @@ models:
         description: the primary grade level the teacher selected for the section 
       - name: created_at
         description: the timestamp for when the section was created
+      - name: section_started_at
+        description: the timestamp for the earliest activity for any student in that section. NULL for inactive sections.
+      - name: section_active_at
+        description: the timestamp for when the section became active for that course (5th student in the section has activity). NULL for inactive sections.
       - name: updated_at
         description: the timestamp for the last time the section information was updated
       - name: num_students_added
         description: the number of students added to the section (this does not necessarily mean these students are all active!)
       - name: num_students_active
-        description: the number of students considered "active" in the section (has started 1+ levels of the given course)
+        description: the number of students considered "active" in the section (has started 1+ levels of the given course). NULL for inactive sections.
       - name: course_name
         description: the course associated with the student activity in the section. If a section is "active" (has 5+ students starting 1+ levels of the same course in a year) in multiple courses, they will have a row for each one.
       - name: is_active
