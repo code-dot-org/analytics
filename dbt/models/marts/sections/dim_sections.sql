@@ -16,6 +16,9 @@ will show students added but no activity because the activity is excluded by int
 1. Changed join from sections to active courses to use a coalesce around school_id to bring in active sections not associated to an NCES school
 2. Added coalesce(is_active,0) to avoid nulls on this field
 
+-- Updated by Cory May 2025
+Added section_active_at field
+
 #}
 
 with school_years as (
@@ -59,18 +62,20 @@ teacher_school_changes as (
         school_year,
         course_name,
         section_started_at,
+        section_active_at,
         1 as is_active,
         num_students as num_students_active
     from {{ ref('int_active_sections') }}
 )
-,teacher_active_courses_with_sy as (
 
+,teacher_active_courses_with_sy as (
     select
         tac.teacher_id,
         tac.section_id,
         tac.school_year,
         tac.course_name,
         tac.section_started_at,
+        tac.section_active_at,
         tac.is_active,
         tac.num_students_active,
         tsc.school_id
@@ -103,7 +108,8 @@ teacher_school_changes as (
         act.course_name,
         coalesce(act.is_active,0) is_active,
         act.num_students_active,
-        act.section_started_at,     
+        act.section_started_at,    
+        act.section_active_at, 
         coalesce(act.school_year, nsps.school_year) school_year    -- coalesce first activity school_year with year of student activity
                                                                 
     from all_sections as sec
